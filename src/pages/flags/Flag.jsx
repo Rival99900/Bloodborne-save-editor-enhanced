@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { message } from "@tauri-apps/plugin-dialog";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 function Flag({ label, offset, values, info, impact, warning = "", category = "Known flag", isMask = false }) {
   const [isApplying, setIsApplying] = useState(false);
@@ -59,4 +59,4 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
   );
 }
 
-export default Flag;
+export default memo(Flag);

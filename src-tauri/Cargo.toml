@@ -1,6 +1,6 @@
 [package]
 name = "src-tauri"
-version = "0.1.2"
+version = "0.1.3"
 description = "Bloodborne save editor."
 authors = ["Noxde", "Valentino Amato"]
 license = ""

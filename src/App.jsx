@@ -6,6 +6,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { basename } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import * as dialog from "@tauri-apps/plugin-dialog";
+import { exit } from "@tauri-apps/plugin-process";
 import Nav from "./components/Nav";
 import Main from "./pages/main/Main";
 import { ImagesProvider } from "./context/imagesContext";
@@ -163,13 +164,20 @@ function App() {
     setExitRequested(false);
 
     try {
-      await getCurrentWindow().destroy();
-    } catch (destroyError) {
+      // This exits the Tauri process itself, so it cannot be intercepted again by
+      // the regular window close guard that opened the unsaved-changes dialog.
+      await exit(0);
+    } catch (exitError) {
+      console.error("Native application exit failed; trying the window fallback.", exitError);
       try {
-        await getCurrentWindow().close();
-      } catch (closeError) {
-        console.error("Unable to close the application.", destroyError, closeError);
-        window.close();
+        await getCurrentWindow().destroy();
+      } catch (destroyError) {
+        try {
+          await getCurrentWindow().close();
+        } catch (closeError) {
+          console.error("Unable to close the application.", destroyError, closeError);
+          window.close();
+        }
       }
     }
   }, []);

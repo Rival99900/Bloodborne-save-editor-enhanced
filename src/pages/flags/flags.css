@@ -2,7 +2,10 @@
   grid-column: 2 / 4;
   min-width: 0;
   min-height: 0;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   padding: clamp(1.2rem, 3vw, 2.5rem);
   background:
     linear-gradient(135deg, rgba(10, 11, 14, 0.82), rgba(14, 15, 18, 0.66)),
@@ -45,6 +48,8 @@
   gap: 0.8rem;
   width: min(100%, 48rem);
   margin: 0 auto;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 34rem;
 }
 
 .flag-card {
@@ -56,6 +61,9 @@
   border: 1px solid rgba(234, 219, 185, 0.16);
   background: rgba(4, 5, 7, 0.72);
   box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.2);
+  contain: layout paint style;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 10rem;
 }
 
 .flag-card h2 {

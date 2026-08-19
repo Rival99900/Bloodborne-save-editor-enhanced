@@ -12,14 +12,71 @@ function getType(type) {
   }
 }
 
+const GEM_SHAPES = new Set(["radial", "triangle", "waning", "circle", "droplet"]);
+const GEM_COLORS = new Set(["blue", "purple", "yellow", "orange", "green", "white", "red"]);
+const RUNE_TIER_LIMITS = {
+  anti_clockwise_metamorphosis: 2,
+  beast: 2,
+  blood_rapture: 2,
+  clawmark: 2,
+  clockwise_metamorphosis: 2,
+  communion: 4,
+  deep_sea: 2,
+  eye: 2,
+  formless_oedon: 4,
+  guidance: 2,
+  heir: 2,
+  lake: 2,
+  moon: 2,
+  oedon_writhe: 2,
+};
+const OATH_RUNES = new Set(["beast's_embrace", "corruption", "hunter", "impurity", "milkweed", "radiance"]);
+
+function normalizeGemShape(shape) {
+  const normalized = String(shape ?? "radial").toLowerCase();
+  return GEM_SHAPES.has(normalized) ? normalized : "radial";
+}
+
+function normalizeGemLevel(level) {
+  const parsed = Number(level);
+  if (!Number.isFinite(parsed)) return 7;
+  return Math.min(7, Math.max(1, Math.round(parsed)));
+}
+
+function normalizeRuneName(name) {
+  const normalized = String(name ?? "")
+    .toLowerCase()
+    .trim()
+    .replaceAll(/[^a-z0-9']+/g, "_")
+    .replaceAll(/^_+|_+$/g, "");
+  const withoutPrefix = removeRunePrefix(normalized);
+  return Object.hasOwn(RUNE_TIER_LIMITS, withoutPrefix) ? withoutPrefix : "moon";
+}
+
+function normalizeRuneTier(name, rating) {
+  const maxTier = RUNE_TIER_LIMITS[name] ?? RUNE_TIER_LIMITS.moon;
+  const parsed = Number(rating);
+  const tier = Number.isFinite(parsed) ? Math.round(parsed) : 0;
+  return Math.min(maxTier, Math.max(0, tier));
+}
+
 function getRunePath(name, shape, rating) {
-  const normalized = name.toLowerCase().replaceAll(" ", "_");
+  const normalized = String(name ?? "")
+    .toLowerCase()
+    .trim()
+    .replaceAll(/[^a-z0-9']+/g, "_")
+    .replaceAll(/^_+|_+$/g, "");
 
   if (shape === "Oath") {
-    return `/assets/runes/oath/${normalized}.png`;
-  } else {
-    return `/assets/runes/${removeRunePrefix(normalized)}/${rating}.png`;
+    return `/assets/runes/oath/${OATH_RUNES.has(normalized) ? normalized : "hunter"}.png`;
   }
+
+  const runeName = normalizeRuneName(name);
+  return `/assets/runes/${runeName}/${normalizeRuneTier(runeName, rating)}.png`;
+}
+
+function getRuneFallbackPath(shape) {
+  return shape === "Oath" ? "/assets/runes/oath/hunter.png" : "/assets/runes/moon/0.png";
 }
 
 function removeRunePrefix(name) {
@@ -28,12 +85,12 @@ function removeRunePrefix(name) {
     .trim();
 }
 
-function isCursed(effects) {
+function isCursed(effects = []) {
   return effects.some(
-    ([_, name]) =>
-      name.includes("-") ||
-      name.includes("Increases stamina") ||
-      name.includes("DOWN"),
+    ([, name]) =>
+      String(name ?? "").includes("-") ||
+      String(name ?? "").includes("Increases stamina") ||
+      String(name ?? "").includes("DOWN"),
   );
 }
 
@@ -41,28 +98,32 @@ function getUnique(primaryEffect, shape, source) {
   if (shape === "Droplet") {
     if (primaryEffect === 3143408 && source === 2147633649) {
       return { image: "tear", name: "Tear Blood Gem" };
-    } else if (primaryEffect === 3126204 && source === 2147633648) {
+    }
+    if (primaryEffect === 3126204 && source === 2147633648) {
       return { image: "brooch", name: "Red Blood Gem" };
     }
-  } else if (shape === "Radial") {
-    if (primaryEffect === 3133407 && source === 2147633650) {
-      return { image: "gold", name: "Gold Blood Gem" };
-    }
+  } else if (shape === "Radial" && primaryEffect === 3133407 && source === 2147633650) {
+    return { image: "gold", name: "Gold Blood Gem" };
   }
+  return undefined;
 }
 
-function getGemPath(effects, shape, level, unique) {
+function getGemPath(effects = [], shape, level, unique) {
   if (unique) return `/assets/gems/unique/${unique.image}.png`;
 
-  const color = getGemColor(effects[0][1]);
+  const color = getGemColor(effects[0]?.[1]) ?? "red";
   const cursed = isCursed(effects);
-  return `/assets/gems/${shape.toLowerCase()}/${color}/${
+  return `/assets/gems/${normalizeGemShape(shape)}/${GEM_COLORS.has(color) ? color : "red"}/${
     cursed ? "cursed_" : ""
-  }${level}.png`;
+  }${normalizeGemLevel(level)}.png`;
+}
+
+function getGemFallbackPath() {
+  return "/assets/gems/radial/red/7.png";
 }
 
 function getGemColor(primaryEffect) {
-  const lowerCaseEffect = primaryEffect.toLowerCase();
+  const lowerCaseEffect = String(primaryEffect ?? "").toLowerCase();
 
   switch (true) {
     case /vs beasts|blood/.test(lowerCaseEffect):
@@ -82,8 +143,17 @@ function getGemColor(primaryEffect) {
     case /physical|skl|str|thrust|blunt|atk/.test(lowerCaseEffect):
       return "red";
     default:
-      return null; // or some default value
+      return "red";
   }
 }
 
-export { getType, getGemColor, getRunePath, getGemPath, isCursed, getUnique };
+export {
+  getType,
+  getGemColor,
+  getRunePath,
+  getRuneFallbackPath,
+  getGemPath,
+  getGemFallbackPath,
+  isCursed,
+  getUnique,
+};

@@ -1,11 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { getGemPath, getRunePath, getUnique } from "../utils/upgrades";
+import {
+  getGemFallbackPath,
+  getGemPath,
+  getRuneFallbackPath,
+  getRunePath,
+  getUnique,
+} from "../utils/upgrades";
 import { SaveContext } from "../context/context";
 import { ItemsContext } from "../context/itemsContext";
 import SelectSearch from "./SelectSearch";
 import useDraw from "../utils/useDraw";
 import GemPresetPanel from "./GemPresetPanel";
+
+const NO_EFFECT_ID = 4294967295;
+const EFFECT_SLOT_COUNT = 6;
 
 function EditUpgrade({
   setSelected,
@@ -17,31 +26,37 @@ function EditUpgrade({
   equipped,
   slot,
 }) {
-  const { gemEffects, runeEffects, runePresets, userGemPresets, saveUserGemPreset, deleteUserGemPreset } =
-    useContext(ItemsContext);
+  const {
+    gemEffects,
+    runeEffects,
+    runePresets,
+    userGemPresets,
+    saveUserGemPreset,
+    deleteUserGemPreset,
+  } = useContext(ItemsContext);
   const { drawCanvas } = useDraw();
+  const { setSave } = useContext(SaveContext);
+  const confirmInFlightRef = useRef(false);
 
   const [edited, setEdited] = useState(JSON.parse(JSON.stringify(selected)));
   const {
     shape,
     effects,
     upgrade_type,
-    info: { effect, rating, level, name, note },
+    info: { rating, level, name },
     source,
   } = edited;
-  const { setSave, save } = useContext(SaveContext);
-  const [readyToConfirm, setReadyToConfirm] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
   const [presetName, setPresetName] = useState(() => `${selected.info?.name || "Custom"} Gem`);
   const [presetStatus, setPresetStatus] = useState("");
 
-  useEffect(() => {
-    if (readyToConfirm) {
-      handleConfirm();
-    }
-  }, [readyToConfirm]);
+  async function handleConfirm() {
+    if (confirmInFlightRef.current) return;
 
-  async function handleConfirm(confirmCb) {
+    confirmInFlightRef.current = true;
+    setIsConfirming(true);
+
     try {
       const info = equipped
         ? {
@@ -59,6 +74,7 @@ function EditUpgrade({
       info.isStorage = isStorage;
       info.isGem = upgrade_type === "Gem";
       let updatedSave = null;
+
       if (shape !== selected.shape) {
         updatedSave = await invoke("edit_shape", {
           newShape: shape,
@@ -66,8 +82,8 @@ function EditUpgrade({
         });
       }
 
-      for (const [index, effect] of effects.entries()) {
-        const [id] = effect;
+      for (const [index, currentEffect] of effects.entries()) {
+        const [id] = currentEffect;
         if (Number(id) === Number(selected.effects[index]?.[0])) continue;
 
         updatedSave = await invoke("edit_effect", {
@@ -82,31 +98,46 @@ function EditUpgrade({
       }
 
       const committedUpgrade = JSON.parse(JSON.stringify(edited));
-      setSelected(committedUpgrade);
 
       if (typeof confirmCb === "function") {
+        // Equipped weapon slots own their visual state in the parent. Updating it only here
+        // prevents the editor from briefly rendering a second/stale gem during confirmation.
         confirmCb(committedUpgrade);
-      } else if (selectedRef?.current) {
-        const ctx = selectedRef.current.getContext("2d");
-        selectedRef.current.dataset.item = JSON.stringify(committedUpgrade);
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        await drawCanvas(ctx, committedUpgrade);
+      } else {
+        setSelected(committedUpgrade);
+        if (selectedRef?.current) {
+          const ctx = selectedRef.current.getContext("2d");
+          selectedRef.current.dataset.item = JSON.stringify(committedUpgrade);
+          ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+          await drawCanvas(ctx, committedUpgrade);
+        }
       }
 
       setEditScreen(false);
     } catch (error) {
-      console.log(error);
+      console.error("Unable to confirm the gem or rune edit.", error);
+    } finally {
+      confirmInFlightRef.current = false;
+      setIsConfirming(false);
     }
   }
 
   function applyGemPreset({ preset, effects: presetEffects }) {
-    const primary = presetEffects[0];
-    const primaryEffect = gemEffects.find((entry) => Number(entry.value) === Number(primary[0]));
+    if (upgrade_type !== "Gem" || !Array.isArray(presetEffects)) return;
+
+    const allowedEffects = new Map(gemEffects.map((entry) => [Number(entry.value), entry]));
+    const normalizedEffects = Array.from({ length: EFFECT_SLOT_COUNT }, (_, index) => {
+      const requestedId = Number(presetEffects[index]?.[0]);
+      const entry = allowedEffects.get(requestedId);
+      return entry ? [Number(entry.value), entry.label] : [NO_EFFECT_ID, "No Effect"];
+    });
+    const primary = normalizedEffects[0];
+    const primaryEffect = allowedEffects.get(Number(primary[0]));
 
     setEdited((previous) => ({
       ...previous,
       shape: preset.shape ?? previous.shape,
-      effects: presetEffects,
+      effects: normalizedEffects,
       info: {
         ...previous.info,
         ...preset.info,
@@ -191,15 +222,20 @@ function EditUpgrade({
                     : getRunePath(name, shape, rating)
                 }
                 alt=""
+                onError={(event) => {
+                  const fallback =
+                    upgrade_type === "Gem" ? getGemFallbackPath() : getRuneFallbackPath(shape);
+                  if (!event.currentTarget.src.endsWith(fallback)) {
+                    event.currentTarget.src = fallback;
+                  }
+                }}
               />
             </div>
           </div>
           <div className="upgrade-editor__actions">
             {upgrade_type === "Gem" ? (
               <>
-                <button onClick={() => setForgeOpen(true)}>
-                  Gem Forge
-                </button>
+                <button onClick={() => setForgeOpen(true)}>Gem Forge</button>
                 <div className="upgrade-editor__preset-save">
                   <label>
                     <span>Preset name</span>
@@ -219,17 +255,18 @@ function EditUpgrade({
               </>
             ) : null}
             {!equipped ? (
-              <button onClick={transformUpgrade}>
+              <button onClick={transformUpgrade} disabled={isConfirming}>
                 Convert to {upgrade_type === "Gem" ? "Rune" : "Gem"}
               </button>
             ) : null}
-            <button onClick={() => setEditScreen(false)}>
+            <button onClick={() => setEditScreen(false)} disabled={isConfirming}>
               Cancel
             </button>
-            <button onClick={() => handleConfirm(confirmCb)}>Confirm</button>
+            <button onClick={handleConfirm} disabled={isConfirming}>
+              {isConfirming ? "Confirming…" : "Confirm"}
+            </button>
           </div>
         </div>
-        {/* List and input */}
         <div
           className={`upgrade-editor__effects-panel upgrade-editor__effects-panel--${upgrade_type.toLowerCase()}`}
         >
@@ -261,14 +298,9 @@ function EditUpgrade({
                     { label: "Circle", value: 8 },
                     { label: "Droplet", value: 64 },
                   ]}
-                  onChange={(e) => {
-                    const { label } = e;
-                    setEdited((prevEdited) => {
-                      const newEdited = { ...prevEdited };
-                      newEdited.shape = label;
-
-                      return newEdited;
-                    });
+                  onChange={(event) => {
+                    const { label } = event;
+                    setEdited((previous) => ({ ...previous, shape: label }));
                   }}
                 />
               </>
@@ -286,72 +318,64 @@ function EditUpgrade({
                   { label: "-", value: 1 },
                   { label: "Oath", value: 2 },
                 ]}
-                onChange={(e) => {
-                  const { label } = e;
-                  setEdited((prevEdited) => {
-                    const newEdited = { ...prevEdited };
-                    newEdited.shape = label;
-
-                    return newEdited;
-                  });
+                onChange={(event) => {
+                  const { label } = event;
+                  setEdited((previous) => ({ ...previous, shape: label }));
                 }}
               />
             )}
           </div>
           <div className="effects upgrade-editor__effects">
-            {effects.map(([id, name], i) => (
-              <div className="effect" key={`${id}-${i}`}>
+            {effects.map(([, effectName], index) => (
+              <div className="effect" key={index}>
                 <SelectSearch
-                  defaultValue={"No Effect"}
-                  onChange={(e) => {
-                    const { name, level, rating, value, label, note } = e;
-                    setEdited((prevEdited) => ({
-                      ...prevEdited,
-                      effects: prevEdited.effects.map((currentEffect, effectIndex) =>
-                        effectIndex === i ? [Number(value), label] : currentEffect,
+                  defaultValue="No Effect"
+                  onChange={(event) => {
+                    const { name: effectOwnerName, level: effectLevel, rating: effectRating, value, label, note } = event;
+                    setEdited((previous) => ({
+                      ...previous,
+                      effects: previous.effects.map((currentEffect, effectIndex) =>
+                        effectIndex === index ? [Number(value), label] : currentEffect,
                       ),
                       info:
-                        i === 0
+                        index === 0
                           ? {
-                              ...prevEdited.info,
+                              ...previous.info,
                               effect: label,
                               note,
-                              name,
-                              level,
-                              rating,
+                              name: effectOwnerName,
+                              level: effectLevel,
+                              rating: effectRating,
                             }
-                          : prevEdited.info,
+                          : previous.info,
                     }));
                   }}
-                  selected={name}
+                  selected={effectName}
                   options={upgrade_type === "Gem" ? gemEffects : runeEffects}
                 />
                 <div className="line" aria-hidden="true" />
               </div>
             ))}
-            {upgrade_type === "Rune" && (
+            {upgrade_type === "Rune" ? (
               <SelectSearch
-                defaultValue={"Select a rune preset"}
-                onChange={async (e) => {
-                  const { info, effects, shape } = e;
-                  if (!info?.name) return;
-                  setEdited((prevEdited) => {
-                    const newEdited = { ...prevEdited };
-                    newEdited.info = {
-                      ...newEdited.info,
+                defaultValue="Select a rune preset"
+                onChange={(event) => {
+                  const { info, effects: presetEffects, shape: presetShape } = event;
+                  if (upgrade_type !== "Rune" || !info?.name || !Array.isArray(presetEffects)) return;
+                  setEdited((previous) => ({
+                    ...previous,
+                    info: {
+                      ...previous.info,
                       ...info,
-                    };
-                    newEdited.shape = shape;
-                    newEdited.effects = [...effects];
-
-                    return newEdited;
-                  });
-                  setReadyToConfirm(true);
+                    },
+                    shape: presetShape,
+                    effects: [...presetEffects],
+                  }));
                 }}
-                selected={""}
+                selected=""
                 options={runePresets}
               />
-            )}
+            ) : null}
           </div>
         </div>
       </div>
