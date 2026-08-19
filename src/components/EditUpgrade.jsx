@@ -54,14 +54,15 @@ function EditUpgrade({
           };
 
       info.isStorage = isStorage;
+      info.isGem = upgrade_type === "Gem";
+      let updatedSave = null;
       if (shape !== selected.shape) {
-        await invoke("edit_shape", {
+        updatedSave = await invoke("edit_shape", {
           newShape: shape,
           info,
         });
       }
 
-      let updatedSave = null;
       for (const [index, effect] of effects.entries()) {
         const [id] = effect;
         if (Number(id) === Number(selected.effects[index]?.[0])) continue;
@@ -77,17 +78,16 @@ function EditUpgrade({
         setSave(updatedSave);
       }
 
-      setSelected(edited);
+      const committedUpgrade = JSON.parse(JSON.stringify(edited));
+      setSelected(committedUpgrade);
 
-      const ctx = selectedRef.current.getContext("2d");
-      selectedRef.current.dataset.item = JSON.stringify(edited);
-
-      // setSelected(newJson);
       if (typeof confirmCb === "function") {
-        confirmCb(edited);
-      } else {
+        confirmCb(committedUpgrade);
+      } else if (selectedRef?.current) {
+        const ctx = selectedRef.current.getContext("2d");
+        selectedRef.current.dataset.item = JSON.stringify(committedUpgrade);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        await drawCanvas(ctx, edited);
+        await drawCanvas(ctx, committedUpgrade);
       }
 
       setEditScreen(false);
@@ -138,7 +138,7 @@ function EditUpgrade({
   }
 
   return (
-    <div id="replaceScreen">
+    <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label="Edit gem or rune">
       {forgeOpen && upgrade_type === "Gem" ? (
         <GemPresetPanel
           gemEffects={gemEffects}
@@ -147,6 +147,7 @@ function EditUpgrade({
         />
       ) : null}
       <div
+        className="upgrade-editor__layout"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -155,6 +156,7 @@ function EditUpgrade({
         }}
       >
         <div
+          className="upgrade-editor__preview"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -195,7 +197,7 @@ function EditUpgrade({
               />
             </div>
           </div>
-          <div>
+          <div className="upgrade-editor__actions">
             {upgrade_type === "Gem" ? (
               <button onClick={() => setForgeOpen(true)} style={{ marginRight: "1rem" }}>
                 Gem Forge
@@ -217,6 +219,7 @@ function EditUpgrade({
         </div>
         {/* List and input */}
         <div
+          className="upgrade-editor__effects-panel"
           style={{
             position: "relative",
             marginTop: "20px",
@@ -315,28 +318,29 @@ function EditUpgrade({
               width: "calc(100% - 40px)",
             }}
           >
-            {selected.effects.map(([id, name], i) => (
-              <div className="effect">
+            {effects.map(([id, name], i) => (
+              <div className="effect" key={`${id}-${i}`}>
                 <SelectSearch
                   defaultValue={"No Effect"}
                   onChange={(e) => {
                     const { name, level, rating, value, label, note } = e;
-                    setEdited((prevEdited) => {
-                      const newEdited = { ...prevEdited };
-                      if (i === 0) {
-                        newEdited.info = {
-                          ...newEdited.info,
-                          effect: label,
-                          note,
-                          name,
-                          level,
-                          rating,
-                        };
-                      }
-                      newEdited.effects[i] = [parseInt(value), label];
-
-                      return newEdited;
-                    });
+                    setEdited((prevEdited) => ({
+                      ...prevEdited,
+                      effects: prevEdited.effects.map((currentEffect, effectIndex) =>
+                        effectIndex === i ? [Number(value), label] : currentEffect,
+                      ),
+                      info:
+                        i === 0
+                          ? {
+                              ...prevEdited.info,
+                              effect: label,
+                              note,
+                              name,
+                              level,
+                              rating,
+                            }
+                          : prevEdited.info,
+                    }));
                   }}
                   selected={name}
                   options={upgrade_type === "Gem" ? gemEffects : runeEffects}

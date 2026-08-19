@@ -1480,6 +1480,7 @@ export const ItemsProvider = ({ children }) => {
           rating: gemEffects[x]?.rating,
           level: gemEffects[x]?.level,
           name: gemEffects[x]?.name,
+          note: gemEffects[x]?.note,
           value: x,
         }));
 
@@ -1500,8 +1501,8 @@ export const ItemsProvider = ({ children }) => {
         items: transformedItems,
         armors: transformedArmors,
         all: transformedItems.concat(transformedWeapons, transformedArmors),
-        gemEffects: transformedGemEffects.concat(transformedRuneEffects),
-        runeEffects: transformedRuneEffects.concat(transformedGemEffects),
+        gemEffects: transformedGemEffects,
+        runeEffects: transformedRuneEffects,
       }));
     };
 

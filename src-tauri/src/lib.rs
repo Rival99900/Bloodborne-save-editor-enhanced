@@ -74,19 +74,29 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 }
 
 #[tauri::command]
-fn set_flag(offset: usize, new_value: u8, state_save: tauri::State<MutexSave>) {
+fn set_flag(
+    offset: usize,
+    new_value: u8,
+    state_save: tauri::State<MutexSave>,
+) -> Result<(), String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before applying a flag.".to_string())?;
 
     save.file.set_flag(offset, new_value);
+    Ok(())
 }
 
 #[tauri::command]
-fn apply_mask(offset: usize, mask: u8, state_save: tauri::State<MutexSave>) {
+fn apply_mask(offset: usize, mask: u8, state_save: tauri::State<MutexSave>) -> Result<(), String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before applying a flag.".to_string())?;
 
     save.file.apply_mask(offset, mask);
+    Ok(())
 }
 
 #[tauri::command]
@@ -359,12 +369,17 @@ fn edit_effect(
     let effect_catalog: Value = serde_json::from_str(include_str!("../resources/upgrades.json"))
         .map_err(|_| "Unable to read the embedded effect catalog.".to_string())?;
     let effect_id = new_effect_id.to_string();
-    let is_known_effect = new_effect_id == u32::MAX
-        || effect_catalog["gemEffects"].get(&effect_id).is_some()
-        || effect_catalog["runeEffects"].get(&effect_id).is_some();
+    let is_gem: bool = serde_json::from_value(info["isGem"].clone())
+        .map_err(|_| "The upgrade type is missing from this edit request.".to_string())?;
+    let catalog_name = if is_gem { "gemEffects" } else { "runeEffects" };
+    let is_known_effect =
+        new_effect_id == u32::MAX || effect_catalog[catalog_name].get(&effect_id).is_some();
 
     if !is_known_effect {
-        return Err("This effect identifier is not present in the embedded catalog.".to_string());
+        return Err(format!(
+            "This effect identifier is not valid for a {}.",
+            if is_gem { "gem" } else { "rune" }
+        ));
     }
 
     let upgrade: Option<*mut Upgrade>;

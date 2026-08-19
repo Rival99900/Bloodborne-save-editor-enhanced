@@ -40,7 +40,11 @@ function SelectSearch({
   }, []);
 
   useEffect(() => {
-    if (!search.trim() && !isOpen) {
+    setSearch(selected === defaultValue ? "" : selected ?? "");
+  }, [selected, defaultValue]);
+
+  useEffect(() => {
+    if (!search.trim() && !isOpen && selected !== defaultValue) {
       if (typeof onChange === "function") {
         onChange({
           label: "No Effect",
@@ -50,9 +54,8 @@ function SelectSearch({
           value: "4294967295",
         });
       }
-      setSearch("");
     }
-  }, [search, isOpen]);
+  }, [search, isOpen, selected, defaultValue, onChange]);
 
   const filteredOptions = options.filter((x) =>
     !readOnly ? x.label.toLowerCase().includes(search.toLowerCase()) : true,

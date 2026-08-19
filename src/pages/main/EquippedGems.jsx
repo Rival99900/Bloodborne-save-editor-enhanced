@@ -54,14 +54,13 @@ function EquippedGems() {
           equipped={article}
           slot={selectedGem.index}
           confirmCb={(newGem) => {
-            setArticle((prev) => {
-              const index = prev.slots.findIndex(
-                (x) => x.gem?.id === selectedGem.gem.id
-              );
-              prev.slots[index].gem = newGem;
-              return JSON.parse(JSON.stringify(prev));
-            });
-
+            const slotIndex = selectedGem.index;
+            setArticle((previous) => ({
+              ...previous,
+              slots: previous.slots.map((entry, index) =>
+                index === slotIndex ? { ...entry, gem: newGem } : entry,
+              ),
+            }));
             setSelectedGem(null);
           }}
         />
@@ -101,7 +100,7 @@ function EquippedGems() {
             }}
           ></div>
           {article.slots.map((slot, i) => (
-            <EquippedGem
+              <EquippedGem
               gem={slot?.gem}
               shape={slot.shape}
               setRef={setSelectedRef}

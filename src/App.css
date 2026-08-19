@@ -682,3 +682,213 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Upgrade editor stability */
+.upgrade-editor {
+  position: fixed !important;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  padding: clamp(0.75rem, 2vw, 2rem);
+  background: rgba(0, 0, 0, 0.82) !important;
+}
+
+.upgrade-editor__layout {
+  width: min(100%, 72rem);
+  min-height: min(42rem, calc(100vh - 2rem));
+  height: auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(20rem, 1fr) minmax(20rem, 23.5rem);
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: stretch;
+  padding: clamp(1rem, 3vw, 2.5rem) !important;
+  border: 1px solid rgba(226, 195, 125, 0.38);
+  background: linear-gradient(145deg, rgba(14, 15, 18, 0.98), rgba(4, 5, 7, 0.97));
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.75);
+}
+
+.upgrade-editor__preview {
+  min-width: 0;
+  gap: 1rem;
+}
+
+.upgrade-editor__preview > div:first-child > span {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #f2ead8;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.upgrade-editor__preview > div:first-child > div {
+  width: min(100%, 23.5rem) !important;
+  height: auto !important;
+  aspect-ratio: 1;
+}
+
+.upgrade-editor__preview > div:first-child img {
+  width: 100% !important;
+  height: 100%;
+  object-fit: contain;
+}
+
+.upgrade-editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  padding-top: 0.8rem;
+}
+
+.upgrade-editor__actions button {
+  min-height: 2.5rem;
+  margin-right: 0 !important;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(226, 195, 125, 0.4);
+  background: rgba(14, 14, 16, 0.7);
+  color: #f2ead8;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  line-height: 1;
+}
+
+.upgrade-editor__actions button:last-child {
+  border-color: #d8af61;
+  background: linear-gradient(135deg, rgba(156, 109, 42, 0.75), rgba(215, 172, 89, 0.42));
+}
+
+.upgrade-editor__effects-panel {
+  width: 100% !important;
+  min-height: 28rem;
+  height: auto !important;
+  margin-top: 0 !important;
+  background-size: 100% 100% !important;
+  overflow: hidden;
+}
+
+.upgrade-editor__effects-panel .effects {
+  right: 1rem;
+  left: 1.8rem !important;
+  width: auto !important;
+}
+
+.upgrade-editor__effects-panel .effect {
+  min-height: 2.8rem;
+}
+
+@media (max-width: 760px) {
+  .upgrade-editor { align-items: start; }
+  .upgrade-editor__layout { grid-template-columns: 1fr; }
+  .upgrade-editor__effects-panel { min-height: 25rem; }
+}
+
+/* Gem Forge custom builder */
+.gem-forge__modes {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.9rem 0;
+}
+
+.gem-forge__modes button {
+  border: 1px solid rgba(225, 190, 109, 0.36);
+  border-radius: 0.3rem;
+  padding: 0.48rem 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: #e5ddca;
+  cursor: pointer;
+}
+
+.gem-forge__modes button.is-active {
+  border-color: #e3bc6e;
+  background: rgba(205, 159, 72, 0.22);
+}
+
+.gem-forge__custom {
+  display: grid;
+  gap: 1rem;
+  max-width: 68rem;
+  padding: 1rem;
+  border: 1px solid rgba(225, 190, 109, 0.24);
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.gem-forge__custom h3 {
+  margin-top: 0.35rem;
+  color: #f1e7d0;
+  font-size: 1.05rem;
+}
+
+.gem-forge__custom > div > p {
+  margin-top: 0.4rem;
+  color: #beb8ac;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.gem-forge__custom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.gem-forge__custom-grid label {
+  display: grid;
+  gap: 0.32rem;
+  min-width: 0;
+  color: #cfbd90;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.gem-forge__custom-grid input {
+  min-width: 0;
+  width: 100%;
+  border: 1px solid rgba(235, 221, 188, 0.18);
+  border-radius: 0.25rem;
+  padding: 0.48rem 0.58rem;
+  background: rgba(0, 0, 0, 0.52);
+  color: #eee4d1;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem !important;
+}
+
+.gem-forge__custom-preview {
+  padding: 0.75rem;
+  border-left: 2px solid #c59b54;
+  background: rgba(198, 156, 75, 0.08);
+}
+
+.gem-forge__custom-preview > span {
+  color: #e0bd72;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gem-forge__custom-preview p {
+  margin-top: 0.38rem;
+  color: #e2ddcf;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.gem-forge__apply-custom {
+  justify-self: start;
+  border: 1px solid rgba(225, 190, 109, 0.58);
+  border-radius: 0.3rem;
+  padding: 0.55rem 0.85rem;
+  background: rgba(181, 133, 46, 0.24);
+  color: #f0e6cf;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .gem-forge__custom-grid { grid-template-columns: 1fr; }
+}

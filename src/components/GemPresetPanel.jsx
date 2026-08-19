@@ -1,27 +1,29 @@
 import { useMemo, useState } from "react";
+import SelectSearch from "./SelectSearch";
 
 const NO_EFFECT_ID = 4294967295;
+const EFFECT_SLOTS = 6;
 
 const GEM_PRESETS = [
   {
     id: "apex-physical",
     category: "Attack",
     name: "Apex Physical",
-    description: "Physical damage, full-health pressure and weapon durability.",
-    effectIds: [165620, 151620, 146220],
+    description: "Physical damage, full-health pressure and durability support.",
+    effectIds: [165620, 151620, 146620],
   },
   {
     id: "apex-nourishing",
     category: "Attack",
     name: "Apex Nourishing",
-    description: "All damage, full-health pressure and regeneration.",
+    description: "All-damage amplification with full-health pressure and recovery.",
     effectIds: [127620, 151620, 143620],
   },
   {
     id: "bloodtinge-hunter",
     category: "Attack",
     name: "Bloodtinge Hunter",
-    description: "High Bloodtinge damage with all-damage support.",
+    description: "High Bloodtinge damage with all-damage and recovery support.",
     effectIds: [122620, 127620, 143620],
   },
   {
@@ -29,27 +31,34 @@ const GEM_PRESETS = [
     category: "Attack",
     name: "Blunt Breaker",
     description: "High blunt damage with all-damage and durability support.",
-    effectIds: [120620, 127620, 146220],
+    effectIds: [120620, 127620, 146620],
   },
   {
     id: "thrust-specialist",
     category: "Attack",
     name: "Thrust Specialist",
-    description: "High thrust damage with all-damage support.",
-    effectIds: [121620, 127620, 146220],
+    description: "High thrust damage with all-damage and durability support.",
+    effectIds: [121620, 127620, 146620],
+  },
+  {
+    id: "all-damage-vanguard",
+    category: "Attack",
+    name: "Vanguard",
+    description: "All-damage amplification with physical pressure and a high recovery bonus.",
+    effectIds: [127620, 165620, 156620],
   },
   {
     id: "arcane-surge",
     category: "Elemental",
     name: "Arcane Surge",
-    description: "Arcane damage with regeneration and durability support.",
-    effectIds: [123620, 143620, 146220],
+    description: "Arcane damage with recovery and durability support.",
+    effectIds: [123620, 143620, 146620],
   },
   {
     id: "flame-surge",
     category: "Elemental",
     name: "Flame Surge",
-    description: "Fire damage with all-damage and regeneration support.",
+    description: "Fire damage with all-damage and recovery support.",
     effectIds: [124620, 127620, 143620],
   },
   {
@@ -57,47 +66,113 @@ const GEM_PRESETS = [
     category: "Elemental",
     name: "Bolt Surge",
     description: "Bolt damage with all-damage and durability support.",
-    effectIds: [125620, 127620, 146220],
+    effectIds: [125620, 127620, 146620],
+  },
+  {
+    id: "elemental-ascendant",
+    category: "Elemental",
+    name: "Elemental Ascendant",
+    description: "Arcane, fire and bolt effects in one deliberately experimental loadout.",
+    effectIds: [123620, 124620, 125620],
   },
   {
     id: "sustained-hunt",
-    category: "Utility",
+    category: "Recovery",
     name: "Sustained Hunt",
-    description: "Health recovery, durability and all-damage support.",
-    effectIds: [143620, 146220, 127620],
+    description: "Recovery, durability and all-damage support for long exploration sessions.",
+    effectIds: [143620, 146620, 127620],
+  },
+  {
+    id: "abyssal-vitality",
+    category: "Recovery",
+    name: "Abyssal Vitality +75",
+    description: "Uses the embedded +75 continuous HP recovery effect with durability and damage support.",
+    effectIds: [156620, 146620, 127620],
+  },
+  {
+    id: "forged-endurance",
+    category: "Recovery",
+    name: "Forged Endurance",
+    description: "The strongest known bundled durability bonus paired with high recovery and physical damage.",
+    effectIds: [146620, 156620, 165620],
   },
   {
     id: "last-stand",
     category: "Experimental",
     name: "Last Stand",
-    description: "High near-death and full-health multipliers. Offline only.",
+    description: "High near-death and full-health multipliers. Keep this loadout offline.",
     effectIds: [152620, 151620, 143620],
+  },
+  {
+    id: "glass-cannon",
+    category: "Experimental",
+    name: "Glass Cannon",
+    description: "Stacks physical, all-damage and near-death multipliers for testing only.",
+    effectIds: [165620, 127620, 152620],
+  },
+  {
+    id: "endless-hunt",
+    category: "Experimental",
+    name: "Endless Hunt",
+    description: "Maximum known recovery and durability effects with a full-health damage bonus.",
+    effectIds: [156620, 146620, 151620],
   },
 ];
 
 function GemPresetPanel({ gemEffects, onApply, onClose }) {
   const [category, setCategory] = useState("All");
+  const [mode, setMode] = useState("presets");
+  const [customEffects, setCustomEffects] = useState(() =>
+    Array(EFFECT_SLOTS).fill(NO_EFFECT_ID),
+  );
+
   const effectById = useMemo(
     () => new Map(gemEffects.map((effect) => [Number(effect.value), effect])),
     [gemEffects],
   );
-  const categories = ["All", "Attack", "Elemental", "Utility", "Experimental"];
+  const categories = ["All", "Attack", "Elemental", "Recovery", "Experimental"];
   const visiblePresets = GEM_PRESETS.filter(
     (preset) => category === "All" || preset.category === category,
   );
 
+  function resolveEffects(effectIds) {
+    return [...effectIds, ...Array(EFFECT_SLOTS).fill(NO_EFFECT_ID)]
+      .slice(0, EFFECT_SLOTS)
+      .map((id) => [Number(id), effectById.get(Number(id))?.label ?? "No Effect"]);
+  }
+
   function formatEffects(effectIds) {
-    return effectIds
-      .map((id) => effectById.get(id)?.label ?? `Validated effect ${id}`)
+    return resolveEffects(effectIds)
+      .filter(([id]) => id !== NO_EFFECT_ID)
+      .map(([, label]) => label)
       .join(" · ");
   }
 
   function applyPreset(preset) {
-    const effects = [...preset.effectIds, NO_EFFECT_ID, NO_EFFECT_ID, NO_EFFECT_ID]
-      .slice(0, 6)
-      .map((id) => [id, effectById.get(id)?.label ?? "No Effect"]);
+    onApply({ preset, effects: resolveEffects(preset.effectIds) });
+  }
 
-    onApply({ preset, effects });
+  function changeCustomEffect(index, option) {
+    setCustomEffects((previous) =>
+      previous.map((effectId, effectIndex) =>
+        effectIndex === index ? Number(option.value) : effectId,
+      ),
+    );
+  }
+
+  function applyCustom() {
+    const activeCount = customEffects.filter((id) => id !== NO_EFFECT_ID).length;
+    if (!activeCount) return;
+
+    onApply({
+      preset: {
+        id: "custom-forge",
+        category: "Custom",
+        name: "Custom Forge Gem",
+        description: `Custom set with ${activeCount} selected effect${activeCount > 1 ? "s" : ""}.`,
+      },
+      effects: resolveEffects(customEffects),
+    });
   }
 
   return (
@@ -105,7 +180,7 @@ function GemPresetPanel({ gemEffects, onApply, onClose }) {
       <div className="gem-forge__header">
         <div>
           <p className="gem-forge__eyebrow">Gem Forge</p>
-          <h2>Validated effect presets</h2>
+          <h2>Validated effects and custom sets</h2>
         </div>
         <button className="gem-forge__close" onClick={onClose} aria-label="Close Gem Forge">
           Close
@@ -113,33 +188,82 @@ function GemPresetPanel({ gemEffects, onApply, onClose }) {
       </div>
 
       <p className="gem-forge__notice">
-        Every preset uses effect identifiers already bundled with the editor. Experimental presets
-        are deliberately powerful; use them offline and retain the automatic backup.
+        Loading a preset only updates the visible draft. Select <strong>Confirm</strong> in the
+        editor to write it to the save. Every effect below comes from the editor’s embedded gem
+        catalogue. The strongest known durability effect is applied where relevant; no fictional
+        “infinite durability” identifier is written.
       </p>
 
-      <div className="gem-forge__filters" aria-label="Preset categories">
-        {categories.map((entry) => (
-          <button
-            key={entry}
-            className={entry === category ? "is-active" : ""}
-            onClick={() => setCategory(entry)}
-          >
-            {entry}
-          </button>
-        ))}
+      <div className="gem-forge__modes" aria-label="Gem Forge mode">
+        <button className={mode === "presets" ? "is-active" : ""} onClick={() => setMode("presets")}>
+          Presets
+        </button>
+        <button className={mode === "custom" ? "is-active" : ""} onClick={() => setMode("custom")}>
+          Custom set
+        </button>
       </div>
 
-      <div className="gem-forge__grid">
-        {visiblePresets.map((preset) => (
-          <article className="gem-forge__card" key={preset.id}>
-            <span>{preset.category}</span>
-            <h3>{preset.name}</h3>
-            <p>{preset.description}</p>
-            <small>{formatEffects(preset.effectIds)}</small>
-            <button onClick={() => applyPreset(preset)}>Load preset</button>
-          </article>
-        ))}
-      </div>
+      {mode === "presets" ? (
+        <>
+          <div className="gem-forge__filters" aria-label="Preset categories">
+            {categories.map((entry) => (
+              <button
+                key={entry}
+                className={entry === category ? "is-active" : ""}
+                onClick={() => setCategory(entry)}
+              >
+                {entry}
+              </button>
+            ))}
+          </div>
+
+          <div className="gem-forge__grid">
+            {visiblePresets.map((preset) => (
+              <article className="gem-forge__card" key={preset.id}>
+                <span>{preset.category}</span>
+                <h3>{preset.name}</h3>
+                <p>{preset.description}</p>
+                <small>{formatEffects(preset.effectIds)}</small>
+                <button onClick={() => applyPreset(preset)}>Load into draft</button>
+              </article>
+            ))}
+          </div>
+        </>
+      ) : (
+        <section className="gem-forge__custom" aria-label="Custom gem effect set">
+          <div>
+            <span className="gem-forge__eyebrow">Custom set</span>
+            <h3>Build a six-effect gem</h3>
+            <p>
+              Choose up to six known gem effects. Empty slots stay as <em>No Effect</em>. The
+              editor validates every selected ID again when you confirm.
+            </p>
+          </div>
+
+          <div className="gem-forge__custom-grid">
+            {customEffects.map((effectId, index) => (
+              <label key={index}>
+                <span>Effect {index + 1}</span>
+                <SelectSearch
+                  selected={effectById.get(effectId)?.label ?? "No Effect"}
+                  defaultValue="No Effect"
+                  options={gemEffects}
+                  onChange={(option) => changeCustomEffect(index, option)}
+                />
+              </label>
+            ))}
+          </div>
+
+          <div className="gem-forge__custom-preview">
+            <span>Draft preview</span>
+            <p>{formatEffects(customEffects) || "Choose at least one effect to load a custom draft."}</p>
+          </div>
+
+          <button className="gem-forge__apply-custom" onClick={applyCustom}>
+            Load custom set into draft
+          </button>
+        </section>
+      )}
     </div>
   );
 }
