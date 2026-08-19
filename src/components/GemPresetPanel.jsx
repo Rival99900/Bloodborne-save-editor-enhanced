@@ -4,6 +4,13 @@ import SelectSearch from "./SelectSearch";
 const NO_EFFECT_ID = 4294967295;
 const EFFECT_SLOTS = 6;
 
+function normalizeEffectLabel(label) {
+  return String(label ?? "")
+    .trim()
+    .toLowerCase()
+    .replaceAll(/\s+/g, " ");
+}
+
 const GEM_PRESETS = [
   {
     id: "apex-physical",
@@ -130,15 +137,29 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
     () => new Map(gemEffects.map((effect) => [Number(effect.value), effect])),
     [gemEffects],
   );
+  const effectByLabel = useMemo(
+    () => new Map(gemEffects.map((effect) => [normalizeEffectLabel(effect.label), effect])),
+    [gemEffects],
+  );
   const categories = ["All", "Attack", "Elemental", "Recovery", "Experimental"];
   const visiblePresets = GEM_PRESETS.filter(
     (preset) => category === "All" || preset.category === category,
   );
 
-  function resolveEffects(effectIds) {
-    return [...effectIds, ...Array(EFFECT_SLOTS).fill(NO_EFFECT_ID)]
+  function resolveEffects(effectEntries) {
+    return [...effectEntries, ...Array(EFFECT_SLOTS).fill(NO_EFFECT_ID)]
       .slice(0, EFFECT_SLOTS)
-      .map((id) => [Number(id), effectById.get(Number(id))?.label ?? "No Effect"]);
+      .map((entry) => {
+        const [storedId, storedLabel] = Array.isArray(entry) ? entry : [entry, ""];
+        const resolved =
+          effectById.get(Number(storedId)) ?? effectByLabel.get(normalizeEffectLabel(storedLabel));
+
+        // A personal preset may come from a previous editor version. Its old ID is
+        // never written back unless it is still in the embedded gem catalogue.
+        return resolved
+          ? [Number(resolved.value), resolved.label]
+          : [NO_EFFECT_ID, "No Effect"];
+      });
   }
 
   function formatEffects(effectIds) {
@@ -159,7 +180,7 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
         category: "Personal",
         description: "Personal Gem Forge preset stored on this device.",
       },
-      effects: resolveEffects(preset.effects.map(([id]) => id)),
+      effects: resolveEffects(preset.effects),
     });
   }
 
