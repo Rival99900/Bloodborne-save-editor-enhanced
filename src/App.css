@@ -1,0 +1,69 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+@font-face {
+  font-family: "Reim";
+  src: url("/fonts/A-OTF-ReimPr6-Medium.otf");
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-image: url("/assets/bg.png");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  height: 100%;
+  font-family: "Reim";
+  font-size: clamp(16px, calc(16px + 1vw), 30px);
+  color: #dbd9d5;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+.nav {
+  background-color: #000000a1;
+  padding: 1.5rem;
+  width: 100%;
+  display: flex;
+  color: #9d9d9d;
+  justify-content: space-between;
+}
+
+main {
+  position: relative;
+  display: grid;
+  height: 100%;
+  overflow: hidden;
+}
+
+.inventory-btn {
+  background-size: 100% 100% !important;
+  width: 200px;
+  &:not(:first-of-type) {
+    margin-top: 10px;
+  }
+}
+
+#sideBar {
+  padding-top: 3rem;
+  text-align: center;
+  background-color: #000000a2;
+  height: 100%;
+  ul {
+    list-style: none;
+    li a {
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+  }
+}
