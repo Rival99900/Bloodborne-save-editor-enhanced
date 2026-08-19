@@ -10,7 +10,7 @@ import { ItemsContext } from "../context/itemsContext";
  * @param {Function} props.onChange
  * @returns {JSX.Element}
  */
-function SearchAllitems({ type, onChange, title }) {
+function SearchAllitems({ type, onChange, title, variant = "add" }) {
   const [search, setSearch] = useState("");
   const [replacements, setReplacements] = useState([]);
   const [back, setBack] = useState([]);
@@ -59,7 +59,10 @@ function SearchAllitems({ type, onChange, title }) {
   }
 
   return (
-    <section className="catalog-picker" aria-label={title || `Select a ${type}`}>
+    <section
+      className={`catalog-picker catalog-picker--${variant}`}
+      aria-label={title || `Select a ${type}`}
+    >
       {title ? <p className="catalog-picker__title">{title}</p> : null}
       <label className="catalog-picker__search">
         <span>Search catalogue</span>

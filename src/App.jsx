@@ -43,6 +43,7 @@ function App() {
   const [isDirty, setIsDirty] = useState(false);
   const [exitRequested, setExitRequested] = useState(false);
   const dirtyRef = useRef(false);
+  const forceCloseRef = useRef(false);
 
   const setDirtyState = useCallback((nextDirty) => {
     dirtyRef.current = nextDirty;
@@ -158,11 +159,18 @@ function App() {
   }, [save, saveName, setDirtyState]);
 
   const closeApplication = useCallback(async () => {
+    forceCloseRef.current = true;
+    setExitRequested(false);
+
     try {
-      await getCurrentWindow().close();
-    } catch (error) {
-      console.error(error);
-      window.close();
+      await getCurrentWindow().destroy();
+    } catch (destroyError) {
+      try {
+        await getCurrentWindow().close();
+      } catch (closeError) {
+        console.error("Unable to close the application.", destroyError, closeError);
+        window.close();
+      }
     }
   }, []);
 
@@ -221,7 +229,7 @@ function App() {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      if (!dirtyRef.current) return;
+      if (forceCloseRef.current || !dirtyRef.current) return;
       event.preventDefault();
       event.returnValue = "";
     };
@@ -236,7 +244,7 @@ function App() {
 
     getCurrentWindow()
       .onCloseRequested((event) => {
-        if (!dirtyRef.current) return;
+        if (forceCloseRef.current || !dirtyRef.current) return;
         event.preventDefault();
         setExitRequested(true);
       })
