@@ -252,8 +252,17 @@ function App() {
 
     getCurrentWindow()
       .onCloseRequested((event) => {
-        if (forceCloseRef.current || !dirtyRef.current) return;
+        if (forceCloseRef.current) return;
+
+        // Always own the native close request. Without an open save there is no
+        // dialog to display, so immediately use the explicitly authorized Tauri
+        // exit path instead of relying on an implicit platform close.
         event.preventDefault();
+        if (!dirtyRef.current) {
+          void closeApplication();
+          return;
+        }
+
         setExitRequested(true);
       })
       .then((listener) => {
@@ -266,7 +275,7 @@ function App() {
       disposed = true;
       unlisten?.();
     };
-  }, []);
+  }, [closeApplication]);
 
   return (
     <div className="App">

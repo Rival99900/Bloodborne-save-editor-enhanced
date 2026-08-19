@@ -14,6 +14,11 @@ function SelectSearch({
   const [search, setSearch] = useState(
     selected === defaultValue ? "" : selected,
   );
+  // Tracks whether the current `search` value came from the user typing in the
+  // box, as opposed to `selected` changing programmatically (e.g. a Gem Forge
+  // preset being applied). Only a genuine user-driven empty search should be
+  // treated as "clear this slot" below.
+  const userEditedRef = useRef(false);
 
   // 1. Initialize Floating UI
   const { refs, floatingStyles } = useFloating({
@@ -40,11 +45,19 @@ function SelectSearch({
   }, []);
 
   useEffect(() => {
+    // A prop-driven update (preset applied, gem reloaded, etc.) is not a user
+    // edit, so it must not arm the auto-reset-to-"No Effect" logic below.
+    userEditedRef.current = false;
     setSearch(selected === defaultValue ? "" : selected ?? "");
   }, [selected, defaultValue]);
 
   useEffect(() => {
-    if (!search.trim() && !isOpen && selected !== defaultValue) {
+    if (
+      userEditedRef.current &&
+      !search.trim() &&
+      !isOpen &&
+      selected !== defaultValue
+    ) {
       if (typeof onChange === "function") {
         onChange({
           label: "No Effect",
@@ -54,6 +67,7 @@ function SelectSearch({
           value: "4294967295",
         });
       }
+      userEditedRef.current = false;
     }
   }, [search, isOpen, selected, defaultValue, onChange]);
 
@@ -96,7 +110,10 @@ function SelectSearch({
           readOnly={readOnly}
           placeholder={defaultValue}
           onFocus={() => setIsOpen(true)}
-          onChange={({ target: { value } }) => setSearch(value)}
+          onChange={({ target: { value } }) => {
+            userEditedRef.current = true;
+            setSearch(value);
+          }}
           style={{
             width: "100%",
             background: "none",

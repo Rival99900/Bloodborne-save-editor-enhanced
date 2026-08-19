@@ -278,8 +278,8 @@ function EditUpgrade({
                 <span
                   style={{
                     position: "absolute",
-                    right: 15,
-                    top: 20,
+                    right: "0.9375rem",
+                    top: "1.25rem",
                   }}
                 >
                   {rating}
@@ -287,8 +287,8 @@ function EditUpgrade({
                 <SelectSearch
                   style={{
                     position: "absolute",
-                    right: 15,
-                    top: 60,
+                    right: "0.9375rem",
+                    top: "3.75rem",
                     textAlign: "right",
                   }}
                   selected={shape}
@@ -310,8 +310,8 @@ function EditUpgrade({
               <SelectSearch
                 style={{
                   position: "absolute",
-                  right: 15,
-                  top: 20,
+                  right: "0.9375rem",
+                  top: "1.25rem",
                   textAlign: "right",
                 }}
                 selected={shape}
