@@ -187,7 +187,9 @@ function EditUpgrade({
       });
       setSave(result.save);
       setSelected(result.upgrade);
-      setEdited(result.upgrade);
+      // Conversion already writes a complete, valid six-slot upgrade in Rust. Closing
+      // here prevents a second Confirm from reapplying the stale pre-conversion draft.
+      setEditScreen(false);
     } catch (error) {
       console.error(error);
     }
