@@ -1,11 +1,11 @@
 {
   "platforms": {
     "windows-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.1.2/Bloodborne_Save_Editor_Enhanced_0.1.2_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelFxSGNLT2tIQ1l4K1lNbFhkdW9lN1hvY1BkRHdvVzMybjREY2VGMk55T290SGp0MkRnY2VCWFA5RFBFdDdVUlprY0hUVmFMb0twakNQREdDaGZ1andNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3MTYzMDkxCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjEuMl94NjQtc2V0dXAuZXhlCi9sQnZzMmM5Tnh0WUQvR1RTTWkzaGRvYVdEcnptUlVxTE4zTGl0aG92WVNhdDRkalJTcWIxNHAyVTRhNGVFOGtzRU5ZZDh6MDJnUXY1V0RENk9XZ0JnPT0K"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelFlMXoxMjc1ZFNFWWZoNCtVRVgrd3dzOUNmZjlnMGE1UzJ0cEcrSHdwazdtczJ3RmJtalEwV0ZPM2JDNUs0SksycWRDQlFsQTVyNEVtajJ6ZTEvbWdJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3MTY3MDIyCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjEuM194NjQtc2V0dXAuZXhlCitvVXpwZnlUVHExODJWYVh3bXlla2MzTmt2eVV3Q29ITHlGRWF6SWVBTm4vV3BLV001V1dvQ1d3ZEtuMWxTbDFsNG0wMkltVkNUUEFGZHhtbFZYTkRnPT0K",
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.1.3/Bloodborne_Save_Editor_Enhanced_0.1.3_x64-setup.exe"
     }
   },
-  "version": "0.1.2",
-  "pub_date": "2026-08-19T18:11:35.3959230Z",
-  "notes": "See the GitHub release for improvements and safe-save guidance."
+  "version": "0.1.3",
+  "notes": "See the GitHub release for improvements and safe-save guidance.",
+  "pub_date": "2026-08-19T19:17:07.5038878Z"
 }
