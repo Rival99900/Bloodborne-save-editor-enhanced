@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { relaunch } from "@tauri-apps/plugin-process";
 import { check } from "@tauri-apps/plugin-updater";
 
 export function UpdateModal() {
@@ -13,17 +14,19 @@ export function UpdateModal() {
 
   async function checkForUpdates() {
     try {
-      const res = await check();
-      if (res) {
-        setUpdate(res);
-      }
-    } catch (err) {}
+      const availableUpdate = await check();
+      if (availableUpdate) setUpdate(availableUpdate);
+    } catch (error) {
+      // A missing network connection or an unavailable feed must never block the editor.
+      console.info("Update check unavailable.", error);
+    }
   }
 
   async function handleInstall() {
     if (!update) return;
     setDownloading(true);
-    setStatusText("Starting download...");
+    setProgress(0);
+    setStatusText("Starting secure download…");
 
     let downloadedBytes = 0;
     let totalBytes = 0;
@@ -33,31 +36,32 @@ export function UpdateModal() {
         switch (event.event) {
           case "Started":
             totalBytes = event.data.contentLength || 0;
-            setStatusText("Downloading update...");
+            setStatusText("Downloading signed update…");
             break;
-
           case "Progress":
             downloadedBytes += event.data.chunkLength;
             if (totalBytes > 0) {
-              const percentage = Math.round(
-                (downloadedBytes / totalBytes) * 100,
-              );
+              const percentage = Math.min(100, Math.round((downloadedBytes / totalBytes) * 100));
               setProgress(percentage);
               setStatusText(`Downloading: ${percentage}%`);
             } else {
-              setStatusText(`${(downloadedBytes / 1024 / 1024).toFixed(1)} MB`);
+              setStatusText(`${(downloadedBytes / 1024 / 1024).toFixed(1)} MB downloaded`);
             }
             break;
-
           case "Finished":
-            setStatusText("Installing update...");
+            setProgress(100);
+            setStatusText("Installing update…");
+            break;
+          default:
             break;
         }
       });
 
-      setStatusText("Restarting...");
-    } catch (err) {
-      setStatusText("There was an error updating");
+      setStatusText("Update installed. Restarting editor…");
+      await relaunch();
+    } catch (error) {
+      console.error("Unable to install update.", error);
+      setStatusText("The update could not be installed. Your current version is unchanged.");
       setDownloading(false);
     }
   }
@@ -65,19 +69,17 @@ export function UpdateModal() {
   if (!update) return null;
 
   return (
-    <div style={styles.overlay}>
+    <div style={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="update-title">
       <div style={styles.card}>
-        <h3 style={styles.title}>Update available</h3>
+        <h3 id="update-title" style={styles.title}>Update available</h3>
         <p style={styles.version}>Version {update.version}</p>
 
         {update.body && <p style={styles.notes}>{update.body}</p>}
 
         {downloading ? (
-          <div style={styles.progressContainer}>
+          <div style={styles.progressContainer} aria-live="polite">
             <div style={styles.progressBarTrack}>
-              <div
-                style={{ ...styles.progressBarFill, width: `${progress}%` }}
-              />
+              <div style={{ ...styles.progressBarFill, width: `${progress}%` }} />
             </div>
             <span style={styles.statusText}>{statusText}</span>
           </div>
@@ -87,7 +89,7 @@ export function UpdateModal() {
               Not now
             </button>
             <button style={styles.btnPrimary} onClick={handleInstall}>
-              Update
+              Update and restart
             </button>
           </div>
         )}
@@ -115,7 +117,7 @@ const styles = {
     backgroundColor: "#121212",
     border: "1px solid #333",
     padding: "24px 32px",
-    width: "380px",
+    width: "min(380px, calc(100vw - 32px))",
     boxShadow: "0 8px 32px rgba(0,0,0,0.9)",
     color: "#e0e0e0",
     textAlign: "center",

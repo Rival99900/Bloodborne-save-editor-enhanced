@@ -172,6 +172,7 @@ impl SaveData {
         Ok(transformed)
     }
 
+    #[cfg_attr(not(test), allow(dead_code))]
     pub fn move_upgrade(
         &mut self,
         upgrade_type: UpgradeType,

@@ -1,8 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::file::FileData;
-use std::fs::File;
-use std::io::{self, BufReader};
+use std::io;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Stat {
@@ -14,6 +13,7 @@ pub struct Stat {
 }
 
 impl Stat {
+    #[cfg_attr(not(test), allow(dead_code))]
     pub fn edit(&mut self, value: u32, file: &mut FileData) {
         //Updates the stat value and saves it in a FileData instance
         self.value = value;

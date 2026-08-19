@@ -3,6 +3,58 @@ import { invoke } from "@tauri-apps/api/core";
 
 export const ItemsContext = createContext();
 
+const USER_GEM_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-gem-presets.v1";
+const NO_EFFECT_ID = 4294967295;
+const USER_GEM_PRESET_LIMIT = 30;
+
+function normalizeUserGemPreset(preset = {}) {
+  const requestedName = String(preset.name ?? preset.info?.name ?? "Custom Forge Gem").trim();
+  const effects = Array.isArray(preset.effects)
+    ? preset.effects.slice(0, 6).map(([id, label]) => [
+        Number.isFinite(Number(id)) ? Number(id) : NO_EFFECT_ID,
+        typeof label === "string" && label.trim() ? label : "No Effect",
+      ])
+    : [];
+
+  while (effects.length < 6) effects.push([NO_EFFECT_ID, "No Effect"]);
+
+  return {
+    id:
+      typeof preset.id === "string" && preset.id.trim()
+        ? preset.id
+        : globalThis.crypto?.randomUUID?.() ?? `gem-preset-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    name: (requestedName || "Custom Forge Gem").slice(0, 60),
+    shape: typeof preset.shape === "string" && preset.shape ? preset.shape : "Radial",
+    effects,
+    info: {
+      name: String(preset.info?.name ?? requestedName ?? "Custom Forge Gem").slice(0, 80),
+      effect: String(preset.info?.effect ?? effects[0][1] ?? "No Effect").slice(0, 140),
+      rating: Number.isFinite(Number(preset.info?.rating)) ? Number(preset.info.rating) : 0,
+      level: Number.isFinite(Number(preset.info?.level)) ? Number(preset.info.level) : 0,
+      note: String(preset.info?.note ?? "Personal Gem Forge preset.").slice(0, 240),
+    },
+    createdAt: typeof preset.createdAt === "string" ? preset.createdAt : new Date().toISOString(),
+  };
+}
+
+function loadUserGemPresets() {
+  try {
+    const saved = globalThis.localStorage?.getItem(USER_GEM_PRESETS_STORAGE_KEY);
+    const parsed = saved ? JSON.parse(saved) : [];
+    return Array.isArray(parsed) ? parsed.map(normalizeUserGemPreset).slice(0, USER_GEM_PRESET_LIMIT) : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistUserGemPresets(presets) {
+  try {
+    globalThis.localStorage?.setItem(USER_GEM_PRESETS_STORAGE_KEY, JSON.stringify(presets));
+  } catch (error) {
+    console.warn("Unable to persist personal gem presets.", error);
+  }
+}
+
 export const ItemsProvider = ({ children }) => {
   const [items, setItems] = useState({
     weapons: [],
@@ -1402,6 +1454,29 @@ export const ItemsProvider = ({ children }) => {
     ],
   });
 
+  const [userGemPresets, setUserGemPresets] = useState(loadUserGemPresets);
+
+  function saveUserGemPreset(preset) {
+    const normalized = normalizeUserGemPreset(preset);
+    setUserGemPresets((current) => {
+      const next = [normalized, ...current.filter((entry) => entry.id !== normalized.id)].slice(
+        0,
+        USER_GEM_PRESET_LIMIT,
+      );
+      persistUserGemPresets(next);
+      return next;
+    });
+    return normalized;
+  }
+
+  function deleteUserGemPreset(id) {
+    setUserGemPresets((current) => {
+      const next = current.filter((entry) => entry.id !== id);
+      persistUserGemPresets(next);
+      return next;
+    });
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const weapons = await invoke("return_weapons");
@@ -1510,6 +1585,15 @@ export const ItemsProvider = ({ children }) => {
   }, []);
 
   return (
-    <ItemsContext.Provider value={items}>{children}</ItemsContext.Provider>
+    <ItemsContext.Provider
+      value={{
+        ...items,
+        userGemPresets,
+        saveUserGemPreset,
+        deleteUserGemPreset,
+      }}
+    >
+      {children}
+    </ItemsContext.Provider>
   );
 };

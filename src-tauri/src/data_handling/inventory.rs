@@ -623,8 +623,8 @@ impl Inventory {
         file_data: &mut FileData,
         article_type: ArticleType,
         article_index: usize,
-        slot_index: usize,
-        is_storage: bool,
+        _slot_index: usize,
+        _is_storage: bool,
         level: u8,
     ) -> Result<Article, Error> {
         if let Some(articles_of_type) = self.articles.get_mut(&article_type) {
@@ -748,7 +748,7 @@ mod tests {
         enums::SlotShape,
         slots::parse_equipped_gems,
         upgrades::parse_upgrades,
-        utils::test_utils::{build_file_data, build_save_data, check_bytes},
+        utils::test_utils::{build_save_data, check_bytes},
     };
 
     #[test]

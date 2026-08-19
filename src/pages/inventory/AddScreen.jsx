@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { SaveContext } from "../../context/context";
 import SearchAllitems from "../../components/SearchAllitems";
@@ -15,6 +15,19 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
   const [quantity, setQuantity] = useState(1);
   const { setSave } = useContext(SaveContext);
 
+  function dismiss() {
+    setAddScreen(false);
+  }
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === "Escape") dismiss();
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   async function handleConfirm() {
     try {
       if (!selected) return;
@@ -26,27 +39,36 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
       });
 
       setSave(editedSave);
-      setAddScreen(false);
+      dismiss();
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div id="replaceScreen" role="dialog" aria-modal="true" aria-label="Add catalogued item">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
-          alignItems: "center",
-          gap: "1rem",
-          padding: "1.5rem 3rem",
-          height: "100%",
-        }}
-      >
-        <div style={{ display: "flex", gap: "1rem", alignItems: "end", width: "534px" }}>
-          <label style={{ display: "grid", gap: "0.35rem", flex: 1 }}>
+    <div
+      id="replaceScreen"
+      className="inventory-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Add catalogued item"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) dismiss();
+      }}
+    >
+      <section className="inventory-dialog__card inventory-dialog__card--add">
+        <button className="inventory-dialog__close" onClick={dismiss} aria-label="Close Add item">
+          ×
+        </button>
+
+        <header className="inventory-dialog__header">
+          <span className="inventory-dialog__eyebrow">Inventory</span>
+          <h2>Add an item</h2>
+          <p>Select an item from a safe catalogue and choose its quantity.</p>
+        </header>
+
+        <div className="inventory-dialog__controls">
+          <label>
             <span>Catalog</span>
             <select
               value={catalog}
@@ -62,7 +84,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
               ))}
             </select>
           </label>
-          <label style={{ display: "grid", gap: "0.35rem", width: "8rem" }}>
+          <label className="inventory-dialog__quantity">
             <span>Quantity</span>
             <input
               type="number"
@@ -77,26 +99,22 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           </label>
         </div>
 
-        <p style={{ width: "534px", color: "#c7bfaf", fontSize: "0.78rem", lineHeight: 1.45 }}>
+        <p className="inventory-dialog__notice">
           Weapons and armor keep additional slot data. Use <strong>Replace</strong> on an existing
           weapon or armor instead of Add so that this data remains valid.
         </p>
 
         <SearchAllitems key={catalog} type={catalog} onChange={setSelected} />
 
-        <div>
-          <button
-            onClick={() => setAddScreen(false)}
-            style={{ marginRight: "50px" }}
-            id="cancelReplace"
-          >
+        <footer className="inventory-dialog__actions">
+          <button onClick={dismiss} id="cancelReplace">
             Cancel
           </button>
           <button id="confirmReplace" onClick={handleConfirm} disabled={!selected}>
             Add selected item
           </button>
-        </div>
-      </div>
+        </footer>
+      </section>
     </div>
   );
 }

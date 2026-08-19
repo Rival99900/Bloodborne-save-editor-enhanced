@@ -6,7 +6,7 @@
     "devUrl": "http://localhost:5173"
   },
   "bundle": {
-    "createUpdaterArtifacts": false,
+    "createUpdaterArtifacts": true,
     "active": true,
     "category": "DeveloperTool",
     "copyright": "",
@@ -42,14 +42,17 @@
   },
   "productName": "Bloodborne Save Editor",
   "mainBinaryName": "Bloodborne Save Editor",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "identifier": "com.bloodborne.editor",
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDMyQzA0NzE1NUM0M0JBQzUKUldURnVrTmNGVWZBTXUwMUdZdHNOSGpkVkpZVnlBUGdPUno0aG0wYUJxWDhPNXRCR1Y1aGhVZHoK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENENjg5QTczMkE5NDE3QTUKUldTbEY1UXFjNXBvemFZRmNRczJhTmhvaWRzdGlBaCt5YVlHU1BiQ0hUTVlDS0FCWS9HWHV4dUkK",
       "endpoints": [
-        "https://github.com/Noxde/Bloodborne-save-editor/releases/latest/download/latest.json"
-      ]
+        "https://github.com/Rival99900/Bloodborne-save-editor-updates/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
     }
   },
   "app": {
@@ -64,7 +67,7 @@
         "center": true,
         "resizable": true,
         "maximizable": true,
-        "title": "Bloodborne Save Editor Enhanced v0.3.1",
+        "title": "Bloodborne Save Editor Enhanced v0.4.0",
         "useHttpsScheme": true
       }
     ],

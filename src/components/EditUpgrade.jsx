@@ -17,7 +17,8 @@ function EditUpgrade({
   equipped,
   slot,
 }) {
-  const { gemEffects, runeEffects, runePresets } = useContext(ItemsContext);
+  const { gemEffects, runeEffects, runePresets, userGemPresets, saveUserGemPreset, deleteUserGemPreset } =
+    useContext(ItemsContext);
   const { drawCanvas } = useDraw();
 
   const [edited, setEdited] = useState(JSON.parse(JSON.stringify(selected)));
@@ -31,6 +32,8 @@ function EditUpgrade({
   const { setSave, save } = useContext(SaveContext);
   const [readyToConfirm, setReadyToConfirm] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
+  const [presetName, setPresetName] = useState(() => `${selected.info?.name || "Custom"} Gem`);
+  const [presetStatus, setPresetStatus] = useState("");
 
   useEffect(() => {
     if (readyToConfirm) {
@@ -102,17 +105,39 @@ function EditUpgrade({
 
     setEdited((previous) => ({
       ...previous,
+      shape: preset.shape ?? previous.shape,
       effects: presetEffects,
       info: {
         ...previous.info,
-        name: `${preset.name} Forge Gem`,
+        ...preset.info,
+        name: preset.info?.name ?? `${preset.name} Forge Gem`,
         effect: primary[1],
         rating: primaryEffect?.rating ?? previous.info.rating,
         level: primaryEffect?.level ?? previous.info.level,
-        note: "Gem Forge preset using validated in-game effect IDs.",
+        note: preset.info?.note ?? "Gem Forge preset using validated in-game effect IDs.",
       },
     }));
+    setPresetName(preset.name || "Custom Forge Gem");
+    setPresetStatus("");
     setForgeOpen(false);
+  }
+
+  function saveCurrentGemPreset() {
+    if (upgrade_type !== "Gem") return;
+
+    const saved = saveUserGemPreset({
+      name: presetName,
+      shape,
+      effects,
+      info: {
+        ...edited.info,
+        name: presetName.trim() || edited.info.name || "Custom Forge Gem",
+        note: "Personal Gem Forge preset saved on this device.",
+      },
+    });
+
+    setPresetName(saved.name);
+    setPresetStatus(`Saved “${saved.name}” in My presets.`);
   }
 
   async function transformUpgrade() {
@@ -142,7 +167,9 @@ function EditUpgrade({
       {forgeOpen && upgrade_type === "Gem" ? (
         <GemPresetPanel
           gemEffects={gemEffects}
+          userGemPresets={userGemPresets}
           onApply={applyGemPreset}
+          onDeletePreset={deleteUserGemPreset}
           onClose={() => setForgeOpen(false)}
         />
       ) : null}
@@ -199,9 +226,27 @@ function EditUpgrade({
           </div>
           <div className="upgrade-editor__actions">
             {upgrade_type === "Gem" ? (
-              <button onClick={() => setForgeOpen(true)} style={{ marginRight: "1rem" }}>
-                Gem Forge
-              </button>
+              <>
+                <button onClick={() => setForgeOpen(true)} style={{ marginRight: "1rem" }}>
+                  Gem Forge
+                </button>
+                <div className="upgrade-editor__preset-save">
+                  <label>
+                    <span>Preset name</span>
+                    <input
+                      value={presetName}
+                      maxLength={60}
+                      onChange={(event) => {
+                        setPresetName(event.target.value);
+                        setPresetStatus("");
+                      }}
+                      aria-label="Personal gem preset name"
+                    />
+                  </label>
+                  <button onClick={saveCurrentGemPreset}>Save as preset</button>
+                  {presetStatus ? <span className="upgrade-editor__preset-status">{presetStatus}</span> : null}
+                </div>
+              </>
             ) : null}
             {!equipped ? (
               <button onClick={transformUpgrade} style={{ marginRight: "1rem" }}>

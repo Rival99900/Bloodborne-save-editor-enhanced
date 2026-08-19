@@ -1,13 +1,13 @@
 [package]
 name = "src-tauri"
-version = "0.3.1"
+version = "0.4.0"
 description = "Bloodborne save editor."
 authors = ["Noxde", "Valentino Amato"]
 license = ""
 repository = "https://github.com/Noxde/Bloodborne-save-editor"
 default-run = "src-tauri"
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.77.2"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -33,4 +33,5 @@ name = "app_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-process = "2"
 tauri-plugin-updater = "2"

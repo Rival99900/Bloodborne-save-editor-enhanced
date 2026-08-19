@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{error::Error, fs::File, io::BufReader, sync::Mutex};
+use std::{error::Error, sync::Mutex};
 mod data_handling;
 
 use data_handling::{
@@ -33,6 +33,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_process::init())
         .manage(MutexSave {
             data: Mutex::new(None),
         })
@@ -206,9 +207,7 @@ fn save(path: String, state_save: tauri::State<MutexSave>) -> Result<String, Str
 }
 
 #[tauri::command]
-fn return_weapons(state_save: tauri::State<MutexSave>) -> Value {
-    let save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_ref().unwrap();
+fn return_weapons() -> Value {
     let weapons_str = include_str!("../resources/weapons.json");
 
     let weapons: Value = serde_json::from_str(weapons_str).unwrap();
@@ -217,9 +216,7 @@ fn return_weapons(state_save: tauri::State<MutexSave>) -> Value {
 }
 
 #[tauri::command]
-fn return_armors(state_save: tauri::State<MutexSave>) -> Value {
-    let save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_ref().unwrap();
+fn return_armors() -> Value {
     let armors_str = include_str!("../resources/armors.json");
 
     let armors: Value = serde_json::from_str(armors_str).unwrap();
@@ -228,9 +225,7 @@ fn return_armors(state_save: tauri::State<MutexSave>) -> Value {
 }
 
 #[tauri::command]
-fn return_items(state_save: tauri::State<MutexSave>) -> Value {
-    let save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_ref().unwrap();
+fn return_items() -> Value {
     let upgrades_str = include_str!("../resources/items.json");
 
     let items: Value = serde_json::from_str(upgrades_str).unwrap();
@@ -239,9 +234,7 @@ fn return_items(state_save: tauri::State<MutexSave>) -> Value {
 }
 
 #[tauri::command]
-fn return_gem_effects(state_save: tauri::State<MutexSave>) -> Value {
-    let save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_ref().unwrap();
+fn return_gem_effects() -> Value {
     let upgrades_str = include_str!("../resources/upgrades.json");
 
     let upgrade_json: Value = serde_json::from_str(upgrades_str).unwrap();
@@ -250,9 +243,7 @@ fn return_gem_effects(state_save: tauri::State<MutexSave>) -> Value {
 }
 
 #[tauri::command]
-fn return_rune_effects(state_save: tauri::State<MutexSave>) -> Value {
-    let save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_ref().unwrap();
+fn return_rune_effects() -> Value {
     let upgrades_str = include_str!("../resources/upgrades.json");
 
     let upgrade_json: Value = serde_json::from_str(upgrades_str).unwrap();

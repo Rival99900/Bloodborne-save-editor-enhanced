@@ -119,7 +119,7 @@ const GEM_PRESETS = [
   },
 ];
 
-function GemPresetPanel({ gemEffects, onApply, onClose }) {
+function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePreset, onClose }) {
   const [category, setCategory] = useState("All");
   const [mode, setMode] = useState("presets");
   const [customEffects, setCustomEffects] = useState(() =>
@@ -152,6 +152,17 @@ function GemPresetPanel({ gemEffects, onApply, onClose }) {
     onApply({ preset, effects: resolveEffects(preset.effectIds) });
   }
 
+  function applySavedPreset(preset) {
+    onApply({
+      preset: {
+        ...preset,
+        category: "Personal",
+        description: "Personal Gem Forge preset stored on this device.",
+      },
+      effects: resolveEffects(preset.effects.map(([id]) => id)),
+    });
+  }
+
   function changeCustomEffect(index, option) {
     setCustomEffects((previous) =>
       previous.map((effectId, effectIndex) =>
@@ -173,6 +184,12 @@ function GemPresetPanel({ gemEffects, onApply, onClose }) {
       },
       effects: resolveEffects(customEffects),
     });
+  }
+
+  function deletePreset(preset) {
+    if (window.confirm(`Delete the personal preset “${preset.name}”?`)) {
+      onDeletePreset?.(preset.id);
+    }
   }
 
   return (
@@ -200,6 +217,9 @@ function GemPresetPanel({ gemEffects, onApply, onClose }) {
         </button>
         <button className={mode === "custom" ? "is-active" : ""} onClick={() => setMode("custom")}>
           Custom set
+        </button>
+        <button className={mode === "personal" ? "is-active" : ""} onClick={() => setMode("personal")}>
+          My presets {userGemPresets.length ? `(${userGemPresets.length})` : ""}
         </button>
       </div>
 
@@ -229,7 +249,9 @@ function GemPresetPanel({ gemEffects, onApply, onClose }) {
             ))}
           </div>
         </>
-      ) : (
+      ) : null}
+
+      {mode === "custom" ? (
         <section className="gem-forge__custom" aria-label="Custom gem effect set">
           <div>
             <span className="gem-forge__eyebrow">Custom set</span>
@@ -263,7 +285,43 @@ function GemPresetPanel({ gemEffects, onApply, onClose }) {
             Load custom set into draft
           </button>
         </section>
-      )}
+      ) : null}
+
+      {mode === "personal" ? (
+        <section className="gem-forge__personal" aria-label="Personal gem presets">
+          <div className="gem-forge__personal-header">
+            <div>
+              <span className="gem-forge__eyebrow">My presets</span>
+              <h3>Saved gems on this device</h3>
+              <p>Use “Save as preset” in the editor to keep any edited gem here.</p>
+            </div>
+          </div>
+
+          {userGemPresets.length ? (
+            <div className="gem-forge__grid">
+              {userGemPresets.map((preset) => (
+                <article className="gem-forge__card gem-forge__card--personal" key={preset.id}>
+                  <span>Personal</span>
+                  <h3>{preset.name}</h3>
+                  <p>{preset.info?.note || "Personal Gem Forge preset."}</p>
+                  <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
+                  <div className="gem-forge__card-actions">
+                    <button onClick={() => applySavedPreset(preset)}>Load into draft</button>
+                    <button className="gem-forge__delete" onClick={() => deletePreset(preset)}>
+                      Delete
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="gem-forge__empty-personal">
+              <p>No personal preset has been saved yet.</p>
+              <span>Edit a gem, then use <strong>Save as preset</strong> before confirming it.</span>
+            </div>
+          )}
+        </section>
+      ) : null}
     </div>
   );
 }

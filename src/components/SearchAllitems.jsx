@@ -3,111 +3,103 @@ import Item from "./Item";
 import { ItemsContext } from "../context/itemsContext";
 
 /**
+ * Searchable item picker used by Add and Replace flows.
  *
  * @param {Object} props
- * @param {"item" | "armor" | "weapon" | "key"} props.type
+ * @param {"item" | "armor" | "weapon" | "key" | "chalice"} props.type
  * @param {Function} props.onChange
- * @returns
+ * @returns {JSX.Element}
  */
 function SearchAllitems({ type, onChange, title }) {
   const [search, setSearch] = useState("");
-  const [replacements, setReplacements] = useState(null);
-  const [back, setBack] = useState(null);
+  const [replacements, setReplacements] = useState([]);
+  const [back, setBack] = useState([]);
   const [hoverIndex, setHoverIndex] = useState(null);
   const { weapons, items, armors, all } = useContext(ItemsContext);
 
   useEffect(() => {
     setHoverIndex(null);
-    if (search) {
-      setReplacements(
-        back.filter((x) =>
-          x.info.item_name.toLowerCase().includes(search.toLowerCase())
-        )
-      );
-    } else {
-      setReplacements(back);
-    }
-  }, [search]);
-
-  console.log(type);
+    const normalizedSearch = search.trim().toLowerCase();
+    setReplacements(
+      normalizedSearch
+        ? back.filter((item) => item.info.item_name.toLowerCase().includes(normalizedSearch))
+        : back,
+    );
+  }, [back, search]);
 
   useEffect(() => {
+    let nextItems = all;
+
     switch (type) {
       case "weapon":
-        setReplacements(weapons);
-        setBack(weapons);
+        nextItems = weapons;
         break;
       case "chalice":
       case "item":
-        setReplacements(items);
-        setBack(items);
+        nextItems = items;
         break;
       case "key":
-        setReplacements(
-          items.filter((y) => y.article_type.toLowerCase() === type)
-        );
-        setBack(items.filter((y) => y.article_type.toLowerCase() === type));
+        nextItems = items.filter((item) => item.article_type.toLowerCase() === type);
         break;
       case "armor":
-        setReplacements(armors);
-        setBack(armors);
+        nextItems = armors;
         break;
       default:
-        setReplacements(all);
-        setBack(all);
         break;
     }
-  }, []);
+
+    setSearch("");
+    setHoverIndex(null);
+    setBack(nextItems ?? []);
+  }, [type, weapons, items, armors, all]);
+
+  function selectItem(item, index) {
+    if (typeof onChange === "function") onChange(item);
+    setHoverIndex(index);
+  }
 
   return (
-    <div style={{ width: "534px", maxHeight: "calc(100% - 149px)" }}>
-      <div>
-        {title ? title : null}
-
+    <section className="catalog-picker" aria-label={title || `Select a ${type}`}>
+      {title ? <p className="catalog-picker__title">{title}</p> : null}
+      <label className="catalog-picker__search">
+        <span>Search catalogue</span>
         <input
-          onChange={(e) => {
-            const { target } = e;
-            setSearch(target.value);
-          }}
+          onChange={(event) => setSearch(event.target.value)}
           value={search}
-          style={{ display: "block", width: "100%", fontSize: "1.2rem" }}
-          type="text"
-          placeholder={type}
+          type="search"
+          placeholder={`Search ${type} items`}
         />
-      </div>
-      {/* List of items */}
-      <div
-        style={{
-          position: "relative",
-          overflowY: "scroll",
-          // maxHeight: "calc(100% - 111px)",
-          height: "100%",
-        }}
-      >
+      </label>
+
+      <div className="catalog-picker__results" role="listbox" aria-label="Matching items">
         <div
           id="hoverReplacement"
           style={{
             display: hoverIndex == null ? "none" : "block",
             top: `${hoverIndex * 91}px`,
           }}
-        ></div>
-
-        {replacements?.map((x, i) => (
+        />
+        {replacements.map((item, index) => (
           <Item
-            onClick={() => {
-              if (typeof onChange == "function") {
-                onChange(x);
+            onClick={() => selectItem(item, index)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                selectItem(item, index);
               }
-              setHoverIndex(i);
             }}
-            key={i}
-            index={i + 1}
-            item={x}
+            key={`${item.id}-${index}`}
+            index={index + 1}
+            item={item}
             isSmall={true}
+            role="option"
+            aria-selected={hoverIndex === index}
+            tabIndex={0}
           />
         ))}
+        {!replacements.length ? <p className="catalog-picker__empty">No matching item found.</p> : null}
       </div>
-    </div>
+    </section>
   );
 }
 

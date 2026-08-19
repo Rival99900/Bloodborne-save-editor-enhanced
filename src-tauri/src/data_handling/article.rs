@@ -234,10 +234,12 @@ impl Article {
         return Ok(());
     }
 
+    #[cfg_attr(not(test), allow(dead_code))]
     pub fn is_armor(&self) -> bool {
         self.type_family == TypeFamily::Armor
     }
 
+    #[cfg_attr(not(test), allow(dead_code))]
     pub fn is_item(&self) -> bool {
         self.type_family == TypeFamily::Item
     }
@@ -378,22 +380,21 @@ pub fn scale_weapon_info(extra_info: &mut Value) {
         let damage: String = serde_json::from_value(v.clone()).unwrap();
         let base_damage: String = serde_json::from_value(base_damages[k].clone()).unwrap();
 
-        let mut damage: u32 = match damage.parse::<u32>() {
-            Ok(num) => num,
-            Err(_) => continue, //If the damage is "-" (n/a), skip
-        };
+        if damage.parse::<u32>().is_err() {
+            continue; // If the damage is "-" (n/a), skip
+        }
 
         let base_damage: u32 = match base_damage.parse::<u32>() {
             Ok(num) => num,
             Err(_) => continue, //If the damage is "-" (n/a), skip
         };
 
-        if upgrade_level == 10 {
-            damage = base_damage * 2;
+        let scaled_damage = if upgrade_level == 10 {
+            base_damage * 2
         } else {
-            damage = base_damage + (base_damage / 10) * upgrade_level;
-        }
-        *v = json!(damage.to_string());
+            base_damage + (base_damage / 10) * upgrade_level
+        };
+        *v = json!(scaled_damage.to_string());
     }
 }
 
