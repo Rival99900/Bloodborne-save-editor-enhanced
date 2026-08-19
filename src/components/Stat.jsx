@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const MAX_STAT_VALUE = 2_000_000_000;
+
 function Stat({ stat, editedStats, setEditedStats, width }) {
   const [value, setValue] = useState(stat.value);
 
@@ -37,20 +39,18 @@ function Stat({ stat, editedStats, setEditedStats, width }) {
             background: "none",
           }}
           min={0}
+          max={MAX_STAT_VALUE}
           value={value}
-          onChange={(e) => {
-            const { value: newValue } = e.target;
-            if (newValue > 999999999) {
-              setValue(999999999);
+          onChange={(event) => {
+            const rawValue = event.target.value;
+            const numericValue = Number(rawValue);
+            const nextValue = Number.isFinite(numericValue)
+              ? Math.min(MAX_STAT_VALUE, Math.max(0, numericValue))
+              : 0;
 
-              editedStats.find((x) => x.name === stat.name).value = 999999999;
-            } else {
-              setValue(newValue);
-
-              editedStats.find((x) => x.name === stat.name).value = newValue;
-            }
-
-            setEditedStats(editedStats);
+            setValue(nextValue);
+            editedStats.find((entry) => entry.name === stat.name).value = nextValue;
+            setEditedStats([...editedStats]);
           }}
         />
       </div>

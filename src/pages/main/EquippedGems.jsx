@@ -13,9 +13,8 @@ function EquippedGems() {
   const { save } = useContext(SaveContext);
   const { getGemPath, loadImage } = useDraw();
 
-  const {
-    state: { selected, isStorage },
-  } = useLocation();
+  const location = useLocation();
+  const { selected = null, isStorage = false } = location.state ?? {};
   const [article, setArticle] = useState(selected);
   const [selectedRef, setSelectedRef] = useState(null);
   const [editScreen, setEditScreen] = useState(false);
@@ -25,10 +24,13 @@ function EquippedGems() {
 
   useEffect(() => {
     if (!selected) {
-      nav("/");
+      nav("/", { replace: true });
     }
-    console.log(selected);
-  }, [selected]);
+  }, [nav, selected]);
+
+  if (!selected || !article) {
+    return null;
+  }
 
   return (
     <>

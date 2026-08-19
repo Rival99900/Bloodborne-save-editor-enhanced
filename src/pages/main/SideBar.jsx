@@ -7,7 +7,6 @@ const navigation = [
   { to: "/storage", label: "Storage", description: "Stored items" },
   { to: "/stats", label: "Stats", description: "Attributes and echoes" },
   { to: "/character", label: "Character", description: "Identity and position" },
-  { to: "/equippedGems", label: "Gems", description: "Equipped upgrades" },
   { to: "/bosses", label: "Bosses", description: "Progress state" },
   { to: "/flags", label: "Flags", description: "Advanced settings" },
 ];
