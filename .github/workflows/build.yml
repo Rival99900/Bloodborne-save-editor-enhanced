@@ -1,30 +1,20 @@
-name: "publish"
+name: Publish Windows release
 
 on:
   push:
     tags:
-      - "*"
-  workflow_dispatch:
+      - "v*"
 
 jobs:
-  publish-tauri:
+  publish-windows:
+    name: Publish signed Windows installer
+    runs-on: windows-latest
     permissions:
       contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: "macos-latest"
-            args: "--target aarch64-apple-darwin"
-          - platform: "macos-latest"
-            args: "--target x86_64-apple-darwin"
-          - platform: "windows-latest"
-            args: ""
-
-    runs-on: ${{ matrix.platform }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,10 +24,8 @@ jobs:
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: Rust cache
+      - name: Restore Rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
@@ -45,181 +33,81 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
-      - name: Publish Release Assets (Windows & macOS)
-        uses: tauri-apps/tauri-action@v0
+      - name: Validate updater signing configuration
         env:
-          CI: false
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($Env:TAURI_SIGNING_PRIVATE_KEY)) {
+            throw 'TAURI_SIGNING_PRIVATE_KEY is missing.'
+          }
+          if ([string]::IsNullOrWhiteSpace($Env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD)) {
+            throw 'TAURI_SIGNING_PRIVATE_KEY_PASSWORD is missing.'
+          }
+          Write-Host 'Updater signing configuration is present.'
+
+      - name: Build and publish the Windows installer
+        uses: tauri-apps/tauri-action@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "Bloodborne save editor ${{ github.ref_name }}"
-          releaseBody: "See the assets to download this version and install."
-          releaseDraft: true
+          releaseName: "Bloodborne Save Editor Enhanced ${{ github.ref_name }}"
+          releaseBody: |
+            ## Improvements
+            - Refined responsive layout for the gem and rune editor.
+            - Personal Gem Forge presets can be saved and reused locally.
+            - `Ctrl+O` opens a save and `Ctrl+S` saves changes.
+
+            ## Fixes and safeguards
+            - Effect controls, long lists and editor actions stay within the visible workspace.
+            - The Add dialog has a visible close control, Escape handling and bounded scrolling.
+            - Closing with unsaved changes asks whether to save, discard or cancel.
+            - The updater verifies every package against the embedded public signing key.
+          releaseDraft: false
           prerelease: false
-          args: ${{ matrix.args }}
+          args: "--bundles nsis"
+          releaseAssetNamePattern: "Bloodborne_Save_Editor_Enhanced_[version]_[arch][setup].[ext]"
+          uploadUpdaterJson: false
+          uploadUpdaterSignatures: false
 
-  publish-linux:
-    needs: publish-tauri
-    permissions:
-      contents: write
-    runs-on: ubuntu-24.04
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install system dependencies
+      - name: Publish the updater manifest outside the release assets
+        shell: pwsh
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwebkit2gtk-4.1-dev \
-            libgtk-3-dev \
-            libayatana-appindicator3-dev \
-            librsvg2-dev \
-            patchelf \
-            libssl-dev \
-            file \
-            wget \
-            curl \
-            xvfb \
-            xz-utils \
-            jq
+          $config = Get-Content "src-tauri/tauri.conf.json" -Raw | ConvertFrom-Json
+          $version = $config.version
+          $installer = Get-ChildItem "src-tauri/target/release/bundle/nsis" -Filter "*setup.exe" | Select-Object -First 1
+          if (-not $installer) { throw 'The NSIS installer was not generated.' }
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: npm
+          $signaturePath = "$($installer.FullName).sig"
+          if (-not (Test-Path $signaturePath)) { throw 'The updater signature was not generated.' }
+          $signature = (Get-Content $signaturePath -Raw).Trim()
+          if ([string]::IsNullOrWhiteSpace($signature)) { throw 'The updater signature is empty.' }
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+          $manifest = @{
+            version = $version
+            notes = "See the GitHub release for improvements and safe-save guidance."
+            pub_date = (Get-Date).ToUniversalTime().ToString("o")
+            platforms = @{
+              "windows-x86_64" = @{
+                url = "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/$env:GITHUB_REF_NAME/$($installer.Name)"
+                signature = $signature
+              }
+            }
+          } | ConvertTo-Json -Depth 5
 
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./src-tauri -> target"
-
-      - name: Install frontend dependencies
-        run: npm ci
-
-      - name: Build Tauri binary (no bundle)
-        env:
-          CI: false
-        run: npx tauri build --no-bundle
-
-      - name: Locate built binary
-        id: locate
-        shell: bash
-        run: |
-          set -e
-          BIN=$(find src-tauri/target/release \
-            -maxdepth 1 \
-            -type f \
-            -executable \
-            ! -name "*.so" \
-            ! -name "*.d" \
-            ! -name "build-*" \
-            | head -1)
-
-          if [ -z "$BIN" ]; then
-            echo "::error::Could not locate binary"
-            ls -la src-tauri/target/release
-            exit 1
-          fi
-
-          echo "binary=$(realpath "$BIN")" >> "$GITHUB_OUTPUT"
-
-      - name: Install quick-sharun
-        run: |
-          wget -q https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/main/useful-tools/quick-sharun.sh
-          chmod +x quick-sharun.sh
-
-      - name: Fix binary name and prepare AppDir
-        id: fix_bin
-        run: |
-          ORIGINAL_BIN="${{ steps.locate.outputs.binary }}"
-          DIR_NAME=$(dirname "$ORIGINAL_BIN")
-          CLEAN_BIN="${DIR_NAME}/bloodborne-save-editor"
-
-          cp "$ORIGINAL_BIN" "$CLEAN_BIN"
-          echo "clean_binary=${CLEAN_BIN}" >> "$GITHUB_OUTPUT"
-
-          mkdir -p AppDir
-          cat <<EOF > AppDir/bloodborne-save-editor.desktop
-          [Desktop Entry]
-          Type=Application
-          Name=Bloodborne Save Editor
-          Exec=bloodborne-save-editor
-          Icon=bloodborne-save-editor
-          Categories=Utility;
-          EOF
-
-          cp "src-tauri/icons/icon.png" AppDir/bloodborne-save-editor.png
-
-      - name: Build portable AppImage
-        env:
-          VERSION: ${{ github.ref_name }}
-          STRACE_MODE: 0
-          DEPLOY_GTK: 1
-          DEPLOY_OPENGL: 1
-          DEPLOY_VULKAN: 1
-          DEPLOY_GSTREAMER: 1
-          DEPLOY_PIPEWIRE: 1
-          DEPLOY_PULSE: 1
-          OUTPUT_APPIMAGE: 1
-          APPIMAGE_NAME: Bloodborne-save-editor
-        run: |
-          xvfb-run --auto-servernum ./quick-sharun.sh "${{ steps.fix_bin.outputs.clean_binary }}"
-
-      - name: Rename AppImage
-        run: |
-          mv Bloodborne*.AppImage \
-             Bloodborne-Save-Editor_${{ github.ref_name }}_amd64.AppImage
-
-      - name: Sign AppImage for updater
-        id: sign
-        env:
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-        run: |
-          set -e
-          FILE="Bloodborne-Save-Editor_${{ github.ref_name }}_amd64.AppImage"
-          npx tauri signer sign "$FILE"
-          echo "signature=$(cat "${FILE}.sig")" >> "$GITHUB_OUTPUT"
-
-      - name: Upload AppImage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Bloodborne-save-editor-AppImage
-          path: |
-            Bloodborne-Save-Editor_${{ github.ref_name }}_amd64.AppImage
-            Bloodborne-Save-Editor_${{ github.ref_name }}_amd64.AppImage.sig
-
-      - name: Attach AppImage to release
-        uses: softprops/action-gh-release@v3
-        with:
-          tag_name: ${{ github.ref_name }}
-          draft: true
-          files: |
-            Bloodborne-Save-Editor_${{ github.ref_name }}_amd64.AppImage
-            Bloodborne-Save-Editor_${{ github.ref_name }}_amd64.AppImage.sig
-
-      - name: Merge Linux entry into latest.json
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-          TAG="${{ github.ref_name }}"
-          REPO="${{ github.repository }}"
-          URL="https://github.com/${REPO}/releases/download/${TAG}/Bloodborne-Save-Editor_${TAG}_amd64.AppImage"
-
-          gh release download "$TAG" --repo "$REPO" --pattern latest.json --output latest.json --clobber
-
-          jq --arg sig "${{ steps.sign.outputs.signature }}" \
-             --arg url "$URL" \
-             '.platforms["linux-x86_64"] = {"signature": $sig, "url": $url}' \
-             latest.json > latest.json.tmp
-          mv latest.json.tmp latest.json
-
-          gh release upload "$TAG" latest.json --repo "$REPO" --clobber
+          New-Item -ItemType Directory -Force ".github/updater" | Out-Null
+          Set-Content -Path ".github/updater/latest.json" -Value $manifest -Encoding utf8
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/updater/latest.json
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 1) {
+            git commit -m "chore: publish updater manifest for v$version"
+            git push origin HEAD:main
+          } elseif ($LASTEXITCODE -ne 0) {
+            throw 'Unable to inspect updater manifest changes.'
+          }

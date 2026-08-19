@@ -173,43 +173,13 @@ function EditUpgrade({
           onClose={() => setForgeOpen(false)}
         />
       ) : null}
-      <div
-        className="upgrade-editor__layout"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "0 5rem",
-          height: "95%",
-        }}
-      >
-        <div
-          className="upgrade-editor__preview"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            alignItems: "start",
-          }}
-        >
-          {/* To replace */}
+      <div className="upgrade-editor__layout">
+        <div className="upgrade-editor__preview">
           <div>
             <span>Editing:</span>
-            <div
-              style={{
-                position: "relative",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "375px",
-                height: "375px",
-                background: `url(/assets/gems/gem_bg.png)`,
-                backgroundSize: "contain",
-                borderRadius: "5px",
-              }}
-            >
+            <div className="upgrade-editor__art-frame">
               <img
-                width={"373px"}
-                style={{ borderRadius: "10px" }}
+                className="upgrade-editor__art"
                 src={
                   upgrade_type === "Gem"
                     ? getGemPath(
@@ -227,7 +197,7 @@ function EditUpgrade({
           <div className="upgrade-editor__actions">
             {upgrade_type === "Gem" ? (
               <>
-                <button onClick={() => setForgeOpen(true)} style={{ marginRight: "1rem" }}>
+                <button onClick={() => setForgeOpen(true)}>
                   Gem Forge
                 </button>
                 <div className="upgrade-editor__preset-save">
@@ -249,14 +219,11 @@ function EditUpgrade({
               </>
             ) : null}
             {!equipped ? (
-              <button onClick={transformUpgrade} style={{ marginRight: "1rem" }}>
+              <button onClick={transformUpgrade}>
                 Convert to {upgrade_type === "Gem" ? "Rune" : "Gem"}
               </button>
             ) : null}
-            <button
-              onClick={() => setEditScreen(false)}
-              style={{ marginRight: "50px" }}
-            >
+            <button onClick={() => setEditScreen(false)}>
               Cancel
             </button>
             <button onClick={() => handleConfirm(confirmCb)}>Confirm</button>
@@ -264,29 +231,9 @@ function EditUpgrade({
         </div>
         {/* List and input */}
         <div
-          className="upgrade-editor__effects-panel"
-          style={{
-            position: "relative",
-            marginTop: "20px",
-            height: "95%",
-            width: "371px",
-            borderRadius: "0px",
-            background: `url(/assets/${
-              upgrade_type === "Gem"
-                ? "gems/gem_effects_bg"
-                : "runes/rune_effects_bg"
-            }.png)`,
-            backgroundRepeat: "no-repeat",
-          }}
+          className={`upgrade-editor__effects-panel upgrade-editor__effects-panel--${upgrade_type.toLowerCase()}`}
         >
-          <div
-            className="upgrade-info"
-            style={{
-              fontSize: "18px",
-              userSelect: "none",
-              color: "#b8b7ad",
-            }}
-          >
+          <div className="upgrade-editor__info">
             {upgrade_type === "Gem" ? (
               <>
                 <span
@@ -351,18 +298,7 @@ function EditUpgrade({
               />
             )}
           </div>
-          <div
-            className="effects"
-            style={{
-              fontSize: "18px",
-              userSelect: "none",
-              color: "#b8b7ad",
-              position: "absolute",
-              top: 180,
-              left: 40,
-              width: "calc(100% - 40px)",
-            }}
-          >
+          <div className="effects upgrade-editor__effects">
             {effects.map(([id, name], i) => (
               <div className="effect" key={`${id}-${i}`}>
                 <SelectSearch
@@ -390,16 +326,7 @@ function EditUpgrade({
                   selected={name}
                   options={upgrade_type === "Gem" ? gemEffects : runeEffects}
                 />
-                <div
-                  className="line"
-                  style={{
-                    position: "absolute",
-                    left: -29,
-                    width: "350px",
-                    height: "1px",
-                    background: `url(/assets/line.png)`,
-                  }}
-                ></div>
+                <div className="line" aria-hidden="true" />
               </div>
             ))}
             {upgrade_type === "Rune" && (

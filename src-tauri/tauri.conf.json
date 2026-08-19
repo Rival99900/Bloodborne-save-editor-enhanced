@@ -42,13 +42,13 @@
   },
   "productName": "Bloodborne Save Editor",
   "mainBinaryName": "Bloodborne Save Editor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "identifier": "com.bloodborne.editor",
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENENjg5QTczMkE5NDE3QTUKUldTbEY1UXFjNXBvemFZRmNRczJhTmhvaWRzdGlBaCt5YVlHU1BiQ0hUTVlDS0FCWS9HWHV4dUkK",
       "endpoints": [
-        "https://gist.githubusercontent.com/Rival99900/6c3e933a987a5707cb795cd048d1df50/raw/bloodborne-save-editor-enhanced-latest.json"
+        "https://raw.githubusercontent.com/Rival99900/Bloodborne-save-editor-enhanced/main/.github/updater/latest.json"
       ],
       "windows": {
         "installMode": "passive"
@@ -67,7 +67,7 @@
         "center": true,
         "resizable": true,
         "maximizable": true,
-        "title": "Bloodborne Save Editor Enhanced v0.1.0",
+        "title": "Bloodborne Save Editor Enhanced v0.1.1",
         "useHttpsScheme": true
       }
     ],
