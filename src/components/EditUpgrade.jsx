@@ -5,6 +5,7 @@ import { SaveContext } from "../context/context";
 import { ItemsContext } from "../context/itemsContext";
 import SelectSearch from "./SelectSearch";
 import useDraw from "../utils/useDraw";
+import GemPresetPanel from "./GemPresetPanel";
 
 function EditUpgrade({
   setSelected,
@@ -29,6 +30,7 @@ function EditUpgrade({
   } = edited;
   const { setSave, save } = useContext(SaveContext);
   const [readyToConfirm, setReadyToConfirm] = useState(false);
+  const [forgeOpen, setForgeOpen] = useState(false);
 
   useEffect(() => {
     if (readyToConfirm) {
@@ -59,18 +61,21 @@ function EditUpgrade({
         });
       }
 
-      // TODO: Send array of effects and loop in backend
-      effects.forEach(async (x, i) => {
-        const [id] = x;
-        if (x === selected.effects[i][0]) return;
+      let updatedSave = null;
+      for (const [index, effect] of effects.entries()) {
+        const [id] = effect;
+        if (Number(id) === Number(selected.effects[index]?.[0])) continue;
 
-        let edited = await invoke("edit_effect", {
-          newEffectId: parseInt(id),
-          index: i,
+        updatedSave = await invoke("edit_effect", {
+          newEffectId: Number(id),
+          index,
           info,
         });
-        setSave(edited);
-      });
+      }
+
+      if (updatedSave) {
+        setSave(updatedSave);
+      }
 
       setSelected(edited);
 
@@ -91,8 +96,56 @@ function EditUpgrade({
     }
   }
 
+  function applyGemPreset({ preset, effects: presetEffects }) {
+    const primary = presetEffects[0];
+    const primaryEffect = gemEffects.find((entry) => Number(entry.value) === Number(primary[0]));
+
+    setEdited((previous) => ({
+      ...previous,
+      effects: presetEffects,
+      info: {
+        ...previous.info,
+        name: `${preset.name} Forge Gem`,
+        effect: primary[1],
+        rating: primaryEffect?.rating ?? previous.info.rating,
+        level: primaryEffect?.level ?? previous.info.level,
+        note: "Gem Forge preset using validated in-game effect IDs.",
+      },
+    }));
+    setForgeOpen(false);
+  }
+
+  async function transformUpgrade() {
+    const sourceName = upgrade_type === "Gem" ? "gem" : "rune";
+    const destinationName = upgrade_type === "Gem" ? "rune" : "gem";
+    const accepted = window.confirm(
+      `Convert this ${sourceName} into a ${destinationName}? Keep the automatic backup until you have tested the save.`,
+    );
+    if (!accepted) return;
+
+    try {
+      const result = await invoke("transform_upgrade", {
+        upgradeType: upgrade_type,
+        upgradeIndex: selected.index,
+        isStorage,
+      });
+      setSave(result.save);
+      setSelected(result.upgrade);
+      setEdited(result.upgrade);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div id="replaceScreen">
+      {forgeOpen && upgrade_type === "Gem" ? (
+        <GemPresetPanel
+          gemEffects={gemEffects}
+          onApply={applyGemPreset}
+          onClose={() => setForgeOpen(false)}
+        />
+      ) : null}
       <div
         style={{
           display: "flex",
@@ -143,6 +196,16 @@ function EditUpgrade({
             </div>
           </div>
           <div>
+            {upgrade_type === "Gem" ? (
+              <button onClick={() => setForgeOpen(true)} style={{ marginRight: "1rem" }}>
+                Gem Forge
+              </button>
+            ) : null}
+            {!equipped ? (
+              <button onClick={transformUpgrade} style={{ marginRight: "1rem" }}>
+                Convert to {upgrade_type === "Gem" ? "Rune" : "Gem"}
+              </button>
+            ) : null}
             <button
               onClick={() => setEditScreen(false)}
               style={{ marginRight: "50px" }}

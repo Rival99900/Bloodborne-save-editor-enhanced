@@ -46,6 +46,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             return_gem_effects,
             return_rune_effects,
             transform_item,
+            transform_upgrade,
             edit_stat,
             edit_effect,
             edit_shape,
@@ -189,7 +190,9 @@ fn save(path: String, state_save: tauri::State<MutexSave>) -> Result<String, Str
     save.file
         .save(&path)
         .map(|_| "Changes saved successfully.".to_string())
-        .map_err(|_| "Failed to save changes. Check the destination and its permissions.".to_string())
+        .map_err(|_| {
+            "Failed to save changes. Check the destination and its permissions.".to_string()
+        })
 }
 
 #[tauri::command]
@@ -302,6 +305,33 @@ fn transform_item(
 }
 
 #[tauri::command]
+fn transform_upgrade(
+    upgrade_type: UpgradeType,
+    upgrade_index: usize,
+    is_storage: bool,
+    state_save: tauri::State<MutexSave>,
+) -> Result<Value, String> {
+    let mut save_option = state_save.inner().data.lock().unwrap();
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before transforming an upgrade.".to_string())?;
+    let location = if is_storage {
+        Location::Storage
+    } else {
+        Location::Inventory
+    };
+
+    let upgrade = save
+        .transform_upgrade(upgrade_type, upgrade_index, location)
+        .map_err(|error| error.to_string())?;
+
+    Ok(json!({
+        "save": serde_json::to_value(&save).map_err(|error| error.to_string())?,
+        "upgrade": upgrade,
+    }))
+}
+
+#[tauri::command]
 fn edit_stat(
     rel_offset: isize,
     length: usize,
@@ -323,7 +353,20 @@ fn edit_effect(
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
-    let save: &mut SaveData = save_option.as_mut().unwrap();
+    let save: &mut SaveData = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before editing effects.".to_string())?;
+    let effect_catalog: Value = serde_json::from_str(include_str!("../resources/upgrades.json"))
+        .map_err(|_| "Unable to read the embedded effect catalog.".to_string())?;
+    let effect_id = new_effect_id.to_string();
+    let is_known_effect = new_effect_id == u32::MAX
+        || effect_catalog["gemEffects"].get(&effect_id).is_some()
+        || effect_catalog["runeEffects"].get(&effect_id).is_some();
+
+    if !is_known_effect {
+        return Err("This effect identifier is not present in the embedded catalog.".to_string());
+    }
+
     let upgrade: Option<*mut Upgrade>;
 
     let location: Location = {
@@ -356,8 +399,11 @@ fn edit_effect(
             .map(|u| u as *mut _);
     }
 
+    let upgrade =
+        upgrade.ok_or_else(|| "The selected gem or rune could not be found.".to_string())?;
+
     unsafe {
-        match (*upgrade.unwrap()).change_effect(&mut save.file, new_effect_id, index) {
+        match (*upgrade).change_effect(&mut save.file, new_effect_id, index) {
             Ok(_) => Ok(serde_json::to_value(&save).map_err(|x| x.to_string())?),
             Err(_) => Err("Failed to edit the upgrade's effect".to_string()),
         }

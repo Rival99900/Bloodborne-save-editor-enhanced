@@ -566,6 +566,112 @@
   }
 }
 
+/* Gem Forge */
+.gem-forge {
+  position: absolute;
+  inset: 1.5rem;
+  z-index: 1100;
+  overflow: auto;
+  border: 1px solid rgba(228, 190, 106, 0.6);
+  border-radius: 0.75rem;
+  padding: 1.4rem;
+  background: linear-gradient(145deg, rgba(17, 18, 19, 0.98), rgba(7, 8, 9, 0.98));
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.65);
+  color: #e7e1d3;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.gem-forge__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(221, 183, 94, 0.25);
+  padding-bottom: 0.9rem;
+}
+
+.gem-forge__eyebrow,
+.gem-forge__card > span {
+  color: #d8ae5b;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.gem-forge h2,
+.gem-forge h3,
+.gem-forge p { margin-top: 0; }
+.gem-forge h2 { margin-bottom: 0; font-size: 1.35rem; }
+
+.gem-forge__notice {
+  max-width: 54rem;
+  margin: 1rem 0;
+  color: #bbb6ab;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.gem-forge__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.gem-forge__filters button,
+.gem-forge__close {
+  border: 1px solid rgba(225, 190, 109, 0.36);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: #e5ddca;
+  cursor: pointer;
+}
+
+.gem-forge__filters button.is-active,
+.gem-forge__filters button:hover,
+.gem-forge__card button:hover,
+.gem-forge__close:hover {
+  border-color: #e3bc6e;
+  background: rgba(205, 159, 72, 0.22);
+}
+
+.gem-forge__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 0.8rem;
+}
+
+.gem-forge__card {
+  display: flex;
+  min-height: 13rem;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.9rem;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.gem-forge__card h3 { margin: 0.45rem 0; font-size: 1rem; }
+.gem-forge__card p { color: #beb8ac; font-size: 0.8rem; line-height: 1.35; }
+.gem-forge__card small { flex: 1; color: #a5a08f; font-size: 0.72rem; line-height: 1.35; }
+
+.gem-forge__card button {
+  margin-top: 0.9rem;
+  border: 1px solid rgba(225, 190, 109, 0.42);
+  border-radius: 0.3rem;
+  padding: 0.45rem;
+  background: rgba(181, 133, 46, 0.18);
+  color: #f0e6cf;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .gem-forge { inset: 0.65rem; padding: 1rem; }
+  .gem-forge__grid { grid-template-columns: 1fr; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

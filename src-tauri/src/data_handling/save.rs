@@ -136,6 +136,42 @@ impl SaveData {
         None
     }
 
+    pub fn transform_upgrade(
+        &mut self,
+        upgrade_type: UpgradeType,
+        upgrade_index: usize,
+        location: Location,
+    ) -> Result<Upgrade, Error> {
+        let (inventory, file) = match location {
+            Location::Inventory => (&mut self.inventory, &mut self.file),
+            Location::Storage => (&mut self.storage, &mut self.file),
+        };
+
+        let source_upgrades =
+            inventory
+                .upgrades
+                .get_mut(&upgrade_type)
+                .ok_or(Error::CustomError(
+                    "The selected upgrade type was not found.",
+                ))?;
+        let upgrade = source_upgrades
+            .get_mut(upgrade_index)
+            .ok_or(Error::CustomError("The selected upgrade was not found."))?;
+
+        upgrade.transform(file)?;
+        let destination_type = upgrade.upgrade_type;
+        let mut transformed = source_upgrades.remove(upgrade_index);
+        for (index, entry) in source_upgrades.iter_mut().enumerate() {
+            entry.index = index;
+        }
+
+        let destination_upgrades = inventory.upgrades.entry(destination_type).or_default();
+        transformed.index = destination_upgrades.len();
+        destination_upgrades.push(transformed.clone());
+
+        Ok(transformed)
+    }
+
     pub fn move_upgrade(
         &mut self,
         upgrade_type: UpgradeType,
