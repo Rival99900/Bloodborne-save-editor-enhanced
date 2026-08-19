@@ -29,3 +29,8 @@ src-tauri/vendor
 flatpak
 repo
 *.flatpak
+
+# Internal documentation stays local and is not published with the public source repository
+README.md
+UPDATER_IMPLEMENTATION_NOTES.md
+docs/
