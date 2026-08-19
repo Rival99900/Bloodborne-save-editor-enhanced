@@ -1,197 +1,68 @@
-<div align="center">
-  <img alt="creator-program-logo" src="./assets/icon.png" width="300px">
-</div>
+# Bloodborne Save Editor — Enhanced
 
-<h1 align="center">Bloodborne Save Editor</h1>
+> **An offline desktop editor for decrypted Bloodborne character saves, derived from [Noxde’s Bloodborne Save Editor](https://github.com/Noxde/Bloodborne-save-editor).**
 
-<p align="center">
-  <img src="https://img.shields.io/github/downloads/Noxde/Bloodborne-save-editor/total">
-  <img src="https://img.shields.io/github/downloads-pre/Noxde/Bloodborne-save-editor/latest/total">
-</p>
+This project retains the upstream editor’s save-editing capabilities while improving the application shell, file-operation safety and interface clarity. It is intended for **offline, personal save management**. Do not use altered save files to cheat, grief or affect other players in online play.
 
-<p align="center">
-  <a href="https://ko-fi.com/R5R8106WUY" target="_blank">
-    <img height="36" src="https://storage.ko-fi.com/cdn/kofi5.png?v=6" alt="Buy Me a Coffee">
-  </a>
-</p>
+## Improvements in this version
 
-<p align="center">
-  <b>DISCLAIMER:</b> We do not condone the use of this software for cheating or griefing in online games by any means.
-</p>
+| Area | Improvement |
+| --- | --- |
+| File handling | Opening states the decrypted-save requirement; cancelling a dialog cannot trigger a write; every save requires confirmation; and write errors are shown clearly. |
+| Backup awareness | The interface explains that opening a save creates a `.bak` copy and repeatedly prompts users to retain it until the result is verified in-game. |
+| Navigation | The active section is visibly marked, all available editors use one navigation model, and sections are locked until a save is loaded. |
+| Interface | The layout is a responsive workspace with file status, an explanatory welcome screen, visible keyboard focus and reduced-motion support. |
+| Reliability | Global event listeners are released correctly, keyboard zoom starts from a valid value and is constrained, and native saving rejects absent destinations or missing active saves. |
 
-<div align=center>
+## Editor capabilities
 
-![overview.gif](./assets/overview.gif)
+The editor supports inventory and storage management, item quantities, item transformation, character attributes, Blood Echoes, insight, appearance-related data, gems and runes, gem slots, boss state, flags and lantern teleportation. The underlying file-format logic and feature behavior originate from the upstream project and remain subject to its save-format constraints.
 
-</div>
+## Prepare the save safely
 
-> [!IMPORTANT]
-> **To use this save editor on Playstation you first need to decrypt your bloodborne save, check out the [wiki](https://github.com/Noxde/Bloodborne-save-editor/wiki/How-to-decrypt-a-save) if you don't know how.**
+This application accepts **decrypted character saves**. A PlayStation save exported directly from a console cannot be opened until it has been decrypted. Consult the upstream [decryption guide](https://github.com/Noxde/Bloodborne-save-editor/wiki/How-to-decrypt-a-save) before proceeding.
 
-> [!NOTE]
-> If you want to use this with shadPS4, saves are located in `shadPS4/user/savedata/1/GAMEID/SPRJ0005/`
-> shadPS4 being the folder where the executable is located
-> The id for Bloodborne can be one of the following depending on your version of the game:
->
-> - CUSA00900
-> - CUSA03173
-> - CUSA00207
-> - CUSA01363
+Before editing, copy the original save to a separate location. The editor creates a backup when it opens a file; retain that backup until the edited file has been loaded and verified in-game. Save to a deliberate destination instead of replacing an original file blindly.
 
-## Table of Contents
+> This tool is designed for local, offline editing. The user is solely responsible for maintaining backups and for any use of edited save data.
 
-- [1. Features](#1-features)
-- [2. Download](#2-download)
-- [3. Build from source](#3-build-from-source)
-- [4. Attributions](#4-attributions)
-- [5. License](#5-license)
+## Development
 
-## 1. Features
+The project is a Tauri 2 desktop application with a React and Vite frontend. Install Node.js dependencies and a Rust toolchain, then run the development mode:
 
-<sub>you can click on these to see a gif</sub>
+```bash
+npm install
+npm run tauri dev
+```
 
-- Automatic backup when opening a file.
-- Item filters to easily find whatever you need.
-- <details>
-      <summary>
-         Change items amount.
-      </summary>
+To validate the web interface without starting the desktop shell:
 
-   <img src="./assets/itemAmount.gif"/>
-   </details>
+```bash
+npm run build
+```
 
-- <details>
-      <summary>
-         Transform items, weapons or armors into different ones including cut content.
-      </summary>
+To create a desktop release package:
 
-   <img src="./assets/transform.gif"/>
-   </details>
+```bash
+npm run tauri build
+```
 
-- <details>
-      <summary>
-         Modify character attributes.
-      </summary>
+The exact system packages required by Tauri vary by operating system; refer to the [Tauri prerequisites](https://tauri.app/start/prerequisites/).
 
-   <img src="./assets/stats.gif"/>
-   </details>
+## Attribution and license
 
-- <details>
-      <summary>
-         Modify Blood echoes, insight, gender, origin, voice and position.
-      </summary>
+This is a derivative work of [Noxde/Bloodborne-save-editor](https://github.com/Noxde/Bloodborne-save-editor), which is licensed under the GNU General Public License version 3.0. The complete GPL-3.0 license and the original project materials are retained in this repository. Any distribution of this derivative must comply with the GPL-3.0 terms.
 
-   <img src="./assets/character.gif"/>
-   </details>
+The upstream author credits **Meph** and the [Bloodborne Wiki](https://www.bloodborne-wiki.com/) for weapon statistics, game assets and UI inspiration; **foxyhooligan** for gem-effect IDs, New Game+ data and flags; [PlayingUnfairly](https://www.youtube.com/@PlayingUnfairly) for detailed editing tutorials; **xtrin** for gem-image behavior information; and **n3r4_** for a boss-flag spreadsheet. Those contributions are gratefully acknowledged here.
 
-- <details>
-      <summary>
-        Edit Gems and Runes
-      </summary>
+## Repository policy
 
-   <img src="./assets/editGemsRunes.gif"/>
-   </details>
+The project intentionally uses one working branch: `main`.
 
-- <details>
-      <summary>
-        Add items
-      </summary>
+## References
 
-   <img src="./assets/addItems.gif"/>
-   </details>
+[1] [Noxde/Bloodborne-save-editor — upstream source](https://github.com/Noxde/Bloodborne-save-editor)
 
-- <details>
-      <summary>
-        Edit weapons and armor gem slots
-      </summary>
+[2] [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html)
 
-   <img src="./assets/gemSlots.gif"/>
-   </details>
-
-- <details>
-      <summary>
-        Kill and revive bosses
-      </summary>
-
-   <img src="./assets/bosses.gif"/>
-   </details>
-
-- <details>
-      <summary>
-        Set different flags
-      </summary>
-
-   <img src="./assets/flags.gif"/>
-   </details>
-
-- <details>
-      <summary>
-        Change spawn point to any lantern location
-      </summary>
-
-   <img src="./assets/teleport.gif"/>
-   </details>
-
-## 2. Download
-
-You can download the pre-built executable for your operating system from the [Releases](https://github.com/Noxde/Bloodborne-save-editor/releases) section.
-
-If you encounter any bug please [make an issue](https://github.com/Noxde/Bloodborne-save-editor/issues/new)
-
-### Video tutorial on how to use the editor on Playstation
-
-[![video_thumbnail](https://img.youtube.com/vi/vP8p_osK8sw/0.jpg)](https://www.youtube.com/watch?v=vP8p_osK8sw)  
-<sub>click the image to go to the video</sub>
-
-Thanks to [Ricky Zaragoza](https://www.youtube.com/@ricardozaragoza3812) for making this video, this video is focused on the full process for playstation but if you only want to see the save editor working, it's useful too.
-
-## 3. Build from source
-
-1. Make sure to have [Rust](https://www.rust-lang.org/) and [NodeJS](https://nodejs.org/en) installed.
-2. Install the [Tauri dependencies](https://tauri.app/v1/guides/getting-started/prerequisites) for your operating system.
-3. Clone the repo:
-
-   ```bash
-   $ git clone https://github.com/Noxde/Bloodborne-save-editor
-   ```
-
-4. Navigate to the project directory:
-
-   ```bash
-   $ cd Bloodborne-save-editor
-   ```
-
-5. Install the dependencies
-   ```bash
-   $ npm install
-   ```
-   If you want to run the dev version with hot reloading run `$ npm run dev` or if you want to build it run `$ npm run tauri build`
-
-The release will be located in `Bloodborne-save-editor/src-tauri/target/release/`
-
-## 4. Attributions
-
-Big thanks to Meph for making the [Bloodborne Wiki](https://www.bloodborne-wiki.com/). Weapon stats, game assets and inspiration for the UI come from here.
-
-Thanks to @foxyhooligan on discord for helping with gem effects ids, how to edit the new game plus level, other flags and more.
-
-Thanks to [PlayingUnfairly](https://www.youtube.com/@PlayingUnfairly) for the detailed tutorials on how to edit character stats, gems/runes, weapons/armors and appearance.
-
-Thanks to @xtrin on the "The Tomb Prospectors" discord for explaining to me how gem images work based on their effects and level.
-
-Thanks to @n3r4\_ on the "?ServerName?" discord for sharing a spreadsheet with boss flags
-
-## Star History
-Thanks to everyone that has starred the repo and used the editor!
-
-<a href="https://www.star-history.com/?repos=Noxde%2Fbloodborne-save-editor&type=date&legend=bottom-right">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=Noxde/bloodborne-save-editor&type=date&theme=dark&legend=bottom-right" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=Noxde/bloodborne-save-editor&type=date&legend=bottom-right" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=Noxde/bloodborne-save-editor&type=date&legend=bottom-right" />
- </picture>
-</a>
-
-## 5. License
-
-This project is licensed under the [GPL-3.0 License](./LICENSE).
+[3] [Tauri prerequisites](https://tauri.app/start/prerequisites/)

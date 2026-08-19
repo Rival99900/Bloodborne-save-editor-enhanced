@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useLocation, Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import SideBar from "./SideBar";
 import Inventory from "../inventory/Inventory";
 import Stats from "../stats/Stats";
@@ -12,104 +12,111 @@ import Bosses from "../bosses/Bosses";
 import Flags from "../flags/Flags";
 
 const Main = ({ save, setSave, loading }) => {
-  const location = useLocation();
   const { loading: loadingImages } = useContext(ImagesContext);
 
   return (
     <>
       <div
-        style={{
-          transition: "opacity",
-          background: "#1b1b26",
-          position: "absolute",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          width: "100%",
-          top: 0,
-          zIndex: 99999,
-        }}
-        className={loadingImages ? "" : "fade-out"}
+        className={`startup-overlay ${loadingImages ? "" : "fade-out"}`}
+        aria-hidden={!loadingImages}
       >
-        <img src="./assets/icon.png" width="200px" alt="" />
-        <div className="spinner"></div>
+        <img src="/assets/icon.png" width="120" height="120" alt="" />
+        <p>Preparing editor</p>
+        <div className="spinner" />
       </div>
-      <main
-        style={{
-          gridTemplateColumns: `200px 805px ${
-            location.pathname.match(/storage|\/$/) != null ? "1fr" : ""
-          }`,
-        }}
-      >
+
+      <main className="editor-shell">
         <SaveContext.Provider value={{ save, setSave }}>
           <SideBar />
-          {loading ? <div>Loading</div> : null}
 
-          {save != null ? (
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <ItemsProvider>
-                    <Inventory
-                      key={"inventory"}
-                      inv={save.inventory}
-                      isStorage={false}
-                    />
-                  </ItemsProvider>
-                }
-              />
-              <Route
-                path="/storage"
-                element={
-                  <ItemsProvider>
-                    <Inventory
-                      key={"storage"}
-                      inv={save.storage}
-                      isStorage={true}
-                    />
-                  </ItemsProvider>
-                }
-              />
-              <Route path="/stats" element={<Stats />} />
-              <Route path="/character" element={<Character />} />
-              <Route
-                path="/equippedGems"
-                element={
-                  <ItemsProvider>
-                    <EquippedGems />
-                  </ItemsProvider>
-                }
-              ></Route>
-              <Route path="/bosses" element={<Bosses />}></Route>
-              <Route path="/flags" element={<Flags />}></Route>
-            </Routes>
-          ) : null}
+          <section className="workspace" aria-live="polite">
+            {loading ? (
+              <div className="operation-state" role="status">
+                <div className="spinner" />
+                <div>
+                  <p className="operation-state__eyebrow">Working with save data</p>
+                  <p className="operation-state__title">Please keep this window open.</p>
+                </div>
+              </div>
+            ) : null}
 
-          {save == null && !loading ? (
-            <div
-              style={{
-                gridColumn: "2/4",
-                justifySelf: "center",
-                padding: "2.5rem",
-              }}
-            >
-              This save editor works with decrypted save files, meaning that you
-              can't use the savefile you get from exporting it directly from
-              your playstation. If you don't know how to decrypt a save click{" "}
-              <a
-                style={{ textDecoration: "underline" }}
-                href="https://github.com/Noxde/Bloodborne-save-editor/wiki/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                here
-              </a>{" "}
-              to learn more.
-            </div>
-          ) : null}
+            {save ? (
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <ItemsProvider>
+                      <Inventory key="inventory" inv={save.inventory} isStorage={false} />
+                    </ItemsProvider>
+                  }
+                />
+                <Route
+                  path="/storage"
+                  element={
+                    <ItemsProvider>
+                      <Inventory key="storage" inv={save.storage} isStorage />
+                    </ItemsProvider>
+                  }
+                />
+                <Route path="/stats" element={<Stats />} />
+                <Route path="/character" element={<Character />} />
+                <Route
+                  path="/equippedGems"
+                  element={
+                    <ItemsProvider>
+                      <EquippedGems />
+                    </ItemsProvider>
+                  }
+                />
+                <Route path="/bosses" element={<Bosses />} />
+                <Route path="/flags" element={<Flags />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            ) : (
+              <section className="empty-state" aria-labelledby="welcome-title">
+                <p className="empty-state__eyebrow">Offline character management</p>
+                <h1 id="welcome-title">Edit deliberately. Preserve your hunt.</h1>
+                <p className="empty-state__lead">
+                  Open a decrypted Bloodborne character save to inspect inventory, attributes,
+                  character settings, bosses and flags. The editor creates a backup when a file is
+                  opened; always retain it until you have checked the result in-game.
+                </p>
+
+                <div className="empty-state__grid">
+                  <article>
+                    <span className="step-number">01</span>
+                    <h2>Use a decrypted save</h2>
+                    <p>
+                      PlayStation exports must be decrypted before they can be read by the editor.
+                    </p>
+                  </article>
+                  <article>
+                    <span className="step-number">02</span>
+                    <h2>Make focused edits</h2>
+                    <p>
+                      Review each change and avoid using modified saves in online play.
+                    </p>
+                  </article>
+                  <article>
+                    <span className="step-number">03</span>
+                    <h2>Verify before replacing</h2>
+                    <p>
+                      Test the exported file before removing the automatic <code>.bak</code> copy.
+                    </p>
+                  </article>
+                </div>
+
+                <a
+                  className="help-link"
+                  href="https://github.com/Noxde/Bloodborne-save-editor/wiki/How-to-decrypt-a-save"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Read the decryption guide
+                </a>
+              </section>
+            )}
+          </section>
         </SaveContext.Provider>
       </main>
     </>

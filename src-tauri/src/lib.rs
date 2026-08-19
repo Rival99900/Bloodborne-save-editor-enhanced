@@ -172,14 +172,24 @@ fn edit_quantity(
 }
 
 #[tauri::command]
-fn save(path: String, state_save: tauri::State<MutexSave>) -> Result<&str, &str> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
-
-    match save.file.save(&path) {
-        Ok(_) => Ok("Changes saved."),
-        Err(_) => Err("Failed to save changes."),
+fn save(path: String, state_save: tauri::State<MutexSave>) -> Result<String, String> {
+    if path.trim().is_empty() {
+        return Err("Choose a destination before saving changes.".to_string());
     }
+
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "The save data is temporarily unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before saving changes.".to_string())?;
+
+    save.file
+        .save(&path)
+        .map(|_| "Changes saved successfully.".to_string())
+        .map_err(|_| "Failed to save changes. Check the destination and its permissions.".to_string())
 }
 
 #[tauri::command]

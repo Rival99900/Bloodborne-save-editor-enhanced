@@ -1,14 +1,10 @@
 import "./App.css";
 
 import { useEffect, useState } from "react";
-import Nav from "./components/Nav";
 import { BrowserRouter as Router } from "react-router-dom";
-import { invoke } from "@tauri-apps/api/core";
+import Nav from "./components/Nav";
 import Main from "./pages/main/Main";
 import { ImagesProvider } from "./context/imagesContext";
-import * as dialog from "@tauri-apps/plugin-dialog";
-import * as shell from "@tauri-apps/plugin-shell";
-import { check } from "@tauri-apps/plugin-updater";
 import { UpdateModal } from "./Update";
 
 function App() {
@@ -16,38 +12,34 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    document.addEventListener("contextmenu", (e) => e.preventDefault());
+    const preventContextMenu = (event) => event.preventDefault();
+    document.addEventListener("contextmenu", preventContextMenu);
+
+    return () => document.removeEventListener("contextmenu", preventContextMenu);
   }, []);
 
   useEffect(() => {
-    document.addEventListener("keydown", (e) => {
-      const { code, ctrlKey } = e;
-      if (code === "Equal" && ctrlKey) {
-        document.body.style.zoom = Number(document.body.style.zoom) + 0.1;
-      } else if (code === "Minus" && ctrlKey) {
-        document.body.style.zoom = Number(document.body.style.zoom) - 0.1;
+    const handleZoomShortcut = (event) => {
+      if (!event.ctrlKey || !["Equal", "Minus", "Digit0"].includes(event.code)) {
+        return;
       }
-    });
-  }, []);
 
-  useEffect(() => {
-    updateZoom();
+      event.preventDefault();
+      const currentZoom = Number.parseFloat(document.body.style.zoom) || 1;
 
-    const scalingQuery = window.matchMedia(`(min-width: 2000px)`);
-
-    function updateZoom() {
-      if (window.innerWidth > 2000) {
-        document.body.style.zoom = 2;
-      } else {
-        document.body.style.zoom = 1;
+      if (event.code === "Digit0") {
+        document.body.style.zoom = "1";
+        return;
       }
-    }
 
-    scalingQuery.addEventListener("change", updateZoom);
-
-    return () => {
-      scalingQuery.removeEventListener("change", updateZoom);
+      const delta = event.code === "Equal" ? 0.1 : -0.1;
+      document.body.style.zoom = String(
+        Math.min(1.5, Math.max(0.8, Number((currentZoom + delta).toFixed(2)))),
+      );
     };
+
+    document.addEventListener("keydown", handleZoomShortcut);
+    return () => document.removeEventListener("keydown", handleZoomShortcut);
   }, []);
 
   return (
