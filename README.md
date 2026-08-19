@@ -1,55 +1,55 @@
 # Bloodborne Save Editor Enhanced
 
-> Un éditeur de sauvegardes **Bloodborne** modernisé, conçu pour rendre les opérations sensibles plus lisibles, plus réversibles et plus fiables.
+> A modernized **Bloodborne** save editor designed to make sensitive save operations clearer, more reversible, and more reliable.
 
 [![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=9f7a3e)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
 
-**Bloodborne Save Editor Enhanced** prolonge le projet original de [Noxde](https://github.com/Noxde/Bloodborne-save-editor) avec une interface responsive, des contrôles de sauvegarde plus sûrs et un éditeur de gemmes enrichi. Il est destiné aux sauvegardes Bloodborne **déjà déchiffrées** et crée une copie de secours `.bak` avant toute écriture.
+**Bloodborne Save Editor Enhanced** extends the original [Noxde Bloodborne Save Editor](https://github.com/Noxde/Bloodborne-save-editor) with a responsive interface, safer save controls, and an expanded gem editor. It is intended for **already decrypted** Bloodborne saves and creates a `.bak` backup before writing changes.
 
-## Télécharger et commencer
+## Download and get started
 
-Téléchargez l’installateur **Windows x64** depuis les [releases](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases), installez l’application, puis chargez votre sauvegarde déchiffrée avec **Open save** ou `Ctrl+O`.
+Download the **Windows x64** installer from [Releases](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases), install the application, and load your decrypted save with **Open save** or `Ctrl+O`.
 
-> **Prudence.** Gardez toujours la copie `.bak`, testez les changements en jeu et ne supprimez votre sauvegarde précédente qu’après vérification. Les modifications de sauvegarde restent sous votre responsabilité.
+> **Important.** Always keep the `.bak` backup, test changes in-game, and do not remove an older save until it has been verified. You remain responsible for every change made to a save file.
 
-| Étape | Action recommandée |
+| Step | Recommended action |
 |---|---|
-| **1. Préparer** | Faites une copie indépendante de votre sauvegarde déchiffrée avant de commencer. |
-| **2. Modifier** | Utilisez les catégories de l’éditeur et vérifiez les effets proposés avant confirmation. |
-| **3. Enregistrer** | Utilisez `Ctrl+S` ou le bouton de sauvegarde, puis conservez la copie `.bak` créée par l’application. |
-| **4. Vérifier** | Chargez la sauvegarde dans le jeu avant de supprimer une version antérieure. |
+| **1. Prepare** | Make an independent copy of the decrypted save before you begin. |
+| **2. Edit** | Use the editor categories and review proposed effects before confirming. |
+| **3. Save** | Use `Ctrl+S` or the Save button, then keep the `.bak` file created by the application. |
+| **4. Verify** | Load the save in-game before deleting an earlier version. |
 
-## Points forts
+## Highlights
 
-| Espace | Améliorations apportées |
+| Area | Improvements |
 |---|---|
-| **Inventaire** | La fonction **Add** est réservée aux objets, clés et calices. Les armes et armures utilisent **Replace** afin de préserver leurs données d’emplacement. |
-| **Statistiques** | Les valeurs peuvent atteindre **2 000 000 000**. |
-| **Gem Forge** | Des préréglages validés, un constructeur personnalisé à six emplacements, un aperçu avant confirmation et des préréglages personnels persistants. |
-| **Gemmes et runes** | Les catalogues sont séparés et les identifiants d’effets sont validés par le backend afin d’éviter les combinaisons incompatibles. |
-| **Flags** | Des cartes explicatives avec impacts, avertissements, détails dépliables et demande de confirmation avant application. |
-| **Sauvegarde** | À la fermeture avec des modifications non enregistrées, l’application propose d’enregistrer, de fermer sans enregistrer ou d’annuler. |
+| **Inventory** | **Add** is reserved for items, keys, and chalices. Weapons and armor use **Replace** to preserve their slot data. |
+| **Stats** | Values can be raised up to **2,000,000,000**. |
+| **Gem Forge** | Validated presets, a six-slot custom builder, a preview before confirmation, and persistent personal presets. |
+| **Gems and runes** | Separate catalogs and backend validation for effect IDs help prevent incompatible combinations. |
+| **Flags** | Explanation cards with impact, warnings, expandable details, and confirmation before applying a change. |
+| **Save protection** | When closing with unsaved changes, the editor lets you save, close without saving, or cancel. |
 
-## Contrôles rapides
+## Quick controls
 
-| Action | Raccourci ou contrôle |
+| Action | Shortcut or control |
 |---|---|
-| Ouvrir une sauvegarde déchiffrée | `Ctrl+O` |
-| Enregistrer les modifications | `Ctrl+S` |
-| Fermer une fenêtre **Add** | Croix, `Échap` ou clic en dehors de la fenêtre |
-| Ajuster le zoom de l’interface | `Ctrl` + `+`, `Ctrl` + `-`, `Ctrl` + `0` |
+| Open a decrypted save | `Ctrl+O` |
+| Save changes | `Ctrl+S` |
+| Close the **Add** window | Close button, `Escape`, or click outside the window |
+| Change interface zoom | `Ctrl` + `+`, `Ctrl` + `-`, `Ctrl` + `0` |
 
-Les listes longues, les menus d’effets et les boutons de confirmation sont conçus pour rester disponibles sur les fenêtres étroites. Dans le Gem Forge, un préréglage appliqué est visible immédiatement avant sa confirmation ; une gemme modifiée peut aussi être conservée depuis **Save as preset** et réutilisée dans **My presets**.
+Long lists, effect menus, and confirmation controls are designed to remain usable in narrow windows. In Gem Forge, an applied preset is immediately visible before confirmation. A modified gem can also be saved through **Save as preset** and reused in **My presets**.
 
-## Mises à jour automatiques
+## Automatic updates
 
-L’application vérifie les mises à jour publiées et n’installe qu’un paquet dont la signature correspond à la clé publique embarquée. Après téléchargement, la mise à jour est appliquée puis l’éditeur est relancé.
+The application checks published updates and only installs a package whose signature matches the embedded public key. After downloading the package, the update is applied and the editor is restarted.
 
-La page d’une release ne présente que l’installateur Windows. Le manifeste technique nécessaire au contrôle de mise à jour est maintenu séparément afin de garder les téléchargements simples tout en préservant la vérification cryptographique.
+A release page contains only the Windows installer. The technical manifest used for update checks is kept separately so downloads remain simple while cryptographic verification is retained.
 
-## Développement et publication
+## Development and publishing
 
-Le projet utilise **Tauri v2**, React et Vite. Après installation des dépendances, les commandes principales sont les suivantes :
+The project uses **Tauri v2**, React, and Vite. After installing dependencies, use the following commands:
 
 ```bash
 npm install
@@ -57,15 +57,15 @@ npm run build
 npm run tauri -- build
 ```
 
-La publication GitHub Actions nécessite deux **Repository secrets**. Ils ne doivent jamais être ajoutés au code, aux issues, aux releases ou aux logs.
+The GitHub Actions publishing workflow requires two **Repository secrets**. They must never be added to source code, issues, releases, or logs.
 
-| Secret | Utilisation |
+| Secret | Purpose |
 |---|---|
-| `TAURI_SIGNING_PRIVATE_KEY` | Le contenu original, complet et non modifié du fichier de clé privée généré par Tauri. |
-| `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | Le mot de passe associé à cette clé. |
+| `TAURI_SIGNING_PRIVATE_KEY` | The original, complete, unmodified content of the Tauri private signing-key file. |
+| `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | The password associated with that key. |
 
-> Une erreur de décodage de clé indique que la clé ou son mot de passe ne correspond pas au fichier généré. Créez ou remplacez les deux **Repository secrets** ensemble, sans modifier ni réencoder le contenu de la clé.
+> A key-decoding error means that the key or password does not match the generated file. Create or replace both **Repository secrets** together, without modifying or re-encoding the key content.
 
-## Crédit et licence
+## Credits and license
 
-Ce projet est distribué sous licence [GPL-3.0](LICENSE). Il dérive du travail initial de [Noxde](https://github.com/Noxde/Bloodborne-save-editor) et conserve cette licence conformément à son héritage open source.
+This project is distributed under the [GPL-3.0](LICENSE). It is derived from the original work by [Noxde](https://github.com/Noxde/Bloodborne-save-editor) and retains that license in accordance with its open-source heritage.
