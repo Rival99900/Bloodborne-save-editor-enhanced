@@ -87,13 +87,14 @@ jobs:
           $signature = (Get-Content $signaturePath -Raw).Trim()
           if ([string]::IsNullOrWhiteSpace($signature)) { throw 'The updater signature is empty.' }
 
+          $releaseAsset = "Bloodborne_Save_Editor_Enhanced_${version}_x64-setup.exe"
           $manifest = @{
             version = $version
             notes = "See the GitHub release for improvements and safe-save guidance."
             pub_date = (Get-Date).ToUniversalTime().ToString("o")
             platforms = @{
               "windows-x86_64" = @{
-                url = "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/$env:GITHUB_REF_NAME/$($installer.Name)"
+                url = "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/$env:GITHUB_REF_NAME/$releaseAsset"
                 signature = $signature
               }
             }

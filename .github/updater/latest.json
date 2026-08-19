@@ -1,7 +1,7 @@
 {
   "platforms": {
     "windows-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.1.1/Bloodborne Save Editor_0.1.1_x64-setup.exe",
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.1.1/Bloodborne_Save_Editor_Enhanced_0.1.1_x64-setup.exe",
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvellWb1k4M1dsa3JQUFpQZEhNRmk5UitFYXhnZGRRcjI4SDlZektxMVJKUVppQ2w4YURMVXErdzFSWFM3YmxSbm9DWXVuTW1IYlNCQ1I5cGMyaWZiL0F3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3MTYwNjU5CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjEuMV94NjQtc2V0dXAuZXhlClRodFJINjNHZmJ1V00vWG8xMmFsVEV2VTBwSGtKL3FIQzBSV1BhSyswQWROZkg0Z05CaGZaeGhkVG5qcVNSRmZHVUc4aWFuMTlqdENXS0RCZlJvcERRPT0K"
     }
   },
