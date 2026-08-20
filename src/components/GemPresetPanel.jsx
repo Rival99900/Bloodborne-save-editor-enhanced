@@ -191,7 +191,7 @@ function GemPresetPanel({
       preset: {
         ...preset,
         category: "Personal",
-        description: "Personal Gem Forge preset stored on this device.",
+        description: "Personal Forge preset shared by Gem Forge and Rune Forge.",
       },
       effects: resolveEffects(preset.effects),
     });
@@ -241,7 +241,8 @@ function GemPresetPanel({
       <p className="gem-forge__notice">
         Loading a preset only updates the visible draft. Select <strong>Confirm</strong> in the
         editor to write it to the save. Every effect below comes from the editor’s embedded validated
-        catalogue. Gem and rune forge presets are stored separately on this device.
+        catalogue. Personal presets are shared by Gem Forge and Rune Forge; the destination editor
+        keeps its own valid Shape or Type.
       </p>
 
       <div className="gem-forge__modes" aria-label={`${subject} Forge mode`}>
@@ -325,8 +326,8 @@ function GemPresetPanel({
           <div className="gem-forge__personal-header">
             <div>
               <span className="gem-forge__eyebrow">My presets</span>
-              <h3>Saved {subject.toLowerCase()}s on this device</h3>
-              <p>Use “Save as preset” in the editor to keep any edited {subject.toLowerCase()} here.</p>
+              <h3>Personal presets shared by both forges</h3>
+              <p>Save an edited gem or rune once, then load the same preset from Gem Forge or Rune Forge.</p>
             </div>
           </div>
 
@@ -336,7 +337,7 @@ function GemPresetPanel({
                 <article className="gem-forge__card gem-forge__card--personal" key={preset.id}>
                   <span>Personal</span>
                   <h3>{preset.name}</h3>
-                  <p>{preset.info?.note || `Personal ${subject} Forge preset.`}</p>
+                  <p>{preset.info?.note || "Personal Forge preset shared by Gem Forge and Rune Forge."}</p>
                   <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
                   <div className="gem-forge__card-actions">
                     <button onClick={() => applySavedPreset(preset)}>Load into draft</button>
@@ -350,7 +351,7 @@ function GemPresetPanel({
           ) : (
             <div className="gem-forge__empty-personal">
               <p>No personal preset has been saved yet.</p>
-              <span>Edit a {subject.toLowerCase()}, then use <strong>Save as preset</strong> before confirming it.</span>
+              <span>Edit a gem or rune, then use <strong>Save as preset</strong> to make it available in both forges.</span>
             </div>
           )}
         </section>

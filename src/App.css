@@ -878,9 +878,16 @@
 }
 
 .upgrade-editor__info input {
-  width: auto !important;
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0;
   color: #f2ead8 !important;
+  -webkit-text-fill-color: #f2ead8;
+  opacity: 1;
   text-align: right !important;
+  text-indent: 0;
+  cursor: pointer;
+  user-select: text;
 }
 
 .upgrade-editor__effects .effect .line {
@@ -1039,11 +1046,16 @@
 
 .gem-forge__apply-custom {
   justify-self: start;
+  min-height: 2.55rem;
   border: 1px solid rgba(225, 190, 109, 0.58);
   border-radius: 0.3rem;
-  padding: 0.55rem 0.85rem;
+  padding: 0.5rem 0.85rem;
   background: rgba(181, 133, 46, 0.24);
   color: #f0e6cf;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.84rem !important;
+  font-weight: 750;
+  line-height: 1.2;
   cursor: pointer;
 }
 

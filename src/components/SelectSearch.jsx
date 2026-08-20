@@ -2,6 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 import { useFloating, flip, offset, autoUpdate } from "@floating-ui/react";
 
+function getSelectedLabel(options, selected) {
+  const value = selected == null ? "" : String(selected);
+  const normalizedValue = value.trim().toLowerCase();
+  const matchingOption = options.find(
+    (option) =>
+      String(option.label ?? "").trim().toLowerCase() === normalizedValue ||
+      String(option.value ?? "").trim() === value.trim(),
+  );
+
+  return matchingOption?.label ?? value;
+}
+
 function SelectSearch({
   options,
   selected,
@@ -11,8 +23,9 @@ function SelectSearch({
   defaultValue,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const resolvedSelectedLabel = getSelectedLabel(options, selected);
   const [search, setSearch] = useState(
-    selected === defaultValue ? "" : selected,
+    resolvedSelectedLabel === defaultValue ? "" : resolvedSelectedLabel,
   );
   // Tracks whether the current `search` value came from the user typing in the
   // box, as opposed to `selected` changing programmatically (e.g. a Gem Forge
@@ -48,8 +61,8 @@ function SelectSearch({
     // A prop-driven update (preset applied, gem reloaded, etc.) is not a user
     // edit, so it must not arm the auto-reset-to-"No Effect" logic below.
     userEditedRef.current = false;
-    setSearch(selected === defaultValue ? "" : selected ?? "");
-  }, [selected, defaultValue]);
+    setSearch(resolvedSelectedLabel === defaultValue ? "" : resolvedSelectedLabel);
+  }, [resolvedSelectedLabel, defaultValue]);
 
   useEffect(() => {
     if (
@@ -109,6 +122,7 @@ function SelectSearch({
           value={search}
           readOnly={readOnly}
           placeholder={defaultValue}
+          aria-expanded={isOpen}
           onFocus={() => setIsOpen(true)}
           onChange={({ target: { value } }) => {
             userEditedRef.current = true;

@@ -15,6 +15,28 @@ import GemPresetPanel from "./GemPresetPanel";
 
 const NO_EFFECT_ID = 4294967295;
 const EFFECT_SLOT_COUNT = 6;
+const GEM_SHAPE_OPTIONS = [
+  { label: "Radial", value: 1 },
+  { label: "Triangle", value: 2 },
+  { label: "Waning", value: 4 },
+  { label: "Circle", value: 8 },
+  { label: "Droplet", value: 64 },
+];
+const RUNE_TYPE_OPTIONS = [
+  { label: "-", value: 1 },
+  { label: "Oath", value: 2 },
+];
+
+function normalizeUpgradeShape(shape, upgradeType) {
+  const options = upgradeType === "Rune" ? RUNE_TYPE_OPTIONS : GEM_SHAPE_OPTIONS;
+  const value = String(shape ?? "").trim();
+  const matchingOption = options.find(
+    (option) =>
+      option.label.toLowerCase() === value.toLowerCase() || String(option.value) === value,
+  );
+
+  return matchingOption?.label ?? options[0].label;
+}
 
 function EditUpgrade({
   setSelected,
@@ -30,12 +52,9 @@ function EditUpgrade({
     gemEffectCatalog,
     nativeGemEffectIds,
     runePresets,
-    userGemPresets,
-    saveUserGemPreset,
-    deleteUserGemPreset,
-    userRunePresets,
-    saveUserRunePreset,
-    deleteUserRunePreset,
+    userForgePresets,
+    saveUserForgePreset,
+    deleteUserForgePreset,
   } = useContext(ItemsContext);
   const { drawCanvas } = useDraw();
   const { setSave } = useContext(SaveContext);
@@ -49,7 +68,13 @@ function EditUpgrade({
     [gemEffectCatalog],
   );
 
-  const [edited, setEdited] = useState(JSON.parse(JSON.stringify(selected)));
+  const [edited, setEdited] = useState(() => {
+    const draft = JSON.parse(JSON.stringify(selected));
+    return {
+      ...draft,
+      shape: normalizeUpgradeShape(draft.shape, draft.upgrade_type),
+    };
+  });
   const {
     shape,
     effects,
@@ -176,7 +201,7 @@ function EditUpgrade({
 
     setEdited((previous) => ({
       ...previous,
-      shape: preset.shape ?? previous.shape,
+      shape: normalizeUpgradeShape(preset.shape, upgrade_type),
       effects: normalizedEffects,
       info: {
         ...previous.info,
@@ -194,21 +219,20 @@ function EditUpgrade({
   }
 
   function saveCurrentForgePreset() {
-    const isGem = upgrade_type === "Gem";
-    const savePreset = isGem ? saveUserGemPreset : saveUserRunePreset;
-    const saved = savePreset({
+    const saved = saveUserForgePreset({
       name: presetName,
+      sourceType: upgrade_type,
       shape,
       effects,
       info: {
         ...edited.info,
         name: presetName.trim() || edited.info.name || `Custom Forge ${upgrade_type}`,
-        note: `Personal ${upgrade_type} Forge preset saved on this device.`,
+        note: `Personal Forge preset saved from ${upgrade_type} Forge and shared with both forges.`,
       },
     });
 
     setPresetName(saved.name);
-    setPresetStatus(`Saved “${saved.name}” in My presets.`);
+    setPresetStatus(`Saved “${saved.name}” in My presets for Gem Forge and Rune Forge.`);
   }
 
   async function transformUpgrade() {
@@ -240,9 +264,9 @@ function EditUpgrade({
       {forgeOpen ? (
         <GemPresetPanel
           gemEffects={gemEffectCatalog}
-          userGemPresets={upgrade_type === "Gem" ? userGemPresets : userRunePresets}
+          userGemPresets={userForgePresets}
           onApply={applyForgePreset}
-          onDeletePreset={upgrade_type === "Gem" ? deleteUserGemPreset : deleteUserRunePreset}
+          onDeletePreset={deleteUserForgePreset}
           onClose={() => setForgeOpen(false)}
           forgeType={upgrade_type.toLowerCase()}
           builtInPresets={upgrade_type === "Gem" ? undefined : runeForgePresets}
@@ -346,13 +370,7 @@ function EditUpgrade({
                   }}
                   selected={shape}
                   readOnly={true}
-                  options={[
-                    { label: "Radial", value: 1 },
-                    { label: "Triangle", value: 2 },
-                    { label: "Waning", value: 4 },
-                    { label: "Circle", value: 8 },
-                    { label: "Droplet", value: 64 },
-                  ]}
+                  options={GEM_SHAPE_OPTIONS}
                   onChange={(event) => {
                     const { label } = event;
                     setEdited((previous) => ({ ...previous, shape: label }));
@@ -370,10 +388,7 @@ function EditUpgrade({
                 }}
                 selected={shape}
                 readOnly={true}
-                options={[
-                  { label: "-", value: 1 },
-                  { label: "Oath", value: 2 },
-                ]}
+                options={RUNE_TYPE_OPTIONS}
                 onChange={(event) => {
                   const { label } = event;
                   setEdited((previous) => ({ ...previous, shape: label }));

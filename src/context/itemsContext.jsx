@@ -3,14 +3,18 @@ import { invoke } from "@tauri-apps/api/core";
 
 export const ItemsContext = createContext();
 
-const USER_GEM_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-gem-presets.v1";
-const USER_RUNE_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-rune-presets.v1";
+const USER_FORGE_PRESETS_STORAGE_KEY = "bloodborne-save-editor.personal-forge-presets.v2";
+const LEGACY_USER_GEM_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-gem-presets.v1";
+const LEGACY_USER_RUNE_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-rune-presets.v1";
 const NO_EFFECT_ID = 4294967295;
-const USER_GEM_PRESET_LIMIT = 30;
-const USER_RUNE_PRESET_LIMIT = 30;
+const USER_FORGE_PRESET_LIMIT = 60;
 
-function normalizeUserGemPreset(preset = {}) {
-  const requestedName = String(preset.name ?? preset.info?.name ?? "Custom Forge Gem").trim();
+function normalizePersonalForgePreset(preset = {}) {
+  const sourceType = String(preset.sourceType ?? preset.forgeType ?? "Gem").toLowerCase() === "rune"
+    ? "Rune"
+    : "Gem";
+  const fallbackName = `Custom Forge ${sourceType}`;
+  const requestedName = String(preset.name ?? preset.info?.name ?? fallbackName).trim();
   const effects = Array.isArray(preset.effects)
     ? preset.effects.slice(0, 6).map(([id, label]) => [
         Number.isFinite(Number(id)) ? Number(id) : NO_EFFECT_ID,
@@ -24,71 +28,63 @@ function normalizeUserGemPreset(preset = {}) {
     id:
       typeof preset.id === "string" && preset.id.trim()
         ? preset.id
-        : globalThis.crypto?.randomUUID?.() ?? `gem-preset-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    name: (requestedName || "Custom Forge Gem").slice(0, 60),
-    shape: typeof preset.shape === "string" && preset.shape ? preset.shape : "Radial",
+        : globalThis.crypto?.randomUUID?.() ?? `forge-preset-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    name: (requestedName || fallbackName).slice(0, 60),
+    sourceType,
+    shape: String(preset.shape ?? (sourceType === "Rune" ? "-" : "Radial")).trim() || (sourceType === "Rune" ? "-" : "Radial"),
     effects,
     info: {
-      name: String(preset.info?.name ?? requestedName ?? "Custom Forge Gem").slice(0, 80),
+      name: String(preset.info?.name ?? requestedName ?? fallbackName).slice(0, 80),
       effect: String(preset.info?.effect ?? effects[0][1] ?? "No Effect").slice(0, 140),
       rating: Number.isFinite(Number(preset.info?.rating)) ? Number(preset.info.rating) : 0,
       level: Number.isFinite(Number(preset.info?.level)) ? Number(preset.info.level) : 0,
-      note: String(preset.info?.note ?? "Personal Gem Forge preset.").slice(0, 240),
+      note: String(preset.info?.note ?? "Personal Forge preset shared by Gem Forge and Rune Forge.").slice(0, 240),
     },
     createdAt: typeof preset.createdAt === "string" ? preset.createdAt : new Date().toISOString(),
   };
 }
 
-function loadUserGemPresets() {
+function readStoredPresets(storageKey) {
   try {
-    const saved = globalThis.localStorage?.getItem(USER_GEM_PRESETS_STORAGE_KEY);
+    const saved = globalThis.localStorage?.getItem(storageKey);
     const parsed = saved ? JSON.parse(saved) : [];
-    return Array.isArray(parsed) ? parsed.map(normalizeUserGemPreset).slice(0, USER_GEM_PRESET_LIMIT) : [];
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
 }
 
-function persistUserGemPresets(presets) {
+function loadPersonalForgePresets() {
+  // Version 2 uses a single collection. The two previous collections are included once
+  // during loading, so existing saved Gem and Rune presets remain available immediately.
+  const stored = [
+    ...readStoredPresets(USER_FORGE_PRESETS_STORAGE_KEY),
+    ...readStoredPresets(LEGACY_USER_GEM_PRESETS_STORAGE_KEY).map((preset) => ({
+      ...preset,
+      sourceType: preset.sourceType ?? "Gem",
+    })),
+    ...readStoredPresets(LEGACY_USER_RUNE_PRESETS_STORAGE_KEY).map((preset) => ({
+      ...preset,
+      sourceType: preset.sourceType ?? "Rune",
+    })),
+  ];
+  const seenIds = new Set();
+
+  return stored
+    .map(normalizePersonalForgePreset)
+    .filter((preset) => {
+      if (seenIds.has(preset.id)) return false;
+      seenIds.add(preset.id);
+      return true;
+    })
+    .slice(0, USER_FORGE_PRESET_LIMIT);
+}
+
+function persistPersonalForgePresets(presets) {
   try {
-    globalThis.localStorage?.setItem(USER_GEM_PRESETS_STORAGE_KEY, JSON.stringify(presets));
+    globalThis.localStorage?.setItem(USER_FORGE_PRESETS_STORAGE_KEY, JSON.stringify(presets));
   } catch (error) {
-    console.warn("Unable to persist personal gem presets.", error);
-  }
-}
-
-function normalizeUserRunePreset(preset = {}) {
-  const normalized = normalizeUserGemPreset({
-    ...preset,
-    name: preset.name ?? preset.info?.name ?? "Custom Forge Rune",
-    info: {
-      ...preset.info,
-      name: preset.info?.name ?? preset.name ?? "Custom Forge Rune",
-      note: preset.info?.note ?? "Personal Rune Forge preset saved on this device.",
-    },
-  });
-
-  return {
-    ...normalized,
-    shape: preset.shape === "Oath" ? "Oath" : "-",
-  };
-}
-
-function loadUserRunePresets() {
-  try {
-    const saved = globalThis.localStorage?.getItem(USER_RUNE_PRESETS_STORAGE_KEY);
-    const parsed = saved ? JSON.parse(saved) : [];
-    return Array.isArray(parsed) ? parsed.map(normalizeUserRunePreset).slice(0, USER_RUNE_PRESET_LIMIT) : [];
-  } catch {
-    return [];
-  }
-}
-
-function persistUserRunePresets(presets) {
-  try {
-    globalThis.localStorage?.setItem(USER_RUNE_PRESETS_STORAGE_KEY, JSON.stringify(presets));
-  } catch (error) {
-    console.warn("Unable to persist personal rune presets.", error);
+    console.warn("Unable to persist personal Forge presets.", error);
   }
 }
 
@@ -1493,47 +1489,25 @@ export const ItemsProvider = ({ children }) => {
     ],
   });
 
-  const [userGemPresets, setUserGemPresets] = useState(loadUserGemPresets);
-  const [userRunePresets, setUserRunePresets] = useState(loadUserRunePresets);
+  const [userForgePresets, setUserForgePresets] = useState(loadPersonalForgePresets);
 
-  function saveUserGemPreset(preset) {
-    const normalized = normalizeUserGemPreset(preset);
-    setUserGemPresets((current) => {
+  function saveUserForgePreset(preset) {
+    const normalized = normalizePersonalForgePreset(preset);
+    setUserForgePresets((current) => {
       const next = [normalized, ...current.filter((entry) => entry.id !== normalized.id)].slice(
         0,
-        USER_GEM_PRESET_LIMIT,
+        USER_FORGE_PRESET_LIMIT,
       );
-      persistUserGemPresets(next);
+      persistPersonalForgePresets(next);
       return next;
     });
     return normalized;
   }
 
-  function deleteUserGemPreset(id) {
-    setUserGemPresets((current) => {
+  function deleteUserForgePreset(id) {
+    setUserForgePresets((current) => {
       const next = current.filter((entry) => entry.id !== id);
-      persistUserGemPresets(next);
-      return next;
-    });
-  }
-
-  function saveUserRunePreset(preset) {
-    const normalized = normalizeUserRunePreset(preset);
-    setUserRunePresets((current) => {
-      const next = [normalized, ...current.filter((entry) => entry.id !== normalized.id)].slice(
-        0,
-        USER_RUNE_PRESET_LIMIT,
-      );
-      persistUserRunePresets(next);
-      return next;
-    });
-    return normalized;
-  }
-
-  function deleteUserRunePreset(id) {
-    setUserRunePresets((current) => {
-      const next = current.filter((entry) => entry.id !== id);
-      persistUserRunePresets(next);
+      persistPersonalForgePresets(next);
       return next;
     });
   }
@@ -1661,12 +1635,9 @@ export const ItemsProvider = ({ children }) => {
     <ItemsContext.Provider
       value={{
         ...items,
-        userGemPresets,
-        saveUserGemPreset,
-        deleteUserGemPreset,
-        userRunePresets,
-        saveUserRunePreset,
-        deleteUserRunePreset,
+        userForgePresets,
+        saveUserForgePreset,
+        deleteUserForgePreset,
       }}
     >
       {children}
