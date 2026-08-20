@@ -59,6 +59,7 @@ function EditUpgrade({
   const [forgeOpen, setForgeOpen] = useState(false);
   const [presetName, setPresetName] = useState(() => `${selected.info?.name || "Custom"} Gem`);
   const [presetStatus, setPresetStatus] = useState("");
+  const [confirmError, setConfirmError] = useState("");
 
   // The primary effect can be a Caryll Rune id sitting in a Blood Gem slot (see the
   // catalog merge above). When that's the case there is no honest gem color for it,
@@ -73,6 +74,7 @@ function EditUpgrade({
 
     confirmInFlightRef.current = true;
     setIsConfirming(true);
+    setConfirmError("");
 
     try {
       const info = equipped
@@ -132,7 +134,12 @@ function EditUpgrade({
 
       setEditScreen(false);
     } catch (error) {
+      // Surface it instead of failing silently — a rejected `invoke` previously left
+      // Confirm looking like it did nothing at all, with no clue in the UI why.
       console.error("Unable to confirm the gem or rune edit.", error);
+      setConfirmError(
+        typeof error === "string" ? error : error?.message || "Unable to apply this change.",
+      );
     } finally {
       confirmInFlightRef.current = false;
       setIsConfirming(false);
@@ -288,6 +295,11 @@ function EditUpgrade({
             <button onClick={handleConfirm} disabled={isConfirming}>
               {isConfirming ? "Confirming…" : "Confirm"}
             </button>
+            {confirmError ? (
+              <span className="upgrade-editor__confirm-error" role="alert">
+                {confirmError}
+              </span>
+            ) : null}
           </div>
         </div>
         <div

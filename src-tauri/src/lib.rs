@@ -363,8 +363,15 @@ fn edit_effect(
     let is_gem: bool = serde_json::from_value(info["isGem"].clone())
         .map_err(|_| "The upgrade type is missing from this edit request.".to_string())?;
     let catalog_name = if is_gem { "gemEffects" } else { "runeEffects" };
-    let is_known_effect =
-        new_effect_id == u32::MAX || effect_catalog[catalog_name].get(&effect_id).is_some();
+    let fallback_catalog_name = if is_gem { "runeEffects" } else { "gemEffects" };
+    // `Upgrade::change_effect` already accepts an id from either catalogue — it falls
+    // back to the other one when the primary lookup misses (see data_handling/upgrades.rs).
+    // Some gems (from other tools, or valid in-game combinations) legitimately carry a
+    // Caryll Rune effect id. This gate must accept exactly what `change_effect` accepts,
+    // otherwise a perfectly valid edit is rejected here before it ever reaches it.
+    let is_known_effect = new_effect_id == u32::MAX
+        || effect_catalog[catalog_name].get(&effect_id).is_some()
+        || effect_catalog[fallback_catalog_name].get(&effect_id).is_some();
 
     if !is_known_effect {
         return Err(format!(
