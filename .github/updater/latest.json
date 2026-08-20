@@ -1,11 +1,11 @@
 {
-  "version": "0.1.6",
-  "pub_date": "2026-08-19T20:57:19.3469848Z",
+  "version": "0.1.7",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelE5TnE5RDJrWFhqa0FrY1I5RVVWLzdjOUxjcHdtZkpsTGVzV2JITkZmZ083ZGdjL3FuTk9PdWJVMTVvVmRLMFdmeXR2d2xYakxrWWNOdUh2QzNMUmdVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3MTczMDM1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjEuNl94NjQtc2V0dXAuZXhlCis1bi9ha0JUSTRWTCtLbGhwa0RpQ1VLNmRpcHJFVDdMaUJhUXpuNkQ1VG93Z1pRazNJL3lIWTZTRlAwbXB4dkpOa3ZnQ2QzS016a3RNY213cjdwY0R3PT0K",
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.1.6/Bloodborne_Save_Editor_Enhanced_0.1.6_x64-setup.exe"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.1.7/Bloodborne_Save_Editor_Enhanced_0.1.7_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelRyN214UzExT2QxWnEzZGs0MUZqNC9IRGJNYm4yazRlcHFnc1dDamk5M0lTRzhmUVVtWmJFNzBLblRSSzZiS1RxTzBjT2MvV2RjUm5Gdm5qdGN0OVFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3MjEwNDQ3CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjEuN194NjQtc2V0dXAuZXhlCmZkZHdXdHJKQXc1QTFRU2wrVXF2YWVNSGFWSXF2ekZLOGFVR2lyZGM1M01PQmJQMTlnb0J3OUV0cFhJcDVMV2o2bXo2RExtRnFDWTkxQnZlZ0s2VkFRPT0K"
     }
   },
+  "pub_date": "2026-08-20T07:20:51.6820595Z",
   "notes": "See the GitHub release for improvements and safe-save guidance."
 }
