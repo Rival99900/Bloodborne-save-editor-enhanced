@@ -50,7 +50,10 @@ jobs:
       - name: Build and publish the Windows installer
         uses: tauri-apps/tauri-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # When RELEASE_TOKEN is configured as a fine-grained personal access token for
+          # Rival99900, the release is created under that account. The built-in token remains
+          # a safe fallback so installer builds keep working until the token is added.
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:

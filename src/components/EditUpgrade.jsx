@@ -33,6 +33,9 @@ function EditUpgrade({
     userGemPresets,
     saveUserGemPreset,
     deleteUserGemPreset,
+    userRunePresets,
+    saveUserRunePreset,
+    deleteUserRunePreset,
   } = useContext(ItemsContext);
   const { drawCanvas } = useDraw();
   const { setSave } = useContext(SaveContext);
@@ -56,9 +59,24 @@ function EditUpgrade({
   } = edited;
   const [isConfirming, setIsConfirming] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
-  const [presetName, setPresetName] = useState(() => `${selected.info?.name || "Custom"} Gem`);
+  const [presetName, setPresetName] = useState(
+    () => `${selected.info?.name || "Custom"} ${selected.upgrade_type || "Gem"}`,
+  );
   const [presetStatus, setPresetStatus] = useState("");
   const [confirmError, setConfirmError] = useState("");
+  const runeForgePresets = useMemo(
+    () =>
+      runePresets.map((preset, index) => ({
+        id: `rune-forge-${index}`,
+        category: "Rune",
+        name: preset.label,
+        description: preset.info?.note || "Validated Caryll Rune preset.",
+        effectIds: preset.effects,
+        info: preset.info,
+        shape: preset.shape,
+      })),
+    [runePresets],
+  );
 
   // The primary effect can be a Caryll Rune id sitting in a Blood Gem slot (see the
   // catalog merge above). When that's the case there is no honest gem color for it,
@@ -145,8 +163,8 @@ function EditUpgrade({
     }
   }
 
-  function applyGemPreset({ preset, effects: presetEffects }) {
-    if (upgrade_type !== "Gem" || !Array.isArray(presetEffects)) return;
+  function applyForgePreset({ preset, effects: presetEffects }) {
+    if (!Array.isArray(presetEffects)) return;
 
     const normalizedEffects = Array.from({ length: EFFECT_SLOT_COUNT }, (_, index) => {
       const requestedId = Number(presetEffects[index]?.[0]);
@@ -163,29 +181,29 @@ function EditUpgrade({
       info: {
         ...previous.info,
         ...preset.info,
-        name: preset.info?.name ?? `${preset.name} Forge Gem`,
+        name: preset.info?.name ?? `${preset.name} Forge ${upgrade_type}`,
         effect: primary[1],
-        rating: primaryEffect?.rating ?? previous.info.rating,
-        level: primaryEffect?.level ?? previous.info.level,
-        note: preset.info?.note ?? "Gem Forge preset using validated in-game effect IDs.",
+        rating: primaryEffect?.rating ?? preset.info?.rating ?? previous.info.rating,
+        level: primaryEffect?.level ?? preset.info?.level ?? previous.info.level,
+        note: preset.info?.note ?? `${upgrade_type} Forge preset using validated in-game effect IDs.`,
       },
     }));
-    setPresetName(preset.name || "Custom Forge Gem");
+    setPresetName(preset.name || `Custom Forge ${upgrade_type}`);
     setPresetStatus("");
     setForgeOpen(false);
   }
 
-  function saveCurrentGemPreset() {
-    if (upgrade_type !== "Gem") return;
-
-    const saved = saveUserGemPreset({
+  function saveCurrentForgePreset() {
+    const isGem = upgrade_type === "Gem";
+    const savePreset = isGem ? saveUserGemPreset : saveUserRunePreset;
+    const saved = savePreset({
       name: presetName,
       shape,
       effects,
       info: {
         ...edited.info,
-        name: presetName.trim() || edited.info.name || "Custom Forge Gem",
-        note: "Personal Gem Forge preset saved on this device.",
+        name: presetName.trim() || edited.info.name || `Custom Forge ${upgrade_type}`,
+        note: `Personal ${upgrade_type} Forge preset saved on this device.`,
       },
     });
 
@@ -219,13 +237,15 @@ function EditUpgrade({
 
   return (
     <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label="Edit gem or rune">
-      {forgeOpen && upgrade_type === "Gem" ? (
+      {forgeOpen ? (
         <GemPresetPanel
           gemEffects={gemEffectCatalog}
-          userGemPresets={userGemPresets}
-          onApply={applyGemPreset}
-          onDeletePreset={deleteUserGemPreset}
+          userGemPresets={upgrade_type === "Gem" ? userGemPresets : userRunePresets}
+          onApply={applyForgePreset}
+          onDeletePreset={upgrade_type === "Gem" ? deleteUserGemPreset : deleteUserRunePreset}
           onClose={() => setForgeOpen(false)}
+          forgeType={upgrade_type.toLowerCase()}
+          builtInPresets={upgrade_type === "Gem" ? undefined : runeForgePresets}
         />
       ) : null}
       <div className="upgrade-editor__layout">
@@ -262,9 +282,10 @@ function EditUpgrade({
             </div>
           </div>
           <div className="upgrade-editor__actions">
-            {upgrade_type === "Gem" ? (
-              <>
-                <button onClick={() => setForgeOpen(true)}>Gem Forge</button>
+            <>
+                <button onClick={() => setForgeOpen(true)}>
+                  {upgrade_type === "Gem" ? "Gem Forge" : "Rune Forge"}
+                </button>
                 <div className="upgrade-editor__preset-save">
                   <label>
                     <span>Preset name</span>
@@ -275,14 +296,13 @@ function EditUpgrade({
                         setPresetName(event.target.value);
                         setPresetStatus("");
                       }}
-                      aria-label="Personal gem preset name"
+                      aria-label={`Personal ${upgrade_type.toLowerCase()} preset name`}
                     />
                   </label>
-                  <button onClick={saveCurrentGemPreset}>Save as preset</button>
+                  <button onClick={saveCurrentForgePreset}>Save as preset</button>
                   {presetStatus ? <span className="upgrade-editor__preset-status">{presetStatus}</span> : null}
                 </div>
               </>
-            ) : null}
             {!equipped ? (
               <button onClick={transformUpgrade} disabled={isConfirming}>
                 Convert to {upgrade_type === "Gem" ? "Rune" : "Gem"}
@@ -321,6 +341,7 @@ function EditUpgrade({
                     position: "absolute",
                     right: "0.9375rem",
                     top: "3.75rem",
+                    width: "8.25rem",
                     textAlign: "right",
                   }}
                   selected={shape}
@@ -344,6 +365,7 @@ function EditUpgrade({
                   position: "absolute",
                   right: "0.9375rem",
                   top: "1.25rem",
+                  width: "8.25rem",
                   textAlign: "right",
                 }}
                 selected={shape}

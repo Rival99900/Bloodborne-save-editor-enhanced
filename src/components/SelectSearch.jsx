@@ -102,7 +102,7 @@ function SelectSearch({
 
   return (
     // Attach the outside click ref and base styles here
-    <div ref={dropdownRef} style={{ ...style, position: "relative" }}>
+    <div ref={dropdownRef} style={{ position: "relative", ...style }}>
       {/* 2. Attach reference ref to the trigger container */}
       <div ref={refs.setReference} style={{ width: "100%" }}>
         <input

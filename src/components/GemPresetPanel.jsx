@@ -126,7 +126,17 @@ const GEM_PRESETS = [
   },
 ];
 
-function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePreset, onClose }) {
+function GemPresetPanel({
+  gemEffects,
+  userGemPresets = [],
+  onApply,
+  onDeletePreset,
+  onClose,
+  forgeType = "gem",
+  builtInPresets = GEM_PRESETS,
+}) {
+  const isRuneForge = forgeType === "rune";
+  const subject = isRuneForge ? "Rune" : "Gem";
   const [category, setCategory] = useState("All");
   const [mode, setMode] = useState("presets");
   const [customEffects, setCustomEffects] = useState(() =>
@@ -141,8 +151,11 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
     () => new Map(gemEffects.map((effect) => [normalizeEffectLabel(effect.label), effect])),
     [gemEffects],
   );
-  const categories = ["All", "Attack", "Elemental", "Recovery", "Experimental"];
-  const visiblePresets = GEM_PRESETS.filter(
+  const categories = [
+    "All",
+    ...Array.from(new Set(builtInPresets.map((preset) => preset.category).filter(Boolean))),
+  ];
+  const visiblePresets = builtInPresets.filter(
     (preset) => category === "All" || preset.category === category,
   );
 
@@ -198,9 +211,9 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
 
     onApply({
       preset: {
-        id: "custom-forge",
+        id: `custom-forge-${forgeType}`,
         category: "Custom",
-        name: "Custom Forge Gem",
+        name: `Custom Forge ${subject}`,
         description: `Custom set with ${activeCount} selected effect${activeCount > 1 ? "s" : ""}.`,
       },
       effects: resolveEffects(customEffects),
@@ -214,25 +227,24 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
   }
 
   return (
-    <div className="gem-forge" role="dialog" aria-modal="true" aria-label="Gem Forge presets">
+    <div className="gem-forge" role="dialog" aria-modal="true" aria-label={`${subject} Forge presets`}>
       <div className="gem-forge__header">
         <div>
-          <p className="gem-forge__eyebrow">Gem Forge</p>
+          <p className="gem-forge__eyebrow">{subject} Forge</p>
           <h2>Validated effects and custom sets</h2>
         </div>
-        <button className="gem-forge__close" onClick={onClose} aria-label="Close Gem Forge">
+        <button className="gem-forge__close" onClick={onClose} aria-label={`Close ${subject} Forge`}>
           Close
         </button>
       </div>
 
       <p className="gem-forge__notice">
         Loading a preset only updates the visible draft. Select <strong>Confirm</strong> in the
-        editor to write it to the save. Every effect below comes from the editor’s embedded gem
-        catalogue. The strongest known durability effect is applied where relevant; no fictional
-        “infinite durability” identifier is written.
+        editor to write it to the save. Every effect below comes from the editor’s embedded validated
+        catalogue. Gem and rune forge presets are stored separately on this device.
       </p>
 
-      <div className="gem-forge__modes" aria-label="Gem Forge mode">
+      <div className="gem-forge__modes" aria-label={`${subject} Forge mode`}>
         <button className={mode === "presets" ? "is-active" : ""} onClick={() => setMode("presets")}>
           Presets
         </button>
@@ -273,12 +285,12 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
       ) : null}
 
       {mode === "custom" ? (
-        <section className="gem-forge__custom" aria-label="Custom gem effect set">
+          <section className="gem-forge__custom" aria-label={`Custom ${subject.toLowerCase()} effect set`}>
           <div>
             <span className="gem-forge__eyebrow">Custom set</span>
-            <h3>Build a six-effect gem</h3>
+            <h3>Build a six-effect {subject.toLowerCase()}</h3>
             <p>
-              Choose up to six known gem effects. Empty slots stay as <em>No Effect</em>. The
+              Choose up to six validated effects. Empty slots stay as <em>No Effect</em>. The
               editor validates every selected ID again when you confirm.
             </p>
           </div>
@@ -309,12 +321,12 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
       ) : null}
 
       {mode === "personal" ? (
-        <section className="gem-forge__personal" aria-label="Personal gem presets">
+        <section className="gem-forge__personal" aria-label={`Personal ${subject.toLowerCase()} presets`}>
           <div className="gem-forge__personal-header">
             <div>
               <span className="gem-forge__eyebrow">My presets</span>
-              <h3>Saved gems on this device</h3>
-              <p>Use “Save as preset” in the editor to keep any edited gem here.</p>
+              <h3>Saved {subject.toLowerCase()}s on this device</h3>
+              <p>Use “Save as preset” in the editor to keep any edited {subject.toLowerCase()} here.</p>
             </div>
           </div>
 
@@ -324,7 +336,7 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
                 <article className="gem-forge__card gem-forge__card--personal" key={preset.id}>
                   <span>Personal</span>
                   <h3>{preset.name}</h3>
-                  <p>{preset.info?.note || "Personal Gem Forge preset."}</p>
+                  <p>{preset.info?.note || `Personal ${subject} Forge preset.`}</p>
                   <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
                   <div className="gem-forge__card-actions">
                     <button onClick={() => applySavedPreset(preset)}>Load into draft</button>
@@ -338,7 +350,7 @@ function GemPresetPanel({ gemEffects, userGemPresets = [], onApply, onDeletePres
           ) : (
             <div className="gem-forge__empty-personal">
               <p>No personal preset has been saved yet.</p>
-              <span>Edit a gem, then use <strong>Save as preset</strong> before confirming it.</span>
+              <span>Edit a {subject.toLowerCase()}, then use <strong>Save as preset</strong> before confirming it.</span>
             </div>
           )}
         </section>

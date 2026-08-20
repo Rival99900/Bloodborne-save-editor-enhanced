@@ -4,8 +4,10 @@ import { invoke } from "@tauri-apps/api/core";
 export const ItemsContext = createContext();
 
 const USER_GEM_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-gem-presets.v1";
+const USER_RUNE_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-rune-presets.v1";
 const NO_EFFECT_ID = 4294967295;
 const USER_GEM_PRESET_LIMIT = 30;
+const USER_RUNE_PRESET_LIMIT = 30;
 
 function normalizeUserGemPreset(preset = {}) {
   const requestedName = String(preset.name ?? preset.info?.name ?? "Custom Forge Gem").trim();
@@ -52,6 +54,41 @@ function persistUserGemPresets(presets) {
     globalThis.localStorage?.setItem(USER_GEM_PRESETS_STORAGE_KEY, JSON.stringify(presets));
   } catch (error) {
     console.warn("Unable to persist personal gem presets.", error);
+  }
+}
+
+function normalizeUserRunePreset(preset = {}) {
+  const normalized = normalizeUserGemPreset({
+    ...preset,
+    name: preset.name ?? preset.info?.name ?? "Custom Forge Rune",
+    info: {
+      ...preset.info,
+      name: preset.info?.name ?? preset.name ?? "Custom Forge Rune",
+      note: preset.info?.note ?? "Personal Rune Forge preset saved on this device.",
+    },
+  });
+
+  return {
+    ...normalized,
+    shape: preset.shape === "Oath" ? "Oath" : "-",
+  };
+}
+
+function loadUserRunePresets() {
+  try {
+    const saved = globalThis.localStorage?.getItem(USER_RUNE_PRESETS_STORAGE_KEY);
+    const parsed = saved ? JSON.parse(saved) : [];
+    return Array.isArray(parsed) ? parsed.map(normalizeUserRunePreset).slice(0, USER_RUNE_PRESET_LIMIT) : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistUserRunePresets(presets) {
+  try {
+    globalThis.localStorage?.setItem(USER_RUNE_PRESETS_STORAGE_KEY, JSON.stringify(presets));
+  } catch (error) {
+    console.warn("Unable to persist personal rune presets.", error);
   }
 }
 
@@ -1457,6 +1494,7 @@ export const ItemsProvider = ({ children }) => {
   });
 
   const [userGemPresets, setUserGemPresets] = useState(loadUserGemPresets);
+  const [userRunePresets, setUserRunePresets] = useState(loadUserRunePresets);
 
   function saveUserGemPreset(preset) {
     const normalized = normalizeUserGemPreset(preset);
@@ -1475,6 +1513,27 @@ export const ItemsProvider = ({ children }) => {
     setUserGemPresets((current) => {
       const next = current.filter((entry) => entry.id !== id);
       persistUserGemPresets(next);
+      return next;
+    });
+  }
+
+  function saveUserRunePreset(preset) {
+    const normalized = normalizeUserRunePreset(preset);
+    setUserRunePresets((current) => {
+      const next = [normalized, ...current.filter((entry) => entry.id !== normalized.id)].slice(
+        0,
+        USER_RUNE_PRESET_LIMIT,
+      );
+      persistUserRunePresets(next);
+      return next;
+    });
+    return normalized;
+  }
+
+  function deleteUserRunePreset(id) {
+    setUserRunePresets((current) => {
+      const next = current.filter((entry) => entry.id !== id);
+      persistUserRunePresets(next);
       return next;
     });
   }
@@ -1605,6 +1664,9 @@ export const ItemsProvider = ({ children }) => {
         userGemPresets,
         saveUserGemPreset,
         deleteUserGemPreset,
+        userRunePresets,
+        saveUserRunePreset,
+        deleteUserRunePreset,
       }}
     >
       {children}

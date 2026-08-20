@@ -621,11 +621,16 @@
 
 .gem-forge__filters button,
 .gem-forge__close {
+  min-height: 2.3rem;
   border: 1px solid rgba(225, 190, 109, 0.36);
   border-radius: 999px;
   padding: 0.4rem 0.8rem;
   background: rgba(255, 255, 255, 0.04);
   color: #e5ddca;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8rem !important;
+  font-weight: 700;
+  line-height: 1.15;
   cursor: pointer;
 }
 
@@ -658,12 +663,17 @@
 .gem-forge__card small { flex: 1; color: #a5a08f; font-size: 0.72rem; line-height: 1.35; }
 
 .gem-forge__card button {
+  min-height: 2.45rem;
   margin-top: 0.9rem;
   border: 1px solid rgba(225, 190, 109, 0.42);
   border-radius: 0.3rem;
-  padding: 0.45rem;
+  padding: 0.45rem 0.65rem;
   background: rgba(181, 133, 46, 0.18);
   color: #f0e6cf;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem !important;
+  font-weight: 750;
+  line-height: 1.2;
   cursor: pointer;
 }
 
@@ -936,11 +946,16 @@
 }
 
 .gem-forge__modes button {
+  min-height: 2.55rem;
   border: 1px solid rgba(225, 190, 109, 0.36);
   border-radius: 0.3rem;
   padding: 0.48rem 0.85rem;
   background: rgba(255, 255, 255, 0.04);
   color: #e5ddca;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.84rem !important;
+  font-weight: 750;
+  line-height: 1.2;
   cursor: pointer;
 }
 
@@ -1335,7 +1350,7 @@
 }
 
 .gem-forge__card-actions button {
-  flex: 1;
+  flex: 1 1 7.5rem;
   margin-top: 0;
 }
 
