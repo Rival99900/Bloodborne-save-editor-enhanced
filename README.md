@@ -1,55 +1,78 @@
 # Bloodborne Save Editor Enhanced
 
-> A modernized **Bloodborne** save editor designed to make sensitive save operations clearer, more reversible, and more reliable.
+> A passion-driven modernisation of the original Bloodborne save editor, designed to make advanced save editing clearer, safer, and more comfortable to use.
 
-[![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=9f7a3e)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=9f7a3e)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
 
-**Bloodborne Save Editor Enhanced** extends the original [Noxde Bloodborne Save Editor](https://github.com/Noxde/Bloodborne-save-editor) with a responsive interface, safer save controls, and an expanded gem editor. It is intended for **already decrypted** Bloodborne saves and creates a `.bak` backup before writing changes.
+**Bloodborne Save Editor Enhanced** expands the work of the original [Bloodborne Save Editor by Noxde](https://github.com/Noxde/Bloodborne-save-editor). This project was made with passion and respect for that foundation, with the aim of providing a cleaner interface, safer save workflows, more complete Gem and Rune editing, and practical quality-of-life improvements for the Bloodborne community.
 
-## Download and get started
+> **Credits.** Huge thanks and congratulations to [Noxde](https://github.com/Noxde) for the original project. This enhanced edition exists because of that valuable open-source work.
 
-Download the **Windows x64** installer from [Releases](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases), install the application, and load your decrypted save with **Open save** or `Ctrl+O`.
+## Download
 
-> **Important.** Always keep the `.bak` backup, test changes in-game, and do not remove an older save until it has been verified. You remain responsible for every change made to a save file.
+Download the latest **Windows x64 installer** from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). Each public release contains only the `.exe` installer.
 
-| Step | Recommended action |
-|---|---|
-| **1. Prepare** | Make an independent copy of the decrypted save before you begin. |
-| **2. Edit** | Use the editor categories and review proposed effects before confirming. |
-| **3. Save** | Use `Ctrl+S` or the Save button, then keep the `.bak` file created by the application. |
-| **4. Verify** | Load the save in-game before deleting an earlier version. |
+| Step | What to do |
+| --- | --- |
+| **1. Prepare your save** | Use an already decrypted Bloodborne save and make an independent copy before editing. |
+| **2. Install** | Run the Windows x64 installer from the Releases page. |
+| **3. Open** | Select **Open save** or press `Ctrl+O`. |
+| **4. Edit carefully** | Review every change in the editor before selecting **Confirm**. |
+| **5. Save and test** | Press `Ctrl+S`, keep the automatic `.bak` backup, and test the save in-game. |
+
+> **Important:** This application edits save data. Always preserve the `.bak` backup and an independent copy of your decrypted save until you have verified the result in-game. You remain responsible for every modification made to your save.
 
 ## Highlights
 
-| Area | Improvements |
-|---|---|
-| **Inventory** | **Add** is reserved for items, keys, and chalices. Weapons and armor use **Replace** to preserve their slot data. |
-| **Stats** | Values can be raised up to **2,000,000,000**. |
-| **Gem Forge** | Validated presets, a six-slot custom builder, a preview before confirmation, and persistent personal presets. |
-| **Gems and runes** | Separate catalogs and backend validation for effect IDs help prevent incompatible combinations. |
-| **Flags** | Explanation cards with impact, warnings, expandable details, and confirmation before applying a change. |
-| **Save protection** | When closing with unsaved changes, the editor lets you save, close without saving, or cancel. |
+| Area | What is included |
+| --- | --- |
+| **Responsive editor** | Reference-aligned Gem and Rune editing panels, bounded effect lists, stable scrolling, and controls that remain visible in normal and narrow windows. |
+| **Stats** | Editable values up to **2,000,000,000**. |
+| **Inventory** | Compatible items, keys, and chalices can be added; weapon and armor replacement preserves their slot data. |
+| **Gem Forge** | Validated built-in presets, a six-effect custom builder, complete preview drafts, and confirmation-based save writing. |
+| **Rune Forge** | Dedicated Caryll Rune presets, a six-effect custom builder, reliable rune previews, and Type selection. |
+| **Shared personal presets** | Save a preset once in Gem Forge or Rune Forge, then load it from either forge through the shared **My presets** library. |
+| **Effect compatibility** | The editor recognises compatible rune-origin effects found in gem slots, keeping their descriptions and previews available instead of silently dropping them. |
+| **Flags** | Clearer explanations, impact details, warnings, confirmation before applying, and smoother large-list scrolling. |
+| **Safe closing** | When there are unsaved changes, choose to save, close without saving, or cancel. The discard-and-close action exits correctly. |
 
-## Quick controls
+## Gem Forge and Rune Forge
+
+Both Forge tools update the visible draft first. Nothing is written to the save until you select **Confirm** in the editor.
+
+### Built-in and custom sets
+
+Gem Forge provides validated effect presets and an expanded custom six-slot builder. Rune Forge provides Caryll Rune presets and the same six-slot workflow. Empty entries remain as **No Effect**, so a saved or applied set always contains the expected six positions.
+
+### Shared My presets library
+
+Use **Save as preset** below the Gem or Rune preview to store the current draft. The preset is saved locally on your device and appears in **My presets** in both Gem Forge and Rune Forge. Older personal Gem and Rune preset collections are automatically included in this shared library.
+
+When loading a preset in the other editor type, its effects are applied to the draft while the destination keeps a valid local **Shape** for a gem or **Type** for a rune.
+
+## Keyboard shortcuts and controls
 
 | Action | Shortcut or control |
-|---|---|
+| --- | --- |
 | Open a decrypted save | `Ctrl+O` |
 | Save changes | `Ctrl+S` |
-| Close the **Add** window | Close button, `Escape`, or click outside the window |
-| Change interface zoom | `Ctrl` + `+`, `Ctrl` + `-`, `Ctrl` + `0` |
+| Close the Add window | Close button, `Escape`, or click outside the window |
+| Zoom the interface | `Ctrl` + `+`, `Ctrl` + `-`, or `Ctrl` + `0` |
+| Discard edited changes and exit | **Close without saving** in the unsaved-changes dialog |
 
-Long lists, effect menus, and confirmation controls are designed to remain usable in narrow windows. In Gem Forge, an applied preset is immediately visible before confirmation. A modified gem can also be saved through **Save as preset** and reused in **My presets**.
+## Save safety
+
+The editor creates a `.bak` backup as part of its normal save workflow. Confirmations, error messages, and the unsaved-changes dialog are designed to prevent accidental writes or silent loss of work.
+
+> Use experimental save modifications responsibly. Avoid editing saves intended for online play, and do not delete backups until the edited save has been verified.
 
 ## Automatic updates
 
-The application checks published updates and only installs a package whose signature matches the embedded public key. After downloading the package, the update is applied and the editor is restarted.
+The Windows updater verifies downloaded packages against the application’s embedded public signing key before installation. Release assets remain simple: the GitHub release contains only the installer, while the signed update metadata is stored separately for the updater.
 
-A release page contains only the Windows installer. The technical manifest used for update checks is kept separately so downloads remain simple while cryptographic verification is retained.
+## Development
 
-## Development and publishing
-
-The project uses **Tauri v2**, React, and Vite. After installing dependencies, use the following commands:
+This project uses **Tauri v2**, **React**, and **Vite**.
 
 ```bash
 npm install
@@ -57,15 +80,16 @@ npm run build
 npm run tauri -- build
 ```
 
-The GitHub Actions publishing workflow requires two **Repository secrets**. They must never be added to source code, issues, releases, or logs.
+To publish a signed Windows release, the repository workflow requires the following GitHub repository secrets:
 
 | Secret | Purpose |
-|---|---|
-| `TAURI_SIGNING_PRIVATE_KEY` | The original, complete, unmodified content of the Tauri private signing-key file. |
-| `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | The password associated with that key. |
+| --- | --- |
+| `TAURI_SIGNING_PRIVATE_KEY` | The complete, unmodified Tauri private signing key. |
+| `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | The password associated with the signing key. |
+| `RELEASE_TOKEN` | A fine-grained personal token with repository Contents read/write access, used to publish releases under the repository owner account. |
 
-> A key-decoding error means that the key or password does not match the generated file. Create or replace both **Repository secrets** together, without modifying or re-encoding the key content.
+Never place private keys, passwords, or access tokens in source code, issues, release notes, or logs.
 
 ## Credits and license
 
-This project is distributed under the [GPL-3.0](LICENSE). It is derived from the original work by [Noxde](https://github.com/Noxde/Bloodborne-save-editor) and retains that license in accordance with its open-source heritage.
+This project is distributed under the [GPL-3.0](LICENSE). It is derived from the original work by [Noxde](https://github.com/Noxde/Bloodborne-save-editor) and continues under the same open-source license.
