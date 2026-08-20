@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import {
   getGemFallbackPath,
@@ -27,8 +27,9 @@ function EditUpgrade({
   slot,
 }) {
   const {
-    gemEffects,
     runeEffects,
+    gemEffectCatalog,
+    nativeGemEffectIds,
     runePresets,
     userGemPresets,
     saveUserGemPreset,
@@ -37,6 +38,14 @@ function EditUpgrade({
   const { drawCanvas } = useDraw();
   const { setSave } = useContext(SaveContext);
   const confirmInFlightRef = useRef(false);
+
+  // A merged lookup (native gem effects + Caryll Rune effects) so a slot carrying a
+  // rune-origin effect id — produced by other save-edit tools, or valid in-game data —
+  // can still be found, re-selected, and described instead of silently going blank.
+  const gemEffectCatalogById = useMemo(
+    () => new Map(gemEffectCatalog.map((entry) => [Number(entry.value), entry])),
+    [gemEffectCatalog],
+  );
 
   const [edited, setEdited] = useState(JSON.parse(JSON.stringify(selected)));
   const {
@@ -50,6 +59,14 @@ function EditUpgrade({
   const [forgeOpen, setForgeOpen] = useState(false);
   const [presetName, setPresetName] = useState(() => `${selected.info?.name || "Custom"} Gem`);
   const [presetStatus, setPresetStatus] = useState("");
+
+  // The primary effect can be a Caryll Rune id sitting in a Blood Gem slot (see the
+  // catalog merge above). When that's the case there is no honest gem color for it,
+  // so the preview should show the rune it actually corresponds to.
+  const primaryEffectEntry =
+    upgrade_type === "Gem" ? gemEffectCatalogById.get(Number(effects[0]?.[0])) : undefined;
+  const primaryIsRuneOrigin =
+    Boolean(primaryEffectEntry) && !nativeGemEffectIds.has(Number(effects[0]?.[0]));
 
   async function handleConfirm() {
     if (confirmInFlightRef.current) return;
@@ -125,14 +142,13 @@ function EditUpgrade({
   function applyGemPreset({ preset, effects: presetEffects }) {
     if (upgrade_type !== "Gem" || !Array.isArray(presetEffects)) return;
 
-    const allowedEffects = new Map(gemEffects.map((entry) => [Number(entry.value), entry]));
     const normalizedEffects = Array.from({ length: EFFECT_SLOT_COUNT }, (_, index) => {
       const requestedId = Number(presetEffects[index]?.[0]);
-      const entry = allowedEffects.get(requestedId);
+      const entry = gemEffectCatalogById.get(requestedId);
       return entry ? [Number(entry.value), entry.label] : [NO_EFFECT_ID, "No Effect"];
     });
     const primary = normalizedEffects[0];
-    const primaryEffect = allowedEffects.get(Number(primary[0]));
+    const primaryEffect = gemEffectCatalogById.get(Number(primary[0]));
 
     setEdited((previous) => ({
       ...previous,
@@ -199,7 +215,7 @@ function EditUpgrade({
     <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label="Edit gem or rune">
       {forgeOpen && upgrade_type === "Gem" ? (
         <GemPresetPanel
-          gemEffects={gemEffects}
+          gemEffects={gemEffectCatalog}
           userGemPresets={userGemPresets}
           onApply={applyGemPreset}
           onDeletePreset={deleteUserGemPreset}
@@ -220,13 +236,18 @@ function EditUpgrade({
                         shape,
                         level,
                         getUnique(effects[0][0], shape, source),
+                        primaryIsRuneOrigin ? primaryEffectEntry : undefined,
                       )
                     : getRunePath(name, shape, rating)
                 }
                 alt=""
                 onError={(event) => {
                   const fallback =
-                    upgrade_type === "Gem" ? getGemFallbackPath() : getRuneFallbackPath(shape);
+                    upgrade_type === "Gem"
+                      ? primaryIsRuneOrigin
+                        ? getRuneFallbackPath()
+                        : getGemFallbackPath()
+                      : getRuneFallbackPath(shape);
                   if (!event.currentTarget.src.endsWith(fallback)) {
                     event.currentTarget.src = fallback;
                   }
@@ -353,7 +374,7 @@ function EditUpgrade({
                     }));
                   }}
                   selected={effectName}
-                  options={upgrade_type === "Gem" ? gemEffects : runeEffects}
+                  options={upgrade_type === "Gem" ? gemEffectCatalog : runeEffects}
                 />
                 <div className="line" aria-hidden="true" />
               </div>

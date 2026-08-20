@@ -63,6 +63,8 @@ export const ItemsProvider = ({ children }) => {
     all: [],
     gemEffects: [],
     runeEffects: [],
+    gemEffectCatalog: [],
+    nativeGemEffectIds: new Set(),
     runePresets: [
       {
         label: "Anti-Clockwise Metamorphosis (Tier 1)",
@@ -1570,6 +1572,16 @@ export const ItemsProvider = ({ children }) => {
           value: x,
         }));
 
+      // Some third-party tools (and legitimate in-game combinations) can leave a Blood
+      // Gem slot holding an effect id that only exists in the Caryll Rune catalogue
+      // (e.g. "Add all types of RES +150"). The Gem editor must still recognise those
+      // ids — otherwise the slot's search box can never match anything and any preset
+      // built from it silently loses its effect summary.
+      const nativeGemEffectIds = new Set(transformedGemEffects.map((effect) => Number(effect.value)));
+      const gemEffectCatalog = transformedGemEffects.concat(
+        transformedRuneEffects.filter((effect) => !nativeGemEffectIds.has(Number(effect.value))),
+      );
+
       setItems((prev) => ({
         ...prev,
         weapons: transformedWeapons,
@@ -1578,6 +1590,8 @@ export const ItemsProvider = ({ children }) => {
         all: transformedItems.concat(transformedWeapons, transformedArmors),
         gemEffects: transformedGemEffects,
         runeEffects: transformedRuneEffects,
+        gemEffectCatalog,
+        nativeGemEffectIds,
       }));
     };
 

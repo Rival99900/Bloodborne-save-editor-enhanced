@@ -812,7 +812,7 @@
   top: 11.25rem !important;
   right: 0;
   bottom: 0.75rem;
-  left: 2.5rem !important;
+  left: 3.375rem !important;
   display: block;
   width: auto !important;
   overflow-x: hidden;
@@ -870,7 +870,7 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  left: -1.8125rem !important;
+  left: -2.6875rem !important;
   width: 21.875rem !important;
   height: 1px;
   max-width: none;
