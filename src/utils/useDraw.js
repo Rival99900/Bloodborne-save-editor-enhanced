@@ -1,14 +1,17 @@
 import { useContext } from "react";
 import { ImagesContext } from "../context/imagesContext";
+import { ItemsContext } from "../context/itemsContext";
 import {
   getGemPath as getSafeGemPath,
   getRunePath as getSafeRunePath,
+  getRuneFallbackPath as getSafeRuneFallbackPath,
   getUnique as getSafeUnique,
   isCursed as isSafeCursed,
 } from "./upgrades";
 
 function useDraw() {
   const { images } = useContext(ImagesContext);
+  const { gemEffectCatalog = [], nativeGemEffectIds = new Set() } = useContext(ItemsContext);
 
   async function drawCanvas(ctx, item, isSmall = false, context = images) {
     const { info } = item;
@@ -177,10 +180,17 @@ function useDraw() {
 
       const uniqueGem = getUnique(effects[0][0], shape, source);
       const cursed = isCursed(effects);
+      const primaryEffectId = Number(effects[0]?.[0]);
+      const primaryEffect = gemEffectCatalog.find(
+        (effect) => Number(effect.value) === primaryEffectId,
+      );
+      const runeOriginPrimaryEffect =
+        primaryEffect && !nativeGemEffectIds.has(primaryEffectId) ? primaryEffect : undefined;
       const finalName = makeGemName(name, uniqueGem, cursed, source);
-      const thumbnail = await loadImage(
-        getGemPath(effects, shape, level, uniqueGem, cursed)
-      ).catch(() => {});
+      const path = getGemPath(effects, shape, level, uniqueGem, runeOriginPrimaryEffect);
+      const thumbnail = await loadImage(path).catch(() =>
+        runeOriginPrimaryEffect ? loadImage(getRuneFallbackPath()).catch(() => undefined) : undefined,
+      );
 
       ctx.font = "20px Reim";
       if (thumbnail !== undefined)
@@ -207,7 +217,9 @@ function useDraw() {
 
       const path = getRunePath(name, shape, rating);
 
-      const thumbnail = await loadImage(path).catch(() => {});
+      const thumbnail = await loadImage(path).catch(() =>
+        loadImage(getRuneFallbackPath(shape)).catch(() => undefined),
+      );
 
       if (thumbnail !== undefined)
         ctx.drawImage(thumbnail, x, 4.8, x + size, 4.8 + size + 2);
@@ -294,6 +306,10 @@ function useDraw() {
     return getSafeRunePath(name, shape, rating);
   }
 
+  function getRuneFallbackPath(shape) {
+    return getSafeRuneFallbackPath(shape);
+  }
+
   function isCursed(effects) {
     return isSafeCursed(effects);
   }
@@ -302,8 +318,8 @@ function useDraw() {
     return getSafeUnique(primaryEffect, shape, source);
   }
 
-  function getGemPath(effects, shape, level, unique) {
-    return getSafeGemPath(effects, shape, level, unique);
+  function getGemPath(effects, shape, level, unique, runeOriginPrimaryEffect) {
+    return getSafeGemPath(effects, shape, level, unique, runeOriginPrimaryEffect);
   }
 
   return { drawCanvas, getUnique, getGemPath, loadImage, isCursed };

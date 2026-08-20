@@ -27,7 +27,6 @@ function EditUpgrade({
   slot,
 }) {
   const {
-    runeEffects,
     gemEffectCatalog,
     nativeGemEffectIds,
     runePresets,
@@ -386,7 +385,7 @@ function EditUpgrade({
                     }));
                   }}
                   selected={effectName}
-                  options={upgrade_type === "Gem" ? gemEffectCatalog : runeEffects}
+                  options={gemEffectCatalog}
                 />
                 <div className="line" aria-hidden="true" />
               </div>

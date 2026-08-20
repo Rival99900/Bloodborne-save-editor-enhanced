@@ -816,7 +816,7 @@
    re-measuring, scan the background PNG for the title's leftmost non-background pixel. */
 .upgrade-editor__effects {
   position: absolute;
-  top: 11.25rem !important;
+  top: 11.75rem !important;
   right: 0;
   bottom: 0.75rem;
   left: 1rem !important;
@@ -1488,18 +1488,22 @@
 }
 
 @media (max-height: 760px) {
+  /* Keep the first editable row below the title baked into the artwork. The
+     previous compact rule moved it upward into the title on typical Windows
+     title-bar heights. The list itself can scroll when its extra rune-preset
+     control needs more space. */
   .upgrade-editor__effects {
-    top: 10.25rem !important;
-    bottom: 0.9rem;
+    top: 11.75rem !important;
+    bottom: 0.6rem;
   }
 
   .upgrade-editor__effects .effect {
-    min-height: 2.75rem;
+    min-height: 3rem;
   }
 
   .upgrade-editor__effects .effect input {
-    height: 2.2rem;
-    min-height: 2.2rem;
+    height: 2.25rem;
+    min-height: 2.25rem;
     padding-block: 0.28rem !important;
   }
 

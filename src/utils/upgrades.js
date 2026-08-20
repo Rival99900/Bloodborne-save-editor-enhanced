@@ -31,6 +31,9 @@ const RUNE_TIER_LIMITS = {
   oedon_writhe: 2,
 };
 const OATH_RUNES = new Set(["beast's_embrace", "corruption", "hunter", "impurity", "milkweed", "radiance"]);
+const RUNE_ASSET_DIRECTORY = {
+  anti_clockwise_metamorphosis: "anti-clockwise_metamorphosis",
+};
 
 function normalizeGemShape(shape) {
   const normalized = String(shape ?? "radial").toLowerCase();
@@ -72,7 +75,8 @@ function getRunePath(name, shape, rating) {
   }
 
   const runeName = normalizeRuneName(name);
-  return `/assets/runes/${runeName}/${normalizeRuneTier(runeName, rating)}.png`;
+  const assetDirectory = RUNE_ASSET_DIRECTORY[runeName] ?? runeName;
+  return `/assets/runes/${assetDirectory}/${normalizeRuneTier(runeName, rating)}.png`;
 }
 
 function getRuneFallbackPath(shape) {
