@@ -1,6 +1,6 @@
 {
   "name": "bloodborne-save-editor-enhanced",
-  "version": "0.2.0-beta.1",
+  "version": "0.2.0-beta.2",
   "private": true,
   "dependencies": {
     "@floating-ui/react": "^0.27.19",

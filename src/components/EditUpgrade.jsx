@@ -86,6 +86,8 @@ function EditUpgrade({
   } = edited;
   const [isConfirming, setIsConfirming] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
+  // Rune presets are one-time actions; the field intentionally remains blank until chosen.
+  const [runePresetSelection, setRunePresetSelection] = useState(null);
   const [presetName, setPresetName] = useState(
     () => `${selected.info?.name || "Custom"} ${selected.upgrade_type || "Gem"}`,
   );
@@ -182,7 +184,7 @@ function EditUpgrade({
       // Confirm looking like it did nothing at all, with no clue in the UI why.
       console.error("Unable to confirm the gem or rune edit.", error);
       setConfirmError(
-        typeof error === "string" ? error : error?.message || "Unable to apply this change.",
+        typeof error === "string" ? error : error?.message || t("forge.unableToApply"),
       );
     } finally {
       confirmInFlightRef.current = false;
@@ -234,7 +236,7 @@ function EditUpgrade({
     });
 
     setPresetName(saved.name);
-    setPresetStatus(`Saved “${saved.name}” in My presets for Gem Forge and Rune Forge.`);
+    setPresetStatus(t("forge.savedStatus", { name: saved.name }));
   }
 
   async function transformUpgrade() {
@@ -262,7 +264,7 @@ function EditUpgrade({
   }
 
   return (
-    <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label="Edit gem or rune">
+    <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label={t("forge.dialogLabel", { subject: upgrade_type })}>
       {forgeOpen ? (
         <GemPresetPanel
           gemEffects={gemEffectCatalog}
@@ -277,7 +279,7 @@ function EditUpgrade({
       <div className="upgrade-editor__layout">
         <div className="upgrade-editor__preview">
           <div>
-            <span>Editing:</span>
+            <span>{t("forge.editing")}</span>
             <div className="upgrade-editor__art-frame">
               <img
                 className="upgrade-editor__art"
@@ -310,11 +312,11 @@ function EditUpgrade({
           <div className="upgrade-editor__actions">
             <>
                 <button onClick={() => setForgeOpen(true)}>
-                  {upgrade_type === "Gem" ? "Gem Forge" : "Rune Forge"}
+                  {upgrade_type === "Gem" ? t("forge.gemForge") : t("forge.runeForge")}
                 </button>
                 <div className="upgrade-editor__preset-save">
                   <label>
-                    <span>Preset name</span>
+                    <span>{t("forge.presetName")}</span>
                     <input
                       value={presetName}
                       maxLength={60}
@@ -322,23 +324,23 @@ function EditUpgrade({
                         setPresetName(event.target.value);
                         setPresetStatus("");
                       }}
-                      aria-label={`Personal ${upgrade_type.toLowerCase()} preset name`}
+                      aria-label={t("forge.personalPresetName", { subject: upgrade_type.toLowerCase() })}
                     />
                   </label>
-                  <button onClick={saveCurrentForgePreset}>Save as preset</button>
+                  <button onClick={saveCurrentForgePreset}>{t("forge.saveAsPreset")}</button>
                   {presetStatus ? <span className="upgrade-editor__preset-status">{presetStatus}</span> : null}
                 </div>
               </>
             {!equipped ? (
               <button onClick={transformUpgrade} disabled={isConfirming}>
-                Convert to {upgrade_type === "Gem" ? "Rune" : "Gem"}
+                {t("forge.convertTo", { subject: upgrade_type === "Gem" ? "Rune" : "Gem" })}
               </button>
             ) : null}
             <button onClick={() => setEditScreen(false)} disabled={isConfirming}>
-              Cancel
+              {t("forge.cancel")}
             </button>
             <button onClick={handleConfirm} disabled={isConfirming}>
-              {isConfirming ? "Confirming…" : "Confirm"}
+              {isConfirming ? t("forge.confirming") : t("forge.confirm")}
             </button>
             {confirmError ? (
               <span className="upgrade-editor__confirm-error" role="alert">
@@ -402,7 +404,7 @@ function EditUpgrade({
             {effects.map(([, effectName], index) => (
               <div className="effect" key={index}>
                 <SelectSearch
-                  defaultValue="No Effect"
+                  defaultValue={t("forge.noEffect")}
                   onChange={(event) => {
                     const { name: effectOwnerName, level: effectLevel, rating: effectRating, value, label, note } = event;
                     setEdited((previous) => ({

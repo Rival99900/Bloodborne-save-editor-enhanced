@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import SelectSearch from "./SelectSearch";
+import { useLocalization } from "../i18n/localization";
 
 const NO_EFFECT_ID = 4294967295;
 const EFFECT_SLOTS = 6;
@@ -135,6 +136,7 @@ function GemPresetPanel({
   forgeType = "gem",
   builtInPresets = GEM_PRESETS,
 }) {
+  const { t } = useLocalization();
   const isRuneForge = forgeType === "rune";
   const subject = isRuneForge ? "Rune" : "Gem";
   const [category, setCategory] = useState("All");
@@ -171,7 +173,7 @@ function GemPresetPanel({
         // never written back unless it is still in the embedded gem catalogue.
         return resolved
           ? [Number(resolved.value), resolved.label]
-          : [NO_EFFECT_ID, "No Effect"];
+          : [NO_EFFECT_ID, t("forge.noEffect")];
       });
   }
 
@@ -191,7 +193,7 @@ function GemPresetPanel({
       preset: {
         ...preset,
         category: "Personal",
-        description: "Personal Forge preset shared by Gem Forge and Rune Forge.",
+        description: t("forge.personalPresetDescription"),
       },
       effects: resolveEffects(preset.effects),
     });
@@ -214,52 +216,47 @@ function GemPresetPanel({
         id: `custom-forge-${forgeType}`,
         category: "Custom",
         name: `Custom Forge ${subject}`,
-        description: `Custom set with ${activeCount} selected effect${activeCount > 1 ? "s" : ""}.`,
+        description: `${t("forge.customSet")} — ${activeCount} ${t("forge.effect", { index: "" }).trim().toLowerCase()}${activeCount > 1 ? "s" : ""}.`,
       },
       effects: resolveEffects(customEffects),
     });
   }
 
   function deletePreset(preset) {
-    if (window.confirm(`Delete the personal preset “${preset.name}”?`)) {
+    if (window.confirm(t("forge.deleteConfirm", { name: preset.name }))) {
       onDeletePreset?.(preset.id);
     }
   }
 
   return (
-    <div className="gem-forge" role="dialog" aria-modal="true" aria-label={`${subject} Forge presets`}>
+    <div className="gem-forge" role="dialog" aria-modal="true" aria-label={t("forge.modeLabel", { subject })}>
       <div className="gem-forge__header">
         <div>
-          <p className="gem-forge__eyebrow">{subject} Forge</p>
-          <h2>Validated effects and custom sets</h2>
+          <p className="gem-forge__eyebrow">{isRuneForge ? t("forge.runeForge") : t("forge.gemForge")}</p>
+          <h2>{t("forge.title")}</h2>
         </div>
-        <button className="gem-forge__close" onClick={onClose} aria-label={`Close ${subject} Forge`}>
-          Close
+        <button className="gem-forge__close" onClick={onClose} aria-label={t("forge.closeLabel", { subject })}>
+          {t("forge.close")}
         </button>
       </div>
 
-      <p className="gem-forge__notice">
-        Loading a preset only updates the visible draft. Select <strong>Confirm</strong> in the
-        editor to write it to the save. Every effect below comes from the editor’s embedded validated
-        catalogue. Personal presets are shared by Gem Forge and Rune Forge; the destination editor
-        keeps its own valid Shape or Type.
-      </p>
+      <p className="gem-forge__notice">{t("forge.notice")}</p>
 
-      <div className="gem-forge__modes" aria-label={`${subject} Forge mode`}>
+      <div className="gem-forge__modes" aria-label={t("forge.modeLabel", { subject })}>
         <button className={mode === "presets" ? "is-active" : ""} onClick={() => setMode("presets")}>
-          Presets
+          {t("forge.presets")}
         </button>
         <button className={mode === "custom" ? "is-active" : ""} onClick={() => setMode("custom")}>
-          Custom set
+          {t("forge.customSet")}
         </button>
         <button className={mode === "personal" ? "is-active" : ""} onClick={() => setMode("personal")}>
-          My presets {userGemPresets.length ? `(${userGemPresets.length})` : ""}
+          {t("forge.myPresets")} {userGemPresets.length ? `(${userGemPresets.length})` : ""}
         </button>
       </div>
 
       {mode === "presets" ? (
         <>
-          <div className="gem-forge__filters" aria-label="Preset categories">
+          <div className="gem-forge__filters" aria-label={t("forge.presetCategories")}>
             {categories.map((entry) => (
               <button
                 key={entry}
@@ -278,7 +275,7 @@ function GemPresetPanel({
                 <h3>{preset.name}</h3>
                 <p>{preset.description}</p>
                 <small>{formatEffects(preset.effectIds)}</small>
-                <button onClick={() => applyPreset(preset)}>Load into draft</button>
+                <button onClick={() => applyPreset(preset)}>{t("forge.loadIntoDraft")}</button>
               </article>
             ))}
           </div>
@@ -286,23 +283,20 @@ function GemPresetPanel({
       ) : null}
 
       {mode === "custom" ? (
-          <section className="gem-forge__custom" aria-label={`Custom ${subject.toLowerCase()} effect set`}>
+          <section className="gem-forge__custom" aria-label={t("forge.customSetLabel", { subject: subject.toLowerCase() })}>
           <div>
-            <span className="gem-forge__eyebrow">Custom set</span>
-            <h3>Build a six-effect {subject.toLowerCase()}</h3>
-            <p>
-              Choose up to six validated effects. Empty slots stay as <em>No Effect</em>. The
-              editor validates every selected ID again when you confirm.
-            </p>
+            <span className="gem-forge__eyebrow">{t("forge.customSet")}</span>
+            <h3>{t("forge.buildSixEffect", { subject: subject.toLowerCase() })}</h3>
+            <p>{t("forge.customSetDescription")}</p>
           </div>
 
           <div className="gem-forge__custom-grid">
             {customEffects.map((effectId, index) => (
               <label key={index}>
-                <span>Effect {index + 1}</span>
+                <span>{t("forge.effect", { index: index + 1 })}</span>
                 <SelectSearch
-                  selected={effectById.get(effectId)?.label ?? "No Effect"}
-                  defaultValue="No Effect"
+                  selected={effectById.get(effectId)?.label ?? t("forge.noEffect")}
+                  defaultValue={t("forge.noEffect")}
                   options={gemEffects}
                   onChange={(option) => changeCustomEffect(index, option)}
                 />
@@ -311,23 +305,23 @@ function GemPresetPanel({
           </div>
 
           <div className="gem-forge__custom-preview">
-            <span>Draft preview</span>
-            <p>{formatEffects(customEffects) || "Choose at least one effect to load a custom draft."}</p>
+            <span>{t("forge.draftPreview")}</span>
+            <p>{formatEffects(customEffects) || t("forge.draftEmpty")}</p>
           </div>
 
           <button className="gem-forge__apply-custom" onClick={applyCustom}>
-            Load custom set into draft
+            {t("forge.loadCustomDraft")}
           </button>
         </section>
       ) : null}
 
       {mode === "personal" ? (
-        <section className="gem-forge__personal" aria-label={`Personal ${subject.toLowerCase()} presets`}>
+        <section className="gem-forge__personal" aria-label={t("forge.personalPresetsLabel", { subject: subject.toLowerCase() })}>
           <div className="gem-forge__personal-header">
             <div>
-              <span className="gem-forge__eyebrow">My presets</span>
-              <h3>Personal presets shared by both forges</h3>
-              <p>Save an edited gem or rune once, then load the same preset from Gem Forge or Rune Forge.</p>
+              <span className="gem-forge__eyebrow">{t("forge.myPresets")}</span>
+              <h3>{t("forge.sharedPresetsTitle")}</h3>
+              <p>{t("forge.sharedPresetsDescription")}</p>
             </div>
           </div>
 
@@ -335,14 +329,14 @@ function GemPresetPanel({
             <div className="gem-forge__grid">
               {userGemPresets.map((preset) => (
                 <article className="gem-forge__card gem-forge__card--personal" key={preset.id}>
-                  <span>Personal</span>
+                  <span>{t("forge.personal")}</span>
                   <h3>{preset.name}</h3>
-                  <p>{preset.info?.note || "Personal Forge preset shared by Gem Forge and Rune Forge."}</p>
+                  <p>{preset.info?.note || t("forge.personalPresetDescription")}</p>
                   <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
                   <div className="gem-forge__card-actions">
                     <button onClick={() => applySavedPreset(preset)}>Load into draft</button>
                     <button className="gem-forge__delete" onClick={() => deletePreset(preset)}>
-                      Delete
+                      {t("forge.delete")}
                     </button>
                   </div>
                 </article>
@@ -350,8 +344,8 @@ function GemPresetPanel({
             </div>
           ) : (
             <div className="gem-forge__empty-personal">
-              <p>No personal preset has been saved yet.</p>
-              <span>Edit a gem or rune, then use <strong>Save as preset</strong> to make it available in both forges.</span>
+              <p>{t("forge.noPersonalPreset")}</p>
+              <span>{t("forge.noPersonalPresetDescription")}</span>
             </div>
           )}
         </section>

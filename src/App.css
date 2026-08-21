@@ -1332,8 +1332,8 @@
 
 .catalog-picker__results canvas {
   display: block;
-  width: 526px;
-  max-width: 100%;
+  width: 100%;
+  max-width: none;
   height: 90px;
   cursor: pointer;
 }
@@ -1351,7 +1351,7 @@
 }
 
 .catalog-picker #hoverReplacement {
-  width: min(526px, 100%);
+  width: 100%;
 }
 
 /* Personal Gem Forge presets */
