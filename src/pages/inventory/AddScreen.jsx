@@ -208,12 +208,12 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
             </div>
           </section>
         ) : (
-          <>
+          <section className="inventory-dialog__standard-content">
             <p className="inventory-dialog__notice">
               {isEquipment ? t("inventory.directEquipmentNotice") : t("inventory.addNotice")}
             </p>
             <SearchAllitems key={catalog} type={catalog} onChange={setSelected} />
-          </>
+          </section>
         )}
 
         {error ? (

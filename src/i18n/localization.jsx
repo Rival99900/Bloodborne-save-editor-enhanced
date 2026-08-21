@@ -1613,6 +1613,10421 @@ const flagOverrides = {
   },
 };
 
+const beta5TranslatedOverrides = {
+  "fr": [
+    {
+      "key": "forge.presets",
+      "value": "Préréglages"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Drapeaux"
+    },
+    {
+      "key": "update.version",
+      "value": "Version {{version}}"
+    }
+  ],
+  "es": [
+    {
+      "key": "flags.card.confirm",
+      "value": "¿Aplicar esta marca de guardado conocida? Se realizará una copia de seguridad antes de guardar."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Marca aplicada al guardado en memoria. Selecciona Guardar cambios para escribir el archivo."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "No se pudo aplicar esta marca: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Cambios:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Precaución:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Patrón de bytes validado:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Ocultar detalles"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "¿Qué hace esto?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Aplicando…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Aplicar"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Restaurar el diálogo de Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Restauración narrativa"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Restaura un pequeño conjunto de líneas de diálogo anteriores al encuentro con Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Esto solo cambia el estado del diálogo; no otorga objetos, niveles ni recompensas de jefe."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Úsalo primero en una copia de la partida si te encuentras actualmente en el Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Habilitar la nana heredada de la Muñeca"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Presentación heredada"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Vuelve a habilitar el comportamiento de la nana de la Muñeca asociado con la versión original 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Esto restaura un estado de presentación heredado. No altera atributos, inventario ni recompensas de misiones."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "El comportamiento depende de la versión; conserva la copia de seguridad hasta cargar el personaje correctamente."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Habilitar el comportamiento cooperativo Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Comportamiento multijugador"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Habilita la interacción Blood-addled asociada a jugadores cooperativos que usan la runa Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Esto cambia el comportamiento de hostilidad multijugador mientras se cumplan las condiciones de la runa relevante."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Úsalo solo sin conexión o con jugadores que consientan. Puede provocar comportamientos cooperativos hostiles y confusos."
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Armas"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Armaduras"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Gemas de sangre (adición directa experimental)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Runas Caryll (adición directa experimental)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Agregar una gema o runa terminada"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Agregar un arma o una armadura"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Crear directamente una gema de sangre o una Runa Caryll terminada a partir de efectos validados cuando exista un registro reutilizable seguro en la partida."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Crear directamente un arma o armadura catalogada cuando la partida contenga un bloque seguro y reutilizable de ranura de equipo."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Constructor directo de gemas y runas"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimental: esta operación reutiliza solo un registro huérfano de mejora seguro. Nunca reestructura el formato de la partida. Mantén la copia de seguridad automática hasta que el personaje se cargue normalmente."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimental: esta operación reutiliza solo un bloque huérfano y seguro de ranura de equipo y crea cinco ranuras de gemas cerradas. Abre las ranuras más tarde con Gemas si es necesario."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Elige un primer efecto validado antes de añadir una gema o runa."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "No se pudo completar la adición directa de forma segura."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Añadir directamente"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Agregar equipo"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Forma de gema"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Tipo de runa"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Editar {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Nombre del preset personal de {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Guardado “{{name}}” en Mis presets para Gem Forge y Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Convertir a {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "¿Convertir este {{source}} en un {{destination}}? Mantén la copia de seguridad automática hasta que hayas probado la partida."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "No se pudo aplicar este cambio."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Cerrar la Forja de {{subject}}"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Cargar un preset solo actualiza el borrador visible. Selecciona Confirmar en el editor para escribirlo en la partida. Cada efecto de abajo proviene del catálogo validado integrado del editor. Los presets personales se comparten entre Gem Forge y Rune Forge; el editor de destino mantiene su propia Forma o Tipo válidos."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Modo Forja de {{subject}}"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Presets"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Categorías de presets"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Conjunto personalizado de efectos de {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Crear un {{subject}} de seis efectos"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Elige hasta seis efectos validados. Las ranuras vacías permanecen como Sin efecto. El editor valida cada ID seleccionado de nuevo cuando confirmes."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efecto {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Vista previa del borrador"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Elige al menos un efecto para cargar un borrador personalizado."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Presets personales de {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Presets personales compartidos por ambas forjas"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Guarda una gema o runa editada una vez, luego carga el mismo preset desde Gem Forge o Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Personal"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Preset personal de Forja compartido por Gem Forge y Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "¿Eliminar el preset personal “{{name}}”?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Aún no se ha guardado ningún preset personal."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Edita una gema o runa, luego usa Guardar como preset para hacerlo disponible en ambas forjas."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Forja personalizada de {{subject}}"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Conjunto personalizado — {{count}} efecto(s) seleccionado(s)."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Preset de Runa Caryll validado."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Todos"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Ataque"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elemental"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Recuperación"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimental"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Personal"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Personalizado"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runa"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex físico"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Daño físico, presión a plena salud y soporte de durabilidad."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex nutritivo"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Amplificación de todo daño con presión a plena salud y recuperación."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Cazador Bloodtinge"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Alto daño de Bloodtinge con soporte de todo daño y recuperación."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Ruptor contundente"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Alto daño contundente con soporte para todo daño y durabilidad."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Especialista en estocada"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Alto daño de estocada con soporte de todo daño y durabilidad."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Vanguardia"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Amplificación de todo daño con presión física y alta bonificación de recuperación."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Oleada Arcana"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Daño arcano con soporte de recuperación y durabilidad."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Oleada Ígnea"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Daño de fuego con soporte de todo daño y recuperación."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Oleada eléctrica"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Daño de rayo con soporte de todo daño y durabilidad."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Ascendente elemental"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Efectos arcano, fuego y rayo en una configuración deliberadamente experimental."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Caza sostenida"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Recuperación, durabilidad y soporte de todo daño para sesiones largas de exploración."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Vitalidad abisal +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Usa el efecto integrado de recuperación continua de HP +75 con soporte de durabilidad y daño."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Resistencia forjada"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "La bonificación agrupada de durabilidad más fuerte conocida, acompañada de alta recuperación y daño físico."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Último aliento"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Altos multiplicadores cerca de la muerte y a plena salud. Mantén esta configuración sin conexión."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Cañón de cristal"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Acumula multiplicadores físicos, de todo daño y cerca de la muerte solo para pruebas."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Caza infinita"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Efectos máximos conocidos de recuperación y durabilidad con una bonificación de daño a plena salud."
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Marcas"
+    },
+    {
+      "key": "update.available",
+      "value": "Actualización disponible"
+    },
+    {
+      "key": "update.version",
+      "value": "Versión {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Ahora no"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Actualizar y reiniciar"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Iniciando descarga segura…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Descargando actualización firmada…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Descargando: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB descargados"
+    },
+    {
+      "key": "update.installing",
+      "value": "Instalando actualización…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Actualización instalada. Reiniciando el editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "No se pudo instalar la actualización. Tu versión actual no ha cambiado."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Restablecer"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Confirmar"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Cambios confirmados"
+    },
+    {
+      "key": "actions.back",
+      "value": "Atrás"
+    },
+    {
+      "key": "actions.change",
+      "value": "Cambiar"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Editar"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nombre:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Coordenadas:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Tiempo de juego:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teletransporte:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Selecciona una ubicación"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Vivo"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Muerto"
+    }
+  ],
+  "pt-PT": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Aplicar esta flag conhecida ao save? Será mantido um backup antes de gravar."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flag aplicada ao save em memória. Selecione Guardar alterações para gravar o ficheiro."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Não foi possível aplicar esta flag: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "O que muda:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Cuidado:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Padrão de bytes validado:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Ocultar detalhes"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "O que isto faz?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "A aplicar…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Aplicar"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Restaurar diálogo da Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Restauração narrativa"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Restaura um pequeno conjunto de linhas de diálogo anteriores ao encontro com Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Isto altera apenas o estado do diálogo; não concede um item, um nível nem recompensa de chefe."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Use primeiro num save copiado se estiver atualmente na área Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Ativar canção de embalar legada da Boneca"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Apresentação legada"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Reativa o comportamento de canção de embalar da Boneca associado à versão original 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Isto restaura um estado de apresentação legado. Não altera atributos, inventário ou recompensas de missão."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "O comportamento é sensível à versão; mantenha o backup até carregar a personagem com sucesso."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Ativar comportamento cooperativo Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Comportamento multijogador"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Ativa a interação Blood-addled associada a jogadores cooperativos que usam a runa Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Isto altera o comportamento de hostilidade multijogador enquanto as condições da runa relevante forem satisfeitas."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Use apenas offline ou com jogadores que concordem. Pode causar comportamentos cooperativos hostis e confusos."
+    },
+    {
+      "key": "inventory.item",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "item"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Armas"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Armaduras"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Gemas de Sangue (adição direta experimental)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Runas Caryll (adição direta experimental)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Adicionar uma gema ou runa concluída"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Adicionar uma arma ou armadura"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Criar directamente uma Gema de Sangue ou Runa Caryll completa a partir de efeitos validados quando houver um registo reutilizável seguro disponível no save."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Criar directamente uma arma ou armadura catalogada quando o save contiver um bloco de slot de equipamento reutilizável e seguro."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Construtor directo de gemas e runas"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimental: esta operação reutiliza apenas um registo de upgrade órfão seguro. Nunca altera a estrutura do save. Mantenha o backup automático até a personagem carregar normalmente."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimental: esta operação reutiliza apenas um bloco de slot de equipamento órfão e seguro e cria cinco espaços de gema fechados. Abra os espaços mais tarde com Gemas se necessário."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Escolha um primeiro efeito validado antes de adicionar uma gema ou runa."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "A adição directa não pôde ser concluída com segurança."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Adicionar directamente"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Adicionar equipamento"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Formato da gema"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Tipo de runa"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gemas"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Editar {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Nome da predefinição pessoal de {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "“{{name}}” guardado em Minhas predefinições para Forja de Gemas e Forja de Runas."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Converter para {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Converter este {{source}} num {{destination}}? Mantenha o backup automático até testar o save."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Não foi possível aplicar esta alteração."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Fechar Forja de {{subject}}"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Carregar uma predefinição apenas actualiza o rascunho visível. Seleccione Confirmar no editor para gravá-lo no save. Cada efeito abaixo provém do catálogo validado embutido do editor. As predefinições pessoais são partilhadas pela Forja de Gemas e Forja de Runas; o editor de destino mantém a sua própria Forma ou Tipo válida."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Modo Forja de {{subject}}"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Predefinições"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Categorias de predefinições"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Conjunto personalizado de efeitos de {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Criar um {{subject}} de seis efeitos"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Escolha até seis efeitos validados. Os espaços vazios ficam como Sem Efeito. O editor valida novamente cada ID seleccionado quando confirmar."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efeito {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Pré-visualização do rascunho"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Escolha pelo menos um efeito para carregar um rascunho personalizado."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Predefinições pessoais de {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Predefinições pessoais partilhadas por ambas as forjas"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Guarde uma gema ou runa editada uma vez e depois carregue a mesma predefinição na Forja de Gemas ou na Forja de Runas."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Pessoal"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Predefinição pessoal de Forja partilhada entre Forja de Gemas e Forja de Runas."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Eliminar a predefinição pessoal “{{name}}”?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Ainda não foi guardada nenhuma predefinição pessoal."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Edite uma gema ou runa e depois use Guardar como predefinição para a tornar disponível em ambas as forjas."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Forja personalizada de {{subject}}"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Conjunto personalizado — {{count}} efeito(s) selecionado(s)."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Predefinição de Runa Caryll validada."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Todas"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Ataque"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elemental"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Recuperação"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimental"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Pessoal"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Personalizado"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runa"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Ápice Físico"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Dano físico, pressão em vida máxima e suporte de durabilidade."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Ápice Nutritivo"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Amplificação de todo o dano com pressão em vida máxima e recuperação."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Elevado dano de Bloodtinge com suporte de todo o dano e recuperação."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Quebrador Contundente"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Alto dano contundente com suporte de todo o dano e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Especialista em Estocada"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Alto dano de estocada com suporte de todo o dano e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Vanguarda"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Amplificação de todo o dano com pressão física e um elevado bónus de recuperação."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Surto Arcano"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Dano arcano com suporte de recuperação e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Surto de Chama"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Dano de fogo com suporte de todo o dano e recuperação."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Surto de Raio"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Dano de raio com suporte de todo o dano e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Ascendente Elemental"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Efeitos arcano, fogo e raio numa configuração deliberadamente experimental."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Caça Sustentada"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Suporte de recuperação, durabilidade e todo o dano para sessões longas de exploração."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Vitalidade Abissal +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Utiliza o efeito embutido de recuperação contínua de HP +75 com suporte de durabilidade e dano."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Resistência Forjada"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "O mais forte bónus de durabilidade conhecido emparelhado com alta recuperação e dano físico."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Última Resistência"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Elevados multiplicadores para quase-morte e vida cheia. Mantenha esta configuração offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Canhão de Vidro"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Acumula multiplicadores de físico, todo o dano e quase-morte apenas para testes."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Caça Sem Fim"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Efeitos máximos conhecidos de recuperação e durabilidade com um bónus de dano em vida cheia."
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Flags"
+    },
+    {
+      "key": "update.available",
+      "value": "Atualização disponível"
+    },
+    {
+      "key": "update.version",
+      "value": "Versão {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Agora não"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Atualizar e reiniciar"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "A iniciar transferência segura…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "A transferir atualização assinada…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "A transferir: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB transferidos"
+    },
+    {
+      "key": "update.installing",
+      "value": "A instalar atualização…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Atualização instalada. A reiniciar o editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "A atualização não pôde ser instalada. A sua versão atual permanece inalterada."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Repor"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Confirmar"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Alterações confirmadas"
+    },
+    {
+      "key": "actions.back",
+      "value": "Voltar"
+    },
+    {
+      "key": "actions.change",
+      "value": "Alterar"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Editar"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nome:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Coordenadas:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Tempo de jogo:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teletransportar:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Selecionar uma localização"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Vivo"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Morto"
+    }
+  ],
+  "pt-BR": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Aplicar esta flag conhecida ao salvamento? Um backup será mantido antes de salvar."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flag aplicada no salvamento em memória. Selecione Salvar alterações para gravar o arquivo."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Não foi possível aplicar esta flag: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "O que muda:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Cuidado:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Padrão de bytes validado:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Ocultar detalhes"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "O que isso faz?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Aplicando…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Aplicar"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Restaurar diálogo da Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Restauração narrativa"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Restaura um pequeno conjunto de falas anteriores ao encontro com Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Isso altera apenas o estado do diálogo; não concede item, nível ou recompensa de chefe."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Use primeiro em um salvamento copiado se você estiver atualmente na área Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Ativar canção de ninar legada da Doll"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Apresentação legada"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Reativa o comportamento de canção de ninar da Doll associado ao lançamento original 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Isso restaura um estado de apresentação legada. Não altera atributos, inventário ou recompensas de missão."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "O comportamento é sensível à versão; mantenha o backup até carregar o personagem com sucesso."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Ativar comportamento cooperativo Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Comportamento multijogador"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Ativa a interação Blood-addled associada a jogadores cooperativos usando a runa Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Isso altera o comportamento de hostilidade no multijogador enquanto as condições da runa relevantes estiverem atendidas."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Use apenas offline ou com jogadores que concordarem. Pode causar comportamento cooperativo hostil e confuso."
+    },
+    {
+      "key": "inventory.item",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "item"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Armas"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Armadura"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Gemas de Sangue (adição direta experimental)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Runas Caryll (adição direta experimental)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Adicionar uma gema ou runa pronta"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Adicionar arma ou armadura"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Cria diretamente uma Gema de Sangue finalizada ou uma Runa Caryll a partir de efeitos validados quando houver um registro reutilizável seguro disponível no salvamento."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Cria diretamente uma arma ou armadura catalogada quando o salvamento contém um bloco de slot de equipamento reutilizável seguro."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Construtor direto de gemas e runas"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimental: esta operação reutiliza apenas um registro de upgrade órfão seguro. Ela nunca altera a estrutura do salvamento. Mantenha o backup automático até que o personagem seja carregado normalmente."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimental: esta operação reutiliza apenas um bloco de slot de equipamento órfão seguro e cria cinco slots de gema fechados. Abra os slots depois com Gemas se necessário."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Escolha um efeito primário validado antes de adicionar uma gema ou runa."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "A adição direta não pôde ser concluída com segurança."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Adicionar diretamente"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Adicionar equipamento"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Formato da gema"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Tipo de runa"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Editar {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Nome do preset pessoal de {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Salvo “{{name}}” em Meus presets para Gem Forge e Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Converter para {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Converter este {{source}} em um {{destination}}? Mantenha o backup automático até testar o salvamento."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Não foi possível aplicar esta alteração."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Fechar {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Carregar um preset apenas atualiza o rascunho visível. Selecione Confirmar no editor para gravá-lo no salvamento. Cada efeito abaixo vem do catálogo validado embutido do editor. Presets pessoais são compartilhados pela Gem Forge e Rune Forge; o editor de destino mantém sua própria Forma ou Tipo válidos."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Modo {{subject}} Forge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Predefinições"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Categorias de predefinições"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Conjunto personalizado de efeitos de {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Criar um {{subject}} de seis efeitos"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Escolha até seis efeitos validados. Slots vazios permanecem como Sem Efeito. O editor valida cada ID selecionado novamente quando você confirmar."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efeito {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Pré-visualização do rascunho"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Escolha pelo menos um efeito para carregar um rascunho personalizado."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Predefinições pessoais de {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Predefinições pessoais compartilhadas por ambas as forjas"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Salve uma gema ou runa editada uma vez, então carregue o mesmo preset na Gem Forge ou na Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Pessoal"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Preset pessoal de Forja compartilhado pela Gem Forge e Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Excluir o preset pessoal “{{name}}”?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Nenhum preset pessoal foi salvo ainda."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Edite uma gema ou runa e use Salvar como preset para torná-lo disponível em ambas as forjas."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Forja personalizada de {{subject}}"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Conjunto personalizado — {{count}} efeito(s) selecionado(s)."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Preset de Runa Caryll validado."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Todas"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Ataque"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elemental"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Recuperação"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimental"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Pessoal"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Personalizado"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runa"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Ápice Físico"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Dano físico, pressão em vida cheia e suporte à durabilidade."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Ápice Nutritivo"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Amplificação de todo dano, com pressão em vida cheia e recuperação."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Alto dano de Bloodtinge com suporte a todo dano e recuperação."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Quebra-Contundente"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Alto dano contundente com suporte a todo dano e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Especialista em Estocada"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Alto dano de perfuração com suporte a todo dano e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Vanguarda"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Amplificação de todo dano com pressão física e alto bônus de recuperação."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Surto Arcano"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Dano arcano com suporte a recuperação e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Surto de Fogo"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Dano de fogo com suporte a todo dano e recuperação."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Surto Elétrico"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Dano elétrico com suporte a todo dano e durabilidade."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Ascendente Elemental"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Efeitos arcano, fogo e elétrico em uma configuração deliberadamente experimental."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Caçada Sustentada"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Recuperação, durabilidade e suporte a todo dano para longas sessões de exploração."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Vitalidade Abissal +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Usa o efeito embutido de recuperação contínua de HP +75 com suporte a durabilidade e dano."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Resistência Forjada"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "O mais forte bônus agrupado de durabilidade conhecido, combinado com alta recuperação e dano físico."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Última Resistência"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Altos multiplicadores de quase-morte e de vida cheia. Mantenha essa configuração offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Canhão de Vidro"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Empilha multiplicadores de físico, todo dano e quase-morte apenas para testes."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Caçada Sem Fim"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Efeitos de recuperação e durabilidade conhecidos máximos com bônus de dano em vida cheia."
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Flags"
+    },
+    {
+      "key": "update.available",
+      "value": "Atualização disponível"
+    },
+    {
+      "key": "update.version",
+      "value": "Versão {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Agora não"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Atualizar e reiniciar"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Iniciando download seguro…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Baixando atualização assinada…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Baixando: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB baixados"
+    },
+    {
+      "key": "update.installing",
+      "value": "Instalando atualização…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Atualização instalada. Reiniciando o editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "A atualização não pôde ser instalada. Sua versão atual permanece inalterada."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Redefinir"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Confirmar"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Alterações confirmadas"
+    },
+    {
+      "key": "actions.back",
+      "value": "Voltar"
+    },
+    {
+      "key": "actions.change",
+      "value": "Alterar"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Editar"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nome:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Coordenadas:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Tempo de jogo:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleporte:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Selecione uma localização"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Vivo"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Morto"
+    }
+  ],
+  "ru": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Применить этот известный флаг сохранения? Перед сохранением создаётся резервная копия."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Флаг применён к сохранению в памяти. Выберите «Сохранить изменения», чтобы записать файл."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Не удалось применить этот флаг: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Что изменится:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Внимание:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Проверенный байтовый шаблон:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Скрыть подробности"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Что это делает?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Применяется…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Применить"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Восстановить реплики Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Восстановление сюжета"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Восстанавливает небольшой набор реплик до встречи с Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Изменяет только состояние диалогов; не даёт предмета, уровня или награды за босса."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Применяйте сначала к копии сохранения, если вы находитесь в районе Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Включить наследственную колыбельную Куклы"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Наследственное поведение"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Повторно включает поведение колыбельной Куклы, связанное с оригинальным выпуском 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Восстанавливает наследственное состояние отображения. Не изменяет характеристики, инвентарь или награды за задания."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Поведение зависит от версии; сохраняйте резервную копию, пока персонаж не загрузится успешно."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Включить кооперативное поведение Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Поведение в мультиплеере"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Включает взаимодействие Blood-addled, связанное с кооперативными игроками, использующими руну Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Это изменяет поведение враждебности в мультиплеере, пока соблюдены соответствующие условия руны."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Используйте только оффлайн или с согласными игроками. Это может вызвать запутанное враждебное поведение в кооперативе."
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Оружие"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Броня"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Кровавые самоцветы (экспериментальное прямое добавление)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Руны Caryll (экспериментальное прямое добавление)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Добавить готовый самоцвет или руну"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Добавить оружие или броню"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Создаёт готовый кровавый самоцвет или руну Caryll напрямую из проверенных эффектов, когда в сохранении доступна безопасная повторно используемая запись."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Создаёт каталогизированное оружие или броню напрямую, когда в сохранении есть безопасный повторно используемый блок слота экипировки."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Прямой конструктор самоцветов и рун"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Экспериментально: операция использует только безопасную «осиротевшую» запись улучшения. Она никогда не меняет структуру сохранения. Сохраните автоматическую резервную копию, пока персонаж не загрузится нормально."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Экспериментально: операция использует только безопасный осиротевший блок слота экипировки и создаёт пять закрытых слотов для самоцветов. Откройте слоты позже через Самоцветы при необходимости."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Выберите проверенный первичный эффект перед добавлением самоцвета или руны."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Не удалось безопасно выполнить прямое добавление."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Добавить напрямую"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Добавить экипировку"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Форма самоцвета"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Тип руны"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Редактировать {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Имя личного пресета {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Сохранён пресет «{{name}}» в «Моих пресетах» для Gem Forge и Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Преобразовать в {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Преобразовать этот {{source}} в {{destination}}? Сохраните автоматическую резервную копию, пока не протестируете сохранение."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Не удалось применить это изменение."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Закрыть {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Загрузка пресета обновляет только видимый черновик. Нажмите «Подтвердить» в редакторе, чтобы записать его в сохранение. Каждый эффект ниже берётся из встроенного проверенного каталога редактора. Личные пресеты используются и Gem Forge, и Rune Forge; редактор-приёмник сохраняет собственную допустимую форму или тип."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Режим {{subject}} Forge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Пресеты"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Категории пресетов"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Пользовательский набор эффектов {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Создать {{subject}} из шести эффектов"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Выберите до шести проверенных эффектов. Пустые слоты остаются без эффекта. Редактор снова проверит каждый выбранный идентификатор при подтверждении."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Эффект {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Предпросмотр черновика"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Выберите хотя бы один эффект, чтобы загрузить пользовательский черновик."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Личные пресеты {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Личные пресеты, общие для Gem Forge и Rune Forge"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Сохраните отредактированный самоцвет или руну один раз, затем загрузите тот же пресет из Gem Forge или Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Личный"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Личный пресет Forge, общий для Gem Forge и Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Удалить личный пресет «{{name}}»?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Пока не сохранено ни одного личного пресета."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Отредактируйте самоцвет или руну, затем используйте «Сохранить как пресет», чтобы сделать его доступным в обоих Forge."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Пользовательский {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Пользовательский набор — {{count}} выбранных эффектов."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Проверенный пресет руны Caryll."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Все"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Атака"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Элементальное"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Восстановление"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Экспериментальные"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Личные"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Пользовательские"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Руны"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Физический апекс"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Физический урон, бонус при полном здоровье и поддержка прочности."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Питающий апекс"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Усиление всех видов урона, бонус при полном здоровье и восстановление."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Высокий урон Bloodtinge с поддержкой всех видов урона и восстановления."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Дробящий прорыв"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Высокий дробящий урон с поддержкой всех видов урона и прочности."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Специалист по колющему урону"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Высокий колющий урон с поддержкой всех видов урона и прочности."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Авангард"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Увеличение всех видов урона с физическим давлением и высоким бонусом к восстановлению."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Арканный всплеск"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Арканный урон с поддержкой восстановления и прочности."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Огненный всплеск"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Огненный урон с поддержкой всех видов урона и восстановления."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Всплеск молний"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Молниевый урон с поддержкой всех видов урона и прочности."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Элементальное вознесение"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Арканные, огненные и молниевые эффекты в одном преднамеренно экспериментальном наборе."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Длительная охота"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Поддержка восстановления, прочности и всех видов урона для долгих сессий исследования."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Абиcсальная жизнеспособность +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Использует встроенный эффект постоянного восстановления HP +75 с поддержкой прочности и урона."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Кованая выносливость"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Наиболее сильный известный бонус к прочности в комплекте, в сочетании с высоким восстановлением и физическим уроном."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Последний рубеж"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Высокие множители при критическом и полном здоровье. Используйте этот набор только оффлайн."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Хрупкая пушка"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Сочетает множители физического урона, всех видов урона и при критическом здоровье — только для тестирования."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Бесконечная охота"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Максимальные известные эффекты восстановления и прочности с бонусом урона при полном здоровье."
+    },
+    {
+      "key": "update.available",
+      "value": "Доступно обновление"
+    },
+    {
+      "key": "update.version",
+      "value": "Версия {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Не сейчас"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Обновить и перезапустить"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Запуск защищённой загрузки…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Загрузка подписанного обновления…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Загрузка: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} МБ загружено"
+    },
+    {
+      "key": "update.installing",
+      "value": "Установка обновления…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Обновление установлено. Перезапуск редактора…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Не удалось установить обновление. Ваша текущая версия не изменена."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Сброс"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Подтвердить"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Изменения подтверждены"
+    },
+    {
+      "key": "actions.back",
+      "value": "Назад"
+    },
+    {
+      "key": "actions.change",
+      "value": "Изменить"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Редактировать"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Имя:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Координаты:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Время игры:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Телепорт:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Выберите местоположение"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Жив"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Мёртв"
+    }
+  ],
+  "de": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Diesen bekannten Save-Flag anwenden? Vor dem Speichern wird eine Sicherungskopie erstellt."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flag auf den im Speicher geladenen Spielstand angewendet. Wähle 'Änderungen speichern', um die Datei zu schreiben."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Dieses Flag konnte nicht angewendet werden: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Änderungen:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Vorsicht:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Validiertes Byte-Muster:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Details verbergen"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Was bewirkt das?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Wende an…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Anwenden"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Lady Maria-Dialog wiederherstellen"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Narrative Wiederherstellung"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Stellt einige Dialogzeilen vor der Begegnung mit Lady Maria wieder her."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Ändert nur den Dialogzustand; gewährt kein Item, kein Level und keine Boss-Belohnung."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Auf einer Kopie des Saves ausführen, falls du dich derzeit im Astral Clocktower befindest."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Das alte Wiegenlied der Doll aktivieren"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Alte Darstellung"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Aktiviert das Wiegenlied-Verhalten der Doll, wie es in der ursprünglichen Version 1.0 vorhanden war."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Stellt einen alten Darstellungszustand wieder her. Es werden keine Attribute, kein Inventar und keine Quest-Belohnungen verändert."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Das Verhalten ist versionsabhängig; behalte die Sicherung, bis du den Charakter erfolgreich geladen hast."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Blood-addled-Koop-Verhalten aktivieren"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Multiplayer-Verhalten"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Aktiviert die Blood-addled-Interaktion, die mit Koop-Spielern verbunden ist, die die Hunter-Rune verwenden."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Ändert das feindselige Multiplayer-Verhalten, solange die relevanten Runenbedingungen erfüllt sind."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Nur offline oder mit einvernehmlichen Spielern verwenden. Es kann verwirrendes feindliches Koop-Verhalten erzeugen."
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Waffen"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Rüstung"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (experimentelles direktes Hinzufügen)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll-Runen (experimentelles direktes Hinzufügen)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Fertiges Gem oder Rune hinzufügen"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Waffe oder Rüstung hinzufügen"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Erstelle direkt ein fertiges Blood Gem oder eine Caryll-Rune aus validierten Effekten, wenn ein sicherer wiederverwendbarer Datensatz im Save verfügbar ist."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Erstelle direkt eine katalogisierte Waffe oder Rüstung, wenn der Save einen sicheren wiederverwendbaren Ausrüstungs-Slot-Block enthält."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Direkter Gem- und Runen-Editor"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimentell: Diese Operation verwendet nur einen sicheren verwaisten Aufwertungs-Datensatz. Sie verändert niemals das Save-Layout. Behalte die automatische Sicherung, bis der Charakter normal geladen wurde."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimentell: Diese Operation verwendet nur einen sicheren verwaisten Ausrüstungs-Slot-Block und erstellt fünf geschlossene Gem-Slots. Öffne die Slots später bei Bedarf mit Gems."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Wähle einen validierten ersten Effekt, bevor du ein Gem oder eine Rune hinzufügst."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Das direkte Hinzufügen konnte nicht sicher abgeschlossen werden."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Direkt hinzufügen"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Ausrüstung hinzufügen"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Gem-Form"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Runen-Typ"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gems"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Bearbeite {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Name des persönlichen {{subject}}-Presets"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "„{{name}}“ in Meine Voreinstellungen für Gem Forge und Rune Forge gespeichert."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "In {{subject}} konvertieren"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Dieses {{source}} in ein {{destination}} konvertieren? Behalte die automatische Sicherung, bis du den Save getestet hast."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Diese Änderung konnte nicht angewendet werden."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Schließe die {{subject}}-Schmiede"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Das Laden eines Presets aktualisiert nur den sichtbaren Entwurf. Wähle im Editor 'Bestätigen', um ihn in den Save zu schreiben. Jeder Effekt unten stammt aus dem eingebetteten validierten Katalog des Editors. Persönliche Voreinstellungen werden von Gem-Schmiede und Runen-Schmiede geteilt; der Ziel-Editor behält seine eigene gültige Form bzw. seinen eigenen Typ."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}}-Schmiede-Modus"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Voreinstellungen"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Kategorien"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Benutzerdefinierter {{subject}}-Effekt-Satz"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Erstelle ein {{subject}} mit sechs Effekten"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Wähle bis zu sechs validierte Effekte. Leere Slots bleiben als 'Kein Effekt'. Der Editor validiert jede ausgewählte ID erneut, wenn du bestätigst."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Effekt {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Entwurfs-Vorschau"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Wähle mindestens einen Effekt, um einen benutzerdefinierten Entwurf zu laden."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Persönliche {{subject}}-Voreinstellungen"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Persönliche Voreinstellungen, die von beiden Schmieden geteilt werden"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Speichere ein bearbeitetes Gem oder eine Rune einmal, und lade dann dieselbe Voreinstellung in der Gem-Schmiede oder Runen-Schmiede."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Persönlich"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Persönliche Voreinstellung der Schmiede, geteilt von Gem-Schmiede und Runen-Schmiede."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Die persönliche Voreinstellung „{{name}}“ löschen?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Es wurde noch keine persönliche Voreinstellung gespeichert."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Bearbeite ein Gem oder eine Rune und verwende dann 'Als Voreinstellung speichern', um sie in beiden Schmieden verfügbar zu machen."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Benutzerdefinierte {{subject}}-Schmiede"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Benutzerdefiniertes Set — {{count}} gewählte Effekte."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Validierte Caryll-Runen-Voreinstellung."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Alle"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Angriff"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elementar"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Erholung"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimentell"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Persönlich"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Benutzerdefiniert"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runen"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex Physisch"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Physischer Schaden, Bonus bei voller Gesundheit und Haltbarkeitsunterstützung."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Ernährend"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Verstärkung aller Schadensarten, Bonus bei voller Gesundheit und Erholung."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Hoher Bloodtinge-Schaden mit Unterstützung für alle Schadensarten und Erholung."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Stumpfbrecher"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Hoher stumpfer Schaden mit Unterstützung für alle Schadensarten und Haltbarkeit."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Stich-Spezialist"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Hoher Stich-Schaden mit Unterstützung für alle Schadensarten und Haltbarkeit."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Vorhut"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Verstärkung aller Schadensarten mit physischem Druck und hohem Erholungsbonus."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arkaner Stoß"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arkaner Schaden mit Erholungs- und Haltbarkeitsunterstützung."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Flammenstoß"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Feuerschaden mit Unterstützung für alle Schadensarten und Erholung."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Blitzstoß"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Blitzschaden mit Unterstützung für alle Schadensarten und Haltbarkeit."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elementarer Aufstieg"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arkan-, Feuer- und Blitz-Effekte in einem bewusst experimentellen Setup."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Ausdauernde Jagd"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Erholung, Haltbarkeit und Unterstützung für alle Schadensarten bei langen Erkundungssessions."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssale Vitalität +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Verwendet den eingebetteten kontinuierlichen HP-Erholungs-Effekt +75 mit Haltbarkeits- und Schadensunterstützung."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Geschmiedete Ausdauer"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Der stärkste bekannte gebündelte Haltbarkeitsbonus, kombiniert mit hoher Erholung und physischem Schaden."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Last Stand"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Hohe Multiplikatoren bei Nahtod- und Voll-Leben-Zuständen. Dieses Loadout offline verwenden."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glaskanone"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Kombiniert physische, alle-Schaden- und Nahtod-Multiplikatoren nur zum Testen."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Endlose Jagd"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Maximale bekannte Erholungs- und Haltbarkeitseffekte mit einem Schadensbonus bei voller Gesundheit."
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Flags"
+    },
+    {
+      "key": "update.available",
+      "value": "Update verfügbar"
+    },
+    {
+      "key": "update.version",
+      "value": "Version {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Nicht jetzt"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Aktualisieren und neu starten"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Sicherer Download wird gestartet…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Signiertes Update wird heruntergeladen…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Herunterladen: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB heruntergeladen"
+    },
+    {
+      "key": "update.installing",
+      "value": "Update wird installiert…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Update installiert. Editor wird neu gestartet…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Das Update konnte nicht installiert werden. Deine aktuelle Version bleibt unverändert."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Zurücksetzen"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Bestätigen"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Änderungen bestätigt"
+    },
+    {
+      "key": "actions.back",
+      "value": "Zurück"
+    },
+    {
+      "key": "actions.change",
+      "value": "Ändern"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Bearbeiten"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Name:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordinaten:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Spielzeit:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleport:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Ort auswählen"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Lebendig"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Tot"
+    }
+  ],
+  "it": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Applicare questa flag di salvataggio? Verrà creato un backup prima del salvataggio."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flag applicata al salvataggio in memoria. Seleziona Salva modifiche per scrivere il file."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Impossibile applicare questa flag: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Cosa cambia:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Attenzione:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Sequenza di byte validata:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Nascondi dettagli"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Cosa fa?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Applicazione…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Applica"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Ripristina i dialoghi di Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Ripristino narrativo"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Ripristina un piccolo insieme di battute antecedenti all'incontro con Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Modifica solo lo stato dei dialoghi; non concede oggetti, livelli o ricompense del boss."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Usalo prima su una copia del salvataggio se ti trovi attualmente nell'area Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Abilita la ninnananna originale della Bambola"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Presentazione originale"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Riattiva il comportamento della ninnananna della Bambola associato alla release originale 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Ripristina uno stato di presentazione originale. Non altera attributi, inventario o ricompense di missione."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Il comportamento è sensibile alla versione; conserva il backup finché il personaggio non viene caricato correttamente."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Abilita il comportamento cooperativo Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Comportamento multiplayer"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Abilita l'interazione Blood-addled associata ai giocatori cooperativi che usano la runa Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Modifica il comportamento di ostilità multiplayer mentre sono soddisfatte le condizioni della runa pertinente."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Usalo solo offline o con giocatori consenzienti. Può creare comportamenti cooperativi ostili e confusi."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventario"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Aggiungi oggetto"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Sostituisci oggetto"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Catalogo"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Cerca nel catalogo"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Cerca elementi {{type}}"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Quantità"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Aggiungi elemento selezionato"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Annulla"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Chiudi"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Armi"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Armature"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Gemme del Sangue (aggiunta diretta sperimentale)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Rune di Caryll (aggiunta diretta sperimentale)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Aggiungi una gemma o runa finita"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Aggiungi un'arma o un'armatura"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Crea direttamente una Gemma del Sangue o una Runa di Caryll finita da effetti convalidati quando è disponibile un record riutilizzabile sicuro nel salvataggio."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Crea direttamente un'arma o un'armatura catalogata quando il salvataggio contiene un blocco di slot equipaggiamento riutilizzabile sicuro."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Generatore diretto di gemme e rune"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Sperimentale: questa operazione riutilizza solo un record di potenziamento orfano sicuro. Non modifica la struttura del salvataggio. Conserva il backup automatico finché il personaggio non viene caricato normalmente."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Sperimentale: questa operazione riutilizza solo un blocco di slot equipaggiamento orfano sicuro e crea cinque slot gemma chiusi. Apri gli slot in seguito con Gemme se necessario."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Scegli un primo effetto convalidato prima di aggiungere una gemma o runa."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "L'aggiunta diretta non è stata completata in sicurezza."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Aggiungi direttamente"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Aggiungi equipaggiamento"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Forma della gemma"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Tipo di runa"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Seleziona un preset di runa"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Modifica {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Nome del preset personale di {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Salvato \"{{name}}\" nei miei preset per Gem Forge e Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Converti in {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Convertire questo {{source}} in un {{destination}}? Conserva il backup automatico finché non hai testato il salvataggio."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Impossibile applicare questa modifica."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Chiudi {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Caricare un preset aggiorna solo la bozza visibile. Seleziona Conferma nell'editor per scriverlo nel salvataggio. Ogni effetto sotto proviene dal catalogo convalidato integrato dell'editor. I preset personali sono condivisi tra Gem Forge e Rune Forge; l'editor di destinazione mantiene la propria Forma o Tipo valido."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Modalità {{subject}} Forge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Preset"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Categorie preset"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Set di effetti {{subject}} personalizzato"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Costruisci un {{subject}} a sei effetti"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Scegli fino a sei effetti convalidati. Gli slot vuoti rimangono come Nessun effetto. L'editor convalida ogni ID selezionato nuovamente alla conferma."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Effetto {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Anteprima bozza"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Scegli almeno un effetto per caricare una bozza personalizzata."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Preset personali di {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Preset personali condivisi da entrambe le forge"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Salva una gemma o runa modificata una volta, poi carica lo stesso preset da Gem Forge o Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Personale"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Preset personale di Forge condiviso da Gem Forge e Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Eliminare il preset personale \"{{name}}\"?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Nessun preset personale è stato ancora salvato."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Modifica una gemma o runa, poi usa Salva come preset per renderlo disponibile in entrambe le forge."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Forge {{subject}} personalizzata"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Set personalizzato — {{count}} effetto(i) selezionato(i)."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Preset di Runa di Caryll convalidato."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Tutti"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Attacco"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elementale"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Recupero"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Sperimentale"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Personale"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Personalizzato"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runa"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apice Fisico"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Danno fisico, pressione a piena salute e supporto alla durabilità."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apice Nutriente"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Amplificazione di tutti i danni con pressione a piena salute e recupero."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Cacciatore Bloodtinge"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Alto danno Bloodtinge con supporto a tutti i danni e recupero."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Spezzatore Contundente"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Alto danno contundente con supporto a tutti i danni e durabilità."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Specialista di Impatto"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Alto danno da punta con supporto a tutti i danni e durabilità."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Avanguardia"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Amplificazione di tutti i danni con pressione fisica e un alto bonus al recupero."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Impeto Arcano"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Danno arcano con supporto a recupero e durabilità."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Impeto di Fuoco"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Danno da fuoco con supporto a tutti i danni e recupero."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Impeto Fulmineo"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Danno da fulmine con supporto a tutti i danni e durabilità."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Ascesa Elementale"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Effetti arcani, fuoco e fulmine in un loadout deliberatamente sperimentale."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Caccia Sostenuta"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Recupero, durabilità e supporto a tutti i danni per sessioni di esplorazione prolungate."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Vitalità Abissale +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Utilizza l'effetto integrato di recupero HP continuo +75 con supporto a durabilità e danno."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Resistenza Forgiata"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Il più forte bonus combinato alla durabilità noto, abbinato a alto recupero e danno fisico."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Ultima Difesa"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Alti moltiplicatori in quasi-morte e a piena salute. Usa questo loadout offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Cannone di Vetro"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Accumula moltiplicatori fisici, a tutti i danni e in quasi-morte solo per test."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Caccia Infinita"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Massimi effetti noti di recupero e durabilità con un bonus al danno a piena salute."
+    },
+    {
+      "key": "update.available",
+      "value": "Aggiornamento disponibile"
+    },
+    {
+      "key": "update.version",
+      "value": "Versione {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Non ora"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Aggiorna e riavvia"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Avvio download sicuro…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Download aggiornamento firmato…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Download: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB scaricati"
+    },
+    {
+      "key": "update.installing",
+      "value": "Installazione aggiornamento…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Aggiornamento installato. Riavvio dell'editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "L'aggiornamento non è riuscito. La versione attuale rimane invariata."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Reimposta"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Conferma"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Modifiche confermate"
+    },
+    {
+      "key": "actions.back",
+      "value": "Indietro"
+    },
+    {
+      "key": "actions.change",
+      "value": "Cambia"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Modifica"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nome:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Coordinate:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Tempo di gioco:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teletrasporta:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Seleziona una posizione"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Vivo"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Morto"
+    }
+  ],
+  "nl": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Deze bekende save-flag toepassen? Er wordt een back-up gemaakt voordat er wordt opgeslagen."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flag toegepast in het geheugen van de save. Kies 'Wijzigingen opslaan' om naar het bestand te schrijven."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Kan deze flag niet toepassen: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Wat verandert er:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Let op:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Gevalideerd bytepatroon:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Details verbergen"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Wat doet dit?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Bezig met toepassen…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Toepassen"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Herstel Lady Maria-dialogen"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Verhalend herstel"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Herstelt een kleine set dialoogregels van vóór de confrontatie met Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Wijzigt alleen de dialoogstatus; geeft geen item, level of beloning van een baas."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Gebruik eerst op een gekopieerde save als je je momenteel in de Astral Clocktower bevindt."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Activeer het originele slaapliedje van de Doll"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Oorspronkelijke presentatie"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Herstelt het slaapliedgedrag van de Doll dat hoort bij de oorspronkelijke 1.0-release."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Herstelt alleen een oude presentatie‑status. Wijzigt geen attributen, inventaris of quest-beloningen."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Het gedrag is versiegevoelig; houd de back-up totdat je het personage succesvol hebt geladen."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Activeer Blood-addled coöp-gedrag"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Multiplayergedrag"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Activeert de Blood-addled-interactie die optreedt wanneer coöperatieve spelers de Hunter-rune gebruiken."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Wijzigt de vijandigheid in multiplayer zolang de relevante runevoorwaarden gelden."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Gebruik dit alleen offline of met instemmende spelers. Het kan verwarrend vijandig coöpgedrag veroorzaken."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventaris"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Voorwerp toevoegen"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Voorwerp vervangen"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Catalogus"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Catalogus doorzoeken"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Zoek {{type}}-items"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Aantal"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Geselecteerd item toevoegen"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Annuleren"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Sluiten"
+    },
+    {
+      "key": "inventory.item",
+      "value": "voorwerp"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "voorwerp"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "sleutelvoorwerp"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "kelk"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Wapens"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Harnassen"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Bloedparels (experimenteel - directe toevoeging)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll-runes (experimenteel - directe toevoeging)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Voeg een afgewerkte bloedparel of rune toe"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Voeg een wapen of harnas toe"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Maak direct een afgewerkte bloedparel of Caryll-rune aan op basis van gevalideerde effecten wanneer er een veilig herbruikbaar record in de save beschikbaar is."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Maak direct een gecatalogiseerd wapen of harnas aan wanneer de save een veilig herbruikbaar uitrustingsslotblok bevat."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Directe parel- en rune-bouwer"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimenteel: deze bewerking hergebruikt alleen een veilig verweesd upgrade-record. Het verschuift nooit de save‑indeling. Houd de automatische back-up totdat het personage normaal is geladen."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimenteel: deze bewerking hergebruikt alleen een veilig verweesd uitrustingsslotblok en maakt vijf gesloten parelsloten aan. Open de slots later met parels indien nodig."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Kies eerst een gevalideerd primair effect voordat je een parel of rune toevoegt."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "De directe toevoeging kon niet veilig worden voltooid."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Direct toevoegen"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Uitrusting toevoegen"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Parelvorm"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Runetype"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Parels"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Selecteer een rune-preset"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Bewerk {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Persoonlijke {{subject}} presetnaam"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "“{{name}}” opgeslagen in Mijn presets voor Gem Forge en Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Converteren naar {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Dit {{source}} omzetten naar een {{destination}}? Houd de automatische back-up totdat je de save getest hebt."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Kan deze wijziging niet toepassen."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Sluit {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Het laden van een preset werkt alleen de zichtbare conceptversie bij. Kies Bevestigen in de editor om het naar de save te schrijven. Elk effect hieronder komt uit de ingebedde gevalideerde catalogus van de editor. Persoonlijke presets worden gedeeld door Gem Forge en Rune Forge; de doelditor behoudt zijn eigen geldige Vorm of Type."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge-modus"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Voorinstellingen"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Categorieën voorinstellingen"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Aangepaste {{subject}} effectset"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Maak een {{subject}} met zes effecten"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Kies tot zes gevalideerde effecten. Lege slots blijven 'Geen effect'. De editor valideert elk geselecteerd ID opnieuw wanneer je bevestigt."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Effect {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Conceptvoorbeeld"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Kies minstens één effect om een aangepast concept te laden."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Persoonlijke {{subject}}-presets"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Persoonlijke presets gedeeld door beide forges"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Sla eenmaal een bewerkte parel of rune op en laad daarna dezelfde preset vanuit Gem Forge of Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Persoonlijk"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Persoonlijke Forge-preset gedeeld door Gem Forge en Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Persoonlijke preset “{{name}}” verwijderen?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Er is nog geen persoonlijke preset opgeslagen."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Bewerk een parel of rune en gebruik daarna Opslaan als preset om het beschikbaar te maken in beide forges."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Aangepaste {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Aangepaste set — {{count}} geselecteerde effect(en)."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Gevalideerde Caryll-rune-preset."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Alle"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Aanval"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elementair"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Herstel"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimenteel"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Persoonlijk"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Aangepast"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex Fysiek"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fysieke schade, druk bij volle gezondheid en duurzaamheidsondersteuning."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Voedend"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Versterking van alle schade met druk bij volle gezondheid en herstel."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge-jager"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Hoge Bloodtinge-schade met ondersteuning voor alle schade en herstel."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Stompbreker"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Hoge stomp-schade met ondersteuning voor alle schade en duurzaamheid."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Steekspecialist"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Hoge steek-schade met ondersteuning voor alle schade en duurzaamheid."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Voorhoede"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Versterking van alle schade met fysieke druk en een hoge herstelbonus."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arcane Opwelling"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arcane-schade met herstel- en duurzaamheidssteun."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Vlamgolf"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Vuurschade met ondersteuning voor alle schade en herstel."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Bliksemgolf"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Bliksemschade met ondersteuning voor alle schade en duurzaamheid."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elementair Verheven"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arcane-, vuur- en bliksemeffecten gecombineerd in één opzettelijk experimentele uitrusting."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Duurzame Jacht"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Herstel-, duurzaamheid- en alle-schade-ondersteuning voor lange verkenningssessies."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssale Vitaliteit +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Maakt gebruik van het ingebedde +75 continue HP-herstel-effect, met ondersteuning voor duurzaamheid en schade."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Gesmede Uithouding"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "De sterkste bekende gebundelde duurzaamheidsbonus, gecombineerd met hoog herstel en fysieke schade."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Laatste Verdediging"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Hoge multipliers bij bijna dood en volle gezondheid. Houd deze uitrusting offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glazen Kanon"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Combineert fysieke, alle-schade en bijna-dood multipliers, uitsluitend voor testen."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Eindeloze Jacht"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Maximale bekende herstel- en duurzaamheids-effecten met een schadebonus bij volle gezondheid."
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Flags"
+    },
+    {
+      "key": "update.available",
+      "value": "Update beschikbaar"
+    },
+    {
+      "key": "update.version",
+      "value": "Versie {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Later"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Updaten en herstarten"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Beveiligde download starten…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Ondertekende update downloaden…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Downloaden: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB gedownload"
+    },
+    {
+      "key": "update.installing",
+      "value": "Update installeren…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Update geïnstalleerd. Editor wordt herstart…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "De update kon niet worden geïnstalleerd. Je huidige versie blijft ongewijzigd."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Resetten"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Bevestigen"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Wijzigingen bevestigd"
+    },
+    {
+      "key": "actions.back",
+      "value": "Terug"
+    },
+    {
+      "key": "actions.change",
+      "value": "Wijzigen"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Bewerken"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Naam:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Coördinaten:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Speeltijd:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleporteren:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Selecteer een locatie"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Levend"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Dood"
+    }
+  ],
+  "pl": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Zastosować ten znany znacznik zapisu? Przed zapisaniem zostanie utworzona kopia zapasowa."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Znacznik zastosowany w zapisie w pamięci. Wybierz Zapisz zmiany, aby nadpisać plik."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Nie można zastosować tego znacznika: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Co się zmieni:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Uwaga:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Zwalidowany wzorzec bajtów:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Ukryj szczegóły"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Co to robi?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Zastosowywanie…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Zastosuj"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Przywróć dialog Lady Marii"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Przywrócenie narracji"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Przywraca niewielki zestaw linii dialogowych sprzed starcia z Lady Marią."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Zmienia tylko stan dialogu; nie przyznaje przedmiotu, poziomu ani nagrody za pokonanie bossa."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Najpierw użyj na skopiowanym zapisie, jeśli aktualnie znajdujesz się w obszarze Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Włącz dawną kołysankę Lalki"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Dziedzictwo prezentacji"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Ponownie włącza zachowanie kołysanki Lalki związane z oryginalnym wydaniem 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Przywraca jedynie starszy stan prezentacji. Nie zmienia atrybutów, ekwipunku ani nagród z zadań."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Zachowanie zależne od wersji; zachowaj kopię zapasową, dopóki postać nie zostanie poprawnie załadowana."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Włącz kooperacyjne zachowanie Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Zachowanie w trybie wieloosobowym"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Włącza interakcję Blood-addled związaną z graczami kooperującymi używającymi runy Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Zmienia zachowanie wrogości w trybie wieloosobowym, gdy spełnione są odpowiednie warunki runy."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Używać tylko offline lub z graczami wyrażającymi zgodę. Może powodować mylące, wrogie zachowanie w kooperacji."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Ekwipunek"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Dodaj przedmiot"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Zamień przedmiot"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalog"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Szukaj w katalogu"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Szukaj przedmiotów typu {{type}}"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Ilość"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Dodaj wybrany przedmiot"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Anuluj"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Zamknij"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Broń"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Zbroje"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Klejnoty Krwi (eksperymentalne dodawanie bezpośrednie)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Runy Caryll (eksperymentalne dodawanie bezpośrednie)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Dodaj ukończony klejnot lub runę"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Dodaj broń lub zbroję"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Utwórz ukończony Klejnot Krwi lub Runę Caryll bezpośrednio z zatwierdzonych efektów, jeśli w zapisie znajduje się bezpieczny, możliwy do ponownego użycia rekord."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Utwórz bezpośrednio skatalogowaną broń lub zbroję, gdy zapis zawiera bezpieczny, wielokrotnego użytku blok slotu wyposażenia."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Bezpośredni kreator klejnotów i run"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Eksperymentalne: operacja ponownie wykorzystuje tylko bezpieczny, osierocony rekord ulepszenia. Nigdy nie zmienia układu zapisu. Zachowaj automatyczną kopię zapasową, dopóki postać nie załaduje się poprawnie."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Eksperymentalne: operacja ponownie wykorzystuje tylko bezpieczny, osierocony blok slotu wyposażenia i tworzy pięć zamkniętych miejsc na klejnoty. Otwórz je później w sekcji Klejnoty, jeśli będzie to potrzebne."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Wybierz zatwierdzony pierwszy efekt przed dodaniem klejnotu lub runy."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Nie udało się bezpiecznie dodać elementu bezpośrednio."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Dodaj bezpośrednio"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Dodaj wyposażenie"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Kształt klejnotu"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Typ runy"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Wybierz preset runy"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Edytuj {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Nazwa osobistego presetu {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Zapisano „{{name}}” w Moje presety dla Gem Forge i Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Konwertuj na {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Konwertować ten {{source}} na {{destination}}? Zachowaj automatyczną kopię zapasową, dopóki nie przetestujesz zapisu."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Nie można zastosować tej zmiany."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Zamknij {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Wczytanie presetu aktualizuje jedynie widoczny szkic. Wybierz Potwierdź w edytorze, aby zapisać go do zapisu. Każdy efekt poniżej pochodzi z wbudowanego, zweryfikowanego katalogu edytora. Presety osobiste są współdzielone między Gem Forge i Rune Forge; edytor docelowy zachowuje własny prawidłowy kształt lub typ."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Tryb {{subject}} Forge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Presety"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Kategorie presetów"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Niestandardowy zestaw efektów {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Stwórz {{subject}} z sześcioma efektami"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Wybierz do sześciu zatwierdzonych efektów. Puste sloty pozostaną jako Brak efektu. Edytor ponownie waliduje każdy wybrany identyfikator po potwierdzeniu."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efekt {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Podgląd szkicu"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Wybierz przynajmniej jeden efekt, aby załadować niestandardowy szkic."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Osobiste presety {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Osobiste presety współdzielone przez Gem Forge i Rune Forge"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Zapisz edytowany klejnot lub runę raz, a następnie załaduj ten sam preset z Gem Forge lub Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Osobiste"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Osobisty preset Forge współdzielony przez Gem Forge i Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Usunąć osobisty preset „{{name}}”?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Nie zapisano jeszcze żadnego osobistego presetu."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Edytuj klejnot lub runę, a następnie użyj Zapisz jako preset, aby udostępnić go w obu Forge'ach."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Niestandardowy {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Niestandardowy zestaw — wybrano {{count}} efektów."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Zatwierdzony preset Runy Caryll."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Wszystkie"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Atak"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Żywiołowy"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Odzyskiwanie"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Eksperymentalne"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Osobiste"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Niestandardowe"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runy"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex (fizyczny)"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Obrażenia fizyczne, presja przy pełnym zdrowiu i wsparcie wytrzymałości."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex (odżywczy)"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Zwiększenie wszystkich obrażeń z presją przy pełnym zdrowiu i regeneracją."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Wysokie obrażenia Bloodtinge z wsparciem dla wszystkich obrażeń i regeneracji."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Specjalista obuchowy"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Wysokie obrażenia obuchowe z wsparciem dla wszystkich obrażeń i wytrzymałości."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Specjalista pchnięć"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Wysokie obrażenia kłute z wsparciem dla wszystkich obrażeń i wytrzymałości."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Awangarda"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Wzmocnienie wszystkich obrażeń z presją fizyczną i dużym bonusem do regeneracji."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Nawał Arkan"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Obrażenia arkaniczne z wsparciem regeneracji i wytrzymałości."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Fala Płomieni"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Obrażenia ogniem z wsparciem wszystkich obrażeń i regeneracji."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Fala Błyskawic"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Obrażenia błyskawicą z wsparciem wszystkich obrażeń i wytrzymałości."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Wzlot Żywiołów"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Efekty arkaniczne, ogniem i błyskawicą w jednym celowo eksperymentalnym zestawie."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Długotrwałe polowanie"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Wsparcie regeneracji, wytrzymałości i wszystkich obrażeń dla długich sesji eksploracji."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssal Vitality +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Używa wbudowanego efektu ciągłej regeneracji HP +75 wraz z wsparciem wytrzymałości i obrażeń."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Wykuwana Wytrzymałość"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Najsilniejszy znany pakiet bonusu do wytrzymałości w parze z wysoką regeneracją i obrażeniami fizycznymi."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Ostatni Opór"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Wysokie mnożniki przy niemal śmierci i przy pełnym zdrowiu. Zachowaj ten zestaw offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Szklana Armata"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Nakłada się mnożnikami obrażeń fizycznych, wszystkich obrażeń i przy niemal śmierci — tylko do testów."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Niekończące się polowanie"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Maksymalne znane efekty regeneracji i wytrzymałości z bonusem do obrażeń przy pełnym zdrowiu."
+    },
+    {
+      "key": "update.available",
+      "value": "Dostępna aktualizacja"
+    },
+    {
+      "key": "update.version",
+      "value": "Wersja {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Nie teraz"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Aktualizuj i uruchom ponownie"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Rozpoczynanie bezpiecznego pobierania…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Pobieranie podpisanej aktualizacji…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Pobieranie: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB pobrane"
+    },
+    {
+      "key": "update.installing",
+      "value": "Instalowanie aktualizacji…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Aktualizacja zainstalowana. Ponowne uruchamianie edytora…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Nie udało się zainstalować aktualizacji. Twoja obecna wersja pozostaje bez zmian."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Resetuj"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Potwierdź"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Zmiany potwierdzone"
+    },
+    {
+      "key": "actions.back",
+      "value": "Wstecz"
+    },
+    {
+      "key": "actions.change",
+      "value": "Zmień"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Edytuj"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nazwa:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Współrzędne:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Czas gry:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleport:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Wybierz lokalizację"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Żywy"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Pokonany"
+    }
+  ],
+  "tr": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Bu bilinen kayıt bayrağı uygulanacak mı? Kaydetmeden önce bir yedek oluşturulur."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Bayrak bellek içi kayda uygulandı. Dosyayı yazmak için Değişiklikleri kaydet'i seçin."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Bu bayrak uygulanamadı: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Ne değişecek:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Dikkat:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Doğrulanmış bayt deseni:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Detayları gizle"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Bu ne yapar?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Uygulanıyor…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Uygula"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Lady Maria diyalogunu geri yükle"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Anlatı geri yüklemesi"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Lady Maria karşılaşmasından önceki küçük bir diyalog setini geri yükler."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Bu yalnızca diyalog durumunu değiştirir; herhangi bir eşya, seviye veya boss ödülü vermez."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Şu anda Astral Clocktower bölgesindeyseniz önce kopyalanmış bir kayıtta kullanın."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Doll'un eski ninnisini etkinleştir"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Eski sunum"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Doll'un 1.0 sürümündeki ninni davranışını tekrar etkinleştirir."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Bu bir eski sunum durumunu geri yükler. Nitelikleri, envanteri veya görev ödüllerini değiştirmez."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Davranış sürüme duyarlıdır; karakteri başarıyla yükleyene kadar yedeği saklayın."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Blood-addled kooperatif davranışını etkinleştir"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Çok oyunculu davranış"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Hunter rune kullanan kooperatif oyuncularla ilişkili Blood-addled etkileşimini etkinleştirir."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "İlgili rune koşulları sağlandığında çok oyunculu düşmanlık davranışını değiştirir."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Bunu yalnızca çevrimdışıyken veya rızalı oyuncularla kullanın. Kafa karıştırıcı düşmanca kooperatif davranışlar yaratabilir."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Envanter"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Öğe ekle"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Öğeyi değiştir"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalog"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Kataloğu ara"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "{{type}} öğelerini ara"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Miktar"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Seçilen öğeyi ekle"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "İptal"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Kapat"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Silahlar"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Zırhlar"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (deneysel doğrudan ekleme)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (deneysel doğrudan ekleme)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Tamamlanmış bir gem veya rune ekle"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Silah veya zırh ekle"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Kayında güvenli, yeniden kullanılabilir bir kayıt varsa, doğrulanmış etkilerden doğrudan tamamlanmış bir Blood Gem veya Caryll Rune oluşturur."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Kaydın güvenli yeniden kullanılabilir bir ekipman yuvası bloğu içerdiği durumlarda kataloglanmış bir silah veya zırhı doğrudan oluşturur."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Doğrudan gem ve rune oluşturucu"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Deneysel: bu işlem yalnızca güvenli, sahipsiz bir yükseltme kaydını yeniden kullanır. Kayıt düzenini asla değiştirmez. Karakter normal şekilde yüklenene kadar otomatik yedeği saklayın."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Deneysel: bu işlem yalnızca güvenli, sahipsiz bir ekipman yuvası bloğunu yeniden kullanır ve beş kapalı gem yuvası oluşturur. Gerekirse yuvaları daha sonra Gems ile açın."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Bir gem veya rune eklemeden önce doğrulanmış bir ilk etki seçin."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Doğrudan ekleme güvenli şekilde tamamlanamadı."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Doğrudan ekle"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Ekipman ekle"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Gem şekli"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Rune türü"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Bir rune ön ayarı seçin"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "{{subject}} öğesini düzenle"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Kişisel {{subject}} ön ayarı adı"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Gem Forge ve Rune Forge için Kişisel önayarlarımda “{{name}}” kaydedildi."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "{{subject}}'e dönüştür"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Bu {{source}} öğesini bir {{destination}}'e dönüştürmek istiyor musunuz? Kayıdı test edene kadar otomatik yedeği saklayın."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Bu değişiklik uygulanamadı."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "{{subject}} Forge'u kapat"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Bir önayarı yüklemek yalnızca görünür taslağı günceller. Kayda yazmak için editörde Onayla'yı seçin. Aşağıdaki her etki editörün gömülü doğrulanmış kataloğundan gelir. Kişisel önayarlar Gem Forge ve Rune Forge tarafından paylaşılır; hedef editör kendi geçerli Şekil veya Türünü korur."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge modu"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Önayarlar"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Önayar kategorileri"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Özel {{subject}} etki seti"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Altı etkili bir {{subject}} oluştur"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "En fazla altı doğrulanmış etki seçin. Boş yuvalar 'No Effect' olarak kalır. Onayladığınızda editör seçilen her ID'yi yeniden doğrular."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Etki {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Taslak önizleme"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Özel bir taslak yüklemek için en az bir etki seçin."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Kişisel {{subject}} önayarları"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Her iki forge tarafından paylaşılan kişisel önayarlar"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Düzenlenmiş bir gem veya rune'u bir kez kaydedin, sonra aynı önayarı Gem Forge veya Rune Forge'dan yükleyin."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Kişisel"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Gem Forge ve Rune Forge tarafından paylaşılan kişisel Forge önayarı."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Kişisel önayar “{{name}}” silinsin mi?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Henüz kişisel bir önayar kaydedilmedi."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Bir gem veya rune'u düzenleyin, ardından Her iki forge'da kullanılabilir hale getirmek için 'Önayar olarak kaydet'i kullanın."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Özel {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Özel set — {{count}} seçilmiş etki."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Doğrulanmış Caryll Rune önayarı."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Tümü"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Saldırı"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elemental"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "İyileşme"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Deneysel"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Kişisel"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Özel"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex Fiziksel"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fiziksel hasar, tam sağlık baskısı ve dayanıklılık desteği."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Besleyici"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Tüm hasar artırımı, tam sağlık baskısı ve iyileşme."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Yüksek Bloodtinge hasarı ile tüm hasar ve iyileşme desteği."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Küt Kırıcı"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Yüksek küt hasar, tüm hasar ve dayanıklılık desteği."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Saplama Uzmanı"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Yüksek saplama hasarı, tüm hasar ve dayanıklılık desteği."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Öncü"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Fiziksel baskı ve yüksek iyileşme bonusu ile tüm hasar artırımı."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Esrarengiz Atılım"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Esrarengiz hasar ile iyileşme ve dayanıklılık desteği."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Alev Atılımı"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Ateş hasarı, tüm hasar ve iyileşme desteği."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Yıldırım Atılımı"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Yıldırım hasarı, tüm hasar ve dayanıklılık desteği."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elementsel Yükseliş"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Esrarengiz, ateş ve yıldırım etkilerini içeren kasıtlı olarak deneysel bir düzen."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Sürekli Av"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Uzun keşif oturumları için iyileşme, dayanıklılık ve tüm hasar desteği."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssal Vitality +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Gömülü +75 sürekli HP iyileşme etkisini dayanıklılık ve hasar desteği ile kullanır."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Kovulmuş Dayanıklılık"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Bilinen en güçlü paketlenmiş dayanıklılık bonusu, yüksek iyileşme ve fiziksel hasarla eşleştirilmiştir."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Son Direniş"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Yüksek ölüm eşiği ve tam sağlık çarpanları. Bu düzenlemeyi çevrimdışında kullanın."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glass Cannon"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Sadece test için fiziksel, tüm hasar ve ölüm eşiği çarpanlarını yığar."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Sonsuz Av"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Tam sağlık hasar bonusu ile bilinen maksimum iyileşme ve dayanıklılık etkileri."
+    },
+    {
+      "key": "update.available",
+      "value": "Güncelleme var"
+    },
+    {
+      "key": "update.version",
+      "value": "Sürüm {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Şimdi değil"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Güncelle ve yeniden başlat"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Güvenli indirme başlatılıyor…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "İmzalı güncelleme indiriliyor…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "İndiriliyor: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB indirildi"
+    },
+    {
+      "key": "update.installing",
+      "value": "Güncelleme kuruluyor…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Güncelleme yüklendi. Editör yeniden başlatılıyor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Güncelleme kurulamadı. Mevcut sürümünüz değişmedi."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Sıfırla"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Onayla"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Değişiklikler onaylandı"
+    },
+    {
+      "key": "actions.back",
+      "value": "Geri"
+    },
+    {
+      "key": "actions.change",
+      "value": "Değiştir"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Düzenle"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "İsim:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordinatlar:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Oynama süresi:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Işınlan:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Bir konum seçin"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Hayatta"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Ölü"
+    }
+  ],
+  "uk": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Застосувати цей відомий прапорець збереження? Перед записом робиться резервна копія."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Прапорець застосовано до збереження в пам'яті. Виберіть «Зберегти зміни», щоб записати файл."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Не вдалося застосувати цей прапорець: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Що зміниться:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Увага:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Перевірений байтовий шаблон:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Приховати деталі"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Що це робить?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Застосування…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Застосувати"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Відновити діалоги Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Відновлення сюжету"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Відновлює кілька рядків діалогу, що передували зустрічі з Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Це змінює лише стан діалогів; не дає предметів, рівнів або нагороди за боса."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Спочатку використайте на копії збереження, якщо ви зараз у зоні Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Увімкнути спадкову колискову Doll"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Спадкова подача"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Повторно вмикає поведінку колискової Doll, пов’язану з оригінальним релізом 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Відновлює лише спадковий стан презентації. Не змінює атрибути, інвентар або нагороди за квести."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Поведінка залежить від версії; зберігайте резервну копію, поки персонаж не завантажиться успішно."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Увімкнути Blood-addled кооперативну поведінку"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Мультиплеєрна поведінка"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Увімкнути взаємодію Blood-addled, пов’язану з кооперативними гравцями, що використовують руну Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Це змінює поведінку ворожості в мультиплеєрі, поки виконуються відповідні умови руни."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Використовуйте лише офлайн або з погодженими гравцями. Це може спричинити заплутану ворожу поведінку в кооперативі."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Інвентар"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Додати предмет"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Замінити предмет"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Каталог"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Пошук у каталозі"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Шукати предмети {{type}}"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Кількість"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Додати вибраний предмет"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Скасувати"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Закрити"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Зброя"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Броня"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (експериментальне пряме додавання)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (експериментальне пряме додавання)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Додати готовий самоцвіт або руну"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Додати зброю або броню"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Створити готовий Blood Gem або Caryll Rune безпосередньо з перевірених ефектів, коли у збереженні є безпечний повторно використовуваний запис."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Створити каталожну зброю або броню безпосередньо, якщо в збереженні є безпечний повторно використовуваний блок слота екіпіровки."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Прямий конструктор самоцвітів і рун"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Експериментально: ця операція повторно використовує лише безпечний покинутий запис покращення. Вона ніколи не змінює структуру збереження. Зберігайте автоматичну резервну копію, поки персонаж не завантажиться нормально."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Експериментально: ця операція повторно використовує лише безпечний покинутий блок слота екіпіровки і створює п'ять закритих слотів для самоцвітів. За потреби відкрийте слоти пізніше через розділ Gems."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Виберіть перевірений первинний ефект перед додаванням самоцвіту або руни."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Пряме додавання не вдалося виконати безпечно."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Додати напряму"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Додати екіпіровку"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Форма самоцвіту"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Тип руни"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Виберіть пресет руни"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Редагувати {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Назва персонального пресету {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Збережено «{{name}}» у Моїх пресетах для Gem Forge і Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Конвертувати в {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Конвертувати цей {{source}} у {{destination}}? Зберігайте автоматичну резервну копію, поки не перевірите збереження."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Не вдалося застосувати цю зміну."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Закрити {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Завантаження пресету оновлює лише видимий чернетку. Виберіть Підтвердити в редакторі, щоб записати його в збереження. Кожен ефект нижче походить з вбудованого перевіреного каталогу редактора. Персональні пресети спільні для Gem Forge та Rune Forge; цільовий редактор використовує власну допустиму Shape або Type."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Режим {{subject}} Forge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Пресети"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Категорії пресетів"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Користувацький набір ефектів {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Створити {{subject}} з шістьма ефектами"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Виберіть до шести перевірених ефектів. Порожні слоти залишаться як No Effect. Редактор перевіряє кожен вибраний ID знову при підтвердженні."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Ефект {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Попередній перегляд чернетки"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Виберіть щонайменше один ефект, щоб завантажити користувацьку чернетку."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Персональні пресети {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Персональні пресети, спільні для обох кузнь"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Збережіть відредагований самоцвіт або руну один раз, після чого можна буде завантажити той самий пресет у Gem Forge або Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Персональні"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Персональний пресет Forge, спільний для Gem Forge і Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Видалити персональний пресет «{{name}}»?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Ще не збережено жодного персонального пресету."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Відредагуйте самоцвіт або руну, а потім використайте «Зберегти як пресет», щоб зробити його доступним в обох кузнях."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Користувацький {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Користувацький набір — обрано {{count}} ефект(ів)."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Перевірений пресет Caryll Rune."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Усі"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Атака"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Елементальний"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Відновлення"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Експериментальний"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Персональні"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Користувацькі"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Руна"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex Physical"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Фізичний урон, бонус при повному здоров'ї та підтримка міцності."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Nourishing"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Посилення всіх видів шкоди з бонусом при повному здоров'ї і відновленням."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Високий урон від Bloodtinge з підтримкою всього шкоди та відновленням."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Blunt Breaker"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Високий дроблячий урон із підтримкою всього шкоди та міцності."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Thrust Specialist"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Високий колючий урон із підтримкою всього шкоди та міцності."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Vanguard"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Посилення всіх видів шкоди з фізичним тиском і великим бонусом відновлення."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arcane Surge"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Арканний урон із підтримкою відновлення та міцності."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Flame Surge"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Вогняний урон із підтримкою всього шкоди та відновлення."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Bolt Surge"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Блискавичний урон із підтримкою всього шкоди та міцності."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elemental Ascendant"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Арканні, вогняні та блискавичні ефекти в одному навмисно експериментальному наборі."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Sustained Hunt"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Відновлення, міцність і підтримка всього шкоди для тривалих походів."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssal Vitality +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Використовує вбудований ефект безперервного відновлення HP +75 з підтримкою міцності та шкоди."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Forged Endurance"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Найсильніший відомий пакет бонусу міцності поєднаний з високим відновленням та фізичним уроном."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Last Stand"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Високі множники при майже смерті і повному здоров'ї. Використовуйте цей набір поза мережею."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glass Cannon"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Накопичує фізичні, загальні і множники при майже смерті — лише для тестування."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Endless Hunt"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Максимальні відомі ефекти відновлення і міцності з бонусом до шкоди при повному здоров'ї."
+    },
+    {
+      "key": "update.available",
+      "value": "Доступне оновлення"
+    },
+    {
+      "key": "update.version",
+      "value": "Версія {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Не зараз"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Оновити та перезапустити"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Починаю безпечне завантаження…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Завантаження підписаного оновлення…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Завантаження: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "Завантажено {{megabytes}} МБ"
+    },
+    {
+      "key": "update.installing",
+      "value": "Встановлення оновлення…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Оновлення встановлено. Перезапуск редактора…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Оновлення не вдалося встановити. Поточна версія залишилася без змін."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Скинути"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Підтвердити"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Зміни підтверджено"
+    },
+    {
+      "key": "actions.back",
+      "value": "Назад"
+    },
+    {
+      "key": "actions.change",
+      "value": "Змінити"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Редагувати"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Ім'я:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Координати:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Час гри:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Телепорт:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Вибрати локацію"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Живий"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Мертвий"
+    }
+  ],
+  "ja": [
+    {
+      "key": "flags.card.confirm",
+      "value": "この既知のセーブフラグを適用しますか？ 保存前にバックアップを作成します。"
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "フラグはメモリ上のセーブに適用されました。ファイルに書き込むには「変更を保存」を選択してください。"
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "このフラグを適用できませんでした: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "変更点："
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "注意："
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "検証済みバイトパターン："
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "詳細を非表示"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "これは何をしますか？"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "適用中…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "適用"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Lady Mariaの会話を復元"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "ストーリー復元"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Lady Mariaとの遭遇前の一部の会話行を復元します。"
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "これは会話状態のみを変更します。アイテムやレベル、ボス報酬は付与されません。"
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "現在 Astral Clocktower エリアにいる場合は、まずセーブのコピーで実行してください。"
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Dollの旧仕様の子守唄を有効にする"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "旧表示"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "1.0初期版にあったDollの子守唄の挙動を再有効化します。"
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "見た目に関する旧仕様の状態を復元します。能力値、所持品、クエスト報酬は変更されません。"
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "この挙動はバージョンに依存します。キャラクターが正常に読み込まれるまでバックアップを保持してください。"
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Blood-addled の協力プレイ挙動を有効にする"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "マルチプレイヤー挙動"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Hunter ルーンを装備した協力プレイヤーに関連する Blood-addled の挙動を有効にします。"
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "該当ルーンの条件が満たされている間、マルチプレイヤーの敵対挙動が変更されます。"
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "オフラインで、または同意のあるプレイヤーとのみ使用してください。敵対的な協力プレイで混乱を招く可能性があります。"
+    },
+    {
+      "key": "inventory.title",
+      "value": "所持品"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "アイテムを追加"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "アイテムを置換"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "カタログ"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "カタログを検索"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "{{type}}のアイテムを検索"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "数量"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "選択したアイテムを追加"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "キャンセル"
+    },
+    {
+      "key": "inventory.close",
+      "value": "閉じる"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "武器"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "防具"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "血の宝石（実験的・直接追加）"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll ルーン（実験的な直接追加）"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "完成した宝石またはルーンを追加"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "武器または防具を追加"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "セーブ内に安全に再利用できるレコードがある場合、検証済み効果から完成済みの血の宝石またはCaryllルーンを直接作成します。"
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "セーブに安全に再利用できる装備スロットブロックが含まれている場合、カタログ化された武器または防具を直接作成します。"
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "宝石・ルーン直接作成"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "実験的機能：この操作は安全な孤立した強化レコードのみを再利用します。セーブのレイアウトを変更することはありません。キャラクターが正常に読み込まれるまで自動バックアップを保持してください。"
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "実験的機能：この操作は安全な孤立装備スロットブロックのみを再利用し、閉じた宝石スロットを5つ作成します。必要なら後でGemsでスロットを開いてください。"
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "宝石またはルーンを追加する前に、検証済みの第一効果を選択してください。"
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "直接追加は安全に完了できませんでした。"
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "直接追加"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "装備を追加"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "宝石形状"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "ルーン種別"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "ルーンプリセットを選択"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "{{subject}}を編集"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "個人用{{subject}}プリセット名"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Gem Forge と Rune Forge のマイプリセットに「{{name}}」を保存しました。"
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "{{subject}}に変換"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "この{{source}}を{{destination}}に変換しますか？セーブをテストするまで自動バックアップは保持してください。"
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "この変更を適用できませんでした。"
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "{{subject}} Forge を閉じる"
+    },
+    {
+      "key": "forge.notice",
+      "value": "プリセットを読み込んでも表示中のドラフトのみが更新されます。セーブに書き込むにはエディタで「確定」を選択してください。以下の各効果はエディタに組み込まれた検証済みカタログから来ています。個人用プリセットはGem ForgeとRune Forgeで共有されますが、変換先のエディタは独自の有効な Shape または Type を保持します。"
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge モード"
+    },
+    {
+      "key": "forge.presets",
+      "value": "プリセット"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "プリセットカテゴリ"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "カスタム{{subject}}効果セット"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "6効果の{{subject}}を作成"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "最大6つの検証済み効果を選択します。空スロットは「効果なし」のままです。確定時にエディタが選択したIDを再度検証します。"
+    },
+    {
+      "key": "forge.effect",
+      "value": "効果 {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "ドラフトプレビュー"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "カスタムドラフトを読み込むには少なくとも1つ効果を選んでください。"
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "個人用{{subject}}プリセット"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "両フォージで共有される個人用プリセット"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "編集した宝石またはルーンを一度保存すれば、Gem ForgeやRune Forgeから同じプリセットを読み込めます。"
+    },
+    {
+      "key": "forge.personal",
+      "value": "個人用"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Gem ForgeとRune Forgeで共有される個人用フォージプリセット。"
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "個人用プリセット「{{name}}」を削除しますか？"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "まだ個人用プリセットは保存されていません。"
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "宝石またはルーンを編集し、「プリセットとして保存」を使うと両フォージで利用可能になります。"
+    },
+    {
+      "key": "forge.customName",
+      "value": "カスタム{{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "カスタムセット — {{count}} 件の効果を選択済み。"
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "検証済みCaryllルーンのプリセット。"
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "すべて"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "攻撃"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "属性"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "回復"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "実験的"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "個人用"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "カスタム"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "ルーン"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "アペックス（物理）"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "物理ダメージ、満タン時のプレッシャーと耐久サポート。"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "アペックス（滋養）"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "全ダメージ増幅、満タン時のプレッシャーと回復支援。"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtingeハンター"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "高いBloodtingeダメージと、全ダメージおよび回復支援。"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "打撃特化"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "高い打撃ダメージ、全ダメージと耐久サポート。"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "刺突特化"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "高い刺突ダメージ、全ダメージと耐久サポート。"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "ヴァンガード"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "全ダメージ増幅、物理プレッシャーと高い回復ボーナス。"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "アーケインサージ"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "秘術ダメージ、回復と耐久サポート。"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "フレイムサージ"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "炎ダメージ、全ダメージと回復サポート。"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "ボルトサージ"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "雷ダメージ、全ダメージと耐久サポート。"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "エレメンタルアセンダント"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "秘術、炎、雷の効果を一つにした意図的に実験的な装備構成。"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "持続ハント"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "長時間の探索向けに回復、耐久、全ダメージをサポート。"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "深淵の活力 +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "+75の継続HP回復効果を内蔵し、耐久とダメージをサポート。"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "鍛造耐久"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "既知の中で最も強力な耐久ボーナスと高い回復、物理ダメージを組み合わせます。"
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "ラストスタンド"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "瀕死時と満タン時の高倍率。オフラインで使用してください。"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "ガラスキャノン"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "テスト用：物理、全ダメージ、瀕死倍率を重ねます。"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "エンドレスハント"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "既知で最大の回復と耐久効果に、満タン時ダメージボーナスを付与します。"
+    },
+    {
+      "key": "update.available",
+      "value": "アップデートがあります"
+    },
+    {
+      "key": "update.version",
+      "value": "バージョン {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "後で"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "アップデートして再起動"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "安全なダウンロードを開始しています…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "署名済みアップデートをダウンロード中…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "ダウンロード中: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB ダウンロード済み"
+    },
+    {
+      "key": "update.installing",
+      "value": "アップデートをインストール中…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "アップデートをインストールしました。エディタを再起動しています…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "アップデートをインストールできませんでした。現行のバージョンは変更されていません。"
+    },
+    {
+      "key": "actions.reset",
+      "value": "リセット"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "確認"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "変更を確認しました"
+    },
+    {
+      "key": "actions.back",
+      "value": "戻る"
+    },
+    {
+      "key": "actions.change",
+      "value": "変更"
+    },
+    {
+      "key": "actions.edit",
+      "value": "編集"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "名前："
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "座標："
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "プレイ時間："
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "テレポート："
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "場所を選択"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "生存"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "討伐済み"
+    }
+  ],
+  "ko": [
+    {
+      "key": "flags.card.confirm",
+      "value": "이 알려진 세이브 플래그를 적용하시겠습니까? 저장 전에 백업이 만들어집니다."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "플래그가 메모리 상의 세이브에 적용되었습니다. 파일에 쓰려면 '변경사항 저장'을 선택하세요."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "이 플래그를 적용할 수 없습니다: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "변경 내용:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "주의:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "검증된 바이트 패턴:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "상세 숨기기"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "이 작업은 무엇을 하나요?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "적용 중…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "적용"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Lady Maria 대사 복원"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "스토리 복원"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Lady Maria와의 조우 이전의 대사 일부를 복원합니다."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "대사 상태만 변경합니다; 아이템, 레벨 또는 보스 보상은 부여하지 않습니다."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "현재 Astral Clocktower 지역에 있다면 먼저 세이브 복사본에서 사용하세요."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "인형의 레거시 자장가 활성화"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "구버전 연출"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "원래 1.0 버전에 있던 인형의 자장가 동작을 재활성화합니다."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "구버전 연출 상태를 복원합니다. 능력치, 인벤토리, 퀘스트 보상은 변경하지 않습니다."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "동작은 버전 민감적입니다; 캐릭터가 정상적으로 로드될 때까지 백업을 보관하세요."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Blood-addled 협동 동작 활성화"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "멀티플레이 동작"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Hunter 룬을 사용하는 협동 플레이어와 관련된 Blood-addled 상호작용을 활성화합니다."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "관련 룬 조건이 충족되는 동안 멀티플레이어의 적대 행동을 변경합니다."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "오프라인이거나 동의한 플레이어와 함께 사용할 때만 적용하세요. 혼란스러운 적대적 협동 상황을 유발할 수 있습니다."
+    },
+    {
+      "key": "inventory.title",
+      "value": "인벤토리"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "아이템 추가"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "아이템 교체"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "카탈로그"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "카탈로그 검색"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "{{type}} 아이템 검색"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "수량"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "선택 항목 추가"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "취소"
+    },
+    {
+      "key": "inventory.close",
+      "value": "닫기"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "무기"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "방어구"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (실험적 직접 추가)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll 룬 (실험적 직접 추가)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "완성된 보석 또는 룬 추가"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "무기 또는 방어구 추가"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "세이브에 안전하게 재사용 가능한 레코드가 있을 때, 검증된 효과로부터 완성된 Blood Gem 또는 Caryll 룬을 직접 생성합니다."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "세이브에 안전하게 재사용 가능한 장비 슬롯 블록이 있을 때 카탈로그에 등록된 무기 또는 방어구를 직접 생성합니다."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "직접 보석·룬 생성기"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "실험적 기능: 이 작업은 안전한 고아 업그레이드 레코드만 재사용합니다. 세이브 레이아웃을 변경하지 않습니다. 캐릭터가 정상적으로 로드될 때까지 자동 백업을 보관하세요."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "실험적 기능: 이 작업은 안전한 고아 장비 슬롯 블록만 재사용하며 닫힌 보석 슬롯 5개를 생성합니다. 필요하면 이후 Gems로 슬롯을 열어주세요."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "보석 또는 룬을 추가하기 전에 검증된 첫 번째 효과를 선택하세요."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "직접 추가를 안전하게 완료할 수 없습니다."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "직접 추가"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "장비 추가"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "보석 형태"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "룬 유형"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "룬 프리셋 선택"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "{{subject}} 편집"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "개인 {{subject}} 프리셋 이름"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Gem Forge와 Rune Forge의 내 프리셋에 \"{{name}}\"을(를) 저장했습니다."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "{{subject}}로 변환"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "이 {{source}}를 {{destination}}로 변환하시겠습니까? 저장을 테스트할 때까지 자동 백업을 보관하세요."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "이 변경을 적용할 수 없습니다."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "{{subject}} Forge 닫기"
+    },
+    {
+      "key": "forge.notice",
+      "value": "프리셋을 불러와도 보이는 초안만 업데이트됩니다. 세이브에 쓰려면 에디터에서 확인을 선택하세요. 아래의 모든 효과는 에디터에 내장된 검증된 카탈로그에서 제공합니다. 개인 프리셋은 Gem Forge와 Rune Forge에서 공유되며, 대상 에디터는 자체적으로 유효한 Shape 또는 Type을 사용합니다."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge 모드"
+    },
+    {
+      "key": "forge.presets",
+      "value": "프리셋"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "프리셋 분류"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "사용자 지정 {{subject}} 효과 세트"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "효과 6개짜리 {{subject}} 생성"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "최대 6개의 검증된 효과를 선택하세요. 빈 슬롯은 No Effect로 유지됩니다. 확인 시 에디터가 선택한 모든 ID를 다시 검증합니다."
+    },
+    {
+      "key": "forge.effect",
+      "value": "효과 {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "초안 미리보기"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "사용자 초안을 불러오려면 최소 한 개의 효과를 선택하세요."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "개인 {{subject}} 프리셋"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "양쪽 Forge에서 공유되는 개인 프리셋"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "편집한 보석 또는 룬을 한 번 저장하면 Gem Forge나 Rune Forge에서 동일한 프리셋을 불러올 수 있습니다."
+    },
+    {
+      "key": "forge.personal",
+      "value": "개인"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Gem Forge와 Rune Forge에서 공유되는 개인 Forge 프리셋."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "개인 프리셋 \"{{name}}\"을(를) 삭제하시겠습니까?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "저장된 개인 프리셋이 없습니다."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "보석 또는 룬을 편집한 뒤 '프리셋으로 저장'을 사용하면 Gem Forge와 Rune Forge 모두에서 사용할 수 있습니다."
+    },
+    {
+      "key": "forge.customName",
+      "value": "맞춤형 {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "사용자 설정 — {{count}}개 선택됨."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "검증된 Caryll 룬 프리셋."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "전체"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "공격"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "속성"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "회복"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "실험적"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "개인"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "사용자 설정"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "룬"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "최상급 물리"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "물리 피해, 최대 체력 기반 압박 및 내구도 지원."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "최상급 회복"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "모든 피해 증폭, 최대 체력 기반 압박 및 회복."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "높은 Bloodtinge 피해와 모든 피해 및 회복 지원."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "둔기 특화"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "높은 둔기 피해와 모든 피해 및 내구도 지원."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "찌르기 특화"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "높은 찌르기 피해와 모든 피해 및 내구도 지원."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "선봉"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "모든 피해 증폭, 물리 압박 및 높은 회복 보너스."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "아케인 서지"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "아케인 피해와 회복·내구도 지원."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "화염 서지"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "화염 피해와 모든 피해 및 회복 지원."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "번개 서지"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "번개 피해와 모든 피해 및 내구도 지원."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "속성 정점"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "아케인, 화염, 번개 효과를 하나로 합친 의도적으로 실험적인 세팅."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "지속적인 사냥"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "장시간 탐험을 위한 회복, 내구도 및 모든 피해 지원."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "심연의 활력 +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "내장된 +75 지속 HP 회복 효과를 사용하며 내구도와 피해 지원을 제공합니다."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "단련된 인내"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "가장 강력한 번들 내구 보너스로, 높은 회복 및 물리 피해를 동반합니다."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "최후의 저항"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "위기(저HP) 및 풀체력에서의 높은 배수 효과. 이 세팅은 오프라인에서 사용하세요."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "유리 대포"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "테스트 전용으로 물리, 모든 피해, 위기(저HP) 배수를 중첩합니다."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "끝없는 사냥"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "최대 수준의 회복 및 내구 효과와 풀체력 공격 보너스를 제공합니다."
+    },
+    {
+      "key": "update.available",
+      "value": "업데이트 가능"
+    },
+    {
+      "key": "update.version",
+      "value": "버전 {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "나중에"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "업데이트 후 재시작"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "보안 다운로드 시작…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "서명된 업데이트 다운로드 중…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "다운로드 중: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB 다운로드됨"
+    },
+    {
+      "key": "update.installing",
+      "value": "업데이트 설치 중…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "업데이트가 설치되었습니다. 에디터를 재시작합니다…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "업데이트를 설치할 수 없습니다. 현재 버전은 변경되지 않았습니다."
+    },
+    {
+      "key": "actions.reset",
+      "value": "초기화"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "확인"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "변경사항 확인됨"
+    },
+    {
+      "key": "actions.back",
+      "value": "뒤로"
+    },
+    {
+      "key": "actions.change",
+      "value": "변경"
+    },
+    {
+      "key": "actions.edit",
+      "value": "편집"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "이름:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "좌표:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "플레이 시간:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "텔레포트:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "위치 선택"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "살아있음"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "처치됨"
+    }
+  ],
+  "zh-CN": [
+    {
+      "key": "flags.card.confirm",
+      "value": "应用此已知存档标记？保存前会自动保留备份。"
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "标记已应用到内存存档。选择“保存更改”以写入文件。"
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "无法应用此标记： {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "更改内容："
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "注意："
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "已验证的字节模式："
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "隐藏详情"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "这会做什么？"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "应用中…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "应用"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "恢复 Lady Maria 对话"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "叙事恢复"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "恢复 Lady Maria 遭遇前的一小部分对话台词。"
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "仅更改对话状态；不会授予物品、等级或首领奖励。"
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "如果你当前在 Astral Clocktower 区域，请先在存档副本上使用。"
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "启用傀儡的遗留摇篮曲"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "遗留表现"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "重新启用与原始 1.0 版本相关的傀儡摇篮曲行为。"
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "恢复旧版表现状态。不会更改属性、物品或任务奖励。"
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "该行为依赖版本；在成功载入角色前请保留备份。"
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "启用 Blood-addled 联机协作行为"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "多人游戏行为"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "启用与协作玩家使用 Hunter 符文相关的 Blood-addled 交互。"
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "在满足相关符文条件时，这会改变联机敌对行为。"
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "仅在离线或获得同意的玩家间使用。可能造成混乱的敌对协作行为。"
+    },
+    {
+      "key": "inventory.title",
+      "value": "物品栏"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "添加物品"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "替换物品"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "目录"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "搜索目录"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "搜索 {{type}} 物品"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "数量"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "添加所选物品"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "取消"
+    },
+    {
+      "key": "inventory.close",
+      "value": "关闭"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "武器"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "护甲"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (实验性直接添加)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (实验性直接添加)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "添加已完成的宝石或符文"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "添加武器或护甲"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "当存档中存在可安全复用的记录时，直接根据已验证效果创建已完成的 Blood Gem 或 Caryll Rune。"
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "当存档包含可安全复用的装备栏块时，直接创建目录中的武器或护甲。"
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "直接宝石和符文构建器"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "实验性：此操作仅复用可安全的孤立升级记录。不会改变存档布局。请在角色正常载入前保留自动备份。"
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "实验性：此操作仅复用可安全的孤立装备栏块，并创建五个封闭宝石槽。如需打开，请稍后使用 Gems。"
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "在添加宝石或符文前，请先选择一个已验证的首要效果。"
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "无法安全完成直接添加。"
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "直接添加"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "添加装备"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "宝石形状"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "符文类型"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "选择符文预设"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "编辑 {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "个人 {{subject}} 预设名称"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "已将“{{name}}”保存到“我的预设”，可在 Gem Forge 和 Rune Forge 使用。"
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "转换为 {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "将此 {{source}} 转换为 {{destination}}？在测试存档前请保留自动备份。"
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "无法应用此更改。"
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "关闭 {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "加载预设只会更新可见草稿。要将其写入存档，请在编辑器中选择“确认”。下方的每个效果均来自编辑器内嵌的已验证目录。个人预设在 Gem Forge 与 Rune Forge 之间共享；目标编辑器会保留其各自有效的形状或类型。"
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge 模式"
+    },
+    {
+      "key": "forge.presets",
+      "value": "预设"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "预设分类"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "自定义 {{subject}} 效果组"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "构建一个六效果的 {{subject}}"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "最多选择六个已验证的效果。空槽保持为“无效果”。确认时编辑器会再次验证每个选定的ID。"
+    },
+    {
+      "key": "forge.effect",
+      "value": "效果 {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "草稿预览"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "至少选择一个效果以加载自定义草稿。"
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "个人 {{subject}} 预设"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "两个锻造器共享的个人预设"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "编辑并保存一次宝石或符文后，即可在 Gem Forge 或 Rune Forge 中加载相同预设。"
+    },
+    {
+      "key": "forge.personal",
+      "value": "个人"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "个人锻造预设，Gem Forge 与 Rune Forge 共享。"
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "删除个人预设“{{name}}”？"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "尚未保存任何个人预设。"
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "编辑宝石或符文，然后使用“另存为预设”使其在两个锻造器中可用。"
+    },
+    {
+      "key": "forge.customName",
+      "value": "自定义 {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "自定义集 — 已选择 {{count}} 个效果。"
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "已验证的 Caryll Rune 预设。"
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "全部"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "攻击"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "元素"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "恢复"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "实验性"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "个人"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "自定义"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "符文"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "物理巅峰"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "物理伤害，满血压制与耐久支持。"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "滋养巅峰"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "全伤害增幅，伴随满血压制与恢复。"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "高 Bloodtinge 伤害，兼有全伤害与恢复支持。"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "钝击破坏者"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "高钝击伤害，兼有全伤害与耐久支持。"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "刺击专家"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "高刺击伤害，兼有全伤害与耐久支持。"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "先锋"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "全伤害增幅，物理压制与高恢复加成。"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "秘术爆发"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "秘术伤害，兼有恢复与耐久支持。"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "火焰爆发"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "火焰伤害，兼有全伤害与恢复支持。"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "闪电爆发"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "雷电伤害，兼有全伤害与耐久支持。"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "元素上升"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "将秘术、火焰与雷电效果合并的刻意实验性装备搭配。"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "持久狩猎"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "为长时间探索提供恢复、耐久与全伤害支持。"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssal Vitality +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "使用内置的+75 持续HP恢复效果，兼有耐久与伤害支持。"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "锻造耐力"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "已知最强的耐久加成组合，配合高恢复与物理伤害。"
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "最后一搏"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "高临死与满血乘算加成。请离线使用此配置。"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "玻璃炮"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "叠加物理、全伤害与临死乘算，仅用于测试。"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "无尽狩猎"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "已知最大恢复与耐久效果，附带满血伤害加成。"
+    },
+    {
+      "key": "update.available",
+      "value": "有可用更新"
+    },
+    {
+      "key": "update.version",
+      "value": "版本 {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "稍后"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "更新并重启"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "开始安全下载…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "正在下载已签名更新…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "下载中：{{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "已下载 {{megabytes}} MB"
+    },
+    {
+      "key": "update.installing",
+      "value": "正在安装更新…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "更新已安装。正在重启编辑器…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "更新无法安装。当前版本未更改。"
+    },
+    {
+      "key": "actions.reset",
+      "value": "重置"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "确认"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "更改已确认"
+    },
+    {
+      "key": "actions.back",
+      "value": "返回"
+    },
+    {
+      "key": "actions.change",
+      "value": "更改"
+    },
+    {
+      "key": "actions.edit",
+      "value": "编辑"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "名称："
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "坐标："
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "游戏时间："
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "传送："
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "选择地点"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "存活"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "已击败"
+    }
+  ],
+  "sv": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Tillämpa denna kända spara-flagga? En säkerhetskopia skapas innan sparandet."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flagga tillämpad i minnet. Välj Spara ändringar för att skriva filen."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Kunde inte tillämpa denna flagga: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Vad ändras:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Var försiktig:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Validerat byte-mönster:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Dölj detaljer"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Vad gör detta?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Tillämpas…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Tillämpa"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Återställ Lady Marias dialog"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Återställning av berättelsen"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Återställer några dialograder före mötet med Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Ändrar endast dialogtillståndet; ger inte föremål, nivå eller boss-belöning."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Använd först på en kopierad sparfil om du befinner dig i Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Aktivera Dockans ursprungliga vaggvisa"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Äldre presentation"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Återaktiverar Dockans vaggvisebeteende kopplat till ursprungsversionen 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Återställer ett äldre presentationsläge. Påverkar inte attribut, inventarium eller uppdragsbelöningar."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Beteendet är versionskänsligt; behåll säkerhetskopian tills karaktären laddats normalt."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Aktivera Blood-addled co-op-beteende"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Flerspelarbeteende"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Aktiverar Blood-addled-interaktionen som uppstår när co-op-spelare använder Hunter-runan."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Ändrar fientligt beteende i flerspelarläge medan runvillkoren är uppfyllda."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Använd endast offline eller med medgivande spelare. Kan orsaka förvirrande fientligt co-op-beteende."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventarie"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Lägg till föremål"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Byt ut föremål"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalog"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Sök i katalogen"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Sök {{type}}-föremål"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Antal"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Lägg till markerat föremål"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Avbryt"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Stäng"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Vapen"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Rustning"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (experimentellt direkttillägg)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (experimentellt direkttillägg)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Lägg till en färdig Blood Gem eller Caryll Rune"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Lägg till ett vapen eller en rustning"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Skapa en färdig Blood Gem eller Caryll Rune direkt från validerade effekter när en säker återanvändbar post finns i sparfilen."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Skapa ett katalogfört vapen eller rustning direkt när sparfilen innehåller ett säkert återanvändbart utrustningsfältsblock."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Direktbyggare för gem och runor"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimentellt: denna operation återanvänder endast en säker föräldralös uppgraderingspost. Den ändrar aldrig sparfilens layout. Behåll den automatiska säkerhetskopian tills karaktären har laddats normalt."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimentellt: denna operation återanvänder endast ett säkert föräldralöst utrustningsfältsblock och skapar fem stängda gem-platser. Öppna platserna senare med Gems vid behov."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Välj en validerad primäreffekt innan du lägger till en gem eller rune."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Direktinsättningen kunde inte genomföras säkert."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Lägg till direkt"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Lägg till utrustning"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Gem-form"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Run-typ"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gems"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Välj en runförinställning"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Redigera {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Personligt {{subject}}-presetsnamn"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Sparat “{{name}}” i Mina förinställningar för Gem Forge och Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Konvertera till {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Konvertera denna {{source}} till en {{destination}}? Behåll den automatiska säkerhetskopian tills du testat sparfilen."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Kunde inte tillämpa denna ändring."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Stäng {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Att ladda en förinställning uppdaterar bara det synliga utkastet. Välj Bekräfta i editorn för att skriva det till sparfilen. Varje effekt nedan kommer från editorens inbäddade validerade katalog. Personliga förinställningar delas mellan Gem Forge och Rune Forge; målreditorn behåller sin egen giltiga Shape eller Type."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge-läge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Förinställningar"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Förinställningskategorier"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Anpassad {{subject}}-effektuppsättning"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Skapa en {{subject}} med sex effekter"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Välj upp till sex validerade effekter. Tomma platser förblir som No Effect. Editorn validerar varje valt ID igen när du bekräftar."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Effekt {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Utkastförhandsvisning"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Välj åtminstone en effekt för att ladda ett anpassat utkast."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Personliga {{subject}}-förinställningar"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Personliga förinställningar som delas av Gem Forge och Rune Forge"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Spara en redigerad gem eller rune en gång, och ladda sedan samma förinställning från Gem Forge eller Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Personlig"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Personlig Forge-förinställning som delas av Gem Forge och Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Ta bort den personliga förinställningen “{{name}}”?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Ingen personlig förinställning har sparats än."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Redigera en gem eller rune, använd sedan Spara som förinställning för att göra den tillgänglig i både Gem Forge och Rune Forge."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Anpassad {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Anpassad uppsättning — {{count}} valda effekter."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Validerad Caryll Rune-förinställning."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Alla"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Angrepp"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Element"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Återhämtning"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimentell"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Personlig"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Anpassad"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex (Fysisk)"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fysisk skada, bonus vid full hälsa och hållbarhetsstöd."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex (Närande)"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Ökning av all skada med bonus vid full hälsa och återhämtning."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Hög Bloodtinge-skada med stöd för all skada och återhämtning."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Trubbkrossare"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Hög trubbskada med stöd för all skada och hållbarhet."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Stöt-specialist"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Hög stötskada med stöd för all skada och hållbarhet."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Frontlinje"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Ökning av all skada med fysisk tryckpåverkan och hög återhämtningsbonus."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arkanvåg"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arkan skada med återhämtning och hållbarhetsstöd."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Eldvåg"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Eldskada med stöd för all skada och återhämtning."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Blixtvåg"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Blixtskada med stöd för all skada och hållbarhet."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elementupphöjd"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arkan-, eld- och blixt-effekter i en medvetet experimentell uppsättning."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Uthållig jakt"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Stöd för återhämtning, hållbarhet och all skada för långa utforskningar."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Avgrundens vitalitet +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Använder inbäddad +75 kontinuerlig HP-återhämtning med hållbarhets- och skadestöd."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Smidd uthållighet"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Den starkaste kända paketbonusen för hållbarhet, tillsammans med hög återhämtning och fysisk skada."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Sista ställningen"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Höga multiplikatorer vid nära-död och full hälsa. Använd denna uppsättning offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glascanon"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Staplar fysiska, allskade- och nära-död-multiplikatorer endast för testning."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Oändlig jakt"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Maximala kända effekter för återhämtning och hållbarhet med en skadebonus vid full hälsa."
+    },
+    {
+      "key": "update.available",
+      "value": "Uppdatering tillgänglig"
+    },
+    {
+      "key": "update.version",
+      "value": "Version {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Inte nu"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Uppdatera och starta om"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Startar säker nedladdning…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Laddar ner signerad uppdatering…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Laddar ner: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB nedladdat"
+    },
+    {
+      "key": "update.installing",
+      "value": "Installerar uppdatering…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Uppdatering installerad. Startar om editorn…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Uppdateringen kunde inte installeras. Din nuvarande version förblir oförändrad."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Återställ"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Bekräfta"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Ändringar bekräftade"
+    },
+    {
+      "key": "actions.back",
+      "value": "Tillbaka"
+    },
+    {
+      "key": "actions.change",
+      "value": "Ändra"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Redigera"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Namn:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordinater:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Speltid:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleportera:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Välj en plats"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Vid liv"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Död"
+    }
+  ],
+  "cs": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Uplatnit tento známý příznak uložené hry? Před uložením se vytvoří záloha."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Příznak byl aplikován do uložené hry v paměti. Vyberte Uložit změny pro zápis do souboru."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Nelze aplikovat tento příznak: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Co se změní:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Pozor:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Ověřený vzor bytů:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Skrýt podrobnosti"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Co to dělá?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Aplikuje se…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Použít"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Obnovit dialogy Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Obnovení příběhu"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Obnoví několik řádků dialogu před střetem s Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Mění pouze stav dialogu; nedává žádnou položku, úroveň ani odměnu za bosse."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Použijte nejdříve na kopii uložené hry, pokud se právě nacházíte v oblasti Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Povolit původní kolébavku Doll"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Původní prezentace"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Znovu povolí chování kolébavky Doll spojené s původním vydáním 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Obnoví pouze původní prezentační stav. Nemění atributy, inventář ani odměny za úkoly."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Chování závisí na verzi; ponechte zálohu, dokud se postava úspěšně nenačte."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Povolit kooperativní chování Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Chování pro více hráčů"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Povolí Blood-addled interakci spojenou s kooperativními hráči používajícími Hunter rune."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Změní nepřátelské chování v multiplayeru, pokud jsou splněny příslušné podmínky runy."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Používejte pouze offline nebo s hráči, kteří s tím souhlasí. Může způsobit matoucí nepřátelské kooperativní chování."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventář"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Přidat položku"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Nahradit položku"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalog"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Hledat v katalogu"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Hledat položky {{type}}"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Počet"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Přidat vybranou položku"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Zrušit"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Zavřít"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Zbraně"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Brnění"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (experimentální přímé přidání)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll runy (experimentální přímé přidání)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Přidat hotový gem nebo runu"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Přidat zbraň nebo brnění"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Vytvoří hotový Blood Gem nebo Caryll runu přímo z ověřených efektů, pokud je v úložném souboru k dispozici bezpečný znovupoužitelný záznam."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Vytvoří katalogizovanou zbraň nebo brnění přímo, pokud uložená hra obsahuje bezpečný znovupoužitelný blok vybavení."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Tvůrce gemů a run přímo"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimentální: tato operace znovupoužívá pouze bezpečný opuštěný záznam vylepšení. Nikdy nemění rozložení uložené hry. Ponechte automatickou zálohu, dokud se postava normálně nenačte."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimentální: tato operace znovupoužívá pouze bezpečný opuštěný blok vybavení a vytvoří pět uzavřených slotů na gemy. Otevřete sloty později pomocí Gems, pokud je to potřeba."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Vyberte ověřený první efekt před přidáním gemu nebo runy."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Přímé přidání nelze bezpečně dokončit."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Přidat přímo"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Přidat vybavení"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Tvar gemu"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Typ runy"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Vyberte přednastavení runy"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Upravit {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Název osobního přednastavení {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Uloženo „{{name}}“ do Moje přednastavení pro Kovárnu gemů a Kovárnu run."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Převést na {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Převést tento {{source}} na {{destination}}? Ponechte automatickou zálohu, dokud uloženou hru neotestujete."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Nelze aplikovat tuto změnu."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Zavřít {{subject}} kovárnu"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Načtení přednastavení aktualizuje pouze viditelný návrh. Vyberte Potvrdit v editoru, chcete‑li jej zapsat do uložené hry. Každý níže uvedený efekt pochází z vestavěného ověřeného katalogu v editoru. Osobní přednastavení jsou sdílena Kovárnou gemů i Kovárnou run; cílový editor si udržuje vlastní platný tvar nebo typ."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Režim {{subject}} kovárny"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Přednastavení"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Kategorie přednastavení"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Vlastní sada efektů {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Sestavit {{subject}} se šesti efekty"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Vyberte až šest ověřených efektů. Prázdné sloty zůstanou jako Žádný efekt. Editor při potvrzení znovu ověří každé vybrané ID."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efekt {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Náhled návrhu"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Vyberte alespoň jeden efekt pro načtení vlastního návrhu."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Osobní přednastavení {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Osobní přednastavení sdílená oběma kovárnám"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Uložte upravený gem nebo runu jednou a poté stejné přednastavení načtěte z Kovárny gemů nebo Kovárny run."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Osobní"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Osobní přednastavení kovárny sdílené Kovárnou gemů a Kovárnou run."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Smazat osobní přednastavení „{{name}}“?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Dosud nebylo uloženo žádné osobní přednastavení."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Upravte gem nebo runu a poté použijte Uložit jako přednastavení, aby bylo dostupné v obou kovárnách."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Vlastní {{subject}} kovárna"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Vlastní sada — vybráno {{count}} efektů."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Ověřené přednastavení Caryll runy."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Vše"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Útok"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elementální"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Obnova"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimentální"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Osobní"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Vlastní"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runa"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex – fyzické"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fyzické poškození, tlak při plném zdraví a podpora odolnosti."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex – vyživující"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Zesílení veškerého poškození s tlakem při plném zdraví a obnovou."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Vysoké poškození Bloodtinge s podporou obecného poškození a obnovy."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Blunt Breaker"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Vysoké tupé poškození s podporou obecného poškození a odolnosti."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Thrust Specialist"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Vysoké bodné poškození s podporou obecného poškození a odolnosti."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Průkopník"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Zesílení veškerého poškození s fyzickým tlakem a vysokým bonusem k obnově."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arcane Surge"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arcane poškození s podporou obnovy a odolnosti."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Flame Surge"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Ohňové poškození s podporou obecného poškození a obnovy."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Bolt Surge"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Bleskové poškození s podporou obecného poškození a odolnosti."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elemental Ascendant"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arcane, oheň a blesk v jedné záměrně experimentální sestavě."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Sustained Hunt"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Podpora obnovy, odolnosti a obecného poškození pro dlouhé průzkumy."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssální vitalita +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Využívá zabudovaný efekt kontinuálního obnovování HP +75 s podporou odolnosti a poškození."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Forged Endurance"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Nejsilnější známý bonus k odolnosti v balíčku spárovaný s vysokou obnovou a fyzickým poškozením."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Last Stand"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Vysoké násobitele při téměř smrti i při plném zdraví. Používejte tuto sestavu offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glass Cannon"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Kumulace fyzického, všeobecného a téměř-smrtí násobitelů pouze pro testování."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Endless Hunt"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Maximální známé efekty obnovy a odolnosti s bonusem k poškození při plném zdraví."
+    },
+    {
+      "key": "update.available",
+      "value": "Aktualizace k dispozici"
+    },
+    {
+      "key": "update.version",
+      "value": "Verze {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Ne nyní"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Aktualizovat a restartovat"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Spouští se zabezpečené stahování…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Stahuje se podepsaná aktualizace…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Stahování: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB staženo"
+    },
+    {
+      "key": "update.installing",
+      "value": "Instaluje se aktualizace…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Aktualizace nainstalována. Restartuji editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Aktualizaci se nepodařilo nainstalovat. Vaše současná verze zůstává beze změny."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Resetovat"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Potvrdit"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Změny potvrzeny"
+    },
+    {
+      "key": "actions.back",
+      "value": "Zpět"
+    },
+    {
+      "key": "actions.change",
+      "value": "Změnit"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Upravit"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Jméno:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Souřadnice:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Doba hraní:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleport:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Vyberte lokaci"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Naživu"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Poražený"
+    }
+  ],
+  "ro": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Aplici acest flag cunoscut al save-ului? Se păstrează un backup înainte de salvare."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flag aplicat în save-ul din memorie. Selectează Salvează modificările pentru a scrie fișierul."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Nu s-a putut aplica acest flag: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Ce se schimbă:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Atenție:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Model de octeți validat:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Ascunde detaliile"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Ce face asta?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Se aplică…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Aplică"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Restabilește dialogul lui Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Restaurare narativă"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Restabilește un set mic de replici de dinaintea întâlnirii cu Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Schimbă doar starea dialogului; nu acordă obiecte, nivel sau recompensă de boss."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Folosește mai întâi pe un save copiat dacă te afli în prezent în zona Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Activează cântecul de leagăn clasic al Doll"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Prezentare clasică"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Reactivează comportamentul cântecului de leagăn al Doll asociat cu lansarea inițială 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Restabilește o stare de prezentare clasică. Nu modifică atribute, inventar sau recompense de misiune."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Comportamentul depinde de versiune; păstrează backup-ul până când personajul s-a încărcat cu succes."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Activează comportamentul Blood-addled în cooperare"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Comportament multiplayer"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Activează interacțiunea Blood-addled asociată jucătorilor cooperativi care folosesc runa Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Schimbă comportamentul ostil în multiplayer atâta timp cât condițiile runei relevante sunt îndeplinite."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Folosește doar offline sau cu jucători care sunt de acord. Poate crea comportament ostil confuz în co-op."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventar"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Adaugă un obiect"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Înlocuiește obiect"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Catalog"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Caută în catalog"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Caută obiecte {{type}}"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Cantitate"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Adaugă obiectul selectat"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Anulează"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Închide"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Arme"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Armuri"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (adăugare directă experimentală)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (adăugare directă experimentală)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Adaugă o gemă sau rună finalizată"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Adaugă o armă sau armură"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Creează direct o Blood Gem sau o Caryll Rune finalizată din efecte validate când există o înregistrare reutilizabilă sigură în save."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Creează direct o armă sau armură catalogată când save-ul conține un bloc sigur reutilizabil pentru slotul de echipament."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Constructor direct de gemă și rună"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Experimental: această operațiune reutilizează doar o înregistrare de upgrade orfană și sigură. Nu modifică niciodată structura save-ului. Păstrează backup-ul automat până când personajul s-a încărcat normal."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Experimental: această operațiune reutilizează doar un bloc de slot de echipament orfan și sigur și creează cinci sloturi închise pentru gemă. Deschide sloturile mai târziu cu Gems dacă este nevoie."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Alege un prim efect validat înainte de a adăuga o gemă sau rună."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Adăugarea directă nu a putut fi finalizată în siguranță."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Adaugă direct"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Adaugă echipament"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Formă gemă"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Tip rună"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gems"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Selectează un preset de rună"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Editează {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Nume preset personal pentru {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Am salvat „{{name}}” în Preseturile mele pentru Gem Forge și Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Convertește în {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Convertești acest {{source}} într-un {{destination}}? Păstrează backup-ul automat până când ai testat save-ul."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Nu s-a putut aplica această modificare."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Închide {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Încărcarea unui preset actualizează doar schița vizibilă. Selectează Confirm în editor pentru a o scrie în save. Fiecare efect de mai jos provine din catalogul validat încorporat al editorului. Preseturile personale sunt partajate între Gem Forge și Rune Forge; editorul de destinație păstrează propriul său Shape sau Type valid."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Mod {{subject}} Forge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Preseturi"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Categorii preseturi"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Set personalizat de efecte pentru {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Construiește un {{subject}} cu șase efecte"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Alege până la șase efecte validate. Sloturile goale rămân ca No Effect. Editorul validează din nou fiecare ID selectat când confirmi."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efect {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Previzualizare draft"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Alege cel puțin un efect pentru a încărca o ciornă personalizată."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Preseturi personale pentru {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Preseturi personale partajate de Gem Forge și Rune Forge"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Salvează o gemă sau rună editată o dată, apoi încarcă același preset din Gem Forge sau Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Personal"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Preset personal de Forge partajat de Gem Forge și Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Ștergi presetul personal „{{name}}”?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Nu a fost salvat niciun preset personal încă."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Editează o gemă sau rună, apoi folosește Salvează ca preset pentru a-l face disponibil în ambele Forge."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Forja personalizată {{subject}}"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Set personalizat — {{count}} efecte selectate."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Preset de Caryll Rune validat."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Toate"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Atac"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elemental"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Recuperare"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Experimental"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Personal"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Personalizat"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rună"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex Fizic"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Daune fizice, presiune la viață maximă și suport pentru durabilitate."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Nutritiv"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Amplificare a tuturor daunelor, presiune la viață maximă și recuperare."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Daune mari de Bloodtinge cu suport pentru toate daunele și recuperare."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Spargător Neascuțit"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Daune mari de tip blunt, cu suport pentru toate daunele și durabilitate."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Specialist în Thrust"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Daune mari de tip thrust, cu suport pentru toate daunele și durabilitate."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Avangardă"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Amplificare pentru toate daunele, presiune fizică și bonus mare la recuperare."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Val Arcana"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Daune arcane cu suport pentru recuperare și durabilitate."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Val de Flacără"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Daune de foc cu suport pentru toate daunele și recuperare."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Val Fulger"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Daune de fulger cu suport pentru toate daunele și durabilitate."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Ascendent Elemental"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Efecte arcane, de foc și fulger într-un set intenționat experimental."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Vânătoare Susținută"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Recuperare, durabilitate și suport pentru toate daunele în sesiuni lungi de explorare."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Vitalitate Abisală +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Folosește efectul încorporat de recuperare continuă a HP +75, cu suport pentru durabilitate și daune."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Enduranță Forjată"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Cel mai puternic bonus de durabilitate cunoscut, asociat cu recuperare mare și daune fizice."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Ultima Rezistență"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Multiplicatori mari la aproape-moarte și la viață completă. Păstrează acest set offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Tun de Sticlă"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Stivuiește multiplicatori pentru daune fizice, toate daunele și aproape-moarte doar pentru testare."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Vânătoare Fără Sfârșit"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Efecte maxime cunoscute de recuperare și durabilitate, cu un bonus de daune la viață completă."
+    },
+    {
+      "key": "update.available",
+      "value": "Actualizare disponibilă"
+    },
+    {
+      "key": "update.version",
+      "value": "Versiunea {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Mai târziu"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Actualizează și repornește"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Încep descărcarea securizată…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Se descarcă actualizarea semnată…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Se descarcă: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB descărcați"
+    },
+    {
+      "key": "update.installing",
+      "value": "Se instalează actualizarea…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Actualizare instalată. Se repornește editorul…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Actualizarea nu a putut fi instalată. Versiunea curentă rămâne neschimbată."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Resetează"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Confirmă"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Modificări confirmate"
+    },
+    {
+      "key": "actions.back",
+      "value": "Înapoi"
+    },
+    {
+      "key": "actions.change",
+      "value": "Schimbă"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Editează"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nume:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Coordonate:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Timp de joc:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleportare:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Selectează o locație"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "În viață"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Mort"
+    }
+  ],
+  "el": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Εφαρμόζετε αυτή τη γνωστή σημαία αποθήκευσης; Δημιουργείται αντίγραφο ασφαλείας πριν την αποθήκευση."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Η σημαία εφαρμόστηκε στην αποθηκευμένη μνήμη. Επιλέξτε «Αποθήκευση αλλαγών» για να γράψετε το αρχείο."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Αδύνατη η εφαρμογή αυτής της σημαίας: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Αλλαγές:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Προσοχή:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Επικυρωμένο πρότυπο byte:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Απόκρυψη λεπτομερειών"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Τι κάνει αυτό;"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Εφαρμόζεται…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Εφαρμογή"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Επαναφορά διαλόγου της Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Αποκατάσταση αφήγησης"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Επαναφέρει ένα μικρό σύνολο γραμμών διαλόγου πριν την αναμέτρηση με τη Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Αυτό αλλάζει μόνο την κατάσταση των διαλόγων· δεν χορηγεί αντικείμενο, επίπεδο ή ανταμοιβή αφεντικού."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Χρησιμοποιήστε πρώτα σε αντίγραφο αποθήκευσης εάν βρίσκεστε αυτήν τη στιγμή στην περιοχή Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Ενεργοποίηση παλαιού νανουρίσματος της Doll"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Κλασική παρουσίαση"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Επαναενεργοποιεί τη συμπεριφορά του νανουρίσματος της Doll που σχετίζεται με την αρχική έκδοση 1.0."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Αυτό επαναφέρει μια κατάσταση κλασικής παρουσίασης. Δεν αλλάζει χαρακτηριστικά, αποθέματα ή ανταμοιβές αποστολών."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Η συμπεριφορά εξαρτάται από την έκδοση· κρατήστε το αντίγραφο ασφαλείας μέχρι να φορτωθεί επιτυχώς ο χαρακτήρας."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Ενεργοποίηση συμπεριφοράς συνεργασίας Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Συμπεριφορά πολλών παικτών"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Ενεργοποιεί την αλληλεπίδραση Blood-addled που συνδέεται με συνεργαζόμενους παίκτες που χρησιμοποιούν τη Rune Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Αυτό αλλάζει τη συμπεριφορά εχθρότητας στο multiplayer όσο πληρούνται οι σχετικές συνθήκες rune."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Χρησιμοποιήστε αυτό μόνο εκτός σύνδεσης ή με συναίνεση των παικτών. Μπορεί να δημιουργήσει συγκεχυμένη εχθρική συμπεριφορά σε συνεργατικό παιχνίδι."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Αντικείμενα"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Προσθήκη αντικειμένου"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Αντικατάσταση αντικειμένου"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Κατάλογος"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Αναζήτηση καταλόγου"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Αναζήτηση αντικειμένων {{type}}"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Ποσότητα"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Προσθήκη επιλεγμένου αντικειμένου"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Ακύρωση"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Κλείσιμο"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Όπλα"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Πανοπλίες"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (πειραματική άμεση προσθήκη)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (πειραματική άμεση προσθήκη)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Προσθήκη έτοιμου gem ή rune"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Προσθήκη όπλου ή πανοπλίας"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Δημιουργία έτοιμου Blood Gem ή Caryll Rune απευθείας από επικυρωμένα εφέ όταν υπάρχει ασφαλές επαναχρησιμοποιήσιμο αρχείο στην αποθήκευση."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Δημιουργία καταχωρημένου όπλου ή πανοπλίας απευθείας όταν η αποθήκευση περιέχει ασφαλές επαναχρησιμοποιήσιμο μπλοκ θέσης εξοπλισμού."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Άμεσος δημιουργός gem και rune"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Πειραματικό: αυτή η λειτουργία επαναχρησιμοποιεί μόνο ένα ασφαλές ορφανό αρχείο αναβάθμισης. Δεν μεταβάλλει ποτέ τη διάταξη της αποθήκευσης. Κρατήστε το αυτόματο αντίγραφο ασφαλείας μέχρι να φορτωθεί κανονικά ο χαρακτήρας."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Πειραματικό: αυτή η λειτουργία επαναχρησιμοποιεί μόνο ένα ασφαλές ορφανό μπλοκ θέσης εξοπλισμού και δημιουργεί πέντε κλειστές θέσεις gem. Ανοίξτε τις θέσεις αργότερα με Gems αν χρειάζεται."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Επιλέξτε ένα επικυρωμένο πρώτο εφέ πριν προσθέσετε gem ή rune."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Η άμεση προσθήκη δεν μπορούσε να ολοκληρωθεί με ασφάλεια."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Προσθήκη απευθείας"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Προσθήκη εξοπλισμού"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Σχήμα gem"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Τύπος rune"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gems"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Επιλέξτε ένα preset rune"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Επεξεργασία {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Όνομα προσωπικού preset για {{subject}}"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Αποθηκεύτηκε «{{name}}» στα Προσωπικά presets για Gem Forge και Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Μετατροπή σε {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Να μετατραπεί αυτό το {{source}} σε {{destination}}; Κρατήστε το αυτόματο αντίγραφο ασφαλείας μέχρι να δοκιμάσετε την αποθήκευση."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Αδύνατη η εφαρμογή αυτής της αλλαγής."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Κλείσιμο του {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Η φόρτωση ενός preset ενημερώνει μόνο το ορατό προσχέδιο. Επιλέξτε Επιβεβαίωση στον επεξεργαστή για να το γράψετε στην αποθήκευση. Κάθε εφέ παρακάτω προέρχεται από το ενσωματωμένο επικυρωμένο κατάλογο του επεξεργαστή. Τα προσωπικά presets μοιράζονται μεταξύ Gem Forge και Rune Forge· ο προορισμός επεξεργασίας διατηρεί το δικό του έγκυρο Σχήμα ή Τύπο."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Λειτουργία {{subject}} Forge"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Προεπιλογές"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Κατηγορίες προεπιλογών"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Προσαρμοσμένο σύνολο εφέ {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Δημιουργία {{subject}} με έξι εφέ"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Επιλέξτε έως έξι επικυρωμένα εφέ. Τα κενά slots παραμένουν ως Χωρίς εφέ. Ο επεξεργαστής επικυρώνει ξανά κάθε επιλεγμένο ID όταν επιβεβαιώσετε."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Εφέ {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Προεπισκόπηση προσχεδίου"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Επιλέξτε τουλάχιστον ένα εφέ για να φορτώσετε ένα προσαρμοσμένο προσχέδιο."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Προσωπικά presets για {{subject}}"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Προσωπικά presets κοινά και για τα δύο forges"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Αποθηκεύστε μια επεξεργασμένη gem ή rune μία φορά, και μετά φορτώστε το ίδιο preset από το Gem Forge ή το Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Προσωπικά"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Προσωπικό preset Forge που μοιράζεται από Gem Forge και Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Διαγραφή του προσωπικού preset «{{name}}»;"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Δεν έχει αποθηκευτεί ακόμη προσωπικό preset."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Επεξεργαστείτε ένα gem ή rune και μετά χρησιμοποιήστε «Αποθήκευση ως preset» για να το κάνετε διαθέσιμο και στους δύο forges."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Προσαρμοσμένος {{subject}} Forge"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Προσαρμοσμένο σύνολο — {{count}} επιλεγμένα εφέ."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Επικυρωμένο preset Caryll Rune."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Όλα"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Επίθεση"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Στοιχειακά"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Ανάκτηση"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Πειραματικό"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Προσωπικά"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Προσαρμοσμένο"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Ανώτατη Φυσική"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Φυσική ζημιά, πίεση στην πλήρη υγεία και υποστήριξη ανθεκτικότητας."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Ανώτατη Θρέψη"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Ενίσχυση όλων των ζημιών με πίεση πλήρους υγείας και ανάκτηση."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Υψηλή ζημιά Bloodtinge με υποστήριξη όλων των ζημιών και ανάκτησης."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Καταστροφέας Κρούσης"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Υψηλή ζημιά κρούσης με υποστήριξη για όλες τις ζημιές και ανθεκτικότητα."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Ειδικός Τρυπήματος"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Υψηλή ζημιά τρυπήματος με υποστήριξη για όλες τις ζημιές και ανθεκτικότητα."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Προπομπός"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Ενίσχυση όλων των ζημιών με φυσική πίεση και μεγάλο μπόνους ανάκτησης."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Άνοδος Αρκάνου"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Ζημιά Arcane με υποστήριξη ανάκτησης και ανθεκτικότητας."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Έκρηξη Φλόγας"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Ζημιά από φωτιά με ενίσχυση όλων των ζημιών και υποστήριξη ανάκτησης."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Έκρηξη Κεραυνού"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Ζημιά από κεραυνό με ενίσχυση όλων των ζημιών και υποστήριξη ανθεκτικότητας."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Ανυψωτής Στοιχείων"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Εφέ Arcane, φωτιάς και κεραυνού σε ένα σκόπιμα πειραματικό σετ."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Επίμονο Κυνήγι"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Υποστήριξη ανάκτησης, ανθεκτικότητας και όλων των ζημιών για μακρές συνεδρίες εξερεύνησης."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Αβυσσαία Ζωτικότητα +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Χρησιμοποιεί το ενσωματωμένο συνεχές εφέ +75 ανάκτησης HP με υποστήριξη ανθεκτικότητας και ζημιάς."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Σφυρηλατημένη Αντοχή"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Το ισχυρότερο γνωστό πακέτο μπόνους ανθεκτικότητας σε συνδυασμό με υψηλή ανάκτηση και φυσική ζημιά."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Τελευταία Στάση"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Υψηλοί πολλαπλασιαστές σε κατάσταση κοντά στο θάνατο και σε πλήρη υγεία. Κρατήστε αυτό το σετ εκτός σύνδεσης."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Γυάλινο Κανόνι"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Συσσωρεύει πολλαπλασιαστές φυσικών, όλων των ζημιών και κοντά στο θάνατο για δοκιμές μόνο."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Ατελείωτο Κυνήγι"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Μέγιστα γνωστά εφέ ανάκτησης και ανθεκτικότητας με μπόνους ζημιάς στην πλήρη υγεία."
+    },
+    {
+      "key": "update.available",
+      "value": "Διαθέσιμη ενημέρωση"
+    },
+    {
+      "key": "update.version",
+      "value": "Έκδοση {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Όχι τώρα"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Ενημέρωση και επανεκκίνηση"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Έναρξη ασφαλούς λήψης…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Λήψη υπογεγραμμένης ενημέρωσης…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Λήψη: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB λήφθηκαν"
+    },
+    {
+      "key": "update.installing",
+      "value": "Εγκατάσταση ενημέρωσης…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Ενημέρωση εγκαταστάθηκε. Επανεκκίνηση του editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Η ενημέρωση δεν μπόρεσε να εγκατασταθεί. Η τρέχουσα έκδοσή σας παραμένει ίδια."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Επαναφορά"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Επιβεβαίωση"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Οι αλλαγές επιβεβαιώθηκαν"
+    },
+    {
+      "key": "actions.back",
+      "value": "Πίσω"
+    },
+    {
+      "key": "actions.change",
+      "value": "Αλλαγή"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Επεξεργασία"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Όνομα:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Συντεταγμένες:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Χρόνος παιχνιδιού:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Τηλεμεταφορά:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Επιλέξτε τοποθεσία"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Ζωντανός"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Νεκρός"
+    }
+  ],
+  "id": [
+    {
+      "key": "flags.card.confirm",
+      "value": "Terapkan flag simpan ini? Cadangan otomatis dibuat sebelum menyimpan."
+    },
+    {
+      "key": "flags.card.applied",
+      "value": "Flag diterapkan ke save di memori. Pilih Simpan perubahan untuk menulis file."
+    },
+    {
+      "key": "flags.card.applyFailed",
+      "value": "Tidak dapat menerapkan flag ini: {{error}}"
+    },
+    {
+      "key": "flags.card.whatChanges",
+      "value": "Perubahan:"
+    },
+    {
+      "key": "flags.card.careful",
+      "value": "Hati-hati:"
+    },
+    {
+      "key": "flags.card.bytePattern",
+      "value": "Pola byte tervalidasi:"
+    },
+    {
+      "key": "flags.card.hideDetails",
+      "value": "Sembunyikan detail"
+    },
+    {
+      "key": "flags.card.showDetails",
+      "value": "Apa fungsi ini?"
+    },
+    {
+      "key": "flags.card.applying",
+      "value": "Menerapkan…"
+    },
+    {
+      "key": "flags.card.apply",
+      "value": "Terapkan"
+    },
+    {
+      "key": "flags.entries.restoreMaria.label",
+      "value": "Pulihkan dialog Lady Maria"
+    },
+    {
+      "key": "flags.entries.restoreMaria.category",
+      "value": "Pemulihan naratif"
+    },
+    {
+      "key": "flags.entries.restoreMaria.info",
+      "value": "Mengembalikan beberapa baris dialog sebelum pertemuan dengan Lady Maria."
+    },
+    {
+      "key": "flags.entries.restoreMaria.impact",
+      "value": "Ini hanya mengubah status dialog; tidak memberikan item, level, atau hadiah bos."
+    },
+    {
+      "key": "flags.entries.restoreMaria.warning",
+      "value": "Gunakan pada salinan save terlebih dahulu jika Anda sedang berada di area Astral Clocktower."
+    },
+    {
+      "key": "flags.entries.dollLullaby.label",
+      "value": "Aktifkan lagu nina bobo warisan Boneka"
+    },
+    {
+      "key": "flags.entries.dollLullaby.category",
+      "value": "Presentasi warisan"
+    },
+    {
+      "key": "flags.entries.dollLullaby.info",
+      "value": "Mengembalikan perilaku lagu nina bobo Boneka yang terkait dengan rilis 1.0 asli."
+    },
+    {
+      "key": "flags.entries.dollLullaby.impact",
+      "value": "Ini mengembalikan status presentasi warisan. Tidak mengubah atribut, inventaris, atau hadiah misi."
+    },
+    {
+      "key": "flags.entries.dollLullaby.warning",
+      "value": "Perilaku ini sensitif terhadap versi; simpan cadangan sampai karakter berhasil dimuat."
+    },
+    {
+      "key": "flags.entries.bloodAddled.label",
+      "value": "Aktifkan perilaku co-op Blood-addled"
+    },
+    {
+      "key": "flags.entries.bloodAddled.category",
+      "value": "Perilaku multipemain"
+    },
+    {
+      "key": "flags.entries.bloodAddled.info",
+      "value": "Mengaktifkan interaksi Blood-addled yang terkait dengan pemain co-op yang menggunakan rune Hunter."
+    },
+    {
+      "key": "flags.entries.bloodAddled.impact",
+      "value": "Ini mengubah perilaku permusuhan multipemain selama kondisi rune terkait terpenuhi."
+    },
+    {
+      "key": "flags.entries.bloodAddled.warning",
+      "value": "Gunakan hanya saat offline atau dengan pemain yang setuju. Ini dapat menciptakan perilaku co-op bermusuhan yang membingungkan."
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventaris"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Tambahkan item"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Ganti item"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalog"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Cari katalog"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Cari item {{type}}"
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Jumlah"
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Tambahkan item terpilih"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Batal"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Tutup"
+    },
+    {
+      "key": "inventory.item",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "item"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "item"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Senjata"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Armor"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (penambahan langsung eksperimental)"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (penambahan langsung eksperimental)"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Tambahkan gem atau rune jadi"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Tambahkan senjata atau armor"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Buat Blood Gem atau Caryll Rune jadi langsung dari efek tervalidasi ketika terdapat rekaman aman yang dapat digunakan ulang dalam save."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Buat senjata atau armor yang tercatat langsung ketika save berisi blok slot perlengkapan yang aman dan dapat digunakan ulang."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Pembuat gem dan rune langsung"
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Eksperimental: operasi ini hanya menggunakan kembali catatan upgrade yatim yang aman. Ini tidak pernah mengubah tata letak save. Simpan cadangan otomatis sampai karakter berhasil dimuat secara normal."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Eksperimental: operasi ini hanya menggunakan kembali blok slot-perlengkapan yatim yang aman dan membuat lima slot gem tertutup. Buka slot tersebut nanti dengan Gems jika diperlukan."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Pilih efek pertama yang tervalidasi sebelum menambahkan gem atau rune."
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Penambahan langsung tidak dapat diselesaikan dengan aman."
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Tambahkan langsung"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Tambahkan perlengkapan"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Bentuk gem"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Tipe rune"
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Pilih preset rune"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Sunting {{subject}}"
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Nama preset {{subject}} pribadi"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Tersimpan \"{{name}}\" di Preset Saya untuk Gem Forge dan Rune Forge."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Ubah menjadi {{subject}}"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Ubah {{source}} ini menjadi {{destination}}? Simpan cadangan otomatis sampai Anda menguji save."
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Tidak dapat menerapkan perubahan ini."
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Tutup {{subject}} Forge"
+    },
+    {
+      "key": "forge.notice",
+      "value": "Memuat preset hanya memperbarui draft yang terlihat. Pilih Konfirmasi di editor untuk menulisnya ke save. Setiap efek di bawah berasal dari katalog tervalidasi yang tertanam di editor. Preset pribadi dibagikan oleh Gem Forge dan Rune Forge; editor tujuan mempertahankan Shape atau Type yang valid sendiri."
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "Mode Forge {{subject}}"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Preset"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Kategori preset"
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Set efek kustom {{subject}}"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Buat {{subject}} dengan enam efek"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Pilih hingga enam efek tervalidasi. Slot kosong tetap menjadi Tanpa Efek. Editor memvalidasi setiap ID yang dipilih lagi saat Anda mengonfirmasi."
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efek {{index}}"
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Pratinjau draft"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Pilih setidaknya satu efek untuk memuat draft kustom."
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Preset {{subject}} pribadi"
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Preset pribadi yang dibagi oleh kedua forge"
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Simpan gem atau rune yang diedit sekali, lalu muat preset yang sama dari Gem Forge atau Rune Forge."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Pribadi"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Preset Forge pribadi yang dibagikan oleh Gem Forge dan Rune Forge."
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Hapus preset pribadi \"{{name}}\"?"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Belum ada preset pribadi yang disimpan."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Sunting gem atau rune, lalu gunakan Simpan sebagai preset untuk membuatnya tersedia di kedua forge."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Forge {{subject}} Kustom"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Set kustom — {{count}} efek terpilih."
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Preset Caryll Rune tervalidasi."
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Semua"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Serangan"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elemental"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Pemulihan"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Eksperimental"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Pribadi"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Kustom"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Puncak Fisik"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Kerusakan fisik, tekanan pada kesehatan penuh, dan dukungan daya tahan."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Puncak Pemulih"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Penguatan semua jenis kerusakan dengan tekanan saat kesehatan penuh dan pemulihan."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Daya serang Bloodtinge tinggi dengan dukungan semua-kerusakan dan pemulihan."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Pemecah Tumpul"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Daya serang tipe tumpul tinggi dengan dukungan semua-kerusakan dan daya tahan."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Spesialis Tusukan"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Daya serang tusukan tinggi dengan dukungan semua-kerusakan dan daya tahan."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Garda Depan"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Penguatan semua-kerusakan dengan tekanan fisik dan bonus pemulihan tinggi."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Lonjakan Arcane"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Kerusakan Arcane dengan dukungan pemulihan dan daya tahan."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Lonjakan Api"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Kerusakan api dengan dukungan semua-kerusakan dan pemulihan."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Lonjakan Petir"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Kerusakan petir dengan dukungan semua-kerusakan dan daya tahan."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Unggul Elemental"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Efek Arcane, api, dan petir dalam satu susunan yang sengaja eksperimental."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Perburuan Berkelanjutan"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Dukungan pemulihan, daya tahan, dan semua-kerusakan untuk sesi eksplorasi panjang."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Vitalitas Abyssal +75"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Menggunakan efek pemulihan HP kontinu +75 yang tertanam dengan dukungan daya tahan dan kerusakan."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Ketahanan Ditempa"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Bonus daya tahan terkuat yang diketahui, dipasangkan dengan pemulihan tinggi dan kerusakan fisik."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Pertahanan Terakhir"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Pengali tinggi saat nyaris mati dan saat kesehatan penuh. Simpan loadout ini offline."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Meriam Kaca"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Menumpuk pengali fisik, semua-kerusakan, dan nyaris-mati hanya untuk pengujian."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Perburuan Tanpa Akhir"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Efek pemulihan dan daya tahan maksimum yang diketahui dengan bonus kerusakan saat kesehatan penuh."
+    },
+    {
+      "key": "update.available",
+      "value": "Pembaruan tersedia"
+    },
+    {
+      "key": "update.version",
+      "value": "Versi {{version}}"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Nanti"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Perbarui dan mulai ulang"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Memulai unduhan aman…"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Mengunduh pembaruan bertanda tangan…"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Mengunduh: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB terunduh"
+    },
+    {
+      "key": "update.installing",
+      "value": "Menginstal pembaruan…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Pembaruan terpasang. Memulai ulang editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Pembaruan gagal diinstal. Versi Anda tetap tidak berubah."
+    },
+    {
+      "key": "actions.reset",
+      "value": "Atur Ulang"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Konfirmasi"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Perubahan dikonfirmasi"
+    },
+    {
+      "key": "actions.back",
+      "value": "Kembali"
+    },
+    {
+      "key": "actions.change",
+      "value": "Ubah"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Sunting"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nama:"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordinat:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Waktu bermain:"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleport:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Pilih lokasi"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Hidup"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Mati"
+    }
+  ]
+};
+
+function applyTranslationPath(target, path, value) {
+  const parts = path.split(".");
+  let cursor = target;
+  for (let index = 0; index < parts.length - 1; index += 1) {
+    const part = parts[index];
+    cursor[part] = { ...(cursor[part] ?? {}) };
+    cursor = cursor[part];
+  }
+  cursor[parts.at(-1)] = value;
+}
+
+Object.entries(beta5TranslatedOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  translations.forEach(({ key, value }) => applyTranslationPath(translatedResource, key, value));
+  resources[language] = translatedResource;
+});
+
+const beta5TerminologyOverrides = {
+  de: { "inventory.gems": "Edelsteine" },
+  sv: { "inventory.gems": "Ädelstenar" },
+  ro: { "inventory.gems": "Pietre prețioase" },
+  el: { "inventory.gems": "Πολύτιμοι λίθοι" },
+};
+
+Object.entries(beta5TerminologyOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => applyTranslationPath(translatedResource, key, value));
+  resources[language] = translatedResource;
+});
+
 Object.keys(resources).forEach((language) => {
   const flags = flagOverrides[language] ?? {};
   resources[language] = {

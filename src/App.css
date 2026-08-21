@@ -2047,3 +2047,197 @@
     width: 100%;
   }
 }
+
+/* Beta 5: resilient localisation layout and separated standard Add catalogue. */
+.editButtons {
+  min-width: 0;
+  padding: 0.5rem 0.6rem 1rem;
+  gap: 0.45rem;
+}
+
+.editButtons > span {
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.78rem, 1.5vw, 1rem) !important;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.editButtons .editQuantity {
+  display: grid;
+  width: min(100%, 12.5rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.35rem;
+}
+
+.editButtons .editQuantity input {
+  width: 100% !important;
+  min-width: 0;
+}
+
+.inventory-btn {
+  display: grid;
+  width: min(100%, 12.5rem);
+  min-height: 3.15rem;
+  padding: 0.5rem 0.7rem;
+  place-items: center;
+  overflow-wrap: anywhere;
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  line-height: 1.18;
+  text-align: center;
+  white-space: normal;
+}
+
+.inventory-btn:not(:first-of-type) {
+  margin-top: 0.35rem;
+}
+
+.inventory-dialog__card--add {
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+}
+
+.inventory-dialog__header p,
+.inventory-dialog__notice,
+.inventory-dialog__error {
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.inventory-dialog__standard-content {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto minmax(12rem, 1fr);
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.inventory-dialog__standard-content > .inventory-dialog__notice {
+  margin: 0;
+}
+
+.inventory-dialog__standard-content .catalog-picker {
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.inventory-dialog__standard-content .catalog-picker__search {
+  padding-top: 0.05rem;
+}
+
+.inventory-dialog__standard-content .catalog-picker__results {
+  min-height: 12rem;
+  max-height: none;
+}
+
+.inventory-dialog__actions button,
+.save-flow-dialog__actions button,
+.gem-forge__filters button,
+.gem-forge__modes button,
+.gem-forge__card button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  white-space: normal;
+}
+
+@media (max-width: 56rem) {
+  .editButtons {
+    padding-inline: 0.45rem;
+  }
+
+  .inventory-btn,
+  .editButtons .editQuantity {
+    width: 100%;
+  }
+}
+
+@media (max-width: 36rem) {
+  .inventory-dialog__controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inventory-dialog__quantity {
+    max-width: 100%;
+  }
+
+  .inventory-dialog__standard-content {
+    grid-template-rows: auto minmax(10rem, 1fr);
+  }
+
+  .inventory-dialog__actions button {
+    flex: 1 1 9rem;
+  }
+}
+
+.editButtons .editQuantity .buttonBg {
+  min-height: 2.6rem;
+  min-width: 0;
+  padding: 0.35rem 0.55rem;
+  overflow-wrap: anywhere;
+  font-size: clamp(0.76rem, 1.15vw, 0.9rem);
+  line-height: 1.15;
+  white-space: normal;
+}
+
+/* Shared in-app confirmation for Forge and Flags. */
+.confirm-dialog {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  display: grid;
+  padding: clamp(1rem, 3vw, 3rem);
+  place-items: center;
+  background: rgb(0 0 0 / 72%);
+  backdrop-filter: blur(5px);
+}
+
+.confirm-dialog__panel {
+  width: min(100%, 35rem);
+  border: 1px solid #8e7948;
+  background: linear-gradient(145deg, #181611 0%, #0b0b0c 100%);
+  box-shadow: 0 1.3rem 4rem rgb(0 0 0 / 65%);
+  padding: clamp(1rem, 3vw, 1.75rem);
+}
+
+.confirm-dialog__eyebrow {
+  margin: 0 0 0.35rem;
+  color: #d6b45e;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.confirm-dialog__panel h2 {
+  margin: 0;
+  color: #f1eee6;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.2;
+}
+
+.confirm-dialog__description {
+  margin: 0.85rem 0 1.2rem;
+  color: #d3cec2;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.confirm-dialog__actions .control-button {
+  min-width: min(100%, 9rem);
+  white-space: normal;
+}
+
+.confirm-dialog__actions .control-button--danger {
+  border-color: #92575d;
+  background: linear-gradient(135deg, #57252a, #2b1517);
+}

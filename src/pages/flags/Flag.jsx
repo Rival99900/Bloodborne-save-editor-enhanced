@@ -2,18 +2,15 @@ import { invoke } from "@tauri-apps/api/core";
 import { message } from "@tauri-apps/plugin-dialog";
 import { memo, useState } from "react";
 import { useLocalization } from "../../i18n/localization";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 function Flag({ label, offset, values, info, impact, warning = "", category = "Known flag", isMask = false }) {
   const { t } = useLocalization();
   const [isApplying, setIsApplying] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   async function apply() {
-    const accepted = window.confirm(
-      `${label}\n\n${impact}\n\n${t("flags.card.confirm")}`,
-    );
-    if (!accepted) return;
-
     setIsApplying(true);
     try {
       if (isMask) {
@@ -35,7 +32,20 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
   }
 
   return (
-    <article className="flag-card">
+    <>
+      {confirmOpen ? (
+        <ConfirmDialog
+          title={label}
+          description={`${impact}\n\n${t("flags.card.confirm")}`}
+          confirmLabel={t("flags.card.apply")}
+          onConfirm={() => {
+            setConfirmOpen(false);
+            apply();
+          }}
+          onCancel={() => setConfirmOpen(false)}
+        />
+      ) : null}
+      <article className="flag-card">
       <div className="flag-card__content">
         <span className="flag-card__category">{category}</span>
         <h2>{label}</h2>
@@ -53,11 +63,12 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
         <button className="flag-card__details-button" onClick={() => setExpanded((value) => !value)}>
           {expanded ? t("flags.card.hideDetails") : t("flags.card.showDetails")}
         </button>
-        <button className="buttonBg flag-card__apply" onClick={apply} disabled={isApplying}>
+        <button className="buttonBg flag-card__apply" onClick={() => setConfirmOpen(true)} disabled={isApplying}>
           {isApplying ? t("flags.card.applying") : t("flags.card.apply")}
         </button>
-      </div>
-    </article>
+        </div>
+      </article>
+    </>
   );
 }
 

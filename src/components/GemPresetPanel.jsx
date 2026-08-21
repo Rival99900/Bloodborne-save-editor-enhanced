@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import SelectSearch from "./SelectSearch";
+import ConfirmDialog from "./ConfirmDialog";
 import { useLocalization } from "../i18n/localization";
 
 const NO_EFFECT_ID = 4294967295;
@@ -143,6 +144,7 @@ function GemPresetPanel({
   const subject = isRuneForge ? "Rune" : "Gem";
   const [category, setCategory] = useState("All");
   const [mode, setMode] = useState("presets");
+  const [pendingDelete, setPendingDelete] = useState(null);
   const [customEffects, setCustomEffects] = useState(() =>
     Array(EFFECT_SLOTS).fill(NO_EFFECT_ID),
   );
@@ -249,13 +251,27 @@ function GemPresetPanel({
   }
 
   function deletePreset(preset) {
-    if (window.confirm(t("forge.deleteConfirm", { name: preset.name }))) {
-      onDeletePreset?.(preset.id);
-    }
+    setPendingDelete(preset);
+  }
+
+  function confirmDeletePreset() {
+    if (pendingDelete) onDeletePreset?.(pendingDelete.id);
+    setPendingDelete(null);
   }
 
   return (
-    <div className="gem-forge" role="dialog" aria-modal="true" aria-label={t("forge.modeLabel", { subject })}>
+    <>
+      {pendingDelete ? (
+        <ConfirmDialog
+          title={t("forge.delete")}
+          description={t("forge.deleteConfirm", { name: pendingDelete.name })}
+          confirmLabel={t("forge.delete")}
+          tone="danger"
+          onConfirm={confirmDeletePreset}
+          onCancel={() => setPendingDelete(null)}
+        />
+      ) : null}
+      <div className="gem-forge" role="dialog" aria-modal="true" aria-label={t("forge.modeLabel", { subject })}>
       <div className="gem-forge__header">
         <div>
           <p className="gem-forge__eyebrow">{isRuneForge ? t("forge.runeForge") : t("forge.gemForge")}</p>
@@ -379,7 +395,8 @@ function GemPresetPanel({
           )}
         </section>
       ) : null}
-    </div>
+      </div>
+    </>
   );
 }
 

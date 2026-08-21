@@ -12,6 +12,7 @@ import { ItemsContext } from "../context/itemsContext";
 import SelectSearch from "./SelectSearch";
 import useDraw from "../utils/useDraw";
 import GemPresetPanel from "./GemPresetPanel";
+import ConfirmDialog from "./ConfirmDialog";
 import { useLocalization } from "../i18n/localization";
 
 const NO_EFFECT_ID = 4294967295;
@@ -86,6 +87,7 @@ function EditUpgrade({
   } = edited;
   const [isConfirming, setIsConfirming] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
+  const [conversionConfirmOpen, setConversionConfirmOpen] = useState(false);
   // Rune presets are one-time actions; the field intentionally remains blank until chosen.
   const [runePresetSelection, setRunePresetSelection] = useState("");
   // A personal preset is opt-in. Never present the current rune or gem name as a preset
@@ -248,13 +250,6 @@ function EditUpgrade({
   }
 
   async function transformUpgrade() {
-    const sourceName = upgrade_type === "Gem" ? "gem" : "rune";
-    const destinationName = upgrade_type === "Gem" ? "rune" : "gem";
-    const accepted = window.confirm(
-      t("forge.convertConfirm", { source: sourceName, destination: destinationName }),
-    );
-    if (!accepted) return;
-
     try {
       const result = await invoke("transform_upgrade", {
         upgradeType: upgrade_type,
@@ -272,7 +267,22 @@ function EditUpgrade({
   }
 
   return (
-    <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label={t("forge.dialogLabel", { subject: upgrade_type })}>
+    <>
+      {conversionConfirmOpen ? (
+        <ConfirmDialog
+          title={t("forge.convertTo", { subject: upgrade_type === "Gem" ? "Rune" : "Gem" })}
+          description={t("forge.convertConfirm", {
+            source: upgrade_type === "Gem" ? "gem" : "rune",
+            destination: upgrade_type === "Gem" ? "rune" : "gem",
+          })}
+          onConfirm={() => {
+            setConversionConfirmOpen(false);
+            transformUpgrade();
+          }}
+          onCancel={() => setConversionConfirmOpen(false)}
+        />
+      ) : null}
+      <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label={t("forge.dialogLabel", { subject: upgrade_type })}>
       {forgeOpen ? (
         <GemPresetPanel
           gemEffects={gemEffectCatalog}
@@ -340,7 +350,7 @@ function EditUpgrade({
                 </div>
               </>
             {!equipped ? (
-              <button onClick={transformUpgrade} disabled={isConfirming}>
+              <button onClick={() => setConversionConfirmOpen(true)} disabled={isConfirming}>
                 {t("forge.convertTo", { subject: upgrade_type === "Gem" ? "Rune" : "Gem" })}
               </button>
             ) : null}
@@ -465,7 +475,8 @@ function EditUpgrade({
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
