@@ -2,7 +2,8 @@
 
 > A passion-driven modernisation of the original Bloodborne save editor, designed to make advanced save editing clearer, safer, and more comfortable to use.
 
-[![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=9f7a3e)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=37B700)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![Pre-release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&include_prereleases&label=pre-release&color=dea607 )](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases )
+ [![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
 
 **Bloodborne Save Editor Enhanced** expands the work of the original [Bloodborne Save Editor by Noxde](https://github.com/Noxde/Bloodborne-save-editor). This project was made with passion and respect for that foundation, with the aim of providing a cleaner interface, safer save workflows, more complete Gem and Rune editing, and practical quality-of-life improvements for the Bloodborne community.
 
