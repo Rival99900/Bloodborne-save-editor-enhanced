@@ -1,17 +1,18 @@
 use serde::{Deserialize, Serialize};
 
 use crate::data_handling::position::Pos;
-use std::path::PathBuf;
+use std::{collections::HashSet, path::PathBuf};
+use serde_json::Value;
 
 use super::{
     article::Article,
     bosses::{self, Boss},
-    enums::{ArticleType, Error, Location, UpgradeType},
+    enums::{ArticleType, Error, Location, SlotShape, TypeFamily, UpgradeType},
     file::FileData,
     inventory::Inventory,
     slots::{parse_equipped_gems, Slot},
     stats::{self, Stat},
-    upgrades::{parse_upgrades, Upgrade},
+    upgrades::{parse_upgrades, Upgrade, UpgradeInfo},
     username::Username,
 };
 
@@ -136,6 +137,297 @@ impl SaveData {
         None
     }
 
+    /// Experimental direct allocation for weapons and armor. The operation
+    /// consumes only a fixed inventory slot and a verified 60-byte garbage
+    /// reservation in the equipment-slot area; it never shifts save data.
+    pub fn add_direct_equipment(&mut self, id: u32, is_armor: bool) -> Result<Article, Error> {
+        let empty_slot = self
+            .file
+            .find_inv_empty_slot(Location::Inventory)
+            .ok_or(Error::CustomError("ERROR: No free inventory slot is available."))?;
+
+        let (info, article_type) = if is_armor {
+            super::inventory::get_info_armor(id, &self.file.resources_path)?
+        } else {
+            super::inventory::get_info_weapon(id, &self.file.resources_path)?
+        };
+        let type_family: TypeFamily = article_type.into();
+        if (is_armor && type_family != TypeFamily::Armor)
+            || (!is_armor && type_family != TypeFamily::Weapon)
+        {
+            return Err(Error::CustomError(
+                "ERROR: The requested catalogue entry has an incompatible equipment family.",
+            ));
+        }
+
+        let reserved_block = [0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF];
+        let slot_limit = self.file.offsets.username.saturating_sub(147);
+        let referenced_pairs: HashSet<(u32, u32)> = self
+            .inventory
+            .articles
+            .values()
+            .chain(self.storage.articles.values())
+            .flat_map(|entries| entries.iter())
+            .map(|article| (article.first_part, article.second_part))
+            .collect();
+        let is_valid_slot_block = |offset: usize| {
+            offset + 60 <= slot_limit
+                && self.file.bytes[offset..offset + 8] != [0; 8]
+                && self.file.bytes[offset + 16..offset + 20] == [1, 0, 0, 0]
+                && (0..5).all(|slot| {
+                    let start = offset + 20 + slot * 8;
+                    let shape: [u8; 4] = self.file.bytes[start..start + 4].try_into().unwrap();
+                    SlotShape::try_from(&shape).is_ok()
+                })
+        };
+        let orphan_block = (self.file.offsets.equipped_gems.0..slot_limit.saturating_sub(60))
+            .find(|offset| {
+                let first = u32::from_le_bytes(self.file.bytes[*offset..*offset + 4].try_into().unwrap());
+                let second = u32::from_le_bytes(self.file.bytes[*offset + 4..*offset + 8].try_into().unwrap());
+                is_valid_slot_block(*offset) && !referenced_pairs.contains(&(first, second))
+            });
+        let reserved_offset = (self.file.offsets.equipped_gems.1 + 1..slot_limit.saturating_sub(60))
+            .find(|offset| {
+                (0..8).all(|block| {
+                    self.file.bytes[*offset + block * 8..*offset + (block + 1) * 8]
+                        == reserved_block
+                })
+            });
+        let block_offset = orphan_block.or(reserved_offset).ok_or(Error::CustomError(
+            "ERROR: No safe orphaned or reserved equipment-slot block is available in this save.",
+        ))?;
+
+        let used_codes: HashSet<u32> = referenced_pairs.iter().map(|(first, _)| *first).collect();
+        let prefix = if is_armor { 0x9080_0000 } else { 0x8080_0000 };
+        let first_part = (1..=0x00FF_FFFF)
+            .map(|suffix| prefix | suffix)
+            .find(|candidate| !used_codes.contains(candidate))
+            .ok_or(Error::CustomError("ERROR: No unique equipment code is available."))?;
+        let second_part = if is_armor {
+            (id & 0x00FF_FFFF) | 0x1000_0000
+        } else {
+            id
+        };
+
+        let username = self.file.offsets.username;
+        let counter_offsets = [
+            username + super::constants::USERNAME_TO_FIRST_INVENTORY_COUNTER,
+            username + super::constants::USERNAME_TO_SECOND_INVENTORY_COUNTER,
+        ];
+        let next_counters: Vec<[u8; 4]> = counter_offsets
+            .iter()
+            .map(|offset| {
+                u32::from_le_bytes(self.file.bytes[*offset..*offset + 4].try_into().unwrap())
+                    .checked_add(1)
+                    .ok_or(Error::CustomError("ERROR: Inventory counter overflow."))
+                    .map(u32::to_le_bytes)
+            })
+            .collect::<Result<_, _>>()?;
+
+        let closed_shape: [u8; 4] = SlotShape::Closed.into();
+        let mut block = [0u8; 60];
+        block[0..4].copy_from_slice(&first_part.to_le_bytes());
+        block[4..8].copy_from_slice(&second_part.to_le_bytes());
+        block[8..12].copy_from_slice(&250u32.to_le_bytes());
+        block[16..20].copy_from_slice(&1u32.to_le_bytes());
+        for slot in 0..5 {
+            let start = 20 + slot * 8;
+            block[start..start + 4].copy_from_slice(&closed_shape);
+        }
+
+        self.file.bytes[block_offset..block_offset + 60].copy_from_slice(&block);
+        self.file.offsets.equipped_gems.1 = self.file.offsets.equipped_gems.1.max(block_offset + 59);
+        self.file.bytes[empty_slot..empty_slot + 4].copy_from_slice(&first_part.to_le_bytes());
+        self.file.bytes[empty_slot + 4..empty_slot + 8].copy_from_slice(&second_part.to_le_bytes());
+        self.file.bytes[empty_slot + 8..empty_slot + 12].copy_from_slice(&1u32.to_le_bytes());
+        for (offset, value) in counter_offsets.into_iter().zip(next_counters) {
+            self.file.bytes[offset..offset + 4].copy_from_slice(&value);
+        }
+
+        let slots = (0..5)
+            .map(|index| Slot {
+                shape: SlotShape::Closed,
+                gem: None,
+                index,
+            })
+            .collect();
+        let articles = self.inventory.articles.entry(article_type).or_default();
+        let article = Article {
+            number: self.file.bytes[empty_slot - 4],
+            id,
+            first_part,
+            second_part,
+            amount: 1,
+            info,
+            article_type,
+            type_family,
+            slots: Some(slots),
+            index: articles.len(),
+        };
+        articles.push(article.clone());
+        Ok(article)
+    }
+
+    /// Experimental direct allocation. A new upgrade is materialized only by
+    /// reclaiming an unreferenced 40-byte Upgrade record that already exists
+    /// inside the save. This deliberately refuses to grow or shift the opaque
+    /// save layout, which would risk overwriting the slot and character blocks.
+    pub fn add_direct_upgrade(
+        &mut self,
+        upgrade_type: UpgradeType,
+        shape: String,
+        effect_ids: Vec<u32>,
+        location: Location,
+    ) -> Result<Upgrade, Error> {
+        const NO_EFFECT: u32 = u32::MAX;
+
+        if effect_ids.is_empty() || effect_ids[0] == NO_EFFECT {
+            return Err(Error::CustomError(
+                "ERROR: A direct gem or rune requires a validated primary effect.",
+            ));
+        }
+
+        let shape_number = match upgrade_type {
+            UpgradeType::Gem => match shape.as_str() {
+                "Radial" => 0x01,
+                "Triangle" => 0x02,
+                "Waning" => 0x04,
+                "Circle" => 0x08,
+                "Droplet" => 0x3F,
+                _ => return Err(Error::CustomError("ERROR: Invalid gem shape.")),
+            },
+            UpgradeType::Rune => match shape.as_str() {
+                "-" => 0x01,
+                "Oath" => 0x02,
+                _ => return Err(Error::CustomError("ERROR: Invalid rune type.")),
+            },
+        };
+
+        let catalog: Value = serde_json::from_str(include_str!("../../resources/upgrades.json"))
+            .map_err(|_| Error::CustomError("ERROR: Failed to read the effect catalog."))?;
+        let (primary_catalog, fallback_catalog) = match upgrade_type {
+            UpgradeType::Gem => (&catalog["gemEffects"], &catalog["runeEffects"]),
+            UpgradeType::Rune => (&catalog["runeEffects"], &catalog["gemEffects"]),
+        };
+
+        let mut normalized_effects = effect_ids;
+        normalized_effects.truncate(6);
+        normalized_effects.resize(6, NO_EFFECT);
+
+        let mut effects = Vec::with_capacity(6);
+        let mut first_info: Option<UpgradeInfo> = None;
+        for effect_id in normalized_effects.iter().copied() {
+            if effect_id == NO_EFFECT {
+                effects.push((NO_EFFECT, String::from("No Effect")));
+                continue;
+            }
+
+            let key = effect_id.to_string();
+            let definition = if !primary_catalog[&key].is_null() {
+                primary_catalog[&key].clone()
+            } else {
+                fallback_catalog[&key].clone()
+            };
+            let effect_info: UpgradeInfo = serde_json::from_value(definition).map_err(|_| {
+                Error::CustomError("ERROR: The requested direct-upgrade effect is not validated.")
+            })?;
+            if first_info.is_none() {
+                first_info = Some(effect_info.clone());
+            }
+            effects.push((effect_id, effect_info.effect));
+        }
+        let info = first_info.ok_or(Error::CustomError(
+            "ERROR: A direct gem or rune requires a validated primary effect.",
+        ))?;
+
+        let raw_slot_upgrade_ids: HashSet<u32> = (self.file.offsets.upgrades.1.saturating_sub(16)..self.file.offsets.username.saturating_sub(163))
+            .flat_map(|offset| {
+                let block_id = u64::from_le_bytes(self.file.bytes[offset..offset + 8].try_into().unwrap());
+                if block_id == 0 {
+                    return Vec::new();
+                }
+                let mut ids = Vec::new();
+                for slot in 0..5 {
+                    let start = offset + 20 + slot * 8;
+                    let shape: [u8; 4] = self.file.bytes[start..start + 4].try_into().unwrap();
+                    match SlotShape::try_from(&shape) {
+                        Ok(SlotShape::Closed) => {}
+                        Ok(_) => ids.push(u32::from_le_bytes(self.file.bytes[start + 4..start + 8].try_into().unwrap())),
+                        Err(_) => return Vec::new(),
+                    }
+                }
+                ids
+            })
+            .collect();
+        let referenced_ids: HashSet<u32> = self
+            .inventory
+            .upgrades
+            .values()
+            .chain(self.storage.upgrades.values())
+            .flat_map(|entries| entries.iter().map(|upgrade| upgrade.id))
+            .chain(raw_slot_upgrade_ids)
+            .chain(
+                self.inventory
+                    .articles
+                    .values()
+                    .chain(self.storage.articles.values())
+                    .flat_map(|entries| entries.iter())
+                    .filter_map(|article| article.slots.as_ref())
+                    .flat_map(|slots| slots.iter())
+                    .filter_map(|slot| slot.gem.as_ref().map(|upgrade| upgrade.id)),
+            )
+            .collect();
+        let mut available_offset = None;
+        for offset in (self.file.offsets.upgrades.0..self.file.offsets.upgrades.1).step_by(40) {
+            let id = u32::from_le_bytes(self.file.bytes[offset..offset + 4].try_into().unwrap());
+            if !referenced_ids.contains(&id) {
+                available_offset = Some(offset);
+                break;
+            }
+        }
+        let offset = available_offset.ok_or(Error::CustomError(
+            "ERROR: No safe unreferenced gem or rune record is available. Create a slot in-game or use the [CUT] workflow.",
+        ))?;
+
+        let id = u32::from_le_bytes(self.file.bytes[offset..offset + 4].try_into().unwrap());
+        let source = u32::from_le_bytes(self.file.bytes[offset + 4..offset + 8].try_into().unwrap());
+        self.file.bytes[offset + 8] = match upgrade_type {
+            UpgradeType::Gem => 0x01,
+            UpgradeType::Rune => 0x02,
+        };
+        self.file.bytes[offset + 9..offset + 16].fill(0);
+        self.file.bytes[offset + 12] = shape_number;
+        for (index, effect_id) in normalized_effects.iter().enumerate() {
+            let start = offset + 16 + index * 4;
+            self.file.bytes[start..start + 4].copy_from_slice(&effect_id.to_le_bytes());
+        }
+
+        let upgrade = Upgrade {
+            number: 0,
+            id,
+            source,
+            upgrade_type,
+            shape,
+            effects,
+            info,
+            index: 0,
+        };
+        match location {
+            Location::Inventory => self.inventory.add_upgrade(&mut self.file, upgrade, false),
+            Location::Storage => self.storage.add_upgrade(&mut self.file, upgrade, true),
+        }
+
+        let inserted = match location {
+            Location::Inventory => self.inventory.upgrades.get(&upgrade_type),
+            Location::Storage => self.storage.upgrades.get(&upgrade_type),
+        }
+        .and_then(|entries| entries.last())
+        .cloned()
+        .ok_or(Error::CustomError("ERROR: Direct upgrade insertion failed."))?;
+
+        Ok(inserted)
+    }
+
     pub fn transform_upgrade(
         &mut self,
         upgrade_type: UpgradeType,
@@ -212,6 +504,162 @@ mod tests {
         enums::SlotShape,
         utils::test_utils::{build_save_data, check_bytes},
     };
+
+    #[test]
+    fn direct_upgrade_reclaims_only_an_orphaned_record() {
+        let mut save = build_save_data("testsave9");
+        let original = save
+            .inventory
+            .upgrades
+            .get(&UpgradeType::Rune)
+            .and_then(|runes| runes.first())
+            .cloned()
+            .expect("test save must contain a free rune");
+        let initial_file = save.file.clone();
+
+        assert!(save
+            .add_direct_upgrade(
+                UpgradeType::Rune,
+                "-".to_string(),
+                Vec::new(),
+                Location::Inventory,
+            )
+            .is_err());
+        assert_eq!(save.file, initial_file);
+
+        let runes = save.inventory.upgrades.get_mut(&UpgradeType::Rune).unwrap();
+        runes.remove(0);
+        for (index, rune) in runes.iter_mut().enumerate() {
+            rune.index = index;
+        }
+
+        let added = save
+            .add_direct_upgrade(
+                UpgradeType::Rune,
+                "-".to_string(),
+                vec![1_100_000],
+                Location::Inventory,
+            )
+            .expect("an orphaned record must be reusable");
+        assert_eq!(added.id, original.id);
+        assert_eq!(added.upgrade_type, UpgradeType::Rune);
+        assert_eq!(added.shape, "-");
+        assert_eq!(added.effects[0].0, 1_100_000);
+
+        let mut parsed = parse_upgrades(&save.file);
+        let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
+        let rebuilt = Inventory::build(
+            &save.file,
+            save.file.offsets.inventory,
+            save.file.offsets.key_inventory,
+            &mut parsed,
+            &mut slots,
+        );
+        assert!(rebuilt
+            .upgrades
+            .get(&UpgradeType::Rune)
+            .is_some_and(|runes| runes.iter().any(|rune| rune.id == added.id)));
+    }
+
+    #[test]
+    fn direct_equipment_reclaims_only_an_orphaned_slot_block() {
+        let mut save = build_save_data("testsave9");
+        let original = save
+            .inventory
+            .articles
+            .get(&ArticleType::RightHand)
+            .and_then(|weapons| weapons.first())
+            .cloned()
+            .expect("test save must contain a right-hand weapon");
+        let record_offset = save
+            .file
+            .find_article_offset(
+                original.number,
+                original.id,
+                TypeFamily::Weapon,
+                false,
+            )
+            .expect("weapon record must exist");
+        save.file.bytes[record_offset + 4..record_offset + 16].copy_from_slice(&[
+            0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0,
+        ]);
+        let weapons = save.inventory.articles.get_mut(&ArticleType::RightHand).unwrap();
+        weapons.remove(0);
+        for (index, weapon) in weapons.iter_mut().enumerate() {
+            weapon.index = index;
+        }
+
+        let added = save
+            .add_direct_equipment(original.id, false)
+            .expect("an orphaned weapon block must be reusable");
+        assert_eq!(added.id, original.id);
+        assert_eq!(added.type_family, TypeFamily::Weapon);
+        assert_eq!(added.slots.as_ref().map(Vec::len), Some(5));
+        assert!(added
+            .slots
+            .as_ref()
+            .is_some_and(|slots| slots.iter().all(|slot| slot.shape == SlotShape::Closed && slot.gem.is_none())));
+
+        let mut parsed = parse_upgrades(&save.file);
+        let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
+        let rebuilt = Inventory::build(
+            &save.file,
+            save.file.offsets.inventory,
+            save.file.offsets.key_inventory,
+            &mut parsed,
+            &mut slots,
+        );
+        assert!(rebuilt
+            .articles
+            .get(&ArticleType::RightHand)
+            .is_some_and(|weapons| weapons.iter().any(|weapon| weapon.first_part == added.first_part && weapon.slots.as_ref().map(Vec::len) == Some(5))));
+    }
+
+    #[test]
+    fn direct_armor_reclaims_only_an_orphaned_slot_block() {
+        let mut save = build_save_data("testsave9");
+        let original = save
+            .inventory
+            .articles
+            .get(&ArticleType::Armor)
+            .and_then(|armors| armors.first())
+            .cloned()
+            .expect("test save must contain armor");
+        let record_offset = save
+            .file
+            .find_article_offset(original.number, original.id, TypeFamily::Armor, false)
+            .expect("armor record must exist");
+        save.file.bytes[record_offset + 4..record_offset + 16].copy_from_slice(&[
+            0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0,
+        ]);
+        let armors = save.inventory.articles.get_mut(&ArticleType::Armor).unwrap();
+        armors.remove(0);
+        for (index, armor) in armors.iter_mut().enumerate() {
+            armor.index = index;
+        }
+
+        let added = save
+            .add_direct_equipment(original.id, true)
+            .expect("an orphaned armor block must be reusable");
+        assert_eq!(added.id, original.id);
+        assert_eq!(added.type_family, TypeFamily::Armor);
+        assert_eq!(added.second_part & 0xFF00_0000, 0x1000_0000);
+        assert_eq!(added.slots.as_ref().map(Vec::len), Some(5));
+
+        let mut parsed = parse_upgrades(&save.file);
+        let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
+        let rebuilt = Inventory::build(
+            &save.file,
+            save.file.offsets.inventory,
+            save.file.offsets.key_inventory,
+            &mut parsed,
+            &mut slots,
+        );
+        assert!(rebuilt
+            .articles
+            .get(&ArticleType::Armor)
+            .is_some_and(|armors| armors.iter().any(|armor| armor.first_part == added.first_part && armor.slots.as_ref().map(Vec::len) == Some(5))));
+    }
 
     #[test]
     fn test_build() {

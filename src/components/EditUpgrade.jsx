@@ -88,9 +88,9 @@ function EditUpgrade({
   const [forgeOpen, setForgeOpen] = useState(false);
   // Rune presets are one-time actions; the field intentionally remains blank until chosen.
   const [runePresetSelection, setRunePresetSelection] = useState(null);
-  const [presetName, setPresetName] = useState(
-    () => `${selected.info?.name || "Custom"} ${selected.upgrade_type || "Gem"}`,
-  );
+  // A personal preset is opt-in. Never present the current rune or gem name as a preset
+  // that appears to have been selected automatically when the editor opens.
+  const [presetName, setPresetName] = useState("");
   const [presetStatus, setPresetStatus] = useState("");
   const [confirmError, setConfirmError] = useState("");
   const runeForgePresets = useMemo(
@@ -243,7 +243,7 @@ function EditUpgrade({
     const sourceName = upgrade_type === "Gem" ? "gem" : "rune";
     const destinationName = upgrade_type === "Gem" ? "rune" : "gem";
     const accepted = window.confirm(
-      `Convert this ${sourceName} into a ${destinationName}? Keep the automatic backup until you have tested the save.`,
+      t("forge.convertConfirm", { source: sourceName, destination: destinationName }),
     );
     if (!accepted) return;
 

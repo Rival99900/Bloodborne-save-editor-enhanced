@@ -1837,3 +1837,59 @@
     flex: 1 1 9rem;
   }
 }
+
+/* Experimental direct add: keep the six-effect builder inside the existing Add dialog. */
+.direct-upgrade-builder {
+  display: grid;
+  min-height: 0;
+  gap: 0.65rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.2rem;
+  scrollbar-color: #c49a51 rgba(0, 0, 0, 0.35);
+  scrollbar-width: thin;
+}
+
+.direct-upgrade-builder__effects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.direct-upgrade-builder__effects > label {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.direct-upgrade-builder__effects > label > span {
+  color: #d8ae5b;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.direct-upgrade-builder input {
+  min-height: 2.5rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.82rem;
+}
+
+.inventory-dialog__error {
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border-left: 2px solid #c97171;
+  background: rgba(155, 58, 58, 0.16);
+  color: #f0c5c5;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 42rem) {
+  .direct-upgrade-builder__effects {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

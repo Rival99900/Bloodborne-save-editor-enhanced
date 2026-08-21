@@ -334,7 +334,7 @@ function GemPresetPanel({
                   <p>{preset.info?.note || t("forge.personalPresetDescription")}</p>
                   <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
                   <div className="gem-forge__card-actions">
-                    <button onClick={() => applySavedPreset(preset)}>Load into draft</button>
+                    <button onClick={() => applySavedPreset(preset)}>{t("forge.loadIntoDraft")}</button>
                     <button className="gem-forge__delete" onClick={() => deletePreset(preset)}>
                       {t("forge.delete")}
                     </button>

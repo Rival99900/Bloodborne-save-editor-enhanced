@@ -58,6 +58,8 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             set_username,
             get_version,
             add_item,
+            add_direct_upgrade,
+            add_direct_equipment,
             edit_slot,
             get_isz,
             fix_isz,
@@ -614,6 +616,57 @@ fn set_username(
 #[tauri::command]
 fn get_version() -> String {
     env!("CARGO_PKG_VERSION").to_string()
+}
+
+#[tauri::command]
+fn add_direct_upgrade(
+    upgrade_type: UpgradeType,
+    shape: String,
+    effect_ids: Vec<u32>,
+    is_storage: bool,
+    state_save: tauri::State<MutexSave>,
+) -> Result<Value, String> {
+    let mut save_option = state_save.inner().data.lock().map_err(|_| {
+        "The save data is temporarily unavailable.".to_string()
+    })?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before adding a gem or rune.".to_string())?;
+    let location = if is_storage {
+        Location::Storage
+    } else {
+        Location::Inventory
+    };
+    let upgrade = save
+        .add_direct_upgrade(upgrade_type, shape, effect_ids, location)
+        .map_err(|error| error.to_string())?;
+
+    Ok(json!({
+        "save": serde_json::to_value(&save).map_err(|error| error.to_string())?,
+        "upgrade": upgrade,
+    }))
+}
+
+#[tauri::command]
+fn add_direct_equipment(
+    id: u32,
+    is_armor: bool,
+    state_save: tauri::State<MutexSave>,
+) -> Result<Value, String> {
+    let mut save_option = state_save.inner().data.lock().map_err(|_| {
+        "The save data is temporarily unavailable.".to_string()
+    })?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before adding equipment.".to_string())?;
+    let article = save
+        .add_direct_equipment(id, is_armor)
+        .map_err(|error| error.to_string())?;
+
+    Ok(json!({
+        "save": serde_json::to_value(&save).map_err(|error| error.to_string())?,
+        "article": article,
+    }))
 }
 
 #[tauri::command]

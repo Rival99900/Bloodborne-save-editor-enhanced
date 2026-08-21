@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Item from "./Item";
 import { ItemsContext } from "../context/itemsContext";
+import { useLocalization } from "../i18n/localization";
 
 /**
  * Searchable item picker used by Add and Replace flows.
@@ -12,6 +13,7 @@ import { ItemsContext } from "../context/itemsContext";
  */
 function SearchAllitems({ type, onChange, title, variant = "add" }) {
   const [search, setSearch] = useState("");
+  const { t } = useLocalization();
   const [replacements, setReplacements] = useState([]);
   const [back, setBack] = useState([]);
   const [hoverIndex, setHoverIndex] = useState(null);
@@ -61,20 +63,20 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
   return (
     <section
       className={`catalog-picker catalog-picker--${variant}`}
-      aria-label={title || `Select a ${type}`}
+      aria-label={title || t("inventory.selectNew", { type: t(`inventory.type.${type}`) })}
     >
       {title ? <p className="catalog-picker__title">{title}</p> : null}
       <label className="catalog-picker__search">
-        <span>Search catalogue</span>
+        <span>{t("inventory.searchCatalog")}</span>
         <input
           onChange={(event) => setSearch(event.target.value)}
           value={search}
           type="search"
-          placeholder={`Search ${type} items`}
+          placeholder={t("inventory.searchItems", { type: t(`inventory.type.${type}`) })}
         />
       </label>
 
-      <div className="catalog-picker__results" role="listbox" aria-label="Matching items">
+      <div className="catalog-picker__results" role="listbox" aria-label={t("inventory.matchingItems")}>
         <div
           id="hoverReplacement"
           style={{
@@ -100,7 +102,7 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
             tabIndex={0}
           />
         ))}
-        {!replacements.length ? <p className="catalog-picker__empty">No matching item found.</p> : null}
+        {!replacements.length ? <p className="catalog-picker__empty">{t("inventory.noMatchingItem")}</p> : null}
       </div>
     </section>
   );

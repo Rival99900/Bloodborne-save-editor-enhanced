@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { SaveContext } from "../context/context";
 import SearchAllitems from "./SearchAllitems";
 import { getType } from "../utils/upgrades";
+import { useLocalization } from "../i18n/localization";
 
 function ReplaceScreen({
   setSelected,
@@ -12,9 +13,10 @@ function ReplaceScreen({
   isStorage,
 }) {
   const [replacement, setReplacement] = useState(null);
+  const { t } = useLocalization();
   const { setSave } = useContext(SaveContext);
   const itemType = useMemo(() => getType(selected.article_type), [selected.article_type]);
-  const replacementLabel = itemType === "key" || itemType === "chalice" ? "item" : itemType;
+  const replacementLabel = itemType === "key" || itemType === "chalice" ? t("inventory.item") : t(`inventory.type.${itemType}`);
 
   function dismiss() {
     setReplaceScreen(false);
@@ -55,28 +57,28 @@ function ReplaceScreen({
       className="replace-dialog"
       role="dialog"
       aria-modal="true"
-      aria-label="Replace selected item"
+      aria-label={t("inventory.replaceDialogLabel")}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) dismiss();
       }}
     >
       <section className="replace-dialog__card">
-        <button className="replace-dialog__close" onClick={dismiss} aria-label="Close Replace item">
+        <button className="replace-dialog__close" onClick={dismiss} aria-label={t("inventory.closeReplaceLabel")}>
           ×
         </button>
 
         <aside className="replace-dialog__current">
-          <span className="replace-dialog__eyebrow">Replacing</span>
+          <span className="replace-dialog__eyebrow">{t("inventory.replacing")}</span>
           <Item item={selected} isSmall={true} />
           <p>
-            Choose a compatible {replacementLabel} from the catalogue. The slot position is preserved.
+            {t("inventory.replaceDescription", { type: replacementLabel })}
           </p>
           <footer className="replace-dialog__actions">
             <button onClick={dismiss} id="cancelReplace">
-              Cancel
+              {t("inventory.cancel")}
             </button>
             <button id="confirmReplace" onClick={handleConfirm} disabled={!replacement}>
-              Replace item
+              {t("inventory.replaceItem")}
             </button>
           </footer>
         </aside>
@@ -84,7 +86,7 @@ function ReplaceScreen({
         <SearchAllitems
           type={itemType}
           onChange={setReplacement}
-          title={`Select a new ${replacementLabel}`}
+          title={t("inventory.selectNew", { type: replacementLabel })}
           variant="replace"
         />
       </section>
