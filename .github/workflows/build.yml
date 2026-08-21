@@ -71,7 +71,7 @@ jobs:
             - Closing with unsaved changes asks whether to save, discard or cancel.
             - The updater verifies every package against the embedded public signing key.
           releaseDraft: false
-          prerelease: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
           args: "--bundles nsis"
           releaseAssetNamePattern: "Bloodborne_Save_Editor_Enhanced_[version]_[arch][setup].[ext]"
           uploadUpdaterJson: false

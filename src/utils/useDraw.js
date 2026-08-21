@@ -9,24 +9,41 @@ import {
   isCursed as isSafeCursed,
 } from "./upgrades";
 
+// Image loading is asynchronous. A canvas can receive a newer save state before an
+// older gem/rune thumbnail finishes loading, so each draw gets a monotonic token.
+const canvasRenderTokens = new WeakMap();
+
 function useDraw() {
   const { images } = useContext(ImagesContext);
   const { gemEffectCatalog = [], nativeGemEffectIds = new Set() } = useContext(ItemsContext);
 
   async function drawCanvas(ctx, item, isSmall = false, context = images) {
-    const { info } = item;
+    if (!ctx?.canvas || !item) return;
 
+    const canvas = ctx.canvas;
+    const token = (canvasRenderTokens.get(canvas) ?? 0) + 1;
+    canvasRenderTokens.set(canvas, token);
+    const isCurrentRender = () => canvasRenderTokens.get(canvas) === token;
+
+    // A full clear is required before every redraw. The background image normally
+    // covers the canvas, but it does not protect against a late asynchronous draw.
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (!isCurrentRender()) return;
+
+    const { info } = item;
     if (isSmall) {
       return drawItem(
         ctx,
         info,
         "",
         images.backgrounds["item_small.png"],
-        context
+        context,
+        isCurrentRender,
       );
     }
+
     const itemBackground = images.backgrounds[getBackground(item)];
-    drawArticle(ctx, item, itemBackground, context);
+    return drawArticle(ctx, item, itemBackground, context, isCurrentRender);
   }
 
   function getBackground(item) {
@@ -47,7 +64,7 @@ function useDraw() {
     }
   }
 
-  async function drawArticle(ctx, article, img, imgContext) {
+  async function drawArticle(ctx, article, img, imgContext, isCurrentRender = () => true) {
     const { x, y } = {
       x: 9,
       y: 6,
@@ -59,9 +76,10 @@ function useDraw() {
     const type = getType(article_type);
     name = name ?? (article?.upgrade_type !== "Gem" ? info.name : ""); // Check for gems and runes
     note = note ?? info.note ?? "";
+    if (!isCurrentRender()) return;
     ctx.drawImage(img, 0, 0);
 
-    if (image) {
+    if (image && isCurrentRender()) {
       const thumbnail = imgContext.items[image || "empty.png"];
       ctx.drawImage(thumbnail, x, y, x + size, y + size);
     }
@@ -75,8 +93,9 @@ function useDraw() {
     ctx.fillStyle = "#ab9e87";
 
     if (article?.upgrade_type) {
-      handleUpgrades(ctx, article, { x, y, size });
+      await handleUpgrades(ctx, article, { x, y, size }, isCurrentRender);
     }
+    if (!isCurrentRender()) return;
     if (type === "chalice") {
       handleChalice(ctx, article);
     }
@@ -169,7 +188,7 @@ function useDraw() {
     ctx.fillText(bolt, margin * 7 + 37, 77);
   }
 
-  async function handleUpgrades(ctx, upgrade, { x, y, size }) {
+  async function handleUpgrades(ctx, upgrade, { x, y, size }, isCurrentRender = () => true) {
     if (upgrade.upgrade_type === "Gem") {
       const {
         effects,
@@ -192,6 +211,7 @@ function useDraw() {
         runeOriginPrimaryEffect ? loadImage(getRuneFallbackPath()).catch(() => undefined) : undefined,
       );
 
+      if (!isCurrentRender()) return;
       ctx.font = "20px Reim";
       if (thumbnail !== undefined)
         ctx.drawImage(thumbnail, x, y, x + size, y + size);
@@ -221,6 +241,7 @@ function useDraw() {
         loadImage(getRuneFallbackPath(shape)).catch(() => undefined),
       );
 
+      if (!isCurrentRender()) return;
       if (thumbnail !== undefined)
         ctx.drawImage(thumbnail, x, 4.8, x + size, 4.8 + size + 2);
     }
@@ -238,7 +259,7 @@ function useDraw() {
     }
   }
 
-  async function drawItem(ctx, item, amount, img, context) {
+  async function drawItem(ctx, item, amount, img, context, isCurrentRender = () => true) {
     const { x, y } = {
       x: 9,
       y: 6,
@@ -252,6 +273,7 @@ function useDraw() {
     // );
     const thumbnail = context.items[image || "empty.png"];
 
+    if (!isCurrentRender()) return;
     ctx.font = "18px Reim";
     ctx.drawImage(img, 0, 0);
     ctx.drawImage(thumbnail, x, y, x + size, y + size);

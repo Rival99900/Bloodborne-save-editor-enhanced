@@ -11,24 +11,24 @@ import Nav from "./components/Nav";
 import Main from "./pages/main/Main";
 import { ImagesProvider } from "./context/imagesContext";
 import { UpdateModal } from "./Update";
+import { useLocalization } from "./i18n/localization";
 
 function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
+  const { t } = useLocalization();
+
   return (
     <div className="unsaved-dialog" role="dialog" aria-modal="true" aria-labelledby="unsaved-title">
       <section className="unsaved-dialog__card">
-        <span className="unsaved-dialog__eyebrow">Unsaved changes</span>
-        <h2 id="unsaved-title">Save before closing?</h2>
-        <p>
-          Your current edits have not been written to a save file. Choose <strong>Save changes</strong>
-          to keep them, or close without saving to discard them.
-        </p>
+        <span className="unsaved-dialog__eyebrow">{t("unsaved.eyebrow")}</span>
+        <h2 id="unsaved-title">{t("unsaved.title")}</h2>
+        <p>{t("unsaved.description")}</p>
         <div className="unsaved-dialog__actions">
-          <button onClick={onCancel} disabled={saving}>Cancel</button>
+          <button onClick={onCancel} disabled={saving}>{t("unsaved.cancel")}</button>
           <button className="unsaved-dialog__discard" onClick={onDiscard} disabled={saving}>
-            Close without saving
+            {t("unsaved.discard")}
           </button>
           <button className="unsaved-dialog__save" onClick={onSave} disabled={saving}>
-            {saving ? "Saving…" : "Save changes"}
+            {saving ? t("unsaved.saving") : t("unsaved.save")}
           </button>
         </div>
       </section>

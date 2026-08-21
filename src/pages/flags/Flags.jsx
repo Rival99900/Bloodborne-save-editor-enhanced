@@ -1,5 +1,6 @@
 import Flag from "./Flag";
 import "./flags.css";
+import { useLocalization } from "../../i18n/localization";
 
 const KNOWN_FLAGS = [
   {
@@ -32,26 +33,25 @@ const KNOWN_FLAGS = [
 ];
 
 function Flags() {
+  const { t } = useLocalization();
+
   return (
     <main className="flags-workspace">
       <header className="flags-workspace__header">
-        <p>Advanced save settings</p>
-        <h1>Known Flags</h1>
-        <span>
-          Only independently documented byte patterns are shown here. Unknown offsets are deliberately
-          excluded to protect the save from accidental corruption.
-        </span>
+        <p>{t("flags.eyebrow")}</p>
+        <h1>{t("flags.title")}</h1>
+        <span>{t("flags.introduction")}</span>
       </header>
 
-      <section className="flags-workspace__list" aria-label="Known save flags">
+      <section className="flags-workspace__list" aria-label={t("flags.listLabel")}>
         {KNOWN_FLAGS.map((flag) => (
           <Flag key={flag.label} {...flag} />
         ))}
       </section>
 
       <aside className="flags-workspace__safety">
-        <strong>Before applying a flag</strong>
-        <span>Apply one change at a time, then use Save changes. Keep the automatically created backup until the character loads normally.</span>
+        <strong>{t("flags.safetyTitle")}</strong>
+        <span>{t("flags.safetyDescription")}</span>
       </aside>
     </main>
   );

@@ -35,19 +35,8 @@ function Bosses() {
   return (
     <div
       ref={scrollDiv}
-      style={{
-        gridColumn: "2/4",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gridAutoRows: "50px",
-        gap: "0.8rem 5rem",
-        placeItems: "center",
-        padding: "1.5rem",
-        fontSize: "1.5rem",
-        background: `url(${images.backgrounds["statsBg.png"].src})`,
-        backgroundSize: "cover",
-        overflowY: "auto",
-      }}
+      className="bosses-workspace"
+      style={{ backgroundImage: `url(${images.backgrounds["statsBg.png"].src})` }}
     >
       {bosses.map((x, i) => {
         return (

@@ -12,6 +12,7 @@ import { ItemsContext } from "../context/itemsContext";
 import SelectSearch from "./SelectSearch";
 import useDraw from "../utils/useDraw";
 import GemPresetPanel from "./GemPresetPanel";
+import { useLocalization } from "../i18n/localization";
 
 const NO_EFFECT_ID = 4294967295;
 const EFFECT_SLOT_COUNT = 6;
@@ -48,6 +49,7 @@ function EditUpgrade({
   equipped,
   slot,
 }) {
+  const { t } = useLocalization();
   const {
     gemEffectCatalog,
     nativeGemEffectIds,
@@ -429,7 +431,8 @@ function EditUpgrade({
             ))}
             {upgrade_type === "Rune" ? (
               <SelectSearch
-                defaultValue="Select a rune preset"
+                key={`rune-preset-${runePresetSelection ?? "empty"}`}
+                defaultValue={t("forge.runePresetPlaceholder")}
                 onChange={(event) => {
                   const { info, effects: presetEffects, shape: presetShape } = event;
                   if (upgrade_type !== "Rune" || !info?.name || !Array.isArray(presetEffects)) return;
@@ -439,11 +442,13 @@ function EditUpgrade({
                       ...previous.info,
                       ...info,
                     },
-                    shape: presetShape,
+                    shape: normalizeUpgradeShape(presetShape, "Rune"),
                     effects: [...presetEffects],
                   }));
+                  // Presets are immediate one-time actions, not a persistent field value.
+                  setRunePresetSelection(null);
                 }}
-                selected=""
+                selected={runePresetSelection}
                 options={runePresets}
               />
             ) : null}
