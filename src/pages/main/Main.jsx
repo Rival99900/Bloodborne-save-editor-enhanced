@@ -7,12 +7,14 @@ import Character from "../character/Character";
 import { SaveContext } from "../../context/context";
 import { ItemsProvider } from "../../context/itemsContext";
 import { ImagesContext } from "../../context/imagesContext";
+import { useLocalization } from "../../i18n/localization";
 import EquippedGems from "./EquippedGems";
 import Bosses from "../bosses/Bosses";
 import Flags from "../flags/Flags";
 
 const Main = ({ save, setSave, loading }) => {
   const { loading: loadingImages } = useContext(ImagesContext);
+  const { t } = useLocalization();
 
   return (
     <>
@@ -21,7 +23,7 @@ const Main = ({ save, setSave, loading }) => {
         aria-hidden={!loadingImages}
       >
         <img src="/assets/icon.png" width="120" height="120" alt="" />
-        <p>Preparing editor</p>
+        <p>{t("operation.preparing")}</p>
         <div className="spinner" />
       </div>
 
@@ -33,8 +35,8 @@ const Main = ({ save, setSave, loading }) => {
             <div className="operation-state" role="status">
               <div className="spinner" />
               <div>
-                <p className="operation-state__eyebrow">Working with save data</p>
-                <p className="operation-state__title">Please keep this window open.</p>
+                <p className="operation-state__eyebrow">{t("operation.eyebrow")}</p>
+                <p className="operation-state__title">{t("operation.title")}</p>
               </div>
             </div>
           ) : null}
@@ -73,35 +75,25 @@ const Main = ({ save, setSave, loading }) => {
             </Routes>
           ) : (
             <section className="empty-state" aria-labelledby="welcome-title">
-              <p className="empty-state__eyebrow">Offline character management</p>
-              <h1 id="welcome-title">Edit deliberately. Preserve your hunt.</h1>
-              <p className="empty-state__lead">
-                Open a decrypted Bloodborne character save to inspect inventory, attributes,
-                character settings, bosses and flags. The editor creates a backup when a file is
-                opened; always retain it until you have checked the result in-game.
-              </p>
+              <p className="empty-state__eyebrow">{t("home.eyebrow")}</p>
+              <h1 id="welcome-title">{t("home.title")}</h1>
+              <p className="empty-state__lead">{t("home.lead")}</p>
 
               <div className="empty-state__grid">
                 <article>
                   <span className="step-number">01</span>
-                  <h2>Use a decrypted save</h2>
-                  <p>
-                    PlayStation exports must be decrypted before they can be read by the editor.
-                  </p>
+                  <h2>{t("home.stepOneTitle")}</h2>
+                  <p>{t("home.stepOneDescription")}</p>
                 </article>
                 <article>
                   <span className="step-number">02</span>
-                  <h2>Make focused edits</h2>
-                  <p>
-                    Review each change and avoid using modified saves in online play.
-                  </p>
+                  <h2>{t("home.stepTwoTitle")}</h2>
+                  <p>{t("home.stepTwoDescription")}</p>
                 </article>
                 <article>
                   <span className="step-number">03</span>
-                  <h2>Verify before replacing</h2>
-                  <p>
-                    Test the exported file before removing the automatic <code>.bak</code> copy.
-                  </p>
+                  <h2>{t("home.stepThreeTitle")}</h2>
+                  <p>{t("home.stepThreeDescription")}</p>
                 </article>
               </div>
 
@@ -111,7 +103,7 @@ const Main = ({ save, setSave, loading }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                Read the decryption guide
+                {t("home.guide")}
               </a>
             </section>
           )}

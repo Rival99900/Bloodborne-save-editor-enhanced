@@ -373,7 +373,9 @@ fn edit_effect(
     // otherwise a perfectly valid edit is rejected here before it ever reaches it.
     let is_known_effect = new_effect_id == u32::MAX
         || effect_catalog[catalog_name].get(&effect_id).is_some()
-        || effect_catalog[fallback_catalog_name].get(&effect_id).is_some();
+        || effect_catalog[fallback_catalog_name]
+            .get(&effect_id)
+            .is_some();
 
     if !is_known_effect {
         return Err(format!(
@@ -626,9 +628,11 @@ fn add_direct_upgrade(
     is_storage: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().map_err(|_| {
-        "The save data is temporarily unavailable.".to_string()
-    })?;
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "The save data is temporarily unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before adding a gem or rune.".to_string())?;
@@ -653,9 +657,11 @@ fn add_direct_equipment(
     is_armor: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().map_err(|_| {
-        "The save data is temporarily unavailable.".to_string()
-    })?;
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "The save data is temporarily unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before adding equipment.".to_string())?;

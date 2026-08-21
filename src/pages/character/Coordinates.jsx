@@ -1,4 +1,7 @@
+import { useLocalization } from "../../i18n/localization";
+
 function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
+  const { t } = useLocalization();
   return (
     <div
       style={{
@@ -8,7 +11,7 @@ function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
         justifyContent: "space-between",
       }}
     >
-      <span>Coordinates:</span>
+      <span>{t("characterForm.coordinates")}</span>
       <div
         style={{
           fontSize: "25px",

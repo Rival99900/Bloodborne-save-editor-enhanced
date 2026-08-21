@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { check } from "@tauri-apps/plugin-updater";
+import { useLocalization } from "./i18n/localization";
 
 export function UpdateModal() {
+  const { t } = useLocalization();
   const [update, setUpdate] = useState(null);
   const [downloading, setDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -26,7 +28,7 @@ export function UpdateModal() {
     if (!update) return;
     setDownloading(true);
     setProgress(0);
-    setStatusText("Starting secure download…");
+    setStatusText(t("update.startingDownload"));
 
     let downloadedBytes = 0;
     let totalBytes = 0;
@@ -36,32 +38,32 @@ export function UpdateModal() {
         switch (event.event) {
           case "Started":
             totalBytes = event.data.contentLength || 0;
-            setStatusText("Downloading signed update…");
+            setStatusText(t("update.downloadingSigned"));
             break;
           case "Progress":
             downloadedBytes += event.data.chunkLength;
             if (totalBytes > 0) {
               const percentage = Math.min(100, Math.round((downloadedBytes / totalBytes) * 100));
               setProgress(percentage);
-              setStatusText(`Downloading: ${percentage}%`);
+              setStatusText(t("update.downloadingProgress", { percentage }));
             } else {
-              setStatusText(`${(downloadedBytes / 1024 / 1024).toFixed(1)} MB downloaded`);
+              setStatusText(t("update.downloadedMegabytes", { megabytes: (downloadedBytes / 1024 / 1024).toFixed(1) }));
             }
             break;
           case "Finished":
             setProgress(100);
-            setStatusText("Installing update…");
+            setStatusText(t("update.installing"));
             break;
           default:
             break;
         }
       });
 
-      setStatusText("Update installed. Restarting editor…");
+      setStatusText(t("update.installedRestarting"));
       await relaunch();
     } catch (error) {
       console.error("Unable to install update.", error);
-      setStatusText("The update could not be installed. Your current version is unchanged.");
+      setStatusText(t("update.installFailed"));
       setDownloading(false);
     }
   }
@@ -71,8 +73,8 @@ export function UpdateModal() {
   return (
     <div style={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="update-title">
       <div style={styles.card}>
-        <h3 id="update-title" style={styles.title}>Update available</h3>
-        <p style={styles.version}>Version {update.version}</p>
+        <h3 id="update-title" style={styles.title}>{t("update.available")}</h3>
+        <p style={styles.version}>{t("update.version", { version: update.version })}</p>
 
         {update.body && <p style={styles.notes}>{update.body}</p>}
 
@@ -86,10 +88,10 @@ export function UpdateModal() {
         ) : (
           <div style={styles.actions}>
             <button style={styles.btnSecondary} onClick={() => setUpdate(null)}>
-              Not now
+              {t("update.notNow")}
             </button>
             <button style={styles.btnPrimary} onClick={handleInstall}>
-              Update and restart
+              {t("update.updateAndRestart")}
             </button>
           </div>
         )}

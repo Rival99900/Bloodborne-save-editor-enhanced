@@ -12,6 +12,15 @@
 
 Download the latest **Windows x64 installer** from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). Each public release contains only the `.exe` installer.
 
+### Current pre-release
+
+| Field | Details |
+| --- | --- |
+| **Name** | **Bloodborne Save Editor Enhanced v0.2.0 Beta 4** |
+| **Version** | `v0.2.0-beta.4` |
+| **Status** | Pre-release — test on a copied, decrypted save and retain the automatic `.bak` backup. |
+| **Download** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.2.0-beta.4/Bloodborne_Save_Editor_Enhanced_0.2.0-beta.4_x64-setup.exe) |
+
 | Step | What to do |
 | --- | --- |
 | **1. Prepare your save** | Use an already decrypted Bloodborne save and make an independent copy before editing. |

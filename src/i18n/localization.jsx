@@ -37,6 +37,43 @@ const en = {
     openSave: "Open save",
     saveChanges: "Save changes",
   },
+  home: {
+    eyebrow: "Offline character management",
+    title: "Edit deliberately. Preserve your hunt.",
+    lead: "Open a decrypted Bloodborne character save to inspect inventory, attributes, character settings, bosses and flags. The editor creates a backup when a file is opened; always retain it until you have checked the result in-game.",
+    stepOneTitle: "Use a decrypted save",
+    stepOneDescription: "PlayStation exports must be decrypted before they can be read by the editor.",
+    stepTwoTitle: "Make focused edits",
+    stepTwoDescription: "Review each change and avoid using modified saves in online play.",
+    stepThreeTitle: "Verify before replacing",
+    stepThreeDescription: "Test the exported file before removing the automatic .bak copy.",
+    guide: "Read the decryption guide",
+  },
+  operation: {
+    preparing: "Preparing editor",
+    eyebrow: "Working with save data",
+    title: "Please keep this window open.",
+  },
+  saveFlow: {
+    unsavedStatus: "Unsaved changes",
+    loadedStatus: "Save loaded. A backup was created before editing.",
+    savedStatus: "Changes saved.",
+    discardOpenTitle: "Discard unsaved changes?",
+    discardOpenDescription: "You have unsaved changes. Opening another save will discard the current edits.",
+    discardAndOpen: "Discard and open",
+    keepEditing: "Keep editing",
+    openTitle: "Open decrypted Bloodborne save",
+    openFailedTitle: "Unable to open save",
+    openFailedDescription: "The selected file could not be parsed. Choose a decrypted Bloodborne character save and try again.",
+    close: "Close",
+    saveTitle: "Save edited character",
+    confirmSaveTitle: "Confirm save",
+    confirmSaveDescription: "This writes the current edits to the selected file. Keep the automatic .bak backup until you have verified the save in-game.",
+    saveCompletedTitle: "Save completed",
+    saveCompletedDescription: "Keep your .bak backup until the edited save has been verified.",
+    saveFailedTitle: "Unable to save",
+    saveFailedDescription: "The edited save could not be written. Check the destination and available permissions, then try again.",
+  },
   unsaved: {
     eyebrow: "Unsaved changes",
     title: "Save before closing?",
@@ -115,6 +152,60 @@ const en = {
     deleteConfirm: "Delete the personal preset “{{name}}”?",
     noPersonalPreset: "No personal preset has been saved yet.",
     noPersonalPresetDescription: "Edit a gem or rune, then use Save as preset to make it available in both forges.",
+    customName: "Custom {{subject}} Forge",
+    customDescription: "Custom set — {{count}} selected effect(s).",
+    runePresetDescription: "Validated Caryll Rune preset.",
+    categories: { All: "All", Attack: "Attack", Elemental: "Elemental", Recovery: "Recovery", Experimental: "Experimental", Personal: "Personal", Custom: "Custom", Rune: "Rune" },
+    builtIn: {
+      "apex-physical": { name: "Apex Physical", description: "Physical damage, full-health pressure and durability support." },
+      "apex-nourishing": { name: "Apex Nourishing", description: "All-damage amplification with full-health pressure and recovery." },
+      "bloodtinge-hunter": { name: "Bloodtinge Hunter", description: "High Bloodtinge damage with all-damage and recovery support." },
+      "blunt-breaker": { name: "Blunt Breaker", description: "High blunt damage with all-damage and durability support." },
+      "thrust-specialist": { name: "Thrust Specialist", description: "High thrust damage with all-damage and durability support." },
+      "all-damage-vanguard": { name: "Vanguard", description: "All-damage amplification with physical pressure and a high recovery bonus." },
+      "arcane-surge": { name: "Arcane Surge", description: "Arcane damage with recovery and durability support." },
+      "flame-surge": { name: "Flame Surge", description: "Fire damage with all-damage and recovery support." },
+      "bolt-surge": { name: "Bolt Surge", description: "Bolt damage with all-damage and durability support." },
+      "elemental-ascendant": { name: "Elemental Ascendant", description: "Arcane, fire and bolt effects in one deliberately experimental loadout." },
+      "sustained-hunt": { name: "Sustained Hunt", description: "Recovery, durability and all-damage support for long exploration sessions." },
+      "abyssal-vitality": { name: "Abyssal Vitality +75", description: "Uses the embedded +75 continuous HP recovery effect with durability and damage support." },
+      "forged-endurance": { name: "Forged Endurance", description: "The strongest known bundled durability bonus paired with high recovery and physical damage." },
+      "last-stand": { name: "Last Stand", description: "High near-death and full-health multipliers. Keep this loadout offline." },
+      "glass-cannon": { name: "Glass Cannon", description: "Stacks physical, all-damage and near-death multipliers for testing only." },
+      "endless-hunt": { name: "Endless Hunt", description: "Maximum known recovery and durability effects with a full-health damage bonus." },
+    },
+  },
+  update: {
+    available: "Update available",
+    version: "Version {{version}}",
+    notNow: "Not now",
+    updateAndRestart: "Update and restart",
+    startingDownload: "Starting secure download…",
+    downloadingSigned: "Downloading signed update…",
+    downloadingProgress: "Downloading: {{percentage}}%",
+    downloadedMegabytes: "{{megabytes}} MB downloaded",
+    installing: "Installing update…",
+    installedRestarting: "Update installed. Restarting editor…",
+    installFailed: "The update could not be installed. Your current version is unchanged.",
+  },
+  actions: {
+    reset: "Reset",
+    confirm: "Confirm",
+    changesConfirmed: "Changes confirmed",
+    back: "Back",
+    change: "Change",
+    edit: "Edit",
+  },
+  characterForm: {
+    name: "Name:",
+    coordinates: "Coordinates:",
+    playtime: "Playtime:",
+    teleport: "Teleport:",
+    selectLocation: "Select a location",
+  },
+  bosses: {
+    alive: "Alive",
+    dead: "Dead",
   },
   inventory: {
     title: "Inventory",
@@ -156,10 +247,16 @@ const en = {
     directEquipmentNotice: "Experimental: this operation reuses only a safe orphaned equipment-slot block and creates five closed gem slots. Open the slots later with Gems if needed.",
     directUpgradePrimaryRequired: "Choose a validated first effect before adding a gem or rune.",
     directAddFailed: "The direct add could not be completed safely.",
+    directUpgradeUnavailable: "This save has no safe reusable Gem/Rune record. No change was made. Create a compatible slot in game, then try again.",
     addDirect: "Add directly",
     addEquipment: "Add equipment",
     gemShape: "Gem shape",
     runeType: "Rune type",
+    itemQuantity: "Item quantity:",
+    weaponLevel: "Weapon level:",
+    setValue: "Set",
+    edit: "Edit",
+    gems: "Gems",
   },
 };
 
@@ -175,8 +272,45 @@ const resources = {
       openSave: "Ouvrir une sauvegarde",
       saveChanges: "Enregistrer les modifications",
     },
-    unsaved: {
-      eyebrow: "Modifications non enregistrées",
+  home: {
+    eyebrow: "Gestion de personnage hors ligne",
+    title: "Modifiez avec soin. Préservez votre chasse.",
+    lead: "Ouvrez une sauvegarde de personnage Bloodborne déchiffrée pour consulter l’inventaire, les attributs, les paramètres du personnage, les boss et les flags. L’éditeur crée une copie de sauvegarde à l’ouverture ; conservez-la jusqu’à avoir vérifié le résultat en jeu.",
+    stepOneTitle: "Utilisez une sauvegarde déchiffrée",
+    stepOneDescription: "Les exports PlayStation doivent être déchiffrés avant d’être lus par l’éditeur.",
+    stepTwoTitle: "Effectuez des modifications ciblées",
+    stepTwoDescription: "Vérifiez chaque modification et évitez d’utiliser une sauvegarde modifiée en ligne.",
+    stepThreeTitle: "Vérifiez avant de remplacer",
+    stepThreeDescription: "Testez le fichier exporté avant de supprimer la copie automatique .bak.",
+    guide: "Lire le guide de déchiffrement",
+  },
+  operation: {
+    preparing: "Préparation de l’éditeur",
+    eyebrow: "Traitement des données de sauvegarde",
+    title: "Veuillez garder cette fenêtre ouverte.",
+  },
+  saveFlow: {
+    unsavedStatus: "Modifications non enregistrées",
+    loadedStatus: "Sauvegarde chargée. Une copie de sauvegarde a été créée avant toute modification.",
+    savedStatus: "Modifications enregistrées.",
+    discardOpenTitle: "Abandonner les modifications non enregistrées ?",
+    discardOpenDescription: "Vous avez des modifications non enregistrées. Ouvrir une autre sauvegarde abandonnera les modifications actuelles.",
+    discardAndOpen: "Abandonner et ouvrir",
+    keepEditing: "Continuer la modification",
+    openTitle: "Ouvrir une sauvegarde Bloodborne déchiffrée",
+    openFailedTitle: "Impossible d’ouvrir la sauvegarde",
+    openFailedDescription: "Le fichier sélectionné n’a pas pu être analysé. Choisissez une sauvegarde de personnage Bloodborne déchiffrée et réessayez.",
+    close: "Fermer",
+    saveTitle: "Enregistrer le personnage modifié",
+    confirmSaveTitle: "Confirmer l’enregistrement",
+    confirmSaveDescription: "Cette opération écrit les modifications dans le fichier sélectionné. Conservez la copie automatique .bak jusqu’à avoir vérifié la sauvegarde en jeu.",
+    saveCompletedTitle: "Enregistrement terminé",
+    saveCompletedDescription: "Conservez votre copie .bak jusqu’à ce que la sauvegarde modifiée ait été vérifiée.",
+    saveFailedTitle: "Impossible d’enregistrer",
+    saveFailedDescription: "La sauvegarde modifiée n’a pas pu être écrite. Vérifiez la destination et les autorisations disponibles, puis réessayez.",
+  },
+  unsaved: {
+    eyebrow: "Modifications non enregistrées",
       title: "Enregistrer avant de fermer ?",
       description: "Vos modifications actuelles n’ont pas été écrites dans un fichier de sauvegarde. Choisissez Enregistrer les modifications pour les conserver, ou fermez sans enregistrer pour les abandonner.",
       cancel: "Annuler",
@@ -253,6 +387,60 @@ const resources = {
       deleteConfirm: "Supprimer le preset personnel « {{name}} » ?",
       noPersonalPreset: "Aucun preset personnel n’a encore été enregistré.",
       noPersonalPresetDescription: "Modifiez une gemme ou une rune, puis utilisez Enregistrer comme preset pour le rendre disponible dans les deux forges.",
+    customName: "Forge personnalisée de {{subject}}",
+    customDescription: "Ensemble personnalisé — {{count}} effet(s) sélectionné(s).",
+    runePresetDescription: "Preset de rune de Caryll validé.",
+    categories: { All: "Tous", Attack: "Attaque", Elemental: "Élémentaire", Recovery: "Récupération", Experimental: "Expérimental", Personal: "Personnel", Custom: "Personnalisé", Rune: "Rune" },
+    builtIn: {
+      "apex-physical": { name: "Physique suprême", description: "Dégâts physiques, pression à vie pleine et soutien de durabilité." },
+      "apex-nourishing": { name: "Nourrissant suprême", description: "Amplification de tous les dégâts avec pression à vie pleine et récupération." },
+      "bloodtinge-hunter": { name: "Chasseur de teinte de sang", description: "Dégâts de teinte de sang élevés avec soutien à tous les dégâts et à la récupération." },
+      "blunt-breaker": { name: "Briseur contondant", description: "Dégâts contondants élevés avec soutien à tous les dégâts et à la durabilité." },
+      "thrust-specialist": { name: "Spécialiste d’estoc", description: "Dégâts d’estoc élevés avec soutien à tous les dégâts et à la durabilité." },
+      "all-damage-vanguard": { name: "Avant-garde", description: "Amplification de tous les dégâts avec pression physique et bonus de récupération élevé." },
+      "arcane-surge": { name: "Vague arcanique", description: "Dégâts arcaniques avec soutien à la récupération et à la durabilité." },
+      "flame-surge": { name: "Vague de feu", description: "Dégâts de feu avec soutien à tous les dégâts et à la récupération." },
+      "bolt-surge": { name: "Vague de foudre", description: "Dégâts de foudre avec soutien à tous les dégâts et à la durabilité." },
+      "elemental-ascendant": { name: "Ascendant élémentaire", description: "Effets arcaniques, de feu et de foudre dans un équipement volontairement expérimental." },
+      "sustained-hunt": { name: "Chasse durable", description: "Récupération, durabilité et soutien à tous les dégâts pour les longues explorations." },
+      "abyssal-vitality": { name: "Vitalité abyssale +75", description: "Utilise l’effet intégré de récupération continue de PV +75 avec soutien à la durabilité et aux dégâts." },
+      "forged-endurance": { name: "Endurance forgée", description: "Le meilleur bonus de durabilité connu, associé à une récupération et des dégâts physiques élevés." },
+      "last-stand": { name: "Dernier rempart", description: "Multiplicateurs élevés à faible vie et à vie pleine. Gardez cet équipement hors ligne." },
+      "glass-cannon": { name: "Canon de verre", description: "Cumule les multiplicateurs physiques, de tous les dégâts et de faible vie pour les tests uniquement." },
+      "endless-hunt": { name: "Chasse sans fin", description: "Effets de récupération et de durabilité maximum connus avec un bonus de dégâts à vie pleine." },
+    },
+    },
+    update: {
+      available: "Mise à jour disponible",
+      version: "Version {{version}}",
+      notNow: "Pas maintenant",
+      updateAndRestart: "Mettre à jour et redémarrer",
+      startingDownload: "Préparation du téléchargement sécurisé…",
+      downloadingSigned: "Téléchargement de la mise à jour signée…",
+      downloadingProgress: "Téléchargement : {{percentage}} %",
+      downloadedMegabytes: "{{megabytes}} Mo téléchargés",
+      installing: "Installation de la mise à jour…",
+      installedRestarting: "Mise à jour installée. Redémarrage de l’éditeur…",
+      installFailed: "La mise à jour n’a pas pu être installée. Votre version actuelle reste inchangée.",
+    },
+    actions: {
+      reset: "Réinitialiser",
+      confirm: "Confirmer",
+      changesConfirmed: "Modifications confirmées",
+      back: "Retour",
+      change: "Changer",
+      edit: "Modifier",
+    },
+    characterForm: {
+      name: "Nom :",
+      coordinates: "Coordonnées :",
+      playtime: "Temps de jeu :",
+      teleport: "Téléportation :",
+      selectLocation: "Sélectionnez une destination",
+    },
+    bosses: {
+      alive: "En vie",
+      dead: "Vaincu",
     },
     inventory: {
       title: "Inventaire",
@@ -294,10 +482,16 @@ const resources = {
       directEquipmentNotice: "Expérimental : cette opération réutilise uniquement un bloc de slots d’équipement orphelin sûr et crée cinq slots de gemmes fermés. Ouvrez les slots plus tard avec Gemmes si nécessaire.",
       directUpgradePrimaryRequired: "Choisissez un premier effet validé avant d’ajouter une gemme ou une rune.",
       directAddFailed: "L’ajout direct n’a pas pu être effectué de façon sûre.",
+      directUpgradeUnavailable: "Cette sauvegarde ne possède aucun enregistrement Gemme/Rune réutilisable en toute sécurité. Aucune modification n’a été effectuée. Créez un emplacement compatible en jeu, puis réessayez.",
       addDirect: "Ajouter directement",
       addEquipment: "Ajouter l’équipement",
       gemShape: "Forme de gemme",
       runeType: "Type de rune",
+      itemQuantity: "Quantité d’objet :",
+      weaponLevel: "Niveau d’arme :",
+      setValue: "Définir",
+      edit: "Modifier",
+      gems: "Gemmes",
     },
   },
   es: {
@@ -513,6 +707,918 @@ Object.entries(inventoryOverrides).forEach(([language, inventory]) => {
       ...(resources[language]?.inventory ?? {}),
       ...inventory,
     },
+  };
+});
+
+const commonUiOverrides = {
+  "es": {
+    "home": {
+      "eyebrow": "Gestión de personajes sin conexión",
+      "title": "Edita deliberadamente. Preserva tu cacería.",
+      "lead": "Abre un archivo de personaje de Bloodborne descifrado para inspeccionar inventario, atributos, ajustes de personaje, jefes y banderas. El editor crea una copia de seguridad cuando se abre un archivo; consérvala siempre hasta haber comprobado el resultado en el juego.",
+      "stepOneTitle": "Usa una partida descifrada",
+      "stepOneDescription": "Las exportaciones de PlayStation deben descifrarse antes de que el editor pueda leerlas.",
+      "stepTwoTitle": "Haz ediciones concretas",
+      "stepTwoDescription": "Revisa cada cambio y evita usar partidas modificadas en el juego en línea.",
+      "stepThreeTitle": "Verifica antes de reemplazar",
+      "stepThreeDescription": "Prueba el archivo exportado antes de eliminar la copia automática .bak.",
+      "guide": "Lee la guía de descifrado"
+    },
+    "operation": {
+      "preparing": "Preparando el editor",
+      "eyebrow": "Trabajando con datos guardados",
+      "title": "Por favor, mantén esta ventana abierta."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Cambios no guardados",
+      "loadedStatus": "Partida cargada. Se creó una copia de seguridad antes de editar.",
+      "savedStatus": "Cambios guardados.",
+      "discardOpenTitle": "¿Descartar cambios no guardados?",
+      "discardOpenDescription": "Tienes cambios no guardados. Abrir otra partida descartará las ediciones actuales.",
+      "discardAndOpen": "Descartar y abrir",
+      "keepEditing": "Seguir editando",
+      "openTitle": "Abrir partida de Bloodborne descifrada",
+      "openFailedTitle": "No se pudo abrir la partida",
+      "openFailedDescription": "No se pudo analizar el archivo seleccionado. Elige una partida de personaje de Bloodborne descifrada y vuelve a intentarlo.",
+      "close": "Cerrar",
+      "saveTitle": "Guardar personaje editado",
+      "confirmSaveTitle": "Confirmar guardado",
+      "confirmSaveDescription": "Esto escribe las ediciones actuales en el archivo seleccionado. Conserva la copia automática .bak hasta que hayas verificado la partida en el juego.",
+      "saveCompletedTitle": "Guardado completado",
+      "saveCompletedDescription": "Conserva tu copia .bak hasta que la partida editada haya sido verificada.",
+      "saveFailedTitle": "No se pudo guardar",
+      "saveFailedDescription": "No se pudo escribir la partida editada. Comprueba el destino y los permisos disponibles, luego inténtalo de nuevo."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Esta partida no tiene un registro seguro reutilizable de Gem/Rune. No se realizó ningún cambio. Crea una ranura compatible en el juego y vuelve a intentarlo.",
+      "itemQuantity": "Cantidad de objeto:",
+      "weaponLevel": "Nivel del arma:",
+      "setValue": "Establecer",
+      "edit": "Editar",
+      "gems": "Gemas"
+    }
+  },
+  "pt-PT": {
+    "home": {
+      "eyebrow": "Gestão de personagem offline",
+      "title": "Edite deliberadamente. Preserve a sua caçada.",
+      "lead": "Abra um ficheiro de personagem de Bloodborne descodificado para inspecionar o inventário, atributos, definições de personagem, chefes e flags. O editor cria um backup quando um ficheiro é aberto; mantenha-o sempre até verificar o resultado no jogo.",
+      "stepOneTitle": "Use um save descodificado",
+      "stepOneDescription": "Exportações da PlayStation têm de ser descodificadas antes de poderem ser lidas pelo editor.",
+      "stepTwoTitle": "Faça edições focadas",
+      "stepTwoDescription": "Revise cada alteração e evite usar saves modificados no jogo online.",
+      "stepThreeTitle": "Verifique antes de substituir",
+      "stepThreeDescription": "Teste o ficheiro exportado antes de remover a cópia automática .bak.",
+      "guide": "Leia o guia de descodificação"
+    },
+    "operation": {
+      "preparing": "A preparar o editor",
+      "eyebrow": "A trabalhar com dados de save",
+      "title": "Mantenha esta janela aberta, por favor."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Alterações não guardadas",
+      "loadedStatus": "Save carregado. Foi criada uma cópia de segurança antes da edição.",
+      "savedStatus": "Alterações guardadas.",
+      "discardOpenTitle": "Descartar alterações não guardadas?",
+      "discardOpenDescription": "Tem alterações não guardadas. Abrir outro save descartará as edições atuais.",
+      "discardAndOpen": "Descartar e abrir",
+      "keepEditing": "Continuar a editar",
+      "openTitle": "Abrir save de Bloodborne descodificado",
+      "openFailedTitle": "Incapaz de abrir o save",
+      "openFailedDescription": "O ficheiro selecionado não pôde ser analisado. Escolha um save de personagem de Bloodborne descodificado e tente novamente.",
+      "close": "Fechar",
+      "saveTitle": "Guardar personagem editado",
+      "confirmSaveTitle": "Confirmar gravação",
+      "confirmSaveDescription": "Isto escreve as edições atuais no ficheiro selecionado. Mantenha o backup automático .bak até verificar o save no jogo.",
+      "saveCompletedTitle": "Gravação concluída",
+      "saveCompletedDescription": "Mantenha a sua cópia .bak até que o save editado tenha sido verificado.",
+      "saveFailedTitle": "Não foi possível guardar",
+      "saveFailedDescription": "O save editado não pôde ser escrito. Verifique o destino e as permissões disponíveis e tente novamente."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Este save não tem um registo seguro reutilizável de Gem/Rune. Nenhuma alteração foi feita. Crie um slot compatível no jogo e tente novamente.",
+      "itemQuantity": "Quantidade do item:",
+      "weaponLevel": "Nível da arma:",
+      "setValue": "Definir",
+      "edit": "Editar",
+      "gems": "Gems"
+    }
+  },
+  "pt-BR": {
+    "home": {
+      "eyebrow": "Gerenciamento de personagem offline",
+      "title": "Edite deliberadamente. Preserve sua caçada.",
+      "lead": "Abra um save de personagem do Bloodborne decifrado para inspecionar inventário, atributos, configurações do personagem, chefes e flags. O editor cria um backup quando um arquivo é aberto; mantenha-o sempre até verificar o resultado no jogo.",
+      "stepOneTitle": "Use um save decifrado",
+      "stepOneDescription": "Exportações do PlayStation devem ser decifradas antes que o editor possa lê-las.",
+      "stepTwoTitle": "Faça edições focadas",
+      "stepTwoDescription": "Revise cada alteração e evite usar saves modificados no jogo online.",
+      "stepThreeTitle": "Verifique antes de substituir",
+      "stepThreeDescription": "Teste o arquivo exportado antes de remover a cópia automática .bak.",
+      "guide": "Leia o guia de decifração"
+    },
+    "operation": {
+      "preparing": "Preparando o editor",
+      "eyebrow": "Trabalhando com dados de save",
+      "title": "Mantenha esta janela aberta, por favor."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Alterações não salvas",
+      "loadedStatus": "Save carregado. Um backup foi criado antes da edição.",
+      "savedStatus": "Alterações salvas.",
+      "discardOpenTitle": "Descartar alterações não salvas?",
+      "discardOpenDescription": "Você tem alterações não salvas. Abrir outro save descartará as edições atuais.",
+      "discardAndOpen": "Descartar e abrir",
+      "keepEditing": "Continuar editando",
+      "openTitle": "Abrir save de Bloodborne decifrado",
+      "openFailedTitle": "Não foi possível abrir o save",
+      "openFailedDescription": "O arquivo selecionado não pôde ser analisado. Escolha um save de personagem de Bloodborne decifrado e tente novamente.",
+      "close": "Fechar",
+      "saveTitle": "Salvar personagem editado",
+      "confirmSaveTitle": "Confirmar salvamento",
+      "confirmSaveDescription": "Isto grava as edições atuais no arquivo selecionado. Mantenha o backup automático .bak até você verificar o save no jogo.",
+      "saveCompletedTitle": "Salvamento concluído",
+      "saveCompletedDescription": "Mantenha sua cópia .bak até que o save editado tenha sido verificado.",
+      "saveFailedTitle": "Não foi possível salvar",
+      "saveFailedDescription": "O save editado não pôde ser gravado. Verifique o destino e as permissões disponíveis e tente novamente."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Este save não possui um registro seguro reutilizável de Gem/Rune. Nenhuma alteração foi feita. Crie um slot compatível no jogo e tente novamente.",
+      "itemQuantity": "Quantidade do item:",
+      "weaponLevel": "Nível da arma:",
+      "setValue": "Definir",
+      "edit": "Editar",
+      "gems": "Gemas"
+    }
+  },
+  "ru": {
+    "home": {
+      "eyebrow": "Офлайн-управление персонажем",
+      "title": "Редактируйте обдуманно. Сохраните свою охоту.",
+      "lead": "Откройте расшифрованный файл сохранения персонажа Bloodborne, чтобы просмотреть инвентарь, характеристики, настройки персонажа, боссов и флаги. Редактор создаёт резервную копию при открытии файла; сохраните её до тех пор, пока не проверите результат в игре.",
+      "stepOneTitle": "Используйте расшифрованное сохранение",
+      "stepOneDescription": "Экспорт из PlayStation необходимо расшифровать, прежде чем редактор сможет его прочитать.",
+      "stepTwoTitle": "Вносите целенаправленные изменения",
+      "stepTwoDescription": "Проверяйте каждое изменение и избегайте использования изменённых сохранений в онлайн-игре.",
+      "stepThreeTitle": "Проверьте перед заменой",
+      "stepThreeDescription": "Протестируйте экспортированный файл перед удалением автоматической копии .bak.",
+      "guide": "Прочитайте руководство по расшифровке"
+    },
+    "operation": {
+      "preparing": "Подготовка редактора",
+      "eyebrow": "Работа с данными сохранения",
+      "title": "Пожалуйста, не закрывайте это окно."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Есть несохранённые изменения",
+      "loadedStatus": "Сохранение загружено. Перед редактированием была создана резервная копия.",
+      "savedStatus": "Изменения сохранены.",
+      "discardOpenTitle": "Отменить несохранённые изменения?",
+      "discardOpenDescription": "У вас есть несохранённые изменения. Открытие другого сохранения отменит текущие правки.",
+      "discardAndOpen": "Отменить и открыть",
+      "keepEditing": "Продолжить правку",
+      "openTitle": "Открыть расшифрованное сохранение Bloodborne",
+      "openFailedTitle": "Не удалось открыть сохранение",
+      "openFailedDescription": "Выбранный файл не удалось распознать. Выберите расшифрованное сохранение персонажа Bloodborne и попробуйте снова.",
+      "close": "Закрыть",
+      "saveTitle": "Сохранить отредактированного персонажа",
+      "confirmSaveTitle": "Подтвердите сохранение",
+      "confirmSaveDescription": "Это запишет текущие правки в выбранный файл. Сохраните автоматическую копию .bak до тех пор, пока не проверите сохранение в игре.",
+      "saveCompletedTitle": "Сохранение завершено",
+      "saveCompletedDescription": "Сохраните вашу копию .bak до тех пор, пока отредактированное сохранение не будет проверено.",
+      "saveFailedTitle": "Не удалось сохранить",
+      "saveFailedDescription": "Отредактированное сохранение не удалось записать. Проверьте расположение и права доступа, затем попробуйте снова."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "В этом сохранении нет безопасно повторно используемой записи Gem/Rune. Изменений не внесено. Создайте совместимый слот в игре и попробуйте снова.",
+      "itemQuantity": "Количество предмета:",
+      "weaponLevel": "Уровень оружия:",
+      "setValue": "Установить",
+      "edit": "Редактировать",
+      "gems": "Гемы"
+    }
+  },
+  "de": {
+    "home": {
+      "eyebrow": "Offline-Charakterverwaltung",
+      "title": "Bearbeite bedacht. Bewahre deine Jagd.",
+      "lead": "Öffne ein entschlüsseltes Bloodborne-Charakter‑Save, um Inventar, Attribute, Charaktereinstellungen, Bosse und Flags zu prüfen. Der Editor erstellt beim Öffnen einer Datei eine Sicherung; bewahre diese immer auf, bis du das Ergebnis im Spiel überprüft hast.",
+      "stepOneTitle": "Verwende ein entschlüsseltes Save",
+      "stepOneDescription": "PlayStation‑Exporte müssen entschlüsselt werden, bevor der Editor sie lesen kann.",
+      "stepTwoTitle": "Nimm gezielte Änderungen vor",
+      "stepTwoDescription": "Überprüfe jede Änderung und vermeide die Verwendung modifizierter Saves im Online‑Spiel.",
+      "stepThreeTitle": "Überprüfe vor dem Ersetzen",
+      "stepThreeDescription": "Teste die exportierte Datei, bevor du die automatische .bak‑Kopie entfernst.",
+      "guide": "Lies die Entschlüsselungsanleitung"
+    },
+    "operation": {
+      "preparing": "Editor wird vorbereitet",
+      "eyebrow": "Arbeiten mit Save‑Daten",
+      "title": "Bitte dieses Fenster geöffnet halten."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Ungespeicherte Änderungen",
+      "loadedStatus": "Save geladen. Vor der Bearbeitung wurde eine Sicherung erstellt.",
+      "savedStatus": "Änderungen gespeichert.",
+      "discardOpenTitle": "Ungespeicherte Änderungen verwerfen?",
+      "discardOpenDescription": "Du hast ungespeicherte Änderungen. Das Öffnen eines anderen Saves verwirft die aktuellen Änderungen.",
+      "discardAndOpen": "Verwerfen und öffnen",
+      "keepEditing": "Weiter bearbeiten",
+      "openTitle": "Entschlüsseltes Bloodborne‑Save öffnen",
+      "openFailedTitle": "Save konnte nicht geöffnet werden",
+      "openFailedDescription": "Die ausgewählte Datei konnte nicht geparst werden. Wähle ein entschlüsseltes Bloodborne‑Charaktersave und versuche es erneut.",
+      "close": "Schließen",
+      "saveTitle": "Bearbeiteten Charakter speichern",
+      "confirmSaveTitle": "Speichern bestätigen",
+      "confirmSaveDescription": "Dies schreibt die aktuellen Änderungen in die gewählte Datei. Bewahre die automatische .bak‑Sicherung auf, bis du das Save im Spiel geprüft hast.",
+      "saveCompletedTitle": "Speichern abgeschlossen",
+      "saveCompletedDescription": "Bewahre deine .bak‑Kopie, bis das bearbeitete Save verifiziert wurde.",
+      "saveFailedTitle": "Speichern fehlgeschlagen",
+      "saveFailedDescription": "Das bearbeitete Save konnte nicht geschrieben werden. Überprüfe Zielort und Berechtigungen und versuche es erneut."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Dieses Save enthält keinen sicher wiederverwendbaren Gem/Rune‑Eintrag. Es wurde keine Änderung vorgenommen. Erstelle einen kompatiblen Slot im Spiel und versuche es erneut.",
+      "itemQuantity": "Anzahl des Gegenstands:",
+      "weaponLevel": "Waffenstufe:",
+      "setValue": "Festlegen",
+      "edit": "Bearbeiten",
+      "gems": "Gems"
+    }
+  },
+  "it": {
+    "home": {
+      "eyebrow": "Gestione personaggi offline",
+      "title": "Modifica deliberatamente. Conserva la tua caccia.",
+      "lead": "Apri un salvataggio personaggio di Bloodborne decriptato per ispezionare inventario, attributi, impostazioni del personaggio, boss e flag. L'editor crea un backup quando viene aperto un file; conservalo sempre finché non hai verificato il risultato in gioco.",
+      "stepOneTitle": "Usa un salvataggio decriptato",
+      "stepOneDescription": "Le esportazioni da PlayStation devono essere decriptate prima che l'editor possa leggerle.",
+      "stepTwoTitle": "Effettua modifiche mirate",
+      "stepTwoDescription": "Controlla ogni modifica ed evita di usare salvataggi modificati nelle partite online.",
+      "stepThreeTitle": "Verifica prima di sostituire",
+      "stepThreeDescription": "Testa il file esportato prima di rimuovere la copia automatica .bak.",
+      "guide": "Leggi la guida alla decriptazione"
+    },
+    "operation": {
+      "preparing": "Preparazione dell'editor",
+      "eyebrow": "Lavorare con i dati di salvataggio",
+      "title": "Tieni questa finestra aperta, per favore."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Modifiche non salvate",
+      "loadedStatus": "Salvataggio caricato. È stato creato un backup prima della modifica.",
+      "savedStatus": "Modifiche salvate.",
+      "discardOpenTitle": "Annullare le modifiche non salvate?",
+      "discardOpenDescription": "Hai modifiche non salvate. Aprire un altro salvataggio annullerà le modifiche correnti.",
+      "discardAndOpen": "Annulla e apri",
+      "keepEditing": "Continua a modificare",
+      "openTitle": "Apri salvataggio di Bloodborne decriptato",
+      "openFailedTitle": "Impossibile aprire il salvataggio",
+      "openFailedDescription": "Il file selezionato non può essere analizzato. Scegli un salvataggio personaggio di Bloodborne decriptato e riprova.",
+      "close": "Chiudi",
+      "saveTitle": "Salva personaggio modificato",
+      "confirmSaveTitle": "Conferma salvataggio",
+      "confirmSaveDescription": "Questo scrive le modifiche correnti nel file selezionato. Conserva il backup automatico .bak finché non hai verificato il salvataggio in gioco.",
+      "saveCompletedTitle": "Salvataggio completato",
+      "saveCompletedDescription": "Conserva la tua copia .bak finché il salvataggio modificato non è stato verificato.",
+      "saveFailedTitle": "Impossibile salvare",
+      "saveFailedDescription": "Il salvataggio modificato non può essere scritto. Controlla destinazione e permessi disponibili, poi riprova."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Questo salvataggio non contiene un record sicuro riutilizzabile Gem/Rune. Nessuna modifica è stata apportata. Crea uno slot compatibile nel gioco e riprova.",
+      "itemQuantity": "Quantità oggetto:",
+      "weaponLevel": "Livello dell'arma:",
+      "setValue": "Imposta",
+      "edit": "Modifica",
+      "gems": "Gemme"
+    }
+  },
+  "nl": {
+    "home": {
+      "eyebrow": "Offline personagebeheer",
+      "title": "Bewerk met beleid. Behoud je jacht.",
+      "lead": "Open een ontsleuteld Bloodborne-personagebestand om inventaris, attributen, karakterinstellingen, bazen en flags te bekijken. De editor maakt een back-up wanneer een bestand wordt geopend; bewaar deze altijd totdat je het resultaat in het spel hebt gecontroleerd.",
+      "stepOneTitle": "Gebruik een ontsleuteld savebestand",
+      "stepOneDescription": "PlayStation‑export moet worden ontsleuteld voordat de editor het kan lezen.",
+      "stepTwoTitle": "Voer gerichte bewerkingen uit",
+      "stepTwoDescription": "Controleer elke wijziging en vermijd het gebruik van aangepaste saves in online spel.",
+      "stepThreeTitle": "Verifieer voordat je vervangt",
+      "stepThreeDescription": "Test het geëxporteerde bestand voordat je de automatische .bak‑kopie verwijdert.",
+      "guide": "Lees de ontsleutelingsgids"
+    },
+    "operation": {
+      "preparing": "Editor voorbereiden",
+      "eyebrow": "Werken met save‑data",
+      "title": "Houd dit venster open, alstublieft."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Niet‑opgeslagen wijzigingen",
+      "loadedStatus": "Save geladen. Er is een back‑up gemaakt vóór het bewerken.",
+      "savedStatus": "Wijzigingen opgeslagen.",
+      "discardOpenTitle": "Niet‑opgeslagen wijzigingen negeren?",
+      "discardOpenDescription": "Je hebt niet‑opgeslagen wijzigingen. Het openen van een ander savebestand maakt de huidige bewerkingen ongedaan.",
+      "discardAndOpen": "Ongedaan maken en openen",
+      "keepEditing": "Verder bewerken",
+      "openTitle": "Ontsleuteld Bloodborne‑save openen",
+      "openFailedTitle": "Kan save niet openen",
+      "openFailedDescription": "Het geselecteerde bestand kon niet worden geparseerd. Kies een ontsleuteld Bloodborne‑personagebestand en probeer het opnieuw.",
+      "close": "Sluiten",
+      "saveTitle": "Bewerk personage opslaan",
+      "confirmSaveTitle": "Opslaan bevestigen",
+      "confirmSaveDescription": "Dit schrijft de huidige bewerkingen naar het geselecteerde bestand. Bewaar de automatische .bak‑back‑up totdat je het save in het spel hebt gecontroleerd.",
+      "saveCompletedTitle": "Opslaan voltooid",
+      "saveCompletedDescription": "Bewaar je .bak‑kopie totdat het bewerkte save is geverifieerd.",
+      "saveFailedTitle": "Opslaan niet mogelijk",
+      "saveFailedDescription": "Het bewerkte save kon niet worden weggeschreven. Controleer de bestemming en beschikbare machtigingen en probeer het opnieuw."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Dit savebestand heeft geen veilige herbruikbare Gem/Rune‑record. Er is geen wijziging aangebracht. Maak een compatibele plek in het spel en probeer het opnieuw.",
+      "itemQuantity": "Aantal item:",
+      "weaponLevel": "Wapenlevel:",
+      "setValue": "Instellen",
+      "edit": "Bewerken",
+      "gems": "Gems"
+    }
+  },
+  "pl": {
+    "home": {
+      "eyebrow": "Zarządzanie postacią w trybie offline",
+      "title": "Edytuj rozważnie. Zachowaj swoje polowanie.",
+      "lead": "Otwórz odszyfrowane zapis postaci Bloodborne, aby sprawdzić ekwipunek, atrybuty, ustawienia postaci, bossów i flagi. Edytor tworzy kopię zapasową po otwarciu pliku; zachowaj ją, dopóki nie sprawdzisz wyniku w grze.",
+      "stepOneTitle": "Użyj odszyfrowanego zapisu",
+      "stepOneDescription": "Eksporty z PlayStation muszą zostać odszyfrowane, zanim edytor będzie mógł je odczytać.",
+      "stepTwoTitle": "Wprowadzaj ukierunkowane zmiany",
+      "stepTwoDescription": "Sprawdź każdą zmianę i unikaj używania zmodyfikowanych zapisów w trybie online.",
+      "stepThreeTitle": "Zweryfikuj przed zastąpieniem",
+      "stepThreeDescription": "Przetestuj wyeksportowany plik przed usunięciem automatycznej kopii .bak.",
+      "guide": "Przeczytaj poradnik odszyfrowywania"
+    },
+    "operation": {
+      "preparing": "Przygotowywanie edytora",
+      "eyebrow": "Praca z danymi zapisu",
+      "title": "Proszę, nie zamykaj tego okna."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Niezapisane zmiany",
+      "loadedStatus": "Zapis załadowany. Przed edycją utworzono kopię zapasową.",
+      "savedStatus": "Zmiany zapisane.",
+      "discardOpenTitle": "Odrzucić niezapisane zmiany?",
+      "discardOpenDescription": "Masz niezapisane zmiany. Otwarcie innego zapisu odrzuci bieżące edycje.",
+      "discardAndOpen": "Odrzuć i otwórz",
+      "keepEditing": "Kontynuuj edycję",
+      "openTitle": "Otwórz odszyfrowane zapisy Bloodborne",
+      "openFailedTitle": "Nie można otworzyć zapisu",
+      "openFailedDescription": "Wybrany plik nie mógł zostać przetworzony. Wybierz odszyfrowany zapis postaci Bloodborne i spróbuj ponownie.",
+      "close": "Zamknij",
+      "saveTitle": "Zapisz edytowaną postać",
+      "confirmSaveTitle": "Potwierdź zapis",
+      "confirmSaveDescription": "To zapisze bieżące zmiany do wybranego pliku. Zachowaj automatyczną kopię .bak, aż zapis zostanie zweryfikowany w grze.",
+      "saveCompletedTitle": "Zapis zakończony",
+      "saveCompletedDescription": "Zachowaj kopię .bak, dopóki edytowany zapis nie zostanie zweryfikowany.",
+      "saveFailedTitle": "Nie można zapisać",
+      "saveFailedDescription": "Nie udało się zapisać edytowanego pliku. Sprawdź miejsce docelowe i uprawnienia, a następnie spróbuj ponownie."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Ten zapis nie zawiera bezpiecznego, możliwego do ponownego użycia rekordu Gem/Rune. Nie wprowadzono żadnych zmian. Utwórz kompatybilne gniazdo w grze i spróbuj ponownie.",
+      "itemQuantity": "Ilość przedmiotu:",
+      "weaponLevel": "Poziom broni:",
+      "setValue": "Ustaw",
+      "edit": "Edytuj",
+      "gems": "Gemy"
+    }
+  },
+  "tr": {
+    "home": {
+      "eyebrow": "Çevrimdışı karakter yönetimi",
+      "title": "Kasıtlı düzenle. Avını koru.",
+      "lead": "Şifre çözülmüş bir Bloodborne karakter kaydını açarak envanter, özellikler, karakter ayarları, patronlar ve bayrakları inceleyin. Bir dosya açıldığında editör bir yedekleme oluşturur; oyunda sonucu doğrulayana kadar bunu saklayın.",
+      "stepOneTitle": "Şifre çözülmüş bir kayıt kullanın",
+      "stepOneDescription": "PlayStation dışa aktarımları, editör tarafından okunmadan önce şifre çözülmelidir.",
+      "stepTwoTitle": "Odaklanmış düzenlemeler yapın",
+      "stepTwoDescription": "Her değişikliği gözden geçirin ve değiştirilmiş kayıtları çevrimiçi oynarda kullanmaktan kaçının.",
+      "stepThreeTitle": "Değiştirmeden önce doğrulayın",
+      "stepThreeDescription": "Otomatik .bak kopyasını kaldırmadan önce dışa aktarılan dosyayı test edin.",
+      "guide": "Şifre çözme kılavuzunu okuyun"
+    },
+    "operation": {
+      "preparing": "Editör hazırlanıyor",
+      "eyebrow": "Kayıt verileriyle çalışma",
+      "title": "Lütfen bu pencereyi açık tutun."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Kaydedilmemiş değişiklikler",
+      "loadedStatus": "Kayıt yüklendi. Düzenlemeden önce bir yedek oluşturuldu.",
+      "savedStatus": "Değişiklikler kaydedildi.",
+      "discardOpenTitle": "Kaydedilmemiş değişiklikler iptal edilsin mi?",
+      "discardOpenDescription": "Kaydedilmemiş değişiklikleriniz var. Başka bir kayıt açmak mevcut düzenlemeleri iptal edecektir.",
+      "discardAndOpen": "İptal et ve aç",
+      "keepEditing": "Düzenlemeye devam et",
+      "openTitle": "Şifre çözülmüş Bloodborne kaydını aç",
+      "openFailedTitle": "Kayıt açılamıyor",
+      "openFailedDescription": "Seçilen dosya ayrıştırılamadı. Şifre çözülmüş bir Bloodborne karakter kaydı seçin ve tekrar deneyin.",
+      "close": "Kapat",
+      "saveTitle": "Düzenlenmiş karakteri kaydet",
+      "confirmSaveTitle": "Kaydı onayla",
+      "confirmSaveDescription": "Bu, mevcut düzenlemeleri seçili dosyaya yazar. Oyunda doğrulayana kadar otomatik .bak yedeğini saklayın.",
+      "saveCompletedTitle": "Kayıt tamamlandı",
+      "saveCompletedDescription": "Düzenlenen kayıt doğrulanana kadar .bak yedeğinizi saklayın.",
+      "saveFailedTitle": "Kaydedilemedi",
+      "saveFailedDescription": "Düzenlenmiş kayıt yazılamadı. Hedef konumu ve izinleri kontrol ettikten sonra tekrar deneyin."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Bu kayıtta güvenli, yeniden kullanılabilir bir Gem/Rune kaydı yok. Değişiklik yapılmadı. Oyunda uyumlu bir yuva oluşturun ve tekrar deneyin.",
+      "itemQuantity": "Öğe miktarı:",
+      "weaponLevel": "Silah seviyesi:",
+      "setValue": "Ayarla",
+      "edit": "Düzenle",
+      "gems": "Taşlar"
+    }
+  },
+  "uk": {
+    "home": {
+      "eyebrow": "Офлайн керування персонажем",
+      "title": "Редагуйте обдумано. Збережіть своє полювання.",
+      "lead": "Відкрийте дешифрований файл збереження персонажа Bloodborne, щоб переглянути інвентар, характеристики, налаштування персонажа, босів і прапорці. Редактор створює резервну копію при відкритті файлу; збережіть її, поки не перевірите результат у грі.",
+      "stepOneTitle": "Використовуйте дешифрований сейв",
+      "stepOneDescription": "Експорти з PlayStation потрібно дешифрувати перед тим, як редактор зможе їх прочитати.",
+      "stepTwoTitle": "Вносьте цілеспрямовані правки",
+      "stepTwoDescription": "Перевіряйте кожну зміну і уникайте використання змінених сейвів в онлайн‑грі.",
+      "stepThreeTitle": "Перевірте перед заміною",
+      "stepThreeDescription": "Протестуйте експортований файл перед видаленням автоматичної копії .bak.",
+      "guide": "Прочитайте посібник із дешифрування"
+    },
+    "operation": {
+      "preparing": "Підготовка редактора",
+      "eyebrow": "Робота з даними збережень",
+      "title": "Будь ласка, тримайте це вікно відкритим."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Є незбережені зміни",
+      "loadedStatus": "Збереження завантажено. Перед редагуванням створено резервну копію.",
+      "savedStatus": "Зміни збережено.",
+      "discardOpenTitle": "Відхилити незбережені зміни?",
+      "discardOpenDescription": "У вас є незбережені зміни. Відкриття іншого збереження відхилить поточні правки.",
+      "discardAndOpen": "Відхилити і відкрити",
+      "keepEditing": "Продовжити редагування",
+      "openTitle": "Відкрити дешифрований сейв Bloodborne",
+      "openFailedTitle": "Не вдалося відкрити сейв",
+      "openFailedDescription": "Вибраний файл не вдалося розпізнати. Оберіть дешифрований файл збереження персонажа Bloodborne і спробуйте знову.",
+      "close": "Закрити",
+      "saveTitle": "Зберегти відредагованого персонажа",
+      "confirmSaveTitle": "Підтвердіть збереження",
+      "confirmSaveDescription": "Це запише поточні правки у вибраний файл. Збережіть автоматичну копію .bak, поки не перевірите сейв у грі.",
+      "saveCompletedTitle": "Збереження завершено",
+      "saveCompletedDescription": "Збережіть вашу копію .bak, поки відредагований сейв не буде перевірено.",
+      "saveFailedTitle": "Не вдалося зберегти",
+      "saveFailedDescription": "Не вдалося записати відредагований файл. Перевірте місце призначення та дозволи, потім спробуйте знову."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "У цьому сейві немає безпечного повторно використовуваного запису Gem/Rune. Змін не внесено. Створіть сумісний слот у грі та спробуйте ще раз.",
+      "itemQuantity": "Кількість предмету:",
+      "weaponLevel": "Рівень зброї:",
+      "setValue": "Встановити",
+      "edit": "Редагувати",
+      "gems": "Геми"
+    }
+  },
+  "ja": {
+    "home": {
+      "eyebrow": "オフラインのキャラクター管理",
+      "title": "慎重に編集し、狩りを守る。",
+      "lead": "復号化済みのBloodborneキャラクターセーブを開いて、所持品、ステータス、キャラクター設定、ボス、フラグを確認します。ファイルを開くとエディターがバックアップを作成します。ゲーム内で結果を確認するまで必ず保持してください。",
+      "stepOneTitle": "復号化されたセーブを使用する",
+      "stepOneDescription": "PlayStationからのエクスポートは、エディターで読み取る前に復号化する必要があります。",
+      "stepTwoTitle": "的を絞った編集を行う",
+      "stepTwoDescription": "各変更を確認し、オンラインプレイで改変したセーブを使用しないでください。",
+      "stepThreeTitle": "置き換える前に検証する",
+      "stepThreeDescription": "自動生成された .bak コピーを削除する前に、エクスポートしたファイルをテストしてください。",
+      "guide": "復号化ガイドを読む"
+    },
+    "operation": {
+      "preparing": "エディターを準備しています",
+      "eyebrow": "セーブデータの操作",
+      "title": "このウィンドウは開いたままにしてください。"
+    },
+    "saveFlow": {
+      "unsavedStatus": "未保存の変更",
+      "loadedStatus": "セーブを読み込みました。編集前にバックアップが作成されました。",
+      "savedStatus": "変更を保存しました。",
+      "discardOpenTitle": "未保存の変更を破棄しますか？",
+      "discardOpenDescription": "未保存の変更があります。別のセーブを開くと、現在の編集内容は破棄されます。",
+      "discardAndOpen": "破棄して開く",
+      "keepEditing": "編集を続ける",
+      "openTitle": "復号化されたBloodborneセーブを開く",
+      "openFailedTitle": "セーブを開けません",
+      "openFailedDescription": "選択したファイルを解析できませんでした。復号化されたBloodborneのキャラクターセーブを選択して再試行してください。",
+      "close": "閉じる",
+      "saveTitle": "編集したキャラクターを保存",
+      "confirmSaveTitle": "保存を確認",
+      "confirmSaveDescription": "これにより現在の編集内容が選択したファイルに書き込まれます。ゲーム内でセーブを確認するまで自動生成された .bak バックアップを保管してください。",
+      "saveCompletedTitle": "保存が完了しました",
+      "saveCompletedDescription": "編集したセーブが検証されるまで .bak バックアップを保持してください。",
+      "saveFailedTitle": "保存できません",
+      "saveFailedDescription": "編集したセーブを書き込めませんでした。保存先と権限を確認してから、再度お試しください。"
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "このセーブには安全に再利用できる Gem/Rune の記録がありません。変更は行われませんでした。ゲーム内で互換性のあるスロットを作成してから、再度お試しください。",
+      "itemQuantity": "アイテム個数：",
+      "weaponLevel": "武器レベル：",
+      "setValue": "設定",
+      "edit": "編集",
+      "gems": "宝石"
+    }
+  },
+  "ko": {
+    "home": {
+      "eyebrow": "오프라인 캐릭터 관리",
+      "title": "신중하게 수정하세요. 당신의 사냥을 지키세요.",
+      "lead": "복호화된 Bloodborne 캐릭터 저장 파일을 열어 인벤토리, 능력치, 캐릭터 설정, 보스 및 플래그를 검사하세요. 파일을 열면 편집 전에 에디터가 백업을 생성합니다. 게임에서 결과를 확인할 때까지 반드시 보관하세요.",
+      "stepOneTitle": "복호화된 세이브 사용",
+      "stepOneDescription": "PlayStation에서 내보낸 파일은 에디터가 읽기 전에 복호화되어야 합니다.",
+      "stepTwoTitle": "집중 편집하기",
+      "stepTwoDescription": "각 변경사항을 검토하고, 수정된 세이브를 온라인 플레이에서 사용하지 마세요.",
+      "stepThreeTitle": "교체 전에 검증하기",
+      "stepThreeDescription": "자동 생성된 .bak 복사본을 제거하기 전에 내보낸 파일을 테스트하세요.",
+      "guide": "복호화 안내서 읽기"
+    },
+    "operation": {
+      "preparing": "에디터 준비 중",
+      "eyebrow": "세이브 데이터 작업",
+      "title": "이 창을 열어 둔 상태로 유지하세요."
+    },
+    "saveFlow": {
+      "unsavedStatus": "저장되지 않은 변경사항",
+      "loadedStatus": "세이브 로드됨. 편집 전에 백업이 생성되었습니다.",
+      "savedStatus": "변경사항 저장됨.",
+      "discardOpenTitle": "저장되지 않은 변경사항을 버리시겠어요?",
+      "discardOpenDescription": "저장되지 않은 변경사항이 있습니다. 다른 세이브를 열면 현재 편집 내용이 버려집니다.",
+      "discardAndOpen": "버리고 열기",
+      "keepEditing": "편집 계속",
+      "openTitle": "복호화된 Bloodborne 세이브 열기",
+      "openFailedTitle": "세이브를 열 수 없음",
+      "openFailedDescription": "선택한 파일을 분석할 수 없습니다. 복호화된 Bloodborne 캐릭터 세이브를 선택하고 다시 시도하세요.",
+      "close": "닫기",
+      "saveTitle": "편집한 캐릭터 저장",
+      "confirmSaveTitle": "저장 확인",
+      "confirmSaveDescription": "이 작업은 현재 편집 내용을 선택한 파일에 기록합니다. 게임 내에서 확인할 때까지 자동 .bak 백업을 보관하세요.",
+      "saveCompletedTitle": "저장 완료",
+      "saveCompletedDescription": "편집한 세이브가 검증될 때까지 .bak 백업을 보관하세요.",
+      "saveFailedTitle": "저장할 수 없음",
+      "saveFailedDescription": "편집된 세이브를 쓸 수 없습니다. 대상 위치와 권한을 확인한 후 다시 시도하세요."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "이 세이브에는 안전하게 재사용할 수 있는 Gem/Rune 기록이 없습니다. 변경 사항이 적용되지 않았습니다. 게임 내에서 호환 가능한 슬롯을 생성한 후 다시 시도하세요.",
+      "itemQuantity": "아이템 수량:",
+      "weaponLevel": "무기 레벨:",
+      "setValue": "설정",
+      "edit": "편집",
+      "gems": "보석"
+    }
+  },
+  "zh-CN": {
+    "home": {
+      "eyebrow": "离线角色管理",
+      "title": "谨慎编辑。保全你的狩猎。",
+      "lead": "打开已解密的 Bloodborne 角色存档以查看物品栏、属性、角色设置、Boss 与标记。编辑器在打开文件时会创建备份；在游戏中确认结果之前，请始终保留该备份。",
+      "stepOneTitle": "使用已解密的存档",
+      "stepOneDescription": "来自 PlayStation 的导出文件必须先解密，编辑器才能读取。",
+      "stepTwoTitle": "进行有针对性的修改",
+      "stepTwoDescription": "检查每一项更改，并避免在联机游戏中使用已修改的存档。",
+      "stepThreeTitle": "替换前请验证",
+      "stepThreeDescription": "在删除自动生成的 .bak 备份前，请先测试导出的文件。",
+      "guide": "阅读解密指南"
+    },
+    "operation": {
+      "preparing": "正在准备编辑器",
+      "eyebrow": "处理存档数据",
+      "title": "请保持此窗口打开。"
+    },
+    "saveFlow": {
+      "unsavedStatus": "有未保存的更改",
+      "loadedStatus": "存档已加载。编辑前已创建备份。",
+      "savedStatus": "更改已保存。",
+      "discardOpenTitle": "要放弃未保存的更改吗？",
+      "discardOpenDescription": "你有未保存的更改。打开另一个存档将放弃当前的编辑内容。",
+      "discardAndOpen": "放弃并打开",
+      "keepEditing": "继续编辑",
+      "openTitle": "打开已解密的 Bloodborne 存档",
+      "openFailedTitle": "无法打开存档",
+      "openFailedDescription": "无法解析所选文件。请选择已解密的 Bloodborne 角色存档并重试。",
+      "close": "关闭",
+      "saveTitle": "保存已编辑的角色",
+      "confirmSaveTitle": "确认保存",
+      "confirmSaveDescription": "此操作会将当前编辑写入所选文件。请在游戏中验证存档之前保留自动生成的 .bak 备份。",
+      "saveCompletedTitle": "保存完成",
+      "saveCompletedDescription": "在已编辑的存档被验证之前，请保留你的 .bak 备份。",
+      "saveFailedTitle": "无法保存",
+      "saveFailedDescription": "无法写入已编辑的存档。检查目标位置和权限后重试。"
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "该存档没有安全可重用的 Gem/Rune 记录。未做任何更改。请在游戏中创建兼容的槽位后再试。",
+      "itemQuantity": "物品数量：",
+      "weaponLevel": "武器等级：",
+      "setValue": "设置",
+      "edit": "编辑",
+      "gems": "宝石"
+    }
+  },
+  "sv": {
+    "home": {
+      "eyebrow": "Offline-teckenhantering",
+      "title": "Redigera med eftertanke. Bevara din jakt.",
+      "lead": "Öppna ett dekrypterat Bloodborne‑saves för att granska inventarier, attribut, karaktärsinställningar, bossar och flaggor. Editorn skapar en backup när en fil öppnas; behåll den alltid tills du kontrollerat resultatet i spelet.",
+      "stepOneTitle": "Använd ett dekrypterat save",
+      "stepOneDescription": "PlayStation‑exporter måste dekrypteras innan editorn kan läsa dem.",
+      "stepTwoTitle": "Gör fokuserade ändringar",
+      "stepTwoDescription": "Granska varje ändring och undvik att använda modifierade saves i onlinespel.",
+      "stepThreeTitle": "Verifiera innan du ersätter",
+      "stepThreeDescription": "Testa den exporterade filen innan du tar bort den automatiska .bak‑kopian.",
+      "guide": "Läs dekrypteringsguiden"
+    },
+    "operation": {
+      "preparing": "Förbereder editorn",
+      "eyebrow": "Arbete med savedata",
+      "title": "Håll det här fönstret öppet, tack."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Olagrade ändringar",
+      "loadedStatus": "Save laddat. En backup skapades innan redigering.",
+      "savedStatus": "Ändringar sparade.",
+      "discardOpenTitle": "Kasta osparade ändringar?",
+      "discardOpenDescription": "Du har osparade ändringar. Att öppna ett annat save kommer att kasta de nuvarande ändringarna.",
+      "discardAndOpen": "Kasta och öppna",
+      "keepEditing": "Fortsätt redigera",
+      "openTitle": "Öppna dekrypterat Bloodborne‑save",
+      "openFailedTitle": "Kunde inte öppna save",
+      "openFailedDescription": "Den valda filen kunde inte tolkas. Välj ett dekrypterat Bloodborne‑saves och försök igen.",
+      "close": "Stäng",
+      "saveTitle": "Spara redigerad karaktär",
+      "confirmSaveTitle": "Bekräfta sparande",
+      "confirmSaveDescription": "Detta skriver de aktuella ändringarna till den valda filen. Behåll den automatiska .bak‑backupen tills du verifierat saven i spelet.",
+      "saveCompletedTitle": "Sparat",
+      "saveCompletedDescription": "Behåll din .bak‑kopia tills det redigerade savet har verifierats.",
+      "saveFailedTitle": "Kunde inte spara",
+      "saveFailedDescription": "Det redigerade savet kunde inte skrivas. Kontrollera destination och behörigheter och försök igen."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Detta save har ingen säker återanvändbar Gem/Rune‑post. Ingen ändring gjordes. Skapa en kompatibel plats i spelet och försök igen.",
+      "itemQuantity": "Antal föremål:",
+      "weaponLevel": "Vapennivå:",
+      "setValue": "Ange",
+      "edit": "Redigera",
+      "gems": "Gems"
+    }
+  },
+  "cs": {
+    "home": {
+      "eyebrow": "Správa postav offline",
+      "title": "Upravujte uvážlivě. Zachovejte svůj lov.",
+      "lead": "Otevřete dešifrovaný save postavy Bloodborne, abyste zkontrolovali inventář, atributy, nastavení postavy, bossy a příznaky. Editor při otevření souboru vytvoří zálohu; vždy ji ponechte, dokud nezkontrolujete výsledek ve hře.",
+      "stepOneTitle": "Použijte dešifrované uložení",
+      "stepOneDescription": "Exporty z PlayStation musí být dešifrovány, než je editor dokáže přečíst.",
+      "stepTwoTitle": "Provádějte cílené úpravy",
+      "stepTwoDescription": "Zkontrolujte každou změnu a vyhněte se používání upravených saveů v online hře.",
+      "stepThreeTitle": "Ověřte před nahrazením",
+      "stepThreeDescription": "Otestujte exportovaný soubor před odstraněním automatické kopie .bak.",
+      "guide": "Přečtěte si průvodce dešifrováním"
+    },
+    "operation": {
+      "preparing": "Příprava editoru",
+      "eyebrow": "Práce s daty uložené hry",
+      "title": "Toto okno prosím nechte otevřené."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Neuložené změny",
+      "loadedStatus": "Save načteno. Před úpravou byla vytvořena záloha.",
+      "savedStatus": "Změny uloženy.",
+      "discardOpenTitle": "Zrušit neuložené změny?",
+      "discardOpenDescription": "Máte neuložené změny. Otevření jiného save zruší aktuální úpravy.",
+      "discardAndOpen": "Zrušit a otevřít",
+      "keepEditing": "Pokračovat v úpravách",
+      "openTitle": "Otevřít dešifrované save Bloodborne",
+      "openFailedTitle": "Nelze otevřít save",
+      "openFailedDescription": "Vybraný soubor nelze zpracovat. Vyberte dešifrované uložené postavy Bloodborne a zkuste to znovu.",
+      "close": "Zavřít",
+      "saveTitle": "Uložit upravenou postavu",
+      "confirmSaveTitle": "Potvrdit uložení",
+      "confirmSaveDescription": "Toto zapíše aktuální úpravy do vybraného souboru. Uchovejte automatickou zálohu .bak, dokud neověříte save ve hře.",
+      "saveCompletedTitle": "Uloženo",
+      "saveCompletedDescription": "Uchovejte kopii .bak, dokud upravené uložení nebude ověřeno.",
+      "saveFailedTitle": "Uložení se nezdařilo",
+      "saveFailedDescription": "Upravený soubor nelze zapsat. Zkontrolujte cílové umístění a oprávnění, poté to zkuste znovu."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Toto uložené hře postavy nemá bezpečný znovupoužitelný záznam Gem/Rune. Nebyla provedena žádná změna. Vytvořte kompatibilní slot ve hře a zkuste to znovu.",
+      "itemQuantity": "Počet položek:",
+      "weaponLevel": "Úroveň zbraně:",
+      "setValue": "Nastavit",
+      "edit": "Upravit",
+      "gems": "Klenoty"
+    }
+  },
+  "ro": {
+    "home": {
+      "eyebrow": "Gestionare personaje offline",
+      "title": "Editează în mod deliberat. Păstrează-ți vânătoarea.",
+      "lead": "Deschide un fișier de salvare al unui personaj Bloodborne decriptat pentru a inspecta inventarul, atributele, setările personajului, boss‑ii și flag‑urile. Editorul creează un backup când se deschide un fișier; păstrează‑l întotdeauna până când ai verificat rezultatul în joc.",
+      "stepOneTitle": "Folosește un save decriptat",
+      "stepOneDescription": "Exporturile de pe PlayStation trebuie decriptate înainte ca editorul să le poată citi.",
+      "stepTwoTitle": "Fă modificări concentrate",
+      "stepTwoDescription": "Revizuiește fiecare schimbare și evită folosirea fișierelor modificate în jocurile online.",
+      "stepThreeTitle": "Verifică înainte de a înlocui",
+      "stepThreeDescription": "Testează fișierul exportat înainte de a elimina copia automată .bak.",
+      "guide": "Citește ghidul de decriptare"
+    },
+    "operation": {
+      "preparing": "Se pregătește editorul",
+      "eyebrow": "Lucru cu datele de salvare",
+      "title": "Vă rugăm să păstrați această fereastră deschisă."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Modificări nesalvate",
+      "loadedStatus": "Salvarea încărcată. A fost creat un backup înainte de editare.",
+      "savedStatus": "Modificări salvate.",
+      "discardOpenTitle": "Renunți la modificările nesalvate?",
+      "discardOpenDescription": "Ai modificări nesalvate. Deschiderea altei salvări va renunța la editările curente.",
+      "discardAndOpen": "Renunță și deschide",
+      "keepEditing": "Continuă editarea",
+      "openTitle": "Deschide save-ul Bloodborne decriptat",
+      "openFailedTitle": "Nu s-a putut deschide save-ul",
+      "openFailedDescription": "Fișierul selectat nu a putut fi analizat. Alege un save de personaj Bloodborne decriptat și încearcă din nou.",
+      "close": "Închide",
+      "saveTitle": "Salvează personajul editat",
+      "confirmSaveTitle": "Confirmă salvarea",
+      "confirmSaveDescription": "Aceasta scrie editările curente în fișierul selectat. Păstrează backup‑ul automat .bak până când verifici salvarea în joc.",
+      "saveCompletedTitle": "Salvare finalizată",
+      "saveCompletedDescription": "Păstrează copia .bak până când salvarea editată a fost verificată.",
+      "saveFailedTitle": "Nu se poate salva",
+      "saveFailedDescription": "Salvarea editată nu a putut fi scrisă. Verifică destinația și permisiunile disponibile, apoi încearcă din nou."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Acest save nu are un record sigur reutilizabil Gem/Rune. Nu s‑a efectuat nicio modificare. Creează un slot compatibil în joc și încearcă din nou.",
+      "itemQuantity": "Cantitate obiect:",
+      "weaponLevel": "Nivel armă:",
+      "setValue": "Setează",
+      "edit": "Editează",
+      "gems": "Gems"
+    }
+  },
+  "el": {
+    "home": {
+      "eyebrow": "Διαχείριση χαρακτήρων εκτός σύνδεσης",
+      "title": "Επεξεργαστείτε σκόπιμα. Διατηρήστε το κυνήγι σας.",
+      "lead": "Ανοίξτε ένα αποκρυπτογραφημένο αρχείο αποθήκευσης χαρακτήρα Bloodborne για να ελέγξετε το απόθεμα, τις ιδιότητες, τις ρυθμίσεις χαρακτήρα, τους αφεντικά και τις σημαίες. Ο επεξεργαστής δημιουργεί αντίγραφο ασφαλείας όταν ανοίγει ένα αρχείο· διατηρήστε το έως ότου ελέγξετε το αποτέλεσμα στο παιχνίδι.",
+      "stepOneTitle": "Χρησιμοποιήστε ένα αποκρυπτογραφημένο αρχείο αποθήκευσης",
+      "stepOneDescription": "Οι εξαγωγές από PlayStation πρέπει να αποκρυπτογραφηθούν πριν ο επεξεργαστής μπορέσει να τις διαβάσει.",
+      "stepTwoTitle": "Κάντε στοχευμένες επεξεργασίες",
+      "stepTwoDescription": "Ελέγξτε κάθε αλλαγή και αποφύγετε τη χρήση τροποποιημένων αρχείων αποθήκευσης στο online παιχνίδι.",
+      "stepThreeTitle": "Επαληθεύστε πριν αντικαταστήσετε",
+      "stepThreeDescription": "Δοκιμάστε το εξαγόμενο αρχείο πριν αφαιρέσετε το αυτόματο αντίγραφο .bak.",
+      "guide": "Διαβάστε τον οδηγό αποκρυπτογράφησης"
+    },
+    "operation": {
+      "preparing": "Ετοιμασία του επεξεργαστή",
+      "eyebrow": "Εργασία με δεδομένα αποθήκευσης",
+      "title": "Παρακαλώ κρατήστε αυτό το παράθυρο ανοιχτό."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Μη αποθηκευμένες αλλαγές",
+      "loadedStatus": "Το αρχείο φορτώθηκε. Δημιουργήθηκε αντίγραφο ασφαλείας πριν την επεξεργασία.",
+      "savedStatus": "Οι αλλαγές αποθηκεύτηκαν.",
+      "discardOpenTitle": "Απόρριψη μη αποθηκευμένων αλλαγών;",
+      "discardOpenDescription": "Έχετε μη αποθηκευμένες αλλαγές. Το άνοιγμα άλλου αρχείου θα απορρίψει τις τρέχουσες επεξεργασίες.",
+      "discardAndOpen": "Απόρριψη και άνοιγμα",
+      "keepEditing": "Συνέχισε την επεξεργασία",
+      "openTitle": "Άνοιγμα αποκρυπτογραφημένου αρχείου Bloodborne",
+      "openFailedTitle": "Αδυναμία ανοίγματος αρχείου",
+      "openFailedDescription": "Το επιλεγμένο αρχείο δεν μπόρεσε να αναλυθεί. Επιλέξτε ένα αποκρυπτογραφημένο αρχείο χαρακτήρα Bloodborne και δοκιμάστε ξανά.",
+      "close": "Κλείσιμο",
+      "saveTitle": "Αποθήκευση επεξεργασμένου χαρακτήρα",
+      "confirmSaveTitle": "Επιβεβαίωση αποθήκευσης",
+      "confirmSaveDescription": "Αυτό θα γράψει τις τρέχουσες επεξεργασίες στο επιλεγμένο αρχείο. Κρατήστε το αυτόματο αντίγραφο .bak μέχρι να επαληθεύσετε το αρχείο στο παιχνίδι.",
+      "saveCompletedTitle": "Η αποθήκευση ολοκληρώθηκε",
+      "saveCompletedDescription": "Κρατήστε το αντίγραφό .bak σας μέχρι το επεξεργασμένο αρχείο να επαληθευτεί.",
+      "saveFailedTitle": "Αδύνατη η αποθήκευση",
+      "saveFailedDescription": "Το επεξεργασμένο αρχείο δεν μπόρεσε να γραφτεί. Ελέγξτε τον προορισμό και τα διαθέσιμα δικαιώματα και δοκιμάστε ξανά."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Αυτό το αρχείο αποθήκευσης δεν περιέχει ασφαλές επαναχρησιμοποιήσιμο αρχείο Gem/Rune. Δεν έγινε καμία αλλαγή. Δημιουργήστε μια συμβατή θέση (slot) στο παιχνίδι και δοκιμάστε ξανά.",
+      "itemQuantity": "Ποσότητα αντικειμένου:",
+      "weaponLevel": "Επίπεδο όπλου:",
+      "setValue": "Ορισμός",
+      "edit": "Επεξεργασία",
+      "gems": "Gems"
+    }
+  },
+  "id": {
+    "home": {
+      "eyebrow": "Manajemen karakter offline",
+      "title": "Sunting dengan sengaja. Pertahankan perburuanmu.",
+      "lead": "Buka save karakter Bloodborne yang sudah didekripsi untuk memeriksa inventaris, atribut, pengaturan karakter, bos, dan flag. Editor membuat cadangan saat file dibuka; selalu simpan hingga kamu memeriksa hasilnya di dalam game.",
+      "stepOneTitle": "Gunakan save yang sudah didekripsi",
+      "stepOneDescription": "Ekspor dari PlayStation harus didekripsi sebelum editor dapat membacanya.",
+      "stepTwoTitle": "Lakukan suntingan terfokus",
+      "stepTwoDescription": "Tinjau setiap perubahan dan hindari menggunakan save yang dimodifikasi dalam permainan online.",
+      "stepThreeTitle": "Verifikasi sebelum mengganti",
+      "stepThreeDescription": "Uji file yang diekspor sebelum menghapus salinan otomatis .bak.",
+      "guide": "Baca panduan dekripsi"
+    },
+    "operation": {
+      "preparing": "Mempersiapkan editor",
+      "eyebrow": "Bekerja dengan data save",
+      "title": "Harap biarkan jendela ini terbuka."
+    },
+    "saveFlow": {
+      "unsavedStatus": "Perubahan belum disimpan",
+      "loadedStatus": "Save dimuat. Cadangan dibuat sebelum pengeditan.",
+      "savedStatus": "Perubahan tersimpan.",
+      "discardOpenTitle": "Buang perubahan yang belum disimpan?",
+      "discardOpenDescription": "Kamu memiliki perubahan yang belum disimpan. Membuka save lain akan membuang pengeditan saat ini.",
+      "discardAndOpen": "Buang dan buka",
+      "keepEditing": "Lanjutkan menyunting",
+      "openTitle": "Buka save Bloodborne yang telah didekripsi",
+      "openFailedTitle": "Tidak dapat membuka save",
+      "openFailedDescription": "File yang dipilih tidak dapat diparsing. Pilih save karakter Bloodborne yang telah didekripsi dan coba lagi.",
+      "close": "Tutup",
+      "saveTitle": "Simpan karakter yang diedit",
+      "confirmSaveTitle": "Konfirmasi simpan",
+      "confirmSaveDescription": "Ini akan menulis pengeditan saat ini ke file yang dipilih. Simpan cadangan otomatis .bak sampai kamu memverifikasi save di dalam game.",
+      "saveCompletedTitle": "Simpan selesai",
+      "saveCompletedDescription": "Simpan salinan .bak sampai save yang diedit telah diverifikasi.",
+      "saveFailedTitle": "Tidak dapat menyimpan",
+      "saveFailedDescription": "Save yang diedit tidak dapat ditulis. Periksa lokasi tujuan dan izin yang tersedia, lalu coba lagi."
+    },
+    "inventory": {
+      "directUpgradeUnavailable": "Save ini tidak memiliki catatan Gem/Rune yang aman dan dapat digunakan kembali. Tidak ada perubahan dibuat. Buat slot yang kompatibel di dalam game, lalu coba lagi.",
+      "itemQuantity": "Jumlah item:",
+      "weaponLevel": "Level senjata:",
+      "setValue": "Atur",
+      "edit": "Sunting",
+      "gems": "Permata"
+    }
+  }
+};
+
+Object.entries(commonUiOverrides).forEach(([language, copy]) => {
+  resources[language] = {
+    ...(resources[language] ?? {}),
+    home: copy.home,
+    operation: copy.operation,
+    saveFlow: copy.saveFlow,
+    inventory: { ...en.inventory, ...(resources[language]?.inventory ?? {}), ...copy.inventory },
+    update: { ...en.update, ...(resources[language]?.update ?? {}) },
+    characterForm: { ...en.characterForm, ...(resources[language]?.characterForm ?? {}) },
+    bosses: { ...en.bosses, ...(resources[language]?.bosses ?? {}) },
+  };
+});
+
+const flagOverrides = {
+  en: {
+    card: {
+      confirm: "Apply this known save flag? A backup is kept before saving.",
+      applied: "Flag applied to the in-memory save. Select Save changes to write the file.",
+      applyFailed: "Unable to apply this flag: {{error}}",
+      whatChanges: "What changes:",
+      careful: "Careful:",
+      bytePattern: "Validated byte pattern:",
+      hideDetails: "Hide details",
+      showDetails: "What does this do?",
+      applying: "Applying…",
+      apply: "Apply",
+    },
+    entries: {
+      restoreMaria: { label: "Restore Lady Maria dialogue", category: "Narrative restoration", info: "Restores a small set of dialogue lines before the Lady Maria encounter.", impact: "This changes the dialogue state only; it does not grant an item, level or boss reward.", warning: "Use on a copied save first if you are currently in the Astral Clocktower area." },
+      dollLullaby: { label: "Enable the Doll’s legacy lullaby", category: "Legacy presentation", info: "Re-enables the Doll’s lullaby behaviour associated with the original 1.0 release.", impact: "This restores a legacy presentation state. It does not alter attributes, inventory or quest rewards.", warning: "The behaviour is version-sensitive; keep the backup until you have loaded the character successfully." },
+      bloodAddled: { label: "Enable Blood-addled co-op behaviour", category: "Multiplayer behaviour", info: "Enables the Blood-addled interaction associated with co-op players using the Hunter rune.", impact: "This changes multiplayer hostility behaviour while the relevant rune conditions are met.", warning: "Use this only offline or with consenting players. It can create confusing hostile co-op behaviour." },
+    },
+  },
+  fr: {
+    card: {
+      confirm: "Appliquer ce flag de sauvegarde connu ? Une copie de sauvegarde est conservée avant l’enregistrement.",
+      applied: "Le flag a été appliqué à la sauvegarde en mémoire. Sélectionnez Enregistrer les modifications pour écrire le fichier.",
+      applyFailed: "Impossible d’appliquer ce flag : {{error}}",
+      whatChanges: "Modifications :",
+      careful: "Attention :",
+      bytePattern: "Modèle d’octets validé :",
+      hideDetails: "Masquer les détails",
+      showDetails: "À quoi cela sert ?",
+      applying: "Application…",
+      apply: "Appliquer",
+    },
+    entries: {
+      restoreMaria: { label: "Restaurer les dialogues de Lady Maria", category: "Restauration narrative", info: "Restaure un petit ensemble de lignes de dialogue avant la rencontre avec Lady Maria.", impact: "Modifie uniquement l’état des dialogues ; aucun objet, niveau ou gain de boss n’est accordé.", warning: "Utilisez d’abord une copie de sauvegarde si vous êtes actuellement dans la zone de la Tour de l’Horloge Astrale." },
+      dollLullaby: { label: "Activer la berceuse historique de la Poupée", category: "Présentation historique", info: "Réactive le comportement de berceuse de la Poupée associé à la version originale 1.0.", impact: "Restaure un état de présentation historique. Les attributs, l’inventaire et les récompenses de quête ne sont pas modifiés.", warning: "Le comportement dépend de la version ; conservez la copie de sauvegarde jusqu’au chargement réussi du personnage." },
+      bloodAddled: { label: "Activer le comportement coopératif de sang vicié", category: "Comportement multijoueur", info: "Active l’interaction de sang vicié associée aux joueurs coopératifs utilisant la rune Chasseur.", impact: "Modifie le comportement d’hostilité en multijoueur tant que les conditions de rune concernées sont remplies.", warning: "Utilisez-le uniquement hors ligne ou avec des joueurs consentants. Ce flag peut créer un comportement coopératif hostile déroutant." },
+    },
+  },
+};
+
+Object.keys(resources).forEach((language) => {
+  const flags = flagOverrides[language] ?? {};
+  resources[language] = {
+    ...(resources[language] ?? {}),
+    flags: { ...en.flags, ...flagOverrides.en, ...(resources[language]?.flags ?? {}), ...flags },
+    actions: { ...en.actions, ...(resources[language]?.actions ?? {}) },
   };
 });
 

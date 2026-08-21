@@ -10,6 +10,7 @@ import EditUpgrade from "../../components/EditUpgrade";
 import AddScreen from "./AddScreen";
 import { ImagesContext } from "../../context/imagesContext";
 import { useNavigate } from "react-router-dom";
+import { useLocalization } from "../../i18n/localization";
 
 function Inventory({ inv, isStorage }) {
   const inventoryRef = useRef(null);
@@ -28,6 +29,7 @@ function Inventory({ inv, isStorage }) {
   } = useContext(ImagesContext);
 
   const { save, setSave } = useContext(SaveContext);
+  const { t } = useLocalization();
 
   useEffect(() => {
     const invCurrent = inventoryRef.current;
@@ -118,7 +120,7 @@ function Inventory({ inv, isStorage }) {
       </div>
       {/* Right side buttons */}
       <div className="editButtons">
-        <span style={{ fontSize: "1.2rem" }}>Item quantity:</span>
+        <span style={{ fontSize: "1.2rem" }}>{t("inventory.itemQuantity")}</span>
         <div className="editQuantity">
           <input
             type="number"
@@ -173,10 +175,10 @@ function Inventory({ inv, isStorage }) {
                 : true
             }
           >
-            Set
+            {t("inventory.setValue")}
           </button>
         </div>
-        <span style={{ fontSize: "1.2rem" }}>Weapon level:</span>
+        <span style={{ fontSize: "1.2rem" }}>{t("inventory.weaponLevel")}</span>
         <div className="editQuantity">
           <input
             type="number"
@@ -222,7 +224,7 @@ function Inventory({ inv, isStorage }) {
                 : true
             }
           >
-            Set
+            {t("inventory.setValue")}
           </button>
         </div>
         <button
@@ -232,7 +234,7 @@ function Inventory({ inv, isStorage }) {
             setReplaceScreen(true);
           }}
         >
-          Replace
+          {t("inventory.replaceItem")}
         </button>
         <button
           className="buttonBg inventory-btn"
@@ -241,13 +243,13 @@ function Inventory({ inv, isStorage }) {
             setEditScreen(true);
           }}
         >
-          Edit
+          {t("inventory.edit")}
         </button>
         <button
           className="buttonBg inventory-btn"
           onClick={() => setAddScreen(true)}
         >
-          Add
+          {t("inventory.addItem")}
         </button>
         <button
           className="buttonBg inventory-btn"
@@ -264,7 +266,7 @@ function Inventory({ inv, isStorage }) {
             })
           }
         >
-          Gems
+          {t("inventory.gems")}
         </button>
       </div>
     </>

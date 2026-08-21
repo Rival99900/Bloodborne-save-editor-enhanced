@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import {
   getGemFallbackPath,
@@ -87,12 +87,20 @@ function EditUpgrade({
   const [isConfirming, setIsConfirming] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
   // Rune presets are one-time actions; the field intentionally remains blank until chosen.
-  const [runePresetSelection, setRunePresetSelection] = useState(null);
+  const [runePresetSelection, setRunePresetSelection] = useState("");
   // A personal preset is opt-in. Never present the current rune or gem name as a preset
   // that appears to have been selected automatically when the editor opens.
   const [presetName, setPresetName] = useState("");
   const [presetStatus, setPresetStatus] = useState("");
   const [confirmError, setConfirmError] = useState("");
+  useEffect(() => {
+    // The editor must never inherit a previously selected Rune preset or preset name
+    // when another rune is opened. Current rune effects remain the editable draft.
+    setRunePresetSelection("");
+    setPresetName("");
+    setPresetStatus("");
+  }, [selected.id, selected.index, upgrade_type]);
+
   const runeForgePresets = useMemo(
     () =>
       runePresets.map((preset, index) => ({
@@ -231,7 +239,7 @@ function EditUpgrade({
       info: {
         ...edited.info,
         name: presetName.trim() || edited.info.name || `Custom Forge ${upgrade_type}`,
-        note: `Personal Forge preset saved from ${upgrade_type} Forge and shared with both forges.`,
+        note: "__personal_forge_preset__",
       },
     });
 
@@ -433,7 +441,7 @@ function EditUpgrade({
             ))}
             {upgrade_type === "Rune" ? (
               <SelectSearch
-                key={`rune-preset-${runePresetSelection ?? "empty"}`}
+                key={`rune-preset-${runePresetSelection || "empty"}`}
                 defaultValue={t("forge.runePresetPlaceholder")}
                 onChange={(event) => {
                   const { info, effects: presetEffects, shape: presetShape } = event;
@@ -448,7 +456,7 @@ function EditUpgrade({
                     effects: [...presetEffects],
                   }));
                   // Presets are immediate one-time actions, not a persistent field value.
-                  setRunePresetSelection(null);
+                  setRunePresetSelection("");
                 }}
                 selected={runePresetSelection}
                 options={runePresets}

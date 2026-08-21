@@ -1,8 +1,10 @@
 import "./playtime.css";
 import { useEffect, useState } from "react";
 import { interpret, toMs } from "../../utils/playtime";
+import { useLocalization } from "../../i18n/localization";
 
 function Playtime({ ms, setMs }) {
+  const { t } = useLocalization();
   const [time, setTime] = useState(interpret(ms));
 
   useEffect(() => {
@@ -36,7 +38,7 @@ function Playtime({ ms, setMs }) {
         justifyContent: "space-between",
       }}
     >
-      <span>Playtime:</span>
+      <span>{t("characterForm.playtime")}</span>
       <div
         style={{
           width: "174px",

@@ -4,6 +4,7 @@ import Stat from "../../components/Stat";
 import { invoke } from "@tauri-apps/api/core";
 import { ImagesContext } from "../../context/imagesContext";
 import * as dialog from "@tauri-apps/plugin-dialog";
+import { useLocalization } from "../../i18n/localization";
 
 function Stats() {
   const { save, setSave } = useContext(SaveContext);
@@ -11,6 +12,7 @@ function Stats() {
     JSON.parse(JSON.stringify(save.stats)),
   );
   const { images } = useContext(ImagesContext);
+  const { t } = useLocalization();
 
   return (
     <div
@@ -66,7 +68,7 @@ function Stats() {
             setEditedStats(JSON.parse(JSON.stringify(save.stats)));
           }}
         >
-          Reset
+          {t("actions.reset")}
         </button>
         <button
           className="btn-underline"
@@ -95,10 +97,10 @@ function Stats() {
               prev.stats = JSON.parse(JSON.stringify(editedStats));
               return prev;
             });
-            await dialog.message("Confirmed changes");
+            await dialog.message(t("actions.changesConfirmed"));
           }}
         >
-          Confirm
+          {t("actions.confirm")}
         </button>
       </div>
     </div>

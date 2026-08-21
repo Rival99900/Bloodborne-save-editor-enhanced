@@ -127,6 +127,8 @@ const GEM_PRESETS = [
   },
 ];
 
+const GEM_PRESET_IDS = new Set(GEM_PRESETS.map((preset) => preset.id));
+
 function GemPresetPanel({
   gemEffects,
   userGemPresets = [],
@@ -160,6 +162,30 @@ function GemPresetPanel({
   const visiblePresets = builtInPresets.filter(
     (preset) => category === "All" || preset.category === category,
   );
+
+  function categoryLabel(value) {
+    return t(`forge.categories.${value}`);
+  }
+
+  function localizedPresetText(preset) {
+    if (GEM_PRESET_IDS.has(preset.id)) {
+      return {
+        name: t(`forge.builtIn.${preset.id}.name`),
+        description: t(`forge.builtIn.${preset.id}.description`),
+      };
+    }
+    if (String(preset.id).startsWith("rune-forge-")) {
+      return { name: preset.name, description: t("forge.runePresetDescription") };
+    }
+    return { name: preset.name, description: preset.description };
+  }
+
+  function personalDescription(preset) {
+    const stored = String(preset.info?.note ?? "").trim();
+    return /^(Personal Forge preset|Preset de forge personnel|__personal_forge_preset__)/i.test(stored)
+      ? t("forge.personalPresetDescription")
+      : stored || t("forge.personalPresetDescription");
+  }
 
   function resolveEffects(effectEntries) {
     return [...effectEntries, ...Array(EFFECT_SLOTS).fill(NO_EFFECT_ID)]
@@ -215,8 +241,8 @@ function GemPresetPanel({
       preset: {
         id: `custom-forge-${forgeType}`,
         category: "Custom",
-        name: `Custom Forge ${subject}`,
-        description: `${t("forge.customSet")} — ${activeCount} ${t("forge.effect", { index: "" }).trim().toLowerCase()}${activeCount > 1 ? "s" : ""}.`,
+        name: t("forge.customName", { subject }),
+        description: t("forge.customDescription", { count: activeCount }),
       },
       effects: resolveEffects(customEffects),
     });
@@ -263,21 +289,24 @@ function GemPresetPanel({
                 className={entry === category ? "is-active" : ""}
                 onClick={() => setCategory(entry)}
               >
-                {entry}
+                {categoryLabel(entry)}
               </button>
             ))}
           </div>
 
           <div className="gem-forge__grid">
-            {visiblePresets.map((preset) => (
+            {visiblePresets.map((preset) => {
+              const copy = localizedPresetText(preset);
+              return (
               <article className="gem-forge__card" key={preset.id}>
-                <span>{preset.category}</span>
-                <h3>{preset.name}</h3>
-                <p>{preset.description}</p>
+                <span>{categoryLabel(preset.category)}</span>
+                <h3>{copy.name}</h3>
+                <p>{copy.description}</p>
                 <small>{formatEffects(preset.effectIds)}</small>
                 <button onClick={() => applyPreset(preset)}>{t("forge.loadIntoDraft")}</button>
               </article>
-            ))}
+              );
+            })}
           </div>
         </>
       ) : null}
@@ -331,7 +360,7 @@ function GemPresetPanel({
                 <article className="gem-forge__card gem-forge__card--personal" key={preset.id}>
                   <span>{t("forge.personal")}</span>
                   <h3>{preset.name}</h3>
-                  <p>{preset.info?.note || t("forge.personalPresetDescription")}</p>
+                  <p>{personalDescription(preset)}</p>
                   <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
                   <div className="gem-forge__card-actions">
                     <button onClick={() => applySavedPreset(preset)}>{t("forge.loadIntoDraft")}</button>

@@ -1,14 +1,16 @@
 import { invoke } from "@tauri-apps/api/core";
 import { message } from "@tauri-apps/plugin-dialog";
 import { memo, useState } from "react";
+import { useLocalization } from "../../i18n/localization";
 
 function Flag({ label, offset, values, info, impact, warning = "", category = "Known flag", isMask = false }) {
+  const { t } = useLocalization();
   const [isApplying, setIsApplying] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
   async function apply() {
     const accepted = window.confirm(
-      `${label}\n\n${impact}\n\nApply this known save flag? A backup is kept before saving.`,
+      `${label}\n\n${impact}\n\n${t("flags.card.confirm")}`,
     );
     if (!accepted) return;
 
@@ -24,9 +26,9 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
           });
         }
       }
-      await message("Flag applied to the in-memory save. Select Save changes to write the file.");
+      await message(t("flags.card.applied"));
     } catch (error) {
-      await message(`Unable to apply this flag: ${String(error)}`);
+      await message(t("flags.card.applyFailed", { error: String(error) }));
     } finally {
       setIsApplying(false);
     }
@@ -40,19 +42,19 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
         <p>{info}</p>
         {expanded ? (
           <div className="flag-card__details">
-            <p><strong>What changes:</strong> {impact}</p>
-            {warning ? <p><strong>Careful:</strong> {warning}</p> : null}
-            <p className="flag-card__technical">Validated byte pattern: {values.join(" · ")}</p>
+            <p><strong>{t("flags.card.whatChanges")}</strong> {impact}</p>
+            {warning ? <p><strong>{t("flags.card.careful")}</strong> {warning}</p> : null}
+            <p className="flag-card__technical">{t("flags.card.bytePattern")} {values.join(" · ")}</p>
           </div>
         ) : null}
       </div>
 
       <div className="flag-card__actions">
         <button className="flag-card__details-button" onClick={() => setExpanded((value) => !value)}>
-          {expanded ? "Hide details" : "What does this do?"}
+          {expanded ? t("flags.card.hideDetails") : t("flags.card.showDetails")}
         </button>
         <button className="buttonBg flag-card__apply" onClick={apply} disabled={isApplying}>
-          {isApplying ? "Applying…" : "Apply"}
+          {isApplying ? t("flags.card.applying") : t("flags.card.apply")}
         </button>
       </div>
     </article>

@@ -1,4 +1,7 @@
+import { useLocalization } from "../../i18n/localization";
+
 function Boss({ boss, onChange }) {
+  const { t } = useLocalization();
   let { name, flags } = boss;
   let [defeatedFlag] = flags;
 
@@ -32,7 +35,7 @@ function Boss({ boss, onChange }) {
       <span>{name}:</span>
       <div className="select-wrapper">
         <select name="bossStatus" id="bossStatus" onChange={handleChange}>
-          <option value={1}>Alive</option>
+          <option value={1}>{t("bosses.alive")}</option>
           <option
             selected={
               (defeatedFlag.dead_value & defeatedFlag.current_value & 0xff) !==
@@ -40,7 +43,7 @@ function Boss({ boss, onChange }) {
             }
             value={2}
           >
-            Dead
+            {t("bosses.dead")}
           </option>
         </select>
       </div>

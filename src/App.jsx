@@ -36,13 +36,33 @@ function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
   );
 }
 
+function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirmLabel, cancelLabel, onConfirm, onCancel }) {
+  return (
+    <div className="save-flow-dialog" role="dialog" aria-modal="true" aria-labelledby="save-flow-title">
+      <section className={`save-flow-dialog__card save-flow-dialog__card--${tone}`}>
+        <span className="save-flow-dialog__eyebrow">{eyebrow}</span>
+        <h2 id="save-flow-title">{title}</h2>
+        <p>{description}</p>
+        <div className="save-flow-dialog__actions">
+          {cancelLabel ? <button onClick={onCancel}>{cancelLabel}</button> : null}
+          <button className={tone === "error" ? "save-flow-dialog__primary save-flow-dialog__primary--error" : "save-flow-dialog__primary"} onClick={onConfirm}>
+            {confirmLabel}
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function App() {
+  const { t } = useLocalization();
   const [save, setSave] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saveName, setSaveName] = useState("");
-  const [saveStatus, setSaveStatus] = useState("");
+  const [saveStatusKey, setSaveStatusKey] = useState("");
   const [isDirty, setIsDirty] = useState(false);
   const [exitRequested, setExitRequested] = useState(false);
+  const [openSaveDialog, setOpenSaveDialog] = useState("");
   const dirtyRef = useRef(false);
   const forceCloseRef = useRef(false);
 
@@ -56,7 +76,7 @@ function App() {
       setSave(nextSave);
       if (nextSave) {
         setDirtyState(true);
-        setSaveStatus("Unsaved changes");
+        setSaveStatusKey("saveFlow.unsavedStatus");
       } else {
         setDirtyState(false);
       }
@@ -64,100 +84,82 @@ function App() {
     [setDirtyState],
   );
 
-  const openSave = useCallback(async () => {
-    if (dirtyRef.current) {
-      const discardCurrent = await dialog.confirm(
-        "You have unsaved changes. Opening another save will discard the current edits.",
-        {
-          title: "Discard unsaved changes?",
-          kind: "warning",
-          okLabel: "Discard and open",
-          cancelLabel: "Keep editing",
-        },
-      );
-      if (!discardCurrent) return false;
-    }
-
+  const chooseSaveFile = useCallback(async () => {
     try {
       const selectedPath = await dialog.open({
         multiple: false,
-        title: "Open decrypted Bloodborne save",
+        title: t("saveFlow.openTitle"),
       });
       if (!selectedPath) return false;
 
-      setSaveStatus("");
+      setSaveStatusKey("");
       setLoading(true);
       const parsedSave = await invoke("make_save", { path: selectedPath });
       setSave(parsedSave);
       setSaveName(await basename(selectedPath));
-      setSaveStatus("Save loaded. A backup was created before editing.");
+      setSaveStatusKey("saveFlow.loadedStatus");
       setDirtyState(false);
       return true;
     } catch (error) {
       console.error(error);
-      setSave(null);
-      setSaveName("");
-      setSaveStatus("");
-      setDirtyState(false);
-      await dialog.message(
-        "The selected file could not be parsed. Choose a decrypted Bloodborne character save and try again.",
-        {
-          title: "Unable to open save",
-          kind: "error",
-        },
-      );
+      setOpenSaveDialog("error");
       return false;
     } finally {
       setLoading(false);
     }
-  }, [setDirtyState]);
+  }, [setDirtyState, t]);
+
+  const openSave = useCallback(async () => {
+    if (dirtyRef.current) {
+      setOpenSaveDialog("discard");
+      return false;
+    }
+    return chooseSaveFile();
+  }, [chooseSaveFile]);
 
   const saveChanges = useCallback(async () => {
     if (!save) return false;
 
     const path = await dialog.save({
-      title: "Save edited character",
+      title: t("saveFlow.saveTitle"),
       defaultPath: saveName || "USER_DATA",
     });
     if (!path) return false;
 
     const shouldSave = await dialog.confirm(
-      "This writes the current edits to the selected file. Keep the automatic .bak backup until you have verified the save in-game.",
-      {
-        title: "Confirm save",
-        kind: "warning",
-        okLabel: "Save changes",
-        cancelLabel: "Cancel",
-      },
+        t("saveFlow.confirmSaveDescription"),
+        {
+          title: t("saveFlow.confirmSaveTitle"),
+          kind: "warning",
+          okLabel: t("unsaved.save"),
+          cancelLabel: t("unsaved.cancel"),
+        },
     );
     if (!shouldSave) return false;
 
     try {
       setLoading(true);
       const saved = await invoke("save", { path });
-      setSaveStatus(saved);
+      setSaveStatusKey("saveFlow.savedStatus");
       setSaveName(await basename(path));
       setDirtyState(false);
-      await dialog.message(`${saved}\n\nKeep your .bak backup until the edited save has been verified.`, {
-        title: "Save completed",
+      await dialog.message(t("saveFlow.saveCompletedDescription"), {
+        title: t("saveFlow.saveCompletedTitle"),
         kind: "info",
       });
       return true;
     } catch (error) {
       console.error(error);
-      setSaveStatus("Unsaved changes");
-      await dialog.message(
-        "The edited save could not be written. Check the destination and available permissions, then try again.",
-        {
-          title: "Unable to save",
-          kind: "error",
-        },
-      );
+      setSaveStatusKey("saveFlow.unsavedStatus");
+      await dialog.message(t("saveFlow.saveFailedDescription"), {
+        title: t("saveFlow.saveFailedTitle"),
+        kind: "error",
+      });
       return false;
     } finally {
       setLoading(false);
     }
-  }, [save, saveName, setDirtyState]);
+  }, [save, saveName, setDirtyState, t]);
 
   const closeApplication = useCallback(async () => {
     forceCloseRef.current = true;
@@ -280,6 +282,30 @@ function App() {
   return (
     <div className="App">
       <UpdateModal />
+      {openSaveDialog === "discard" ? (
+        <SaveFlowDialog
+          eyebrow={t("unsaved.eyebrow")}
+          title={t("saveFlow.discardOpenTitle")}
+          description={t("saveFlow.discardOpenDescription")}
+          confirmLabel={t("saveFlow.discardAndOpen")}
+          cancelLabel={t("saveFlow.keepEditing")}
+          onConfirm={() => {
+            setOpenSaveDialog("");
+            void chooseSaveFile();
+          }}
+          onCancel={() => setOpenSaveDialog("")}
+        />
+      ) : null}
+      {openSaveDialog === "error" ? (
+        <SaveFlowDialog
+          tone="error"
+          eyebrow={t("saveFlow.openTitle")}
+          title={t("saveFlow.openFailedTitle")}
+          description={t("saveFlow.openFailedDescription")}
+          confirmLabel={t("saveFlow.close")}
+          onConfirm={() => setOpenSaveDialog("")}
+        />
+      ) : null}
       {exitRequested && isDirty ? (
         <UnsavedChangesDialog
           saving={loading}
@@ -292,7 +318,7 @@ function App() {
         <Nav
           save={save}
           name={saveName}
-          status={saveStatus}
+          statusKey={saveStatusKey}
           onOpenSave={openSave}
           onSaveChanges={saveChanges}
         />

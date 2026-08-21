@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 import { useFloating, flip, offset, autoUpdate } from "@floating-ui/react";
+import { useLocalization } from "../i18n/localization";
 
 function getSelectedLabel(options, selected) {
   const value = selected == null ? "" : String(selected);
@@ -21,7 +22,10 @@ function SelectSearch({
   onChange,
   style,
   defaultValue,
+  compact = false,
+  maxListHeight = 280,
 }) {
+  const { t } = useLocalization();
   const [isOpen, setIsOpen] = useState(false);
   const resolvedSelectedLabel = getSelectedLabel(options, selected);
   const [search, setSearch] = useState(
@@ -73,7 +77,7 @@ function SelectSearch({
     ) {
       if (typeof onChange === "function") {
         onChange({
-          label: "No Effect",
+          label: t("forge.noEffect"),
           rating: 95,
           level: 0,
           name: "",
@@ -82,7 +86,7 @@ function SelectSearch({
       }
       userEditedRef.current = false;
     }
-  }, [search, isOpen, selected, defaultValue, onChange]);
+  }, [search, isOpen, selected, defaultValue, onChange, t]);
 
   const filteredOptions = options.filter((x) =>
     !readOnly ? x.label.toLowerCase().includes(search.toLowerCase()) : true,
@@ -95,7 +99,7 @@ function SelectSearch({
           ...rowStyle,
           background: "black",
           borderBottom: "1px solid #444",
-          fontSize: "16px",
+          fontSize: compact ? "14px" : "16px",
           display: "flex",
           alignItems: "center",
           cursor: "pointer",
@@ -115,7 +119,7 @@ function SelectSearch({
 
   return (
     // Attach the outside click ref and base styles here
-    <div ref={dropdownRef} style={{ position: "relative", ...style }}>
+    <div className={`select-search${compact ? " select-search--compact" : ""}`} ref={dropdownRef} style={{ position: "relative", ...style }}>
       {/* 2. Attach reference ref to the trigger container */}
       <div ref={refs.setReference} style={{ width: "100%" }}>
         <input
@@ -131,7 +135,8 @@ function SelectSearch({
           style={{
             width: "100%",
             background: "none",
-            fontSize: "18px",
+            minHeight: compact ? "2.1rem" : "2.35rem",
+            fontSize: compact ? "15px" : "16px",
             textAlign: "inherit",
           }}
         />
@@ -153,9 +158,9 @@ function SelectSearch({
           }}
         >
           <List
-            height={Math.min(210, filteredOptions.length * 35)} // Shrinks menu if search yields few results
+            height={Math.min(maxListHeight, filteredOptions.length * (compact ? 32 : 34))}
             itemCount={filteredOptions.length}
-            itemSize={35}
+            itemSize={compact ? 32 : 34}
             width="100%"
             overscanCount={10}
           >

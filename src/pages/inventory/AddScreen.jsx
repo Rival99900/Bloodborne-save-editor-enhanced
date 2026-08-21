@@ -114,7 +114,12 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
       dismiss();
     } catch (reason) {
       console.error(reason);
-      setError(typeof reason === "string" ? reason : t("inventory.directAddFailed"));
+      const message = typeof reason === "string" ? reason : "";
+      setError(
+        /No safe unreferenced gem or rune record/i.test(message)
+          ? t("inventory.directUpgradeUnavailable")
+          : message || t("inventory.directAddFailed"),
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -194,6 +199,8 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
                     defaultValue={t("forge.noEffect")}
                     selected={effect?.value ?? null}
                     options={effectOptions}
+                    compact
+                    maxListHeight={320}
                     onChange={(nextEffect) => updateEffect(index, nextEffect)}
                   />
                 </label>
@@ -209,7 +216,12 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           </>
         )}
 
-        {error ? <p className="inventory-dialog__error" role="alert">{error}</p> : null}
+        {error ? (
+          <p className="inventory-dialog__error" role="alert">
+            <span aria-hidden="true">!</span>
+            {error}
+          </p>
+        ) : null}
 
         <footer className="inventory-dialog__actions">
           <button onClick={dismiss} id="cancelReplace">{t("inventory.cancel")}</button>

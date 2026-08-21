@@ -1,6 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
+import { useLocalization } from "../../i18n/localization";
 
 function Teleport({ setSave, setEditedCoordinates }) {
+  const { t } = useLocalization();
   async function handleChange(e) {
     const { target } = e;
     const parsed = JSON.parse(target.value);
@@ -36,7 +38,7 @@ function Teleport({ setSave, setEditedCoordinates }) {
         justifyContent: "space-between",
       }}
     >
-      <span>Teleport:</span>
+      <span>{t("characterForm.teleport")}</span>
       <div
         style={{
           fontSize: "25px",
@@ -46,7 +48,7 @@ function Teleport({ setSave, setEditedCoordinates }) {
       >
         <select name="location" id="location-select" onChange={handleChange}>
           <option selected hidden disabled>
-            Select a location
+            {t("characterForm.selectLocation")}
           </option>
           <option value='{"x":-8,"y":-6,"z":-18,"mapId":[21,0]}'>
             Hunter's Dream

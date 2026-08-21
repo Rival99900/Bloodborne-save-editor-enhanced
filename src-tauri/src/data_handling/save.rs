@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 use crate::data_handling::position::Pos;
-use std::{collections::HashSet, path::PathBuf};
 use serde_json::Value;
+use std::{collections::HashSet, path::PathBuf};
 
 use super::{
     article::Article,
@@ -141,10 +141,12 @@ impl SaveData {
     /// consumes only a fixed inventory slot and a verified 60-byte garbage
     /// reservation in the equipment-slot area; it never shifts save data.
     pub fn add_direct_equipment(&mut self, id: u32, is_armor: bool) -> Result<Article, Error> {
-        let empty_slot = self
-            .file
-            .find_inv_empty_slot(Location::Inventory)
-            .ok_or(Error::CustomError("ERROR: No free inventory slot is available."))?;
+        let empty_slot =
+            self.file
+                .find_inv_empty_slot(Location::Inventory)
+                .ok_or(Error::CustomError(
+                    "ERROR: No free inventory slot is available.",
+                ))?;
 
         let (info, article_type) = if is_armor {
             super::inventory::get_info_armor(id, &self.file.resources_path)?
@@ -180,14 +182,19 @@ impl SaveData {
                     SlotShape::try_from(&shape).is_ok()
                 })
         };
-        let orphan_block = (self.file.offsets.equipped_gems.0..slot_limit.saturating_sub(60))
-            .find(|offset| {
-                let first = u32::from_le_bytes(self.file.bytes[*offset..*offset + 4].try_into().unwrap());
-                let second = u32::from_le_bytes(self.file.bytes[*offset + 4..*offset + 8].try_into().unwrap());
+        let orphan_block =
+            (self.file.offsets.equipped_gems.0..slot_limit.saturating_sub(60)).find(|offset| {
+                let first =
+                    u32::from_le_bytes(self.file.bytes[*offset..*offset + 4].try_into().unwrap());
+                let second = u32::from_le_bytes(
+                    self.file.bytes[*offset + 4..*offset + 8]
+                        .try_into()
+                        .unwrap(),
+                );
                 is_valid_slot_block(*offset) && !referenced_pairs.contains(&(first, second))
             });
-        let reserved_offset = (self.file.offsets.equipped_gems.1 + 1..slot_limit.saturating_sub(60))
-            .find(|offset| {
+        let reserved_offset =
+            (self.file.offsets.equipped_gems.1 + 1..slot_limit.saturating_sub(60)).find(|offset| {
                 (0..8).all(|block| {
                     self.file.bytes[*offset + block * 8..*offset + (block + 1) * 8]
                         == reserved_block
@@ -202,7 +209,9 @@ impl SaveData {
         let first_part = (1..=0x00FF_FFFF)
             .map(|suffix| prefix | suffix)
             .find(|candidate| !used_codes.contains(candidate))
-            .ok_or(Error::CustomError("ERROR: No unique equipment code is available."))?;
+            .ok_or(Error::CustomError(
+                "ERROR: No unique equipment code is available.",
+            ))?;
         let second_part = if is_armor {
             (id & 0x00FF_FFFF) | 0x1000_0000
         } else {
@@ -236,7 +245,8 @@ impl SaveData {
         }
 
         self.file.bytes[block_offset..block_offset + 60].copy_from_slice(&block);
-        self.file.offsets.equipped_gems.1 = self.file.offsets.equipped_gems.1.max(block_offset + 59);
+        self.file.offsets.equipped_gems.1 =
+            self.file.offsets.equipped_gems.1.max(block_offset + 59);
         self.file.bytes[empty_slot..empty_slot + 4].copy_from_slice(&first_part.to_le_bytes());
         self.file.bytes[empty_slot + 4..empty_slot + 8].copy_from_slice(&second_part.to_le_bytes());
         self.file.bytes[empty_slot + 8..empty_slot + 12].copy_from_slice(&1u32.to_le_bytes());
@@ -340,9 +350,11 @@ impl SaveData {
             "ERROR: A direct gem or rune requires a validated primary effect.",
         ))?;
 
-        let raw_slot_upgrade_ids: HashSet<u32> = (self.file.offsets.upgrades.1.saturating_sub(16)..self.file.offsets.username.saturating_sub(163))
+        let raw_slot_upgrade_ids: HashSet<u32> = (self.file.offsets.upgrades.1.saturating_sub(16)
+            ..self.file.offsets.username.saturating_sub(163))
             .flat_map(|offset| {
-                let block_id = u64::from_le_bytes(self.file.bytes[offset..offset + 8].try_into().unwrap());
+                let block_id =
+                    u64::from_le_bytes(self.file.bytes[offset..offset + 8].try_into().unwrap());
                 if block_id == 0 {
                     return Vec::new();
                 }
@@ -352,7 +364,9 @@ impl SaveData {
                     let shape: [u8; 4] = self.file.bytes[start..start + 4].try_into().unwrap();
                     match SlotShape::try_from(&shape) {
                         Ok(SlotShape::Closed) => {}
-                        Ok(_) => ids.push(u32::from_le_bytes(self.file.bytes[start + 4..start + 8].try_into().unwrap())),
+                        Ok(_) => ids.push(u32::from_le_bytes(
+                            self.file.bytes[start + 4..start + 8].try_into().unwrap(),
+                        )),
                         Err(_) => return Vec::new(),
                     }
                 }
@@ -390,7 +404,8 @@ impl SaveData {
         ))?;
 
         let id = u32::from_le_bytes(self.file.bytes[offset..offset + 4].try_into().unwrap());
-        let source = u32::from_le_bytes(self.file.bytes[offset + 4..offset + 8].try_into().unwrap());
+        let source =
+            u32::from_le_bytes(self.file.bytes[offset + 4..offset + 8].try_into().unwrap());
         self.file.bytes[offset + 8] = match upgrade_type {
             UpgradeType::Gem => 0x01,
             UpgradeType::Rune => 0x02,
@@ -423,7 +438,9 @@ impl SaveData {
         }
         .and_then(|entries| entries.last())
         .cloned()
-        .ok_or(Error::CustomError("ERROR: Direct upgrade insertion failed."))?;
+        .ok_or(Error::CustomError(
+            "ERROR: Direct upgrade insertion failed.",
+        ))?;
 
         Ok(inserted)
     }
@@ -573,17 +590,15 @@ mod tests {
             .expect("test save must contain a right-hand weapon");
         let record_offset = save
             .file
-            .find_article_offset(
-                original.number,
-                original.id,
-                TypeFamily::Weapon,
-                false,
-            )
+            .find_article_offset(original.number, original.id, TypeFamily::Weapon, false)
             .expect("weapon record must exist");
-        save.file.bytes[record_offset + 4..record_offset + 16].copy_from_slice(&[
-            0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0,
-        ]);
-        let weapons = save.inventory.articles.get_mut(&ArticleType::RightHand).unwrap();
+        save.file.bytes[record_offset + 4..record_offset + 16]
+            .copy_from_slice(&[0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0]);
+        let weapons = save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::RightHand)
+            .unwrap();
         weapons.remove(0);
         for (index, weapon) in weapons.iter_mut().enumerate() {
             weapon.index = index;
@@ -595,10 +610,9 @@ mod tests {
         assert_eq!(added.id, original.id);
         assert_eq!(added.type_family, TypeFamily::Weapon);
         assert_eq!(added.slots.as_ref().map(Vec::len), Some(5));
-        assert!(added
-            .slots
-            .as_ref()
-            .is_some_and(|slots| slots.iter().all(|slot| slot.shape == SlotShape::Closed && slot.gem.is_none())));
+        assert!(added.slots.as_ref().is_some_and(|slots| slots
+            .iter()
+            .all(|slot| slot.shape == SlotShape::Closed && slot.gem.is_none())));
 
         let mut parsed = parse_upgrades(&save.file);
         let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
@@ -612,7 +626,10 @@ mod tests {
         assert!(rebuilt
             .articles
             .get(&ArticleType::RightHand)
-            .is_some_and(|weapons| weapons.iter().any(|weapon| weapon.first_part == added.first_part && weapon.slots.as_ref().map(Vec::len) == Some(5))));
+            .is_some_and(|weapons| weapons
+                .iter()
+                .any(|weapon| weapon.first_part == added.first_part
+                    && weapon.slots.as_ref().map(Vec::len) == Some(5))));
     }
 
     #[test]
@@ -629,10 +646,13 @@ mod tests {
             .file
             .find_article_offset(original.number, original.id, TypeFamily::Armor, false)
             .expect("armor record must exist");
-        save.file.bytes[record_offset + 4..record_offset + 16].copy_from_slice(&[
-            0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0,
-        ]);
-        let armors = save.inventory.articles.get_mut(&ArticleType::Armor).unwrap();
+        save.file.bytes[record_offset + 4..record_offset + 16]
+            .copy_from_slice(&[0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0]);
+        let armors = save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::Armor)
+            .unwrap();
         armors.remove(0);
         for (index, armor) in armors.iter_mut().enumerate() {
             armor.index = index;
@@ -658,7 +678,10 @@ mod tests {
         assert!(rebuilt
             .articles
             .get(&ArticleType::Armor)
-            .is_some_and(|armors| armors.iter().any(|armor| armor.first_part == added.first_part && armor.slots.as_ref().map(Vec::len) == Some(5))));
+            .is_some_and(|armors| armors
+                .iter()
+                .any(|armor| armor.first_part == added.first_part
+                    && armor.slots.as_ref().map(Vec::len) == Some(5))));
     }
 
     #[test]

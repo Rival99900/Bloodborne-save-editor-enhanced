@@ -12,6 +12,7 @@ import IszGlitch from "./IszGlitch";
 import Coordinates from "./Coordinates";
 import Teleport from "./Teleport";
 import * as dialog from "@tauri-apps/plugin-dialog";
+import { useLocalization } from "../../i18n/localization";
 
 function Character() {
   const { save, setSave } = useContext(SaveContext);
@@ -25,6 +26,7 @@ function Character() {
   );
 
   const { images } = useContext(ImagesContext);
+  const { t } = useLocalization();
 
   return (
     <div
@@ -58,7 +60,7 @@ function Character() {
             borderBottom: "1px solid rgb(107, 95, 73)",
           }}
         >
-          <label htmlFor="username">Name:</label>
+          <label htmlFor="username">{t("characterForm.name")}</label>
           <input
             id="username"
             type="text"
@@ -134,7 +136,7 @@ function Character() {
             setUsername(save.username.string);
           }}
         >
-          Reset
+          {t("actions.reset")}
         </button>
 
         <button
@@ -173,7 +175,7 @@ function Character() {
                 z: +editedCoordinates.z,
               });
 
-              await dialog.message("Confirmed changes");
+              await dialog.message(t("actions.changesConfirmed"));
 
               setSave((prev) => {
                 prev.position.coordinates = JSON.parse(
@@ -190,7 +192,7 @@ function Character() {
             }
           }}
         >
-          Confirm
+          {t("actions.confirm")}
         </button>
       </div>
     </div>

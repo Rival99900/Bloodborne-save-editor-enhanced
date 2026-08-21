@@ -33,3 +33,7 @@ repo
 # Internal documentation stays local and is not published with the public source repository
 UPDATER_IMPLEMENTATION_NOTES.md
 docs/
+
+# Local review packages and diagnostics must never be committed or published
+.incoming-user-fix*/
+.local-analysis/

@@ -7,6 +7,7 @@ import EquippedGem from "./EquippedGem";
 import useDraw from "../../utils/useDraw";
 import { SaveContext } from "../../context/context";
 import ChangeGemScreen from "./ChangeGemScreen";
+import { useLocalization } from "../../i18n/localization";
 
 function EquippedGems() {
   const { images } = useContext(ImagesContext);
@@ -21,6 +22,7 @@ function EquippedGems() {
   const [changeScreen, setChangeScreen] = useState(false);
   const [selectedGem, setSelectedGem] = useState(null);
   const nav = useNavigate();
+  const { t } = useLocalization();
 
   useEffect(() => {
     if (!selected) {
@@ -119,7 +121,7 @@ function EquippedGems() {
             marginTop: "5rem",
           }}
         >
-          <button onClick={() => nav("/")}>Back</button>
+          <button onClick={() => nav("/")}>{t("actions.back")}</button>
           <button
             style={{ margin: "0 2rem" }}
             onClick={() => {
@@ -127,7 +129,7 @@ function EquippedGems() {
             }}
             disabled={!selectedGem}
           >
-            Change
+            {t("actions.change")}
           </button>
           <button
             onClick={() => {
@@ -135,7 +137,7 @@ function EquippedGems() {
             }}
             disabled={!selectedGem?.gem}
           >
-            Edit
+            {t("actions.edit")}
           </button>
         </div>
       </div>

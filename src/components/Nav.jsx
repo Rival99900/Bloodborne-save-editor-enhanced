@@ -1,6 +1,6 @@
 import { SUPPORTED_LANGUAGES, useLocalization } from "../i18n/localization";
 
-function Nav({ save, name, status, onOpenSave, onSaveChanges }) {
+function Nav({ save, name, statusKey, onOpenSave, onSaveChanges }) {
   const { language, setLanguage, t } = useLocalization();
 
   return (
@@ -18,7 +18,7 @@ function Nav({ save, name, status, onOpenSave, onSaveChanges }) {
         <div>
           <p className="summary-label">{save ? t("nav.activeSave") : t("nav.noSaveLoaded")}</p>
           <p className="summary-value">{name || t("nav.openFileToBegin")}</p>
-          {status ? <p className="summary-status">{status}</p> : null}
+          {statusKey ? <p className="summary-status">{t(statusKey)}</p> : null}
         </div>
       </div>
 
