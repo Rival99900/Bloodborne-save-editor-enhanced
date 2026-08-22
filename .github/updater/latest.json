@@ -1,11 +1,11 @@
 {
-  "version": "0.2.3",
+  "version": "0.2.4",
+  "pub_date": "2026-08-22T14:30:48.4987841Z",
   "notes": "See the GitHub release for improvements and safe-save guidance.",
-  "pub_date": "2026-08-22T13:09:28.6299255Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelQraUVCb2RqNnVmV1dENWpsWWV0MDU0ejc0a2hLaG5mKys2L2NiK3lzdnF4M29SdC9haFRWYkZRaVcyUFM1dHo0V0J1a1JyQmpaeE50ak5OWXpsdWdJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3NDA0MTY1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjIuM194NjQtc2V0dXAuZXhlClg1dTAwTnlVUU1ReXlybVo2MWlRYnhGTHFUUFd3d2FvQi8rMFlaT2ZxQ3RLWUdhYU1JTWtmQytKbjZXK3dkMll0S3NITnJ4eE5mY1IrMEpZWEdhT0F3PT0K",
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.2.3/Bloodborne_Save_Editor_Enhanced_0.2.3_x64-setup.exe"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.2.4/Bloodborne_Save_Editor_Enhanced_0.2.4_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvellPd24wUkJIZ20veFRyMEhTZjdHR2h5aWxCM0doSGJjV2hJeTJwKy9VV3M0NUFGYThhZTArNnp2VDNMSy9aTEVqK3E3Tzhod2tsL2VtT0xLcmhhc3dnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3NDA5MDQzCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjIuNF94NjQtc2V0dXAuZXhlCklFaFZYdloxK0pKR1dOcUpKSTBVU0lPb0dJZFhKaG41VUVXdDdmSkdDNHNGMzF5VEJnNUFGWGNBa3htd2I5MWNzajJCMlR0YXJNa1ZXb0tTSXFUY0FBPT0K"
     }
   }
 }
