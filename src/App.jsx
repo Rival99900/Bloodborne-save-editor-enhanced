@@ -37,7 +37,7 @@ function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
   );
 }
 
-function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirmLabel, cancelLabel, onConfirm, onCancel }) {
+function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirmLabel, cancelLabel, onConfirm, onCancel, busy = false }) {
   return (
     <div className="save-flow-dialog" role="dialog" aria-modal="true" aria-labelledby="save-flow-title">
       <section className={`save-flow-dialog__card save-flow-dialog__card--${tone}`}>
@@ -45,8 +45,12 @@ function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirm
         <h2 id="save-flow-title">{title}</h2>
         <p>{description}</p>
         <div className="save-flow-dialog__actions">
-          {cancelLabel ? <button onClick={onCancel}>{cancelLabel}</button> : null}
-          <button className={tone === "error" ? "save-flow-dialog__primary save-flow-dialog__primary--error" : "save-flow-dialog__primary"} onClick={onConfirm}>
+          {cancelLabel ? <button onClick={onCancel} disabled={busy}>{cancelLabel}</button> : null}
+          <button
+            className={tone === "error" ? "save-flow-dialog__primary save-flow-dialog__primary--error" : "save-flow-dialog__primary"}
+            onClick={onConfirm}
+            disabled={busy}
+          >
             {confirmLabel}
           </button>
         </div>
@@ -106,12 +110,14 @@ function App() {
   const [isDirty, setIsDirty] = useState(false);
   const [exitRequested, setExitRequested] = useState(false);
   const [openSaveDialog, setOpenSaveDialog] = useState("");
+  const [pendingSavePath, setPendingSavePath] = useState("");
   const [revisionState, setRevisionState] = useState({ past: [], future: [] });
   const [revisionPanelOpen, setRevisionPanelOpen] = useState(false);
   const [revisionEpoch, setRevisionEpoch] = useState(0);
   const [density, setDensity] = useState(readDensityPreference);
   const dirtyRef = useRef(false);
   const forceCloseRef = useRef(false);
+  const closeAfterSaveRef = useRef(false);
   const saveRef = useRef(null);
   const baselineSaveRef = useRef(null);
   const revisionRef = useRef({ past: [], future: [] });
@@ -264,46 +270,6 @@ function App() {
     return chooseSaveFile();
   }, [chooseSaveFile]);
 
-  const saveChanges = useCallback(async () => {
-    await revisionQueueRef.current;
-    if (!saveRef.current) return false;
-
-    const path = await dialog.save({
-      title: t("saveFlow.saveTitle"),
-      defaultPath: saveName || "USER_DATA",
-    });
-    if (!path) return false;
-
-    const shouldSave = await dialog.confirm(
-        t("saveFlow.confirmSaveDescription"),
-        {
-          title: t("saveFlow.confirmSaveTitle"),
-          kind: "warning",
-          okLabel: t("unsaved.save"),
-          cancelLabel: t("unsaved.cancel"),
-        },
-    );
-    if (!shouldSave) return false;
-
-    try {
-      setLoading(true);
-      const saved = await invoke("save", { path });
-      baselineSaveRef.current = cloneSave(saveRef.current);
-      setSaveStatusKey("saveFlow.savedStatus");
-      setSaveName(await basename(path));
-      setDirtyState(false);
-      setOpenSaveDialog("save-complete");
-      return true;
-    } catch (error) {
-      console.error(error);
-      setSaveStatusKey("saveFlow.unsavedStatus");
-      setOpenSaveDialog("save-failed");
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  }, [save, saveName, setDirtyState, t]);
-
   const closeApplication = useCallback(async () => {
     forceCloseRef.current = true;
     setExitRequested(false);
@@ -327,6 +293,53 @@ function App() {
     }
   }, []);
 
+  const persistSave = useCallback(async (path) => {
+    if (!path || !saveRef.current) return false;
+
+    try {
+      setLoading(true);
+      await invoke("save", { path });
+      baselineSaveRef.current = cloneSave(saveRef.current);
+      setSaveStatusKey("saveFlow.savedStatus");
+      setSaveName(await basename(path));
+      setDirtyState(false);
+      setPendingSavePath("");
+      setOpenSaveDialog("save-complete");
+
+      if (closeAfterSaveRef.current) {
+        closeAfterSaveRef.current = false;
+        setExitRequested(false);
+        await closeApplication();
+      }
+      return true;
+    } catch (error) {
+      console.error(error);
+      closeAfterSaveRef.current = false;
+      setPendingSavePath("");
+      setSaveStatusKey("saveFlow.unsavedStatus");
+      setOpenSaveDialog("save-failed");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, [closeApplication, setDirtyState]);
+
+  const saveChanges = useCallback(async ({ closeAfterSave = false } = {}) => {
+    await revisionQueueRef.current;
+    if (!saveRef.current) return false;
+
+    const path = await dialog.save({
+      title: t("saveFlow.saveTitle"),
+      defaultPath: saveName || "USER_DATA",
+    });
+    if (!path) return false;
+
+    closeAfterSaveRef.current = closeAfterSave;
+    setPendingSavePath(path);
+    setOpenSaveDialog("confirm-save");
+    return true;
+  }, [saveName, t]);
+
   const discardAndClose = useCallback(async () => {
     await revisionQueueRef.current;
     setDirtyState(false);
@@ -335,12 +348,11 @@ function App() {
   }, [closeApplication, setDirtyState]);
 
   const saveAndClose = useCallback(async () => {
-    const didSave = await saveChanges();
-    if (didSave) {
-      setExitRequested(false);
-      await closeApplication();
-    }
-  }, [closeApplication, saveChanges]);
+    // Replace the unsaved-changes modal with the integrated save confirmation.
+    // If the user cancels the file picker or the confirmation, they remain in the editor.
+    setExitRequested(false);
+    await saveChanges({ closeAfterSave: true });
+  }, [saveChanges]);
 
   useEffect(() => {
     try {
@@ -474,6 +486,25 @@ function App() {
           onCancel={() => setOpenSaveDialog("")}
         />
       ) : null}
+      {openSaveDialog === "confirm-save" ? (
+        <SaveFlowDialog
+          eyebrow={t("saveFlow.saveTitle")}
+          title={t("saveFlow.confirmSaveTitle")}
+          description={t("saveFlow.confirmSaveDescription")}
+          confirmLabel={loading ? t("unsaved.saving") : t("unsaved.save")}
+          cancelLabel={t("unsaved.cancel")}
+          busy={loading}
+          onConfirm={() => {
+            if (pendingSavePath && !loading) void persistSave(pendingSavePath);
+          }}
+          onCancel={() => {
+            if (loading) return;
+            closeAfterSaveRef.current = false;
+            setPendingSavePath("");
+            setOpenSaveDialog("");
+          }}
+        />
+      ) : null}
       {openSaveDialog === "error" ? (
         <SaveFlowDialog
           tone="error"
@@ -515,7 +546,7 @@ function App() {
           onClose={() => setRevisionPanelOpen(false)}
         />
       ) : null}
-      {exitRequested && isDirty ? (
+      {!openSaveDialog && exitRequested && isDirty ? (
         <UnsavedChangesDialog
           saving={loading}
           onSave={saveAndClose}

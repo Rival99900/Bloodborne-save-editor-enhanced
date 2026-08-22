@@ -164,14 +164,29 @@ impl SaveData {
 
         let reserved_block = [0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF];
         let slot_limit = self.file.offsets.username.saturating_sub(147);
-        let referenced_pairs: HashSet<(u32, u32)> = self
-            .inventory
-            .articles
-            .values()
-            .chain(self.storage.articles.values())
-            .flat_map(|entries| entries.iter())
-            .map(|article| (article.first_part, article.second_part))
-            .collect();
+        // Do not reclaim a slot block solely because the editor did not parse its
+        // inventory entry. A malformed or partially understood entry may still be
+        // perfectly valid to the game; reusing its pair corrupts that equipment or
+        // makes the newly added one disappear. Raw inventory references are the
+        // authoritative safety boundary here.
+        let referenced_pairs: HashSet<(u32, u32)> = [
+            self.file.offsets.inventory,
+            self.file.offsets.key_inventory,
+            self.file.offsets.storage,
+        ]
+        .into_iter()
+        .flat_map(|(start, end)| (start..end).step_by(16))
+        .filter_map(|offset| {
+            let first =
+                u32::from_le_bytes(self.file.bytes[offset + 4..offset + 8].try_into().ok()?);
+            let second =
+                u32::from_le_bytes(self.file.bytes[offset + 8..offset + 12].try_into().ok()?);
+            // This is the canonical reusable inventory marker used by
+            // `find_inv_empty_slot`; it is the only pair that cannot reference an
+            // existing article or upgrade.
+            (first != 0 || second != u32::MAX).then_some((first, second))
+        })
+        .collect();
         let is_valid_slot_block = |offset: usize| {
             offset + 60 <= slot_limit
                 && self.file.bytes[offset..offset + 8] != [0; 8]
@@ -682,6 +697,56 @@ mod tests {
                 .iter()
                 .any(|armor| armor.first_part == added.first_part
                     && armor.slots.as_ref().map(Vec::len) == Some(5))));
+    }
+
+    #[test]
+    fn direct_equipment_preserves_raw_inventory_slot_references() {
+        let mut save = build_save_data("testsave9");
+        let original = save
+            .inventory
+            .articles
+            .get(&ArticleType::RightHand)
+            .and_then(|weapons| weapons.first())
+            .cloned()
+            .expect("test save must contain a right-hand weapon");
+        let record_offset = save
+            .file
+            .find_article_offset(original.number, original.id, TypeFamily::Weapon, false)
+            .expect("weapon record must exist");
+        let block_limit = save.file.offsets.username - 147;
+        let block_offset = (save.file.offsets.equipped_gems.0..block_limit)
+            .find(|offset| {
+                save.file.bytes[*offset..*offset + 4] == original.first_part.to_le_bytes()
+                    && save.file.bytes[*offset + 4..*offset + 8]
+                        == original.second_part.to_le_bytes()
+            })
+            .expect("weapon slot block must exist");
+        let original_block = save.file.bytes[block_offset..block_offset + 60].to_vec();
+        let original_record = save.file.bytes[record_offset + 4..record_offset + 12].to_vec();
+
+        // Simulate an entry the editor currently cannot parse while keeping its
+        // raw inventory record intact. The allocator must still treat the slot
+        // block as owned and never overwrite it.
+        let weapons = save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::RightHand)
+            .expect("weapon category must exist");
+        weapons.remove(0);
+        for (index, weapon) in weapons.iter_mut().enumerate() {
+            weapon.index = index;
+        }
+
+        let _ = save.add_direct_equipment(original.id, false);
+
+        assert_eq!(
+            save.file.bytes[block_offset..block_offset + 60],
+            original_block
+        );
+        assert_eq!(
+            save.file.bytes[record_offset + 4..record_offset + 12],
+            original_record
+        );
     }
 
     #[test]
