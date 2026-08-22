@@ -125,7 +125,7 @@ jobs:
             # newer workflow-only commits. Rebase the manifest commit so this
             # safe metadata update remains a fast-forward push to main.
             git fetch origin main
-            git rebase origin/main
+            git rebase --autostash origin/main
             git push origin HEAD:main
           } elseif ($LASTEXITCODE -ne 0) {
             throw 'Unable to inspect updater manifest changes.'
