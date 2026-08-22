@@ -127,20 +127,14 @@ mod tests {
         let file_data = FileData::build("saves/no_inv_save", PathBuf::from("resources"));
         assert!(file_data.is_err());
         if let Err(e) = file_data {
-            assert_eq!(
-                e.to_string(),
-                "Save error: Failed to find username in save data."
-            );
+            assert_eq!(e.to_string(), "Save error: Failed to find the appearance.");
         }
 
         //Test a save in which the inventory has no end
         let file_data = FileData::build("saves/no_inv_end_save", PathBuf::from("resources"));
         assert!(file_data.is_err());
         if let Err(e) = file_data {
-            assert_eq!(
-                e.to_string(),
-                "Save error: Failed to find the end of the inventory."
-            );
+            assert_eq!(e.to_string(), "Save error: Failed to find the appearance.");
         }
 
         //Test a save with no appearance
@@ -153,8 +147,8 @@ mod tests {
         //testsave0
         let file_data = FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
         assert_eq!(file_data.offsets.username, 0x8777);
-        assert_eq!(file_data.offsets.inventory, (0x894c, 0x8cd0));
-        assert_eq!(file_data.offsets.key_inventory, (0x10540, 0x105af));
+        assert_eq!(file_data.offsets.inventory, (0x894c, 0x894c + 1983 * 16));
+        assert_eq!(file_data.offsets.key_inventory, (0x10540, 0x10540 + 2204));
         assert_eq!(file_data.offsets.upgrades, (84, 163));
         assert_eq!(
             file_data.offsets.appearance,
@@ -164,8 +158,8 @@ mod tests {
         //testsave1
         let file_data = FileData::build("saves/testsave1", PathBuf::from("resources")).unwrap();
         assert_eq!(file_data.offsets.username, 0xa82b);
-        assert_eq!(file_data.offsets.inventory, (0xaa00, 0xb6a4));
-        assert_eq!(file_data.offsets.key_inventory, (0x125f4, 0x126e3));
+        assert_eq!(file_data.offsets.inventory, (0xaa00, 0xaa00 + 1983 * 16));
+        assert_eq!(file_data.offsets.key_inventory, (0x125f4, 0x125f4 + 2204));
         assert_eq!(file_data.offsets.upgrades, (84, 0x8c3));
         assert_eq!(
             file_data.offsets.appearance,
@@ -175,8 +169,8 @@ mod tests {
         //testsave2
         let file_data = FileData::build("saves/testsave2", PathBuf::from("resources")).unwrap();
         assert_eq!(file_data.offsets.username, 0xa86f);
-        assert_eq!(file_data.offsets.inventory, (0xaa44, 0xb638));
-        assert_eq!(file_data.offsets.key_inventory, (0x12638, 0x12797));
+        assert_eq!(file_data.offsets.inventory, (0xaa44, 0xaa44 + 1983 * 16));
+        assert_eq!(file_data.offsets.key_inventory, (0x12638, 0x12638 + 2204));
         assert_eq!(file_data.offsets.upgrades, (84, 0x7d3));
         assert_eq!(
             file_data.offsets.appearance,
@@ -186,8 +180,8 @@ mod tests {
         //testsave3
         let file_data = FileData::build("saves/testsave3", PathBuf::from("resources")).unwrap();
         assert_eq!(file_data.offsets.username, 0xb473);
-        assert_eq!(file_data.offsets.inventory, (0xb648, 0xc8ac));
-        assert_eq!(file_data.offsets.key_inventory, (0x1323c, 0x133db));
+        assert_eq!(file_data.offsets.inventory, (0xb648, 0xb648 + 1983 * 16));
+        assert_eq!(file_data.offsets.key_inventory, (0x1323c, 0x1323c + 2204));
         assert_eq!(file_data.offsets.upgrades, (84, 0xf7b));
         assert_eq!(
             file_data.offsets.appearance,
@@ -197,8 +191,8 @@ mod tests {
         //testsave4
         let file_data = FileData::build("saves/testsave4", PathBuf::from("resources")).unwrap();
         assert_eq!(file_data.offsets.username, 0xc85f);
-        assert_eq!(file_data.offsets.inventory, (0xca34, 0xe778));
-        assert_eq!(file_data.offsets.key_inventory, (0x14628, 0x14857));
+        assert_eq!(file_data.offsets.inventory, (0xca34, 0xca34 + 1983 * 16));
+        assert_eq!(file_data.offsets.key_inventory, (0x14628, 0x14628 + 2204));
         assert_eq!(file_data.offsets.upgrades, (84, 163));
         assert_eq!(
             file_data.offsets.appearance,
@@ -208,8 +202,8 @@ mod tests {
         //testsave8
         let file_data = FileData::build("saves/testsave8", PathBuf::from("resources")).unwrap();
         assert_eq!(file_data.offsets.username, 0x19897);
-        assert_eq!(file_data.offsets.inventory, (0x19a6c, 0x210d0));
-        assert_eq!(file_data.offsets.key_inventory, (0x21660, 0x218ef));
+        assert_eq!(file_data.offsets.inventory, (0x19a6c, 0x19a6c + 1983 * 16));
+        assert_eq!(file_data.offsets.key_inventory, (0x21660, 0x21660 + 2204));
         assert_eq!(file_data.offsets.upgrades, (84, 0x10ae3));
         assert_eq!(
             file_data.offsets.appearance,

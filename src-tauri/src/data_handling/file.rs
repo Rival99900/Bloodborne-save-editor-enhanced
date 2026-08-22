@@ -270,6 +270,12 @@ mod tests {
         );
 
         let file_data = FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
-        assert!(file_data.find_inv_empty_slot(Location::Inventory).is_none());
+        // This fixture contains a valid reusable record after the initial item
+        // sequence. Keep the expected offset explicit so add-item regressions
+        // continue to be caught without rejecting a safe empty slot.
+        assert_eq!(
+            file_data.find_inv_empty_slot(Location::Inventory),
+            Some(0x8cd0),
+        );
     }
 }

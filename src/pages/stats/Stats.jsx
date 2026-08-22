@@ -30,17 +30,26 @@ function Stats() {
   async function confirmStats() {
     try {
       const draft = cloneStats(editedStats);
+      const changedStats = draft.filter((stat) => {
+        const currentStat = save.stats.find((entry) => entry.name === stat.name);
+        return currentStat?.value !== stat.value;
+      });
+
+      // Confirming an untouched draft is harmless, but it must not create an
+      // undo entry or mark the active save as dirty.
+      if (changedStats.length === 0) {
+        setShowSuccess(true);
+        return;
+      }
+
       const updatedSave = await setSave(t("revision.statsUpdated"), async (current) => {
-        for (const stat of draft) {
-          const currentStat = current.stats.find((entry) => entry.name === stat.name);
-          if (currentStat?.value !== stat.value) {
-            await invoke("edit_stat", {
-              relOffset: stat.rel_offset,
-              length: stat.length,
-              times: stat.times,
-              value: Number.parseInt(stat.value, 10),
-            });
-          }
+        for (const stat of changedStats) {
+          await invoke("edit_stat", {
+            relOffset: stat.rel_offset,
+            length: stat.length,
+            times: stat.times,
+            value: Number.parseInt(stat.value, 10),
+          });
         }
         return { ...current, stats: draft };
       });

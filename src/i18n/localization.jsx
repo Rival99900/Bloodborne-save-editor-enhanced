@@ -327,6 +327,7 @@ const en = {
     addFavorite: "Add to favorites",
     removeFavorite: "Remove from favorites",
     runeOriginEffect: "Rune-origin effect",
+    gemOriginEffect: "Gem-origin effect",
   },
 };
 
@@ -21039,6 +21040,38 @@ const v021RuneOriginEffectOverrides = {
 Object.entries(v021RuneOriginEffectOverrides).forEach(([language, value]) => {
   const translatedResource = { ...(resources[language] ?? {}) };
   applyTranslationPath(translatedResource, "inventory.runeOriginEffect", value);
+  resources[language] = translatedResource;
+});
+
+const v023GemOriginEffectOverrides = {
+  fr: "Effet d'origine gemme",
+  es: "Efecto de origen de gema",
+  "pt-PT": "Efeito de origem de gema",
+  "pt-BR": "Efeito de origem de gema",
+  ru: "Эффект происхождения самоцвета",
+  de: "Edelstein-Ursprungseffekt",
+  it: "Effetto di origine gemma",
+  nl: "Effect van edelsteenoorsprong",
+  pl: "Efekt pochodzenia klejnotu",
+  tr: "Kan taşı kökenli etki",
+  uk: "Ефект походження самоцвіту",
+  ja: "血晶石由来の効果",
+  ko: "혈정석 유래 효과",
+  "zh-CN": "血宝石来源效果",
+  sv: "Effekt från blodpärla",
+  cs: "Efekt původu drahokamu",
+  ro: "Efect de origine a pietrei prețioase",
+  el: "Εφέ προέλευσης πολύτιμου λίθου",
+  id: "Efek asal permata darah",
+  da: "Blodstensoprindelseseffekt",
+  fi: "Verihelmi-alkuperäinen tehoste",
+  hu: "Vérkő eredetű hatás",
+  nb: "Blodperleopprinnelseseffekt",
+};
+
+Object.entries(v023GemOriginEffectOverrides).forEach(([language, value]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  applyTranslationPath(translatedResource, "inventory.gemOriginEffect", value);
   resources[language] = translatedResource;
 });
 

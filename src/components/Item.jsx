@@ -1,16 +1,18 @@
 import { useEffect, useRef } from "react";
 import useDraw from "../utils/useDraw";
+import { useLocalization } from "../i18n/localization";
 
 function Item({ index, item, isSmall, className, ...props }) {
   const canvasRef = useRef(null);
   const { drawCanvas } = useDraw();
+  const { language } = useLocalization();
 
   useEffect(() => {
     const canvas = canvasRef?.current;
     if (!canvas) return;
     const ctx = canvasRef.current.getContext("2d");
-    drawCanvas(ctx, item, isSmall);
-  }, [item, isSmall]);
+    void drawCanvas(ctx, item, isSmall);
+  }, [item, isSmall, language]);
 
   return isSmall ? (
     <canvas

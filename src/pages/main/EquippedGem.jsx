@@ -14,10 +14,15 @@ function EquippedGem({
   index,
 }) {
   const canvasRef = useRef();
+  const renderTokenRef = useRef(0);
   const { getGemPath, getUnique, loadImage } = useDraw();
   const { gemEffectCatalog = [], nativeGemEffectIds = new Set() } = useContext(ItemsContext);
 
   useEffect(() => {
+    const renderToken = renderTokenRef.current + 1;
+    renderTokenRef.current = renderToken;
+    const isCurrentRender = () => renderToken === renderTokenRef.current;
+
     if (gem != null) {
       const {
         effects,
@@ -43,9 +48,11 @@ function EquippedGem({
 
         loadImage(path)
           .then((img) => {
-            ctx.drawImage(img, 0, 0, 175, 175);
+            if (isCurrentRender()) ctx.drawImage(img, 0, 0, 175, 175);
           })
-          .catch((err) => console.error(err));
+          .catch((err) => {
+            if (isCurrentRender()) console.error(err);
+          });
       }
     } else {
       const canvas = canvasRef?.current;
@@ -54,6 +61,10 @@ function EquippedGem({
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       }
     }
+
+    return () => {
+      if (renderTokenRef.current === renderToken) renderTokenRef.current += 1;
+    };
   }, [gem, gemEffectCatalog, nativeGemEffectIds]);
 
   return (

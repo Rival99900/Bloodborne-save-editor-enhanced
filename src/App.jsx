@@ -55,7 +55,7 @@ function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirm
   );
 }
 
-const MAX_REVISIONS = 40;
+const MAX_REVISIONS = 100;
 const DENSITY_STORAGE_KEY = "bloodborne-save-editor.interface-density.v1";
 
 function readDensityPreference() {
@@ -369,6 +369,13 @@ function App() {
       if (primaryModifier && (key === "s" || event.code === "KeyS")) {
         event.preventDefault();
         saveChanges();
+        return;
+      }
+
+      // A browser-style reload discards the in-memory editor session. The desktop
+      // editor therefore owns Ctrl/Cmd+R and keeps the current save and revisions.
+      if (primaryModifier && (key === "r" || event.code === "KeyR")) {
+        event.preventDefault();
         return;
       }
 

@@ -15,7 +15,7 @@ use data_handling::{
 };
 use serde_json::{json, Value};
 use tauri::{path::BaseDirectory, Manager};
-const MAX_REVISION_HISTORY: usize = 40;
+const MAX_REVISION_HISTORY: usize = 100;
 
 #[derive(Default)]
 struct SaveHistory {

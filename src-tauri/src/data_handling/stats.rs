@@ -98,7 +98,7 @@ mod tests {
             Stat {
                 name: "Vitality".to_string(),
                 rel_offset: -103,
-                length: 1,
+                length: 4,
                 times: 1,
                 value: 99,
             }
@@ -108,7 +108,7 @@ mod tests {
             Stat {
                 name: "Endurance".to_string(),
                 rel_offset: -95,
-                length: 1,
+                length: 4,
                 times: 1,
                 value: 99,
             }
@@ -118,7 +118,7 @@ mod tests {
             Stat {
                 name: "Strength".to_string(),
                 rel_offset: -79,
-                length: 1,
+                length: 4,
                 times: 1,
                 value: 99,
             }
@@ -128,7 +128,7 @@ mod tests {
             Stat {
                 name: "Skill".to_string(),
                 rel_offset: -71,
-                length: 1,
+                length: 4,
                 times: 1,
                 value: 99,
             }
@@ -138,7 +138,7 @@ mod tests {
             Stat {
                 name: "Bloodtinge".to_string(),
                 rel_offset: -63,
-                length: 1,
+                length: 4,
                 times: 1,
                 value: 99,
             }
@@ -148,7 +148,7 @@ mod tests {
             Stat {
                 name: "Arcane".to_string(),
                 rel_offset: -55,
-                length: 1,
+                length: 4,
                 times: 1,
                 value: 99,
             }

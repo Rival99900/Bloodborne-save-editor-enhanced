@@ -47,35 +47,55 @@ function Character() {
       const draftCoordinates = { ...editedCoordinates };
       if (!username.length) setUsername(save.username.string);
 
+      const changedStats = draftStats.filter((stat) => {
+        const currentStat = save.stats.find((entry) => entry.name === stat.name);
+        return currentStat?.value !== stat.value;
+      });
+      const usernameChanged = nextUsername !== save.username.string;
+      const playtimeChanged = editedPlaytime !== save.playtime;
+      const coordinatesChanged = ["x", "y", "z"].some(
+        (axis) => Number(draftCoordinates[axis]) !== Number(save.position.coordinates?.[axis]),
+      );
+
+      // The confirmation dialog remains available for an unchanged form, but it
+      // must not mark the save as dirty or add a no-op entry to Undo/Redo.
+      if (!changedStats.length && !usernameChanged && !playtimeChanged && !coordinatesChanged) {
+        setShowSuccess(true);
+        return;
+      }
+
       const updatedSave = await setSave(t("revision.characterUpdated"), async (current) => {
-        for (const stat of draftStats) {
-          const currentStat = current.stats.find((entry) => entry.name === stat.name);
-          if (currentStat?.value !== stat.value) {
-            await invoke("edit_stat", {
-              relOffset: stat.rel_offset,
-              length: stat.length,
-              times: stat.times,
-              value: Number.parseInt(stat.value, 10),
-            });
-          }
+        for (const stat of changedStats) {
+          await invoke("edit_stat", {
+            relOffset: stat.rel_offset,
+            length: stat.length,
+            times: stat.times,
+            value: Number.parseInt(stat.value, 10),
+          });
         }
 
-        if (nextUsername !== current.username.string) {
+        if (usernameChanged) {
           await invoke("set_username", { newUsername: nextUsername });
         }
-        await invoke("set_playtime", { newPlaytime: represent(editedPlaytime) });
-        await invoke("edit_coordinates", {
-          x: Number(draftCoordinates.x),
-          y: Number(draftCoordinates.y),
-          z: Number(draftCoordinates.z),
-        });
+        if (playtimeChanged) {
+          await invoke("set_playtime", { newPlaytime: represent(editedPlaytime) });
+        }
+        if (coordinatesChanged) {
+          await invoke("edit_coordinates", {
+            x: Number(draftCoordinates.x),
+            y: Number(draftCoordinates.y),
+            z: Number(draftCoordinates.z),
+          });
+        }
 
         return {
           ...current,
-          position: { ...current.position, coordinates: draftCoordinates },
-          stats: draftStats,
-          playtime: editedPlaytime,
-          username: { ...current.username, string: nextUsername },
+          position: coordinatesChanged
+            ? { ...current.position, coordinates: draftCoordinates }
+            : current.position,
+          stats: changedStats.length ? draftStats : current.stats,
+          playtime: playtimeChanged ? editedPlaytime : current.playtime,
+          username: usernameChanged ? { ...current.username, string: nextUsername } : current.username,
         };
       });
       if (updatedSave) {

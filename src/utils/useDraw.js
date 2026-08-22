@@ -76,6 +76,11 @@ function useDraw() {
     const { article_type, amount, info } = article;
     let { item_name: name, item_desc: note, item_img: image } = info;
     const type = getType(article_type);
+    const primaryEffectId = Number(article.effects?.[0]?.[0]);
+    const isGemOriginRune =
+      article.upgrade_type === "Rune" &&
+      Number.isFinite(primaryEffectId) &&
+      nativeGemEffectIds.has(primaryEffectId);
     name = name ?? (article?.upgrade_type !== "Gem" ? info.name : ""); // Check for gems and runes
     note = note ?? info.note ?? "";
     if (!isCurrentRender()) return;
@@ -126,7 +131,13 @@ function useDraw() {
     ctx.fillStyle = "#ab9e87";
 
     ctx.fillText(name, 107, 28);
-    ctx.fillText(note, 104, 69);
+    if (isGemOriginRune) {
+      ctx.font = "12px Reim";
+      ctx.fillStyle = "#d3b56b";
+      ctx.fillText(t("inventory.gemOriginEffect"), 107, 50);
+    } else {
+      ctx.fillText(note, 104, 69);
+    }
 
     if (type === "item" && type !== "key" && type !== "chalice") {
       ctx.font = "24px Reim";

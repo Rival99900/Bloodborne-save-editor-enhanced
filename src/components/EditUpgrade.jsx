@@ -91,8 +91,8 @@ function EditUpgrade({
   const [isConfirming, setIsConfirming] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
   const [conversionConfirmOpen, setConversionConfirmOpen] = useState(false);
-  // Rune presets are one-time actions; the field intentionally remains blank until chosen.
-  const [runePresetSelection, setRunePresetSelection] = useState("");
+  // Rune presets are one-time actions; this control never stores a selected value.
+  // It always opens blank, including when the same Rune is edited repeatedly.
   const [runePresetResetKey, setRunePresetResetKey] = useState(0);
   // A personal preset is opt-in. Never present the current rune or gem name as a preset
   // that appears to have been selected automatically when the editor opens.
@@ -102,7 +102,6 @@ function EditUpgrade({
   useEffect(() => {
     // The editor must never inherit a previously selected Rune preset or preset name
     // when another rune is opened. Current rune effects remain the editable draft.
-    setRunePresetSelection("");
     setRunePresetResetKey((current) => current + 1);
     setPresetName("");
     setPresetStatus("");
@@ -469,7 +468,7 @@ function EditUpgrade({
             ))}
             {upgrade_type === "Rune" ? (
               <SelectSearch
-                key={`rune-preset-${selected.id}-${selected.index}-${runePresetResetKey}`}
+                key={`rune-preset-${selected.id}-${selected.index}-${selected.number}-${selected.source}-${runePresetResetKey}`}
                 defaultValue={t("forge.runePresetPlaceholder")}
                 onChange={(event) => {
                   const { info, effects: presetEffects, shape: presetShape } = event;
@@ -486,10 +485,9 @@ function EditUpgrade({
                   // Presets are immediate one-time actions, not a persistent field value.
                   // Remount the searchable control so its internal search text cannot make
                   // the last chosen preset look preselected on the next opened Rune.
-                  setRunePresetSelection("");
                   setRunePresetResetKey((current) => current + 1);
                 }}
-                selected={runePresetSelection}
+                selected=""
                 options={runePresets}
               />
             ) : null}
