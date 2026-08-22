@@ -200,41 +200,43 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           ) : null}
         </div>
 
-        {isUpgrade ? (
-          <section className="direct-upgrade-builder" aria-label={t("inventory.directUpgradeBuilder")}>
-            <p className="inventory-dialog__notice">{t("inventory.directUpgradeNotice")}</p>
-            <div className="direct-upgrade-builder__effects">
-              {effects.map((effect, index) => (
-                <label key={index}>
-                  <span>{t("forge.effect", { index: index + 1 })}</span>
-                  <SelectSearch
-                    key={`${catalog}-${index}-${effect?.value ?? "empty"}`}
-                    defaultValue={t("forge.noEffect")}
-                    selected={effect?.value ?? null}
-                    options={effectOptions}
-                    compact
-                    maxListHeight={320}
-                    onChange={(nextEffect) => updateEffect(index, nextEffect)}
-                  />
-                </label>
-              ))}
-            </div>
-          </section>
-        ) : (
-          <section className="inventory-dialog__standard-content">
-            <p className="inventory-dialog__notice">
-              {isEquipment ? t("inventory.directEquipmentNotice") : t("inventory.addNotice")}
-            </p>
-            <SearchAllitems key={catalog} type={catalog} onChange={setSelected} />
-          </section>
-        )}
+        <div className="inventory-dialog__body">
+          {isUpgrade ? (
+            <section className="direct-upgrade-builder" aria-label={t("inventory.directUpgradeBuilder")}>
+              <p className="inventory-dialog__notice">{t("inventory.directUpgradeNotice")}</p>
+              <div className="direct-upgrade-builder__effects">
+                {effects.map((effect, index) => (
+                  <label key={index}>
+                    <span>{t("forge.effect", { index: index + 1 })}</span>
+                    <SelectSearch
+                      key={`${catalog}-${index}-${effect?.value ?? "empty"}`}
+                      defaultValue={t("forge.noEffect")}
+                      selected={effect?.value ?? null}
+                      options={effectOptions}
+                      compact
+                      maxListHeight={320}
+                      onChange={(nextEffect) => updateEffect(index, nextEffect)}
+                    />
+                  </label>
+                ))}
+              </div>
+            </section>
+          ) : (
+            <section className="inventory-dialog__standard-content">
+              <p className="inventory-dialog__notice">
+                {isEquipment ? t("inventory.directEquipmentNotice") : t("inventory.addNotice")}
+              </p>
+              <SearchAllitems key={catalog} type={catalog} onChange={setSelected} />
+            </section>
+          )}
 
-        {error ? (
-          <p className="inventory-dialog__error" role="alert">
-            <span aria-hidden="true">!</span>
-            {error}
-          </p>
-        ) : null}
+          {error ? (
+            <p className="inventory-dialog__error" role="alert">
+              <span aria-hidden="true">!</span>
+              {error}
+            </p>
+          ) : null}
+        </div>
 
         <footer className="inventory-dialog__actions">
           <button onClick={dismiss} id="cancelReplace">{t("inventory.cancel")}</button>

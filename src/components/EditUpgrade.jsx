@@ -317,6 +317,9 @@ function EditUpgrade({
             <span>{t("forge.editing")}</span>
             <div className="upgrade-editor__art-frame">
               <img
+                key={`upgrade-preview-${upgrade_type}-${shape}-${name ?? ""}-${rating ?? ""}-${effects
+                  .map(([effectId]) => Number(effectId))
+                  .join("-")}`}
                 className="upgrade-editor__art"
                 src={
                   upgrade_type === "Gem"
@@ -488,6 +491,7 @@ function EditUpgrade({
                   setRunePresetResetKey((current) => current + 1);
                 }}
                 selected=""
+                resetToPlaceholder
                 options={runePresets}
               />
             ) : null}

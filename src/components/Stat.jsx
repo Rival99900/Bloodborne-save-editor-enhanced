@@ -1,11 +1,21 @@
 const MAX_STAT_VALUE = 2_000_000_000;
+const STAT_VALUE_LIMITS = Object.freeze({
+  Echoes: 999_999_999,
+  Insight: 99,
+});
+
+function getStatLimit(name) {
+  return STAT_VALUE_LIMITS[name] ?? MAX_STAT_VALUE;
+}
 
 function Stat({ stat, setEditedStats, width }) {
+  const maximum = getStatLimit(stat.name);
+
   function handleChange(event) {
     const rawValue = event.target.value;
     const numericValue = Number(rawValue);
     const nextValue = Number.isFinite(numericValue)
-      ? Math.min(MAX_STAT_VALUE, Math.max(0, numericValue))
+      ? Math.min(maximum, Math.max(0, numericValue))
       : 0;
 
     setEditedStats((previous) => previous.map((entry) => (
@@ -43,7 +53,7 @@ function Stat({ stat, setEditedStats, width }) {
             background: "none",
           }}
           min={0}
-          max={MAX_STAT_VALUE}
+          max={maximum}
           value={stat.value}
           onChange={handleChange}
         />

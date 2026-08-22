@@ -2872,16 +2872,21 @@
 
 /* Modern reset/confirm actions and completion notice. */
 .editor-action-row {
+  position: relative;
+  z-index: 2;
   display: flex;
   width: min(100%, 24rem);
   grid-column: 1 / -1;
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
+  pointer-events: auto;
 }
 
 .editor-action-row .control-button {
   min-width: 7.5rem;
+  pointer-events: auto;
+  touch-action: manipulation;
 }
 
 .status-dialog__panel {
@@ -2931,33 +2936,66 @@
   background: linear-gradient(135deg, rgba(65, 126, 70, 0.76), rgba(118, 174, 105, 0.46)) !important;
 }
 
-/* Final local UI pass: keep Add content-sized, prevent multilingual control clipping,
-   and make the revision summary/log share one readable scroll region. */
+/* The Add dialog reserves a fixed action rail. Only its middle body may scroll,
+   mirroring the bounded picker structure used by Replace. */
 .inventory-dialog__card--add {
-  height: auto;
-  max-height: calc(100vh - 1.5rem);
-  grid-template-rows: auto auto auto auto auto;
+  height: min(46rem, calc(100vh - 1.5rem));
+  min-height: 0;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+}
+
+.inventory-dialog__body {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.inventory-dialog__card--add .inventory-dialog__standard-content,
+.inventory-dialog__card--add .direct-upgrade-builder {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .inventory-dialog__card--add .inventory-dialog__standard-content {
-  grid-template-rows: auto auto;
-  overflow: visible;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .inventory-dialog__card--add .catalog-picker {
-  grid-template-rows: auto auto;
-  overflow: visible;
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .inventory-dialog__card--add .catalog-picker__results,
 .inventory-dialog__standard-content .catalog-picker__results {
   min-height: 0;
   height: auto;
-  max-height: min(26rem, calc(100vh - 23rem));
+  max-height: none;
+}
+
+.inventory-dialog__card--add .direct-upgrade-builder {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.inventory-dialog__card--add .direct-upgrade-builder__effects {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .inventory-dialog__card--add .inventory-dialog__actions {
-  padding-top: 0.7rem;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.75rem 0 0;
+  border-top: 1px solid rgba(226, 195, 125, 0.2);
+  background: linear-gradient(180deg, rgba(8, 9, 11, 0), rgba(8, 9, 11, 0.94) 28%);
 }
 
 .editButtons .editQuantity .buttonBg,

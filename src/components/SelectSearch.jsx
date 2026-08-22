@@ -35,14 +35,15 @@ function SelectSearch({
   defaultValue,
   compact = false,
   maxListHeight = 280,
+  resetToPlaceholder = false,
 }) {
   const { t } = useLocalization();
   const [isOpen, setIsOpen] = useState(false);
   const resolvedSelectedLabel = isNoEffectSelection(selected)
     ? t("forge.noEffect")
     : getSelectedLabel(options, selected);
-  const [search, setSearch] = useState(
-    resolvedSelectedLabel === defaultValue ? "" : resolvedSelectedLabel,
+  const [search, setSearch] = useState(() =>
+    resetToPlaceholder || resolvedSelectedLabel === defaultValue ? "" : resolvedSelectedLabel,
   );
   // Tracks whether the current `search` value came from the user typing in the
   // box, as opposed to `selected` changing programmatically (e.g. a Gem Forge
@@ -75,11 +76,16 @@ function SelectSearch({
   }, []);
 
   useEffect(() => {
-    // A prop-driven update (preset applied, gem reloaded, etc.) is not a user
-    // edit, so it must not arm the auto-reset-to-"No Effect" logic below.
+    // A Rune preset is a one-time command rather than a form field: every fresh
+    // editor must expose its neutral placeholder, even if a previous editor used
+    // a preset. Other selectors continue to reflect prop-driven draft updates.
     userEditedRef.current = false;
-    setSearch(resolvedSelectedLabel === defaultValue ? "" : resolvedSelectedLabel);
-  }, [resolvedSelectedLabel, defaultValue]);
+    setSearch(
+      resetToPlaceholder || resolvedSelectedLabel === defaultValue
+        ? ""
+        : resolvedSelectedLabel,
+    );
+  }, [resolvedSelectedLabel, defaultValue, resetToPlaceholder]);
 
   useEffect(() => {
     if (
