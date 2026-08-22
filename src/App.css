@@ -2690,3 +2690,243 @@
   font-size: 0.76rem;
   line-height: 1.38;
 }
+
+/* v0.2.1: give Inventory value controls a deliberate action column without
+   squeezing the numeric fields or wrapping short translated labels. */
+@media (min-width: 761px) {
+  .editor-shell {
+    grid-template-columns: 14.5rem minmax(0, 50rem) minmax(16.5rem, 1fr);
+  }
+
+  .editButtons {
+    min-width: 16.5rem;
+    align-items: stretch;
+    padding: 0.85rem 1rem 1.3rem;
+  }
+
+  .editButtons .editQuantity {
+    width: min(100%, 22rem);
+    align-self: center;
+    grid-template-columns: minmax(0, 1fr) minmax(8.25rem, 9.25rem);
+    gap: 0.7rem;
+  }
+
+  .editButtons .editQuantity input {
+    min-width: 0;
+    padding-inline: 0.8rem;
+    text-align: left;
+  }
+
+  .editButtons .editQuantity .buttonBg {
+    min-height: 3.7rem;
+    padding-inline: 0.9rem;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    font-size: clamp(1rem, 1.2vw, 1.16rem);
+  }
+}
+
+/* Shared dark, scrollable selector used by character, boss and teleport controls. */
+.dark-select {
+  position: relative;
+  min-width: 8.25rem;
+  color: #f2ead9;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.dark-select__trigger {
+  display: flex;
+  width: 100%;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  border: 1px solid rgba(229, 220, 199, 0.34);
+  border-radius: 0.28rem;
+  padding: 0.42rem 0.6rem;
+  background: linear-gradient(135deg, rgba(38, 35, 28, 0.94), rgba(12, 13, 15, 0.98));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.56), 0 0.3rem 0.9rem rgba(0, 0, 0, 0.2);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.dark-select__trigger:hover:not(:disabled),
+.dark-select__trigger[aria-expanded="true"] {
+  border-color: #d8b968;
+  background: linear-gradient(135deg, rgba(56, 49, 34, 0.96), rgba(13, 14, 16, 0.98));
+}
+
+.dark-select__trigger:focus-visible,
+.dark-select__option:focus-visible {
+  outline: 2px solid rgba(227, 198, 126, 0.72);
+  outline-offset: 2px;
+}
+
+.dark-select__trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.dark-select__placeholder {
+  color: #b9b1a4;
+  font-weight: 600;
+}
+
+.dark-select__chevron {
+  width: 0.48rem;
+  height: 0.48rem;
+  flex: 0 0 auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-0.12rem) rotate(45deg);
+  transition: transform 160ms ease;
+}
+
+.dark-select__trigger[aria-expanded="true"] .dark-select__chevron {
+  transform: translateY(0.12rem) rotate(225deg);
+}
+
+.dark-select__menu {
+  z-index: 100;
+  max-height: min(20rem, calc(100vh - 1.5rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(214, 181, 105, 0.66);
+  border-radius: 0.34rem;
+  padding: 0.3rem;
+  background: linear-gradient(145deg, rgba(27, 25, 21, 0.99), rgba(8, 9, 11, 0.99));
+  box-shadow: 0 1rem 2.6rem rgba(0, 0, 0, 0.68);
+  scrollbar-color: #b9964e #121316;
+  scrollbar-width: thin;
+}
+
+.dark-select__menu::-webkit-scrollbar { width: 0.55rem; }
+.dark-select__menu::-webkit-scrollbar-track { background: #121316; }
+.dark-select__menu::-webkit-scrollbar-thumb {
+  border: 0.12rem solid #121316;
+  border-radius: 999px;
+  background: #b9964e;
+}
+
+.dark-select__option {
+  display: flex;
+  min-height: 2.25rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 0.22rem;
+  padding: 0.42rem 0.52rem;
+  background: transparent;
+  color: #ede6d7;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.dark-select__option:hover,
+.dark-select__option[aria-selected="true"] {
+  border-color: rgba(215, 181, 96, 0.56);
+  background: linear-gradient(90deg, rgba(174, 134, 56, 0.3), rgba(92, 72, 33, 0.18));
+  color: #fff8e7;
+}
+
+.dark-select__selected {
+  color: #e5c36e;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.character-select { min-width: 9rem; }
+.boss-status-select { min-width: 7.5rem; }
+
+.teleport-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  font-size: clamp(1rem, 2vw, 1.55rem);
+}
+
+.teleport-select {
+  width: min(23rem, 58%);
+  min-width: 12rem;
+}
+
+.teleport-select .dark-select__menu { max-height: min(25rem, calc(100vh - 1.5rem)); }
+
+@media (max-width: 560px) {
+  .teleport-control { align-items: stretch; flex-direction: column; }
+  .teleport-select { width: 100%; }
+}
+
+/* Modern reset/confirm actions and completion notice. */
+.editor-action-row {
+  display: flex;
+  width: min(100%, 24rem);
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+.editor-action-row .control-button {
+  min-width: 7.5rem;
+}
+
+.status-dialog__panel {
+  width: min(100%, 26rem);
+  text-align: center;
+}
+
+.status-dialog__eyebrow {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  margin-inline: auto;
+  border: 1px solid rgba(220, 188, 109, 0.58);
+  border-radius: 50%;
+  background: rgba(191, 153, 76, 0.16);
+  color: #eed187;
+  font-size: 1.1rem;
+  letter-spacing: 0;
+}
+
+.status-dialog__panel .confirm-dialog__actions { justify-content: center; }
+
+@media (max-width: 460px) {
+  .editor-action-row { width: 100%; }
+  .editor-action-row .control-button { flex: 1; min-width: 0; }
+}
+
+.status-dialog__eyebrow--error {
+  border-color: rgba(211, 112, 97, 0.7);
+  background: rgba(157, 57, 45, 0.18);
+  color: #f0a096;
+}
+
+.status-dialog__eyebrow--error + h2 { color: #f0c0b8; }
+
+/* The inventory add dialog is itself an overlay; its portal menus must stay above it. */
+.dark-select__menu { z-index: 1300; }
+
+.inventory-dialog__controls .inventory-dialog__select { width: 100%; }
+.inventory-dialog__controls .inventory-dialog__select .dark-select__trigger { min-height: 2.5rem; }
+
+.save-flow-dialog__card--success { border-color: rgba(136, 187, 133, 0.56); }
+.save-flow-dialog__card--success .save-flow-dialog__eyebrow { color: #a9d6a1; }
+.save-flow-dialog__card--success .save-flow-dialog__primary {
+  border-color: rgba(139, 193, 133, 0.8) !important;
+  background: linear-gradient(135deg, rgba(65, 126, 70, 0.76), rgba(118, 174, 105, 0.46)) !important;
+}

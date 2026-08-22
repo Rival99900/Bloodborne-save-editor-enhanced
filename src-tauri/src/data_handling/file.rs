@@ -144,7 +144,7 @@ impl FileData {
         //Search for the upgrade
         for i in (self.offsets.upgrades.0..self.offsets.upgrades.1).step_by(40) {
             let current_id = u32::from_le_bytes([
-                self.bytes[i + 0],
+                self.bytes[i],
                 self.bytes[i + 1],
                 self.bytes[i + 2],
                 self.bytes[i + 3],
@@ -182,9 +182,8 @@ impl FileData {
             self.bytes[0x0A],
             self.bytes[0x0B],
         ];
-        let time_ms = u32::from_le_bytes(time_bytes);
 
-        time_ms
+        u32::from_le_bytes(time_bytes)
     }
 
     pub fn set_playtime(&mut self, new_playtime: [u8; 4]) {
@@ -194,10 +193,10 @@ impl FileData {
     }
 
     pub fn get_isz(&self) -> [u8; 2] {
-        return [
+        [
             self.bytes[USERNAME_TO_ISZ_GLITCH + self.offsets.username],
             self.bytes[USERNAME_TO_ISZ_GLITCH + self.offsets.username + 1],
-        ];
+        ]
     }
 
     pub fn fix_isz(&mut self) -> String {

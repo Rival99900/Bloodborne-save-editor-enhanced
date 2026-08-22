@@ -1,13 +1,17 @@
-import { useState, useEffect } from "react";
-
 const MAX_STAT_VALUE = 2_000_000_000;
 
-function Stat({ stat, editedStats, setEditedStats, width }) {
-  const [value, setValue] = useState(stat.value);
+function Stat({ stat, setEditedStats, width }) {
+  function handleChange(event) {
+    const rawValue = event.target.value;
+    const numericValue = Number(rawValue);
+    const nextValue = Number.isFinite(numericValue)
+      ? Math.min(MAX_STAT_VALUE, Math.max(0, numericValue))
+      : 0;
 
-  useEffect(() => {
-    setValue(stat.value);
-  }, [stat, editedStats]);
+    setEditedStats((previous) => previous.map((entry) => (
+      entry.name === stat.name ? { ...entry, value: nextValue } : entry
+    )));
+  }
 
   return (
     <div
@@ -40,18 +44,8 @@ function Stat({ stat, editedStats, setEditedStats, width }) {
           }}
           min={0}
           max={MAX_STAT_VALUE}
-          value={value}
-          onChange={(event) => {
-            const rawValue = event.target.value;
-            const numericValue = Number(rawValue);
-            const nextValue = Number.isFinite(numericValue)
-              ? Math.min(MAX_STAT_VALUE, Math.max(0, numericValue))
-              : 0;
-
-            setValue(nextValue);
-            editedStats.find((entry) => entry.name === stat.name).value = nextValue;
-            setEditedStats([...editedStats]);
-          }}
+          value={stat.value}
+          onChange={handleChange}
         />
       </div>
     </div>

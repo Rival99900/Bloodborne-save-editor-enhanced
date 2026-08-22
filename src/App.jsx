@@ -108,6 +108,7 @@ function App() {
   const [openSaveDialog, setOpenSaveDialog] = useState("");
   const [revisionState, setRevisionState] = useState({ past: [], future: [] });
   const [revisionPanelOpen, setRevisionPanelOpen] = useState(false);
+  const [revisionEpoch, setRevisionEpoch] = useState(0);
   const [density, setDensity] = useState(readDensityPreference);
   const dirtyRef = useRef(false);
   const forceCloseRef = useRef(false);
@@ -186,6 +187,9 @@ function App() {
       setRevisionState(nextHistory);
       saveRef.current = restored;
       setSaveState(restored);
+      // Child screens keep canvas selections and draft state locally. Remount them
+      // after a restored snapshot so the visible editor always matches Rust bytes.
+      setRevisionEpoch((current) => current + 1);
       setDirtyState(true);
       setSaveStatusKey("saveFlow.unsavedStatus");
     } catch (error) {
@@ -208,6 +212,9 @@ function App() {
       setRevisionState(nextHistory);
       saveRef.current = restored;
       setSaveState(restored);
+      // Child screens keep canvas selections and draft state locally. Remount them
+      // after a restored snapshot so the visible editor always matches Rust bytes.
+      setRevisionEpoch((current) => current + 1);
       setDirtyState(true);
       setSaveStatusKey("saveFlow.unsavedStatus");
     } catch (error) {
@@ -282,18 +289,12 @@ function App() {
       setSaveStatusKey("saveFlow.savedStatus");
       setSaveName(await basename(path));
       setDirtyState(false);
-      await dialog.message(t("saveFlow.saveCompletedDescription"), {
-        title: t("saveFlow.saveCompletedTitle"),
-        kind: "info",
-      });
+      setOpenSaveDialog("save-complete");
       return true;
     } catch (error) {
       console.error(error);
       setSaveStatusKey("saveFlow.unsavedStatus");
-      await dialog.message(t("saveFlow.saveFailedDescription"), {
-        title: t("saveFlow.saveFailedTitle"),
-        kind: "error",
-      });
+      setOpenSaveDialog("save-failed");
       return false;
     } finally {
       setLoading(false);
@@ -354,32 +355,36 @@ function App() {
 
   useEffect(() => {
     const handleShortcut = (event) => {
-      if (event.ctrlKey && event.code === "KeyO") {
+      const primaryModifier = event.ctrlKey || event.metaKey;
+      const key = String(event.key ?? "").toLowerCase();
+      if (primaryModifier && (key === "o" || event.code === "KeyO")) {
         event.preventDefault();
         openSave();
         return;
       }
 
-      if (event.ctrlKey && event.code === "KeyS") {
+      if (primaryModifier && (key === "s" || event.code === "KeyS")) {
         event.preventDefault();
         saveChanges();
         return;
       }
 
-      if (!isEditableTarget(event.target) && event.ctrlKey && event.code === "KeyZ") {
+      if (!isEditableTarget(event.target) && primaryModifier && (key === "z" || event.code === "KeyZ")) {
         event.preventDefault();
-        if (event.shiftKey) redoRevision();
-        else undoRevision();
+        if (!event.repeat) {
+          if (event.shiftKey) void redoRevision();
+          else void undoRevision();
+        }
         return;
       }
 
-      if (!isEditableTarget(event.target) && event.ctrlKey && event.code === "KeyY") {
+      if (!isEditableTarget(event.target) && primaryModifier && (key === "y" || event.code === "KeyY")) {
         event.preventDefault();
-        redoRevision();
+        if (!event.repeat) void redoRevision();
         return;
       }
 
-      if (!event.ctrlKey || !["Equal", "Minus", "Digit0"].includes(event.code)) return;
+      if (!primaryModifier || !["Equal", "Minus", "Digit0"].includes(event.code)) return;
 
       event.preventDefault();
       const currentZoom = Number.parseFloat(document.body.style.zoom) || 1;
@@ -394,8 +399,8 @@ function App() {
       );
     };
 
-    document.addEventListener("keydown", handleShortcut);
-    return () => document.removeEventListener("keydown", handleShortcut);
+    window.addEventListener("keydown", handleShortcut, true);
+    return () => window.removeEventListener("keydown", handleShortcut, true);
   }, [openSave, redoRevision, saveChanges, undoRevision]);
 
   useEffect(() => {
@@ -469,6 +474,26 @@ function App() {
           onConfirm={() => setOpenSaveDialog("")}
         />
       ) : null}
+      {openSaveDialog === "save-complete" ? (
+        <SaveFlowDialog
+          tone="success"
+          eyebrow={t("saveFlow.saveTitle")}
+          title={t("saveFlow.saveCompletedTitle")}
+          description={t("saveFlow.saveCompletedDescription")}
+          confirmLabel={t("saveFlow.close")}
+          onConfirm={() => setOpenSaveDialog("")}
+        />
+      ) : null}
+      {openSaveDialog === "save-failed" ? (
+        <SaveFlowDialog
+          tone="error"
+          eyebrow={t("saveFlow.saveTitle")}
+          title={t("saveFlow.saveFailedTitle")}
+          description={t("saveFlow.saveFailedDescription")}
+          confirmLabel={t("saveFlow.close")}
+          onConfirm={() => setOpenSaveDialog("")}
+        />
+      ) : null}
       {revisionPanelOpen ? (
         <RevisionPanel
           entries={revisionState.past}
@@ -505,7 +530,7 @@ function App() {
           onToggleDensity={() => setDensity((current) => current === "compact" ? "comfortable" : "compact")}
         />
         <ImagesProvider>
-          <Main save={save} setSave={commitEditorMutation} loading={loading} />
+          <Main key={`save-revision-${revisionEpoch}`} save={save} setSave={commitEditorMutation} loading={loading} />
         </ImagesProvider>
       </Router>
     </div>

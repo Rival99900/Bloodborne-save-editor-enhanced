@@ -3,6 +3,17 @@ import { FixedSizeList as List } from "react-window";
 import { useFloating, flip, offset, autoUpdate } from "@floating-ui/react";
 import { useLocalization } from "../i18n/localization";
 
+const NO_EFFECT_ID = "4294967295";
+
+function isNoEffectSelection(selected) {
+  if (selected == null) return false;
+  if (typeof selected === "object") {
+    return String(selected.value ?? "") === NO_EFFECT_ID || String(selected.label ?? "").trim().toLowerCase() === "no effect";
+  }
+  const value = String(selected).trim().toLowerCase();
+  return value === NO_EFFECT_ID || value === "no effect";
+}
+
 function getSelectedLabel(options, selected) {
   const value = selected == null ? "" : String(selected);
   const normalizedValue = value.trim().toLowerCase();
@@ -27,7 +38,9 @@ function SelectSearch({
 }) {
   const { t } = useLocalization();
   const [isOpen, setIsOpen] = useState(false);
-  const resolvedSelectedLabel = getSelectedLabel(options, selected);
+  const resolvedSelectedLabel = isNoEffectSelection(selected)
+    ? t("forge.noEffect")
+    : getSelectedLabel(options, selected);
   const [search, setSearch] = useState(
     resolvedSelectedLabel === defaultValue ? "" : resolvedSelectedLabel,
   );

@@ -254,6 +254,17 @@ const en = {
     playtime: "Playtime:",
     teleport: "Teleport:",
     selectLocation: "Select a location",
+    exportFace: "Export face",
+    importFace: "Import face",
+    saveFaceFile: "Save face file",
+    selectFaceFile: "Select a face file",
+    faceExported: "Face exported successfully.",
+    faceImported: "Face imported successfully.",
+    faceActionFailed: "The face action could not be completed.",
+    iszStatus: "Isz status:",
+    fixIsz: "Fix Isz",
+    iszFixed: "Isz status was updated.",
+    iszFixFailed: "Isz status could not be updated.",
   },
   bosses: {
     alive: "Alive",
@@ -315,6 +326,7 @@ const en = {
     favoritesOnly: "Favorites only",
     addFavorite: "Add to favorites",
     removeFavorite: "Remove from favorites",
+    runeOriginEffect: "Rune-origin effect",
   },
 };
 
@@ -665,10 +677,10 @@ const baseUiOverrides = {
   },
   cs: {
     language: { label: "Jazyk" },
-    nav: { controls: "Ovládání souboru uložené pozice", activeSave: "Aktivní pozice", noSaveLoaded: "Není načtena žádná pozice", openFileToBegin: "Chcete-li začít, otevřete dešifrovaný soubor postavy", openSave: "Otevřít pozici", saveChanges: "Uložit změny" },
+    nav: { controls: "Ovládání souboru uložené hry", activeSave: "Aktivní uložená hra", noSaveLoaded: "Není načtena žádná uložená hra", openFileToBegin: "Chcete-li začít, otevřete dešifrovaný soubor postavy", openSave: "Otevřít uloženou hru", saveChanges: "Uložit změny" },
     unsaved: { eyebrow: "Neuložené změny", title: "Uložit před zavřením?", description: "Aktuální úpravy nebyly zapsány do souboru uložené pozice. Chcete-li je zachovat, vyberte Uložit změny, nebo je zavřením bez uložení zahoďte.", cancel: "Zrušit", discard: "Zavřít bez uložení", save: "Uložit změny", saving: "Ukládání…" },
-    sidebar: { workspace: "Pracovní prostor editoru", characterData: "Data postavy", inventory: "Inventář", inventoryDescription: "Předměty a vybavení", storage: "Úložiště", storageDescription: "Uložené předměty", stats: "Statistiky", statsDescription: "Vlastnosti a ozvěny", character: "Postava", characterDescription: "Identita a pozice", bosses: "Bossové", bossesDescription: "Stav postupu", flags: "Příznaky", flagsDescription: "Pokročilá nastavení", backupTitle: "Nejdřív záloha", backupDescription: "Otevřením pozice se před změnami vytvoří kopie .bak." },
-    flags: { eyebrow: "Pokročilá nastavení pozice", title: "Známé příznaky", introduction: "Zde jsou zobrazeny pouze nezávisle zdokumentované vzory bajtů. Neznámé offsety jsou záměrně vynechány, aby byla pozice chráněna před náhodným poškozením.", listLabel: "Známé příznaky pozice", safetyTitle: "Před použitím příznaku", safetyDescription: "Používejte vždy jednu změnu a potom zvolte Uložit změny. Automatickou zálohu ponechte, dokud se postava nenačte normálně." },
+    sidebar: { workspace: "Pracovní prostor editoru", characterData: "Data postavy", inventory: "Inventář", inventoryDescription: "Předměty a vybavení", storage: "Úložiště", storageDescription: "Uložené předměty", stats: "Statistiky", statsDescription: "Vlastnosti a ozvěny", character: "Postava", characterDescription: "Identita a pozice", bosses: "Bossové", bossesDescription: "Stav postupu", flags: "Příznaky", flagsDescription: "Pokročilá nastavení", backupTitle: "Nejdřív záloha", backupDescription: "Otevřením uložené hry se před změnami vytvoří kopie .bak." },
+    flags: { eyebrow: "Pokročilá nastavení uložené hry", title: "Známé příznaky", introduction: "Zde jsou zobrazeny pouze nezávisle zdokumentované vzory bajtů. Neznámé offsety jsou záměrně vynechány, aby byla uložená hra chráněna před náhodným poškozením.", listLabel: "Známé příznaky uložené hry", safetyTitle: "Před použitím příznaku", safetyDescription: "Používejte vždy jednu změnu a potom zvolte Uložit změny. Automatickou zálohu ponechte, dokud se postava nenačte normálně." },
   },
   ro: {
     language: { label: "Limbă" },
@@ -1670,6 +1682,582 @@ const flagOverrides = {
     },
   },
 };
+
+const v021FlagCardOverrides = {
+  "da": {
+    "confirm": "Anvend dette kendte gemme-flag? Der oprettes en sikkerhedskopi før gemning.",
+    "applied": "Flag anvendt på den midlertidige gemning. Vælg Gem ændringer for at skrive filen.",
+    "applyFailed": "Kunne ikke anvende dette flag: {{error}}",
+    "whatChanges": "Hvad ændres:",
+    "careful": "Vær forsigtig:",
+    "bytePattern": "Valideret byte-mønster:",
+    "hideDetails": "Skjul detaljer",
+    "showDetails": "Hvad gør dette?",
+    "applying": "Anvender…",
+    "apply": "Anvend"
+  },
+  "fi": {
+    "confirm": "Käytetäänkö tätä tunnettua tallennuslipuketta? Varmuuskopio tehdään ennen tallennusta.",
+    "applied": "Lipuke on otettu käyttöön muistissa olevassa tallennuksessa. Valitse Tallenna muutokset kirjoittaaksesi tiedoston.",
+    "applyFailed": "Lippua ei voitu käyttää: {{error}}",
+    "whatChanges": "Mitä muuttuu:",
+    "careful": "Varoitus:",
+    "bytePattern": "Vahvistettu tavumalli:",
+    "hideDetails": "Piilota tiedot",
+    "showDetails": "Mitä tämä tekee?",
+    "applying": "Käytetään…",
+    "apply": "Käytä"
+  },
+  "hu": {
+    "confirm": "Alkalmazza ezt az ismert mentési jelzőt? Mentés előtt biztonsági másolat készül.",
+    "applied": "A jelző alkalmazva a memóriabeli mentésre. A fájl írásához válassza a Változtatások mentése lehetőséget.",
+    "applyFailed": "Nem sikerült alkalmazni a jelzőt: {{error}}",
+    "whatChanges": "Mi változik:",
+    "careful": "Figyelem:",
+    "bytePattern": "Ellenőrzött bájtminta:",
+    "hideDetails": "Részletek elrejtése",
+    "showDetails": "Mit csinál ez?",
+    "applying": "Alkalmazás…",
+    "apply": "Alkalmaz"
+  },
+  "nb": {
+    "confirm": "Bruk dette kjente lagringsflagget? En sikkerhetskopi tas før lagring.",
+    "applied": "Flagget er brukt på den midlertidige lagringen. Velg Lagre endringer for å skrive filen.",
+    "applyFailed": "Kunne ikke bruke dette flagget: {{error}}",
+    "whatChanges": "Hva endres:",
+    "careful": "Forsiktig:",
+    "bytePattern": "Validert byte-mønster:",
+    "hideDetails": "Skjul detaljer",
+    "showDetails": "Hva gjør dette?",
+    "applying": "Påfører…",
+    "apply": "Bruk"
+  }
+};
+
+Object.entries(v021FlagCardOverrides).forEach(([language, card]) => {
+  const current = flagOverrides[language] ?? {};
+  flagOverrides[language] = {
+    ...current,
+    card: { ...(current.card ?? {}), ...card },
+  };
+});
+
+const v021FlagEntryOverrides = {
+  "es": {
+    "restoreMaria": {
+      "label": "Restaurar diálogo de Lady Maria",
+      "category": "Restauración narrativa",
+      "info": "Restaura un pequeño conjunto de líneas de diálogo antes del encuentro con Lady Maria.",
+      "impact": "Esto solo cambia el estado del diálogo; no otorga objetos, niveles ni recompensas de jefe.",
+      "warning": "Úsalo primero en una copia de la partida si actualmente estás en el área Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Habilitar la nana heredada de la Doll",
+      "category": "Presentación heredada",
+      "info": "Rehabilita el comportamiento de la nana de la Doll asociado con la versión original 1.0.",
+      "impact": "Esto restaura un estado de presentación heredado. No altera atributos, inventario ni recompensas de misiones.",
+      "warning": "El comportamiento es sensible a la versión; conserva la copia de seguridad hasta que hayas cargado el personaje con éxito."
+    },
+    "bloodAddled": {
+      "label": "Habilitar comportamiento cooperativo Blood-addled",
+      "category": "Comportamiento multijugador",
+      "info": "Habilita la interacción Blood-addled asociada con jugadores cooperativos que usan la Hunter rune.",
+      "impact": "Esto cambia el comportamiento hostil multijugador mientras se cumplan las condiciones de la runa correspondiente.",
+      "warning": "Usa esto solo sin conexión o con jugadores que consientan. Puede crear comportamiento cooperativo hostil y confuso."
+    }
+  },
+  "pt-PT": {
+    "restoreMaria": {
+      "label": "Restaurar diálogo de Lady Maria",
+      "category": "Restauração narrativa",
+      "info": "Restaura um conjunto pequeno de linhas de diálogo antes do encontro com Lady Maria.",
+      "impact": "Isto altera apenas o estado do diálogo; não concede item, nível ou recompensa de chefe.",
+      "warning": "Use primeiro numa cópia do ficheiro de gravação se estiver atualmente na área Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Ativar a canção de embalar herdada da Doll",
+      "category": "Apresentação herdada",
+      "info": "Reativa o comportamento da canção de embalar da Doll associado ao lançamento original 1.0.",
+      "impact": "Isto restaura um estado de apresentação legado. Não altera atributos, inventário ou recompensas de missão.",
+      "warning": "O comportamento é sensível à versão; mantenha o backup até ter carregado a personagem com sucesso."
+    },
+    "bloodAddled": {
+      "label": "Ativar comportamento cooperativo Blood-addled",
+      "category": "Comportamento multijogador",
+      "info": "Ativa a interação Blood-addled associada a jogadores cooperativos que usam a Hunter rune.",
+      "impact": "Isto altera o comportamento hostil multijogador enquanto as condições da runa relevante forem satisfeitas.",
+      "warning": "Use apenas offline ou com jogadores que consintam. Pode criar comportamentos cooperativos hostis e confusos."
+    }
+  },
+  "pt-BR": {
+    "restoreMaria": {
+      "label": "Restaurar diálogo de Lady Maria",
+      "category": "Restauração narrativa",
+      "info": "Restaura um pequeno conjunto de falas antes do encontro com Lady Maria.",
+      "impact": "Isso altera apenas o estado do diálogo; não concede item, nível ou recompensa de chefe.",
+      "warning": "Use primeiro em uma cópia do arquivo de salvamento se você estiver atualmente na área Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Ativar a canção de ninar legada da Doll",
+      "category": "Apresentação legada",
+      "info": "Reativa o comportamento da canção de ninar da Doll associado ao lançamento original 1.0.",
+      "impact": "Isso restaura um estado de apresentação legada. Não altera atributos, inventário ou recompensas de missão.",
+      "warning": "O comportamento é sensível à versão; mantenha o backup até carregar o personagem com sucesso."
+    },
+    "bloodAddled": {
+      "label": "Ativar comportamento cooperativo Blood-addled",
+      "category": "Comportamento multijogador",
+      "info": "Ativa a interação Blood-addled associada a jogadores cooperativos que usam a Hunter rune.",
+      "impact": "Isso altera o comportamento hostil no multijogador enquanto as condições da runa relevante forem atendidas.",
+      "warning": "Use isto apenas offline ou com jogadores que consintam. Pode gerar comportamento cooperativo hostil e confuso."
+    }
+  },
+  "ru": {
+    "restoreMaria": {
+      "label": "Восстановить диалоги Lady Maria",
+      "category": "Восстановление повествования",
+      "info": "Восстанавливает небольшой набор строк диалога перед встречей с Lady Maria.",
+      "impact": "Это изменяет только состояние диалога; не выдаёт предмет, уровень или награду за босса.",
+      "warning": "Сначала применяйте к копии сохранения, если вы сейчас находитесь в районе Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Включить наследственную колыбельную Doll",
+      "category": "Наследственная презентация",
+      "info": "Повторно включает поведение колыбельной Doll, связанное с оригинальным релизом 1.0.",
+      "impact": "Это восстанавливает наследственное состояние презентации. Не изменяет характеристики, инвентарь или награды за квесты.",
+      "warning": "Поведение зависит от версии; сохраните резервную копию, пока не загрузите персонажа успешно."
+    },
+    "bloodAddled": {
+      "label": "Включить кооперативное поведение Blood-addled",
+      "category": "Поведение мультиплеера",
+      "info": "Включает взаимодействие Blood-addled, связанное с кооперативными игроками, использующими Hunter rune.",
+      "impact": "Это изменяет поведение враждебности в мультиплеере, пока выполняются условия соответствующей руны.",
+      "warning": "Используйте только офлайн или с согласными игроками. Это может создать запутанное враждебное кооперативное поведение."
+    }
+  },
+  "de": {
+    "restoreMaria": {
+      "label": "Lady Maria-Dialog wiederherstellen",
+      "category": "Narrative Wiederherstellung",
+      "info": "Stellt eine kleine Auswahl von Dialogzeilen vor der Begegnung mit Lady Maria wieder her.",
+      "impact": "Dies ändert nur den Dialogzustand; es gewährt keinen Gegenstand, kein Level oder eine Bossbelohnung.",
+      "warning": "Zuerst auf einer Kopie des Saves verwenden, wenn Sie sich aktuell im Astral Clocktower befinden."
+    },
+    "dollLullaby": {
+      "label": "Das Wiegenlied der Doll (Legacy) aktivieren",
+      "category": "Legacy-Präsentation",
+      "info": "Reaktiviert das Wiegenlied-Verhalten der Doll, wie es in der ursprünglichen Version 1.0 vorhanden war.",
+      "impact": "Stellt einen Legacy-Präsentationszustand wieder her. Es werden weder Attribute, Inventar noch Questbelohnungen verändert.",
+      "warning": "Das Verhalten ist versionsabhängig; behalten Sie das Backup, bis Sie den Charakter erfolgreich geladen haben."
+    },
+    "bloodAddled": {
+      "label": "Blood-addled Koop-Verhalten aktivieren",
+      "category": "Multiplayer-Verhalten",
+      "info": "Aktiviert die Blood-addled-Interaktion für Koop-Spieler, die die Hunter rune verwenden.",
+      "impact": "Ändert die Multiplayer-Feindseligkeitslogik, solange die relevanten Runenbedingungen erfüllt sind.",
+      "warning": "Nur offline oder mit zustimmenden Spielern verwenden. Kann verwirrendes, feindliches Koop-Verhalten erzeugen."
+    }
+  },
+  "it": {
+    "restoreMaria": {
+      "label": "Ripristina i dialoghi di Lady Maria",
+      "category": "Ripristino narrativo",
+      "info": "Ripristina un piccolo insieme di battute prima dell'incontro con Lady Maria.",
+      "impact": "Modifica solo lo stato dei dialoghi; non assegna oggetti, livelli o ricompense del boss.",
+      "warning": "Usare prima su una copia del salvataggio se ti trovi nell'Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Abilita la ninna nanna legacy della Doll",
+      "category": "Presentazione legacy",
+      "info": "Riattiva il comportamento della ninna nanna della Doll associato alla release originale 1.0.",
+      "impact": "Ripristina uno stato di presentazione legacy. Non modifica attributi, inventario o ricompense delle missioni.",
+      "warning": "Il comportamento è sensibile alla versione; conserva il backup finché non hai caricato il personaggio con successo."
+    },
+    "bloodAddled": {
+      "label": "Abilita il comportamento co-op Blood-addled",
+      "category": "Comportamento multigiocatore",
+      "info": "Abilita l'interazione Blood-addled associata ai giocatori cooperativi che usano la Hunter rune.",
+      "impact": "Modifica il comportamento di ostilità in multiplayer finché sono soddisfatte le condizioni rilevanti della runa.",
+      "warning": "Usare solo offline o con giocatori consenzienti. Può generare comportamenti cooperativi ostili e confusi."
+    }
+  },
+  "nl": {
+    "restoreMaria": {
+      "label": "Lady Maria-gesprek herstellen",
+      "category": "Narratieve restauratie",
+      "info": "Herstelt een kleine set dialoogregels vóór de ontmoeting met Lady Maria.",
+      "impact": "Dit verandert alleen de dialoogstatus; het geeft geen item, level of baasbeloning.",
+      "warning": "Gebruik eerst op een kopie van de save als je je momenteel in de Astral Clocktower bevindt."
+    },
+    "dollLullaby": {
+      "label": "Het legacy-wiegelied van de Doll inschakelen",
+      "category": "Legacy-presentatie",
+      "info": "Herstelt het wiegeliedgedrag van de Doll dat bij de originele 1.0-release hoorde.",
+      "impact": "Herstelt een legacy-presentatiestatus. Wijzigt geen attributen, inventaris of questbeloningen.",
+      "warning": "Het gedrag is versiegevoelig; bewaar de backup totdat je het personage succesvol hebt geladen."
+    },
+    "bloodAddled": {
+      "label": "Blood-addled coöpgedrag inschakelen",
+      "category": "Multiplayer-gedrag",
+      "info": "Schakelt de Blood-addled-interactie in die hoort bij coöpspelers die de Hunter rune gebruiken.",
+      "impact": "Wijzigt de vijandigheidslogica in multiplayer zolang de relevante Hunter rune-voorwaarden gelden.",
+      "warning": "Gebruik dit alleen offline of met instemmende spelers. Kan verwarrend vijandig coöpgedrag veroorzaken."
+    }
+  },
+  "pl": {
+    "restoreMaria": {
+      "label": "Przywróć dialog Lady Maria",
+      "category": "Przywracanie narracji",
+      "info": "Przywraca niewielki zestaw linii dialogowych przed spotkaniem z Lady Maria.",
+      "impact": "Zmienia jedynie stan dialogu; nie przyznaje przedmiotów, poziomów ani nagród za bossa.",
+      "warning": "Użyj najpierw na kopii zapisu, jeśli aktualnie znajdujesz się w Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Włącz legacyową kołysankę Doll",
+      "category": "Prezentacja (legacy)",
+      "info": "Ponownie włącza zachowanie kołysanki Doll związane z oryginalnym wydaniem 1.0.",
+      "impact": "Przywraca stan prezentacji z wcześniejszej wersji. Nie zmienia atrybutów, ekwipunku ani nagród z zadań.",
+      "warning": "Zachowanie zależy od wersji; zachowaj kopię zapasową aż do pomyślnego załadowania postaci."
+    },
+    "bloodAddled": {
+      "label": "Włącz Blood-addled zachowanie kooperacji",
+      "category": "Zachowanie wieloosobowe",
+      "info": "Włącza interakcję Blood-addled związaną z graczami kooperacyjnymi używającymi Hunter rune.",
+      "impact": "Zmienia zachowanie wrogości w trybie wieloosobowym, dopóki spełnione są odpowiednie warunki Hunter rune.",
+      "warning": "Używaj tylko offline lub z graczami wyrażającymi zgodę. Może powodować mylące, wrogie zachowania w kooperacji."
+    }
+  },
+  "tr": {
+    "restoreMaria": {
+      "label": "Lady Maria diyaloglarını geri yükle",
+      "category": "Anlatı onarımı",
+      "info": "Lady Maria karşılaşması öncesindeki birkaç diyalog satırını geri yükler.",
+      "impact": "Sadece diyalog durumunu değiştirir; herhangi bir eşya, seviye veya boss ödülü vermez.",
+      "warning": "Şu anda Astral Clocktower bölgesindeyseniz önce kaydın kopyasında kullanın."
+    },
+    "dollLullaby": {
+      "label": "Doll’un miras ninnisini etkinleştir",
+      "category": "Miras sunumu",
+      "info": "Orijinal 1.0 sürümüyle ilişkili Doll’ın ninni davranışını yeniden etkinleştirir.",
+      "impact": "Bu, miras sunum durumunu geri yükler. Nitelikleri, envanteri veya görev ödüllerini değiştirmez.",
+      "warning": "Davranış sürüme duyarlıdır; karakteri başarıyla yükleyene kadar yedeği saklayın."
+    },
+    "bloodAddled": {
+      "label": "Blood-addled eşli oynama davranışını etkinleştir",
+      "category": "Çok oyunculu davranış",
+      "info": "Hunter rune kullanan işbirlikçi oyuncularla ilişkili Blood-addled etkileşimini etkinleştirir.",
+      "impact": "İlgili rune koşulları sağlandığı sürece çok oyunculu düşmanlık davranışını değiştirir.",
+      "warning": "Bunu yalnızca çevrimdışı veya rızalı oyuncularla kullanın. Kafa karıştıran düşmanca eşli oynama davranışına yol açabilir."
+    }
+  },
+  "uk": {
+    "restoreMaria": {
+      "label": "Відновити діалоги Lady Maria",
+      "category": "Відновлення оповіді",
+      "info": "Відновлює невелику кількість рядків діалогу перед зустріччю з Lady Maria.",
+      "impact": "Змінює лише стан діалогів; не дає предмета, рівня або нагороди за боса.",
+      "warning": "Якщо ви зараз у районі Astral Clocktower, спочатку використовуйте на копії сейву."
+    },
+    "dollLullaby": {
+      "label": "Увімкнути спадкову колискову Doll",
+      "category": "Спадкова презентація",
+      "info": "Повторно вмикає поведінку колискової Doll, пов’язану з оригінальним релізом 1.0.",
+      "impact": "Відновлює спадковий стан презентації. Не змінює характеристики, інвентар або нагороди за квести.",
+      "warning": "Поведінка чутлива до версії; зберігайте резервну копію, доки не завантажите персонажа успішно."
+    },
+    "bloodAddled": {
+      "label": "Увімкнути поведінку кооперації Blood-addled",
+      "category": "Поведінка мультиплеєра",
+      "info": "Увімкнює взаємодію Blood-addled, пов'язану з кооперативними гравцями, які використовують Hunter rune.",
+      "impact": "Змінює поведінку ворожості в мультиплеєрі, поки виконуються відповідні умови руни.",
+      "warning": "Використовуйте лише офлайн або з гравцями за згодою. Може спричинити плутану ворожу кооперацію."
+    }
+  },
+  "ja": {
+    "restoreMaria": {
+      "label": "Lady Mariaのダイアログを復元する",
+      "category": "物語の復元",
+      "info": "Lady Mariaとの遭遇前の少数の台詞を復元します。",
+      "impact": "これはダイアログ状態のみを変更します。アイテム、レベル、ボス報酬は付与されません。",
+      "warning": "現在Astral Clocktowerエリアにいる場合は、まずコピーしたセーブで使用してください。"
+    },
+    "dollLullaby": {
+      "label": "Dollのレガシーな子守歌を有効にする",
+      "category": "レガシー表示",
+      "info": "オリジナル1.0リリースに関連するDollの子守歌動作を再有効化します。",
+      "impact": "これはレガシーの表示状態を復元します。能力値、所持品、クエスト報酬は変更されません。",
+      "warning": "動作はバージョンに依存します。キャラクターを正常にロードするまでバックアップを保持してください。"
+    },
+    "bloodAddled": {
+      "label": "Blood-addledの協力プレイ挙動を有効化",
+      "category": "マルチプレイヤー挙動",
+      "info": "Hunter runeを使用する協力プレイヤーに関連するBlood-addledの相互作用を有効にします。",
+      "impact": "該当するルーン条件が満たされている間、マルチプレイヤーの敵対行動を変更します。",
+      "warning": "オフラインまたは同意したプレイヤーのみで使用してください。混乱する敵対的な協力挙動を引き起こす可能性があります。"
+    }
+  },
+  "ko": {
+    "restoreMaria": {
+      "label": "Lady Maria 대사 복원",
+      "category": "내러티브 복원",
+      "info": "Lady Maria와의 조우 이전의 소수 대사 행을 복원합니다.",
+      "impact": "대사 상태만 변경합니다; 아이템, 레벨 또는 보스 보상을 부여하지 않습니다.",
+      "warning": "현재 Astral Clocktower 구역에 있다면 먼저 복사한 저장 파일에서 사용하세요."
+    },
+    "dollLullaby": {
+      "label": "Doll의 레거시 자장가 활성화",
+      "category": "레거시 표현",
+      "info": "원래 1.0 릴리스와 관련된 Doll의 자장가 동작을 다시 활성화합니다.",
+      "impact": "이는 레거시 표현 상태를 복원합니다. 능력치, 인벤토리 또는 퀘스트 보상을 변경하지 않습니다.",
+      "warning": "동작은 버전에 민감합니다; 캐릭터를 성공적으로 불러올 때까지 백업을 보관하세요."
+    },
+    "bloodAddled": {
+      "label": "Blood-addled 협동 동작 활성화",
+      "category": "멀티플레이 동작",
+      "info": "Hunter rune을 사용하는 협력 플레이어와 관련된 Blood-addled 상호작용을 활성화합니다.",
+      "impact": "관련 룬 조건이 충족되는 동안 멀티플레이 적대 행동을 변경합니다.",
+      "warning": "오프라인이거나 동의한 플레이어와만 사용하세요. 혼란스러운 적대적 협동 행동을 초래할 수 있습니다."
+    }
+  },
+  "zh-CN": {
+    "restoreMaria": {
+      "label": "恢复 Lady Maria 对话",
+      "category": "叙事还原",
+      "info": "恢复 Lady Maria 遭遇前的一小段对话行。",
+      "impact": "仅更改对话状态；不会给予物品、等级或首领奖励。",
+      "warning": "如果你当前在 Astral Clocktower 区域，请先在复制的存档上使用。"
+    },
+    "dollLullaby": {
+      "label": "启用 Doll 的遗留摇篮曲",
+      "category": "遗留呈现",
+      "info": "重新启用与原始 1.0 版本相关的 Doll 摇篮曲行为。",
+      "impact": "恢复旧版呈现状态。不会更改属性、物品或任务奖励。",
+      "warning": "该行为对版本敏感；在成功加载角色前请保留备份。"
+    },
+    "bloodAddled": {
+      "label": "启用 Blood-addled 联机行为",
+      "category": "多人行为",
+      "info": "启用与使用 Hunter rune 的合作玩家相关的 Blood-addled 互动。",
+      "impact": "在满足相关符文条件期间更改多人敌对行为。",
+      "warning": "仅在离线或与同意的玩家一同使用。可能导致令人困惑的敌对合作行为。"
+    }
+  },
+  "sv": {
+    "restoreMaria": {
+      "label": "Återställ Lady Marias dialog",
+      "category": "Narrativ återställning",
+      "info": "Återställer ett litet antal dialograder före mötet med Lady Maria.",
+      "impact": "Endast dialogstatus ändras; ger inte föremål, nivå eller bossbelöning.",
+      "warning": "Använd först på en kopierad sparfil om du befinner dig i Astral Clocktower-området."
+    },
+    "dollLullaby": {
+      "label": "Aktivera Dolls ursprungliga vaggvisa",
+      "category": "Äldre presentation",
+      "info": "Återaktiverar Dolls vaggvisebeteende kopplat till ursprungliga 1.0-utgåvan.",
+      "impact": "Återställer ett äldre presentationsläge. Ändrar inte attribut, inventarium eller uppdragsbelöningar.",
+      "warning": "Beteendet är versionskänsligt; behåll backupen tills du lyckats ladda karaktären."
+    },
+    "bloodAddled": {
+      "label": "Aktivera Blood-addled co-op-beteende",
+      "category": "Flerspelarbeteende",
+      "info": "Aktiverar Blood-addled-interaktionen kopplad till co-op-spelare som använder Hunter rune.",
+      "impact": "Ändrar flerspelarens fientlighetsbeteende medan relevanta rune-villkor är uppfyllda.",
+      "warning": "Använd endast offline eller med medgivande spelare. Kan skapa förvirrande fientligt co-op-beteende."
+    }
+  },
+  "cs": {
+    "restoreMaria": {
+      "label": "Obnovit dialog Lady Maria",
+      "category": "Obnovení vyprávění",
+      "info": "Obnoví malou sadu dialogových řádků před setkáním s Lady Maria.",
+      "impact": "Tím se změní pouze stav dialogu; nezískáte předmět, úroveň ani odměnu za bosse.",
+      "warning": "Použijte nejprve na kopii uložené pozice, pokud se nacházíte v oblasti Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Povolit Dollinu dědičnou ukolébavku",
+      "category": "Dědičná prezentace",
+      "info": "Znovu aktivuje chování ukolébavky Doll spojené s původním vydáním 1.0.",
+      "impact": "Obnoví starší prezentační stav. Nemění atributy, inventář ani odměny za úkoly.",
+      "warning": "Chování je citlivé na verzi; ponechte zálohu, dokud postavu úspěšně nenačtete."
+    },
+    "bloodAddled": {
+      "label": "Povolit Blood-addled co-op chování",
+      "category": "Chování pro více hráčů",
+      "info": "Povolí Blood-addled interakci spojenou s hráči v co-opu používajícími Hunter rune.",
+      "impact": "Změní chování nepřátelství v multiplayeru, dokud budou splněny příslušné podmínky runy.",
+      "warning": "Používejte pouze offline nebo s hráči, kteří s tím souhlasí. Může to vytvořit matoucí nepřátelské co-op chování."
+    }
+  },
+  "ro": {
+    "restoreMaria": {
+      "label": "Restabilește dialogul Lady Maria",
+      "category": "Restaurare narativă",
+      "info": "Restabilește un set mic de replici înainte de întâlnirea cu Lady Maria.",
+      "impact": "Aceasta schimbă doar starea dialogului; nu acordă obiecte, nivel sau recompensă de boss.",
+      "warning": "Folosește mai întâi pe un save copiat dacă ești în zona Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Activează cântecul de leagăn moștenit al Doll",
+      "category": "Prezentare moștenită",
+      "info": "Reactivează comportamentul cântecului de leagăn al Doll asociat versiunii originale 1.0.",
+      "impact": "Restabilește un stadiu de prezentare vechi. Nu modifică atribute, inventar sau recompense de misiune.",
+      "warning": "Comportamentul depinde de versiune; păstrează copia de rezervă până când ai încărcat cu succes personajul."
+    },
+    "bloodAddled": {
+      "label": "Activează comportamentul co-op Blood-addled",
+      "category": "Comportament multiplayer",
+      "info": "Activează interacțiunea Blood-addled asociată jucătorilor co-op care folosesc Hunter rune.",
+      "impact": "Modifică comportamentul de ostilitate în multiplayer în timpul în care condițiile rune relevante sunt îndeplinite.",
+      "warning": "Folosește doar offline sau cu jucători care sunt de acord. Poate crea comportamente co-op ostile și confuze."
+    }
+  },
+  "el": {
+    "restoreMaria": {
+      "label": "Επαναφορά διαλόγου Lady Maria",
+      "category": "Αποκατάσταση αφήγησης",
+      "info": "Αποκαθιστά ένα μικρό σύνολο γραμμών διαλόγου πριν τη συνάντηση με τη Lady Maria.",
+      "impact": "Αυτό αλλάζει μόνο την κατάσταση διαλόγου· δεν χορηγεί αντικείμενο, επίπεδο ή ανταμοιβή αφεντικού.",
+      "warning": "Χρησιμοποιήστε πρώτα σε αντίγραφο αποθήκευσης εάν βρίσκεστε στην περιοχή Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Ενεργοποίηση του νανουρίσματος κληρονομιάς της Doll",
+      "category": "Παρουσίαση κληρονομιάς",
+      "info": "Ενεργοποιεί ξανά τη συμπεριφορά του νανουρίσματος της Doll που σχετιζόταν με την αρχική έκδοση 1.0.",
+      "impact": "Αυτό επαναφέρει κατάσταση παλαιάς παρουσίασης. Δεν αλλάζει χαρακτηριστικά, αποθέματα ή ανταμοιβές αποστολών.",
+      "warning": "Η συμπεριφορά εξαρτάται από την έκδοση· διατηρήστε το αντίγραφο ασφαλείας μέχρι να φορτωθεί επιτυχώς ο χαρακτήρας."
+    },
+    "bloodAddled": {
+      "label": "Ενεργοποίηση Blood-addled συνεργατικής συμπεριφοράς",
+      "category": "Συμπεριφορά πολλών παικτών",
+      "info": "Ενεργοποιεί την Blood-addled αλληλεπίδραση που σχετίζεται με συνεργάτες που χρησιμοποιούν το Hunter rune.",
+      "impact": "Αυτό αλλάζει τη συμπεριφορά εχθρότητας στο multiplayer όσο πληρούνται οι σχετικές συνθήκες rune.",
+      "warning": "Χρησιμοποιήστε αυτό μόνο εκτός σύνδεσης ή με παίκτες που συναινούν. Μπορεί να δημιουργήσει συγκεχυμένη εχθρική συμπεριφορά σε co-op."
+    }
+  },
+  "id": {
+    "restoreMaria": {
+      "label": "Pulihkan dialog Lady Maria",
+      "category": "Pemulihan narasi",
+      "info": "Mengembalikan sejumlah kecil baris dialog sebelum pertemuan dengan Lady Maria.",
+      "impact": "Ini hanya mengubah status dialog; tidak memberikan item, level, atau hadiah bos.",
+      "warning": "Gunakan pada salinan save terlebih dahulu jika Anda saat ini berada di area Astral Clocktower."
+    },
+    "dollLullaby": {
+      "label": "Aktifkan lullaby warisan Doll",
+      "category": "Presentasi warisan",
+      "info": "Mengaktifkan kembali perilaku lullaby Doll yang terkait dengan rilis awal 1.0.",
+      "impact": "Ini mengembalikan status presentasi warisan. Tidak mengubah atribut, inventaris, atau hadiah quest.",
+      "warning": "Perilaku sensitif terhadap versi; simpan cadangan sampai karakter berhasil dimuat."
+    },
+    "bloodAddled": {
+      "label": "Aktifkan perilaku co-op Blood-addled",
+      "category": "Perilaku multipemain",
+      "info": "Mengaktifkan interaksi Blood-addled yang terkait dengan pemain co-op yang menggunakan Hunter rune.",
+      "impact": "Ini mengubah perilaku permusuhan multipemain selama kondisi rune yang relevan terpenuhi.",
+      "warning": "Gunakan ini hanya offline atau dengan pemain yang menyetujui. Dapat menyebabkan perilaku co-op yang bermusuhan dan membingungkan."
+    }
+  },
+  "da": {
+    "restoreMaria": {
+      "label": "Gendan Lady Maria-dialog",
+      "category": "Gendannelse af fortælling",
+      "info": "Gendanner et lille sæt dialoglinjer før mødet med Lady Maria.",
+      "impact": "Dette ændrer kun dialogtilstanden; det giver ikke et objekt, niveau eller boss-belønning.",
+      "warning": "Brug først på en kopieret save, hvis du befinder dig i Astral Clocktower-området."
+    },
+    "dollLullaby": {
+      "label": "Aktivér Doll’s arvede vuggevise",
+      "category": "Arvet præsentation",
+      "info": "Genaktiverer Doll’s vuggeviseopførsel forbundet med den oprindelige 1.0-udgivelse.",
+      "impact": "Dette gendanner en ældre præsentationstilstand. Det ændrer ikke attributter, inventar eller quest-belønninger.",
+      "warning": "Adfærden er versionsfølsom; behold backup, indtil karakteren er indlæst med succes."
+    },
+    "bloodAddled": {
+      "label": "Aktivér Blood-addled co-op-adfærd",
+      "category": "Multiplayer-adfærd",
+      "info": "Aktiverer Blood-addled-interaktionen for co-op-spillere, der bruger Hunter rune.",
+      "impact": "Dette ændrer multiplayerens fjendtlighedsadfærd, mens de relevante rune-betingelser er opfyldt.",
+      "warning": "Brug kun offline eller med spillere, der giver samtykke. Det kan skabe forvirrende fjendtlig co-op-adfærd."
+    }
+  },
+  "fi": {
+    "restoreMaria": {
+      "label": "Palauta Lady Marian dialogi",
+      "category": "Tarinan palautus",
+      "info": "Palauttaa pienen joukon vuorosanoja ennen kohtaamista Lady Marian kanssa.",
+      "impact": "Tämä muuttaa vain dialogitilaa; se ei myönnä esinettä, tasoa tai pomopalkkiota.",
+      "warning": "Käytä ensin kopioidulla tallenteella, jos olet Astral Clocktower-alueella."
+    },
+    "dollLullaby": {
+      "label": "Ota käyttöön Dollin perintökehtolaulu",
+      "category": "Perintöesitys",
+      "info": "Ota uudelleen käyttöön Dollin kehtolaulun käyttäytyminen, joka liittyi alkuperäiseen versioon 1.0.",
+      "impact": "Tämä palauttaa perintöesityksen tilan. Se ei muuta attribuutteja, inventaariota tai tehtäväpalkintoja.",
+      "warning": "Käyttäytyminen on versiotuntuva; pidä varmuuskopio, kunnes hahmo on latautunut onnistuneesti."
+    },
+    "bloodAddled": {
+      "label": "Ota käyttöön Blood-addled co-op -käyttäytyminen",
+      "category": "Moninpelikäyttäytyminen",
+      "info": "Ota käyttöön Blood-addled-vuorovaikutus, joka liittyy yhteistyöpelaajiin, jotka käyttävät Hunter rune.",
+      "impact": "Tämä muuttaa moninpelin vihamielisyyskäyttäytymistä niin kauan kuin asiaankuuluvat rune-ehdot täyttyvät.",
+      "warning": "Käytä tätä vain offline-tilassa tai suostuvien pelaajien kanssa. Se voi aiheuttaa sekavaa vihamielistä yhteistyökäyttäytymistä."
+    }
+  },
+  "hu": {
+    "restoreMaria": {
+      "label": "Lady Maria párbeszédének visszaállítása",
+      "category": "Narratív helyreállítás",
+      "info": "Visszaállít néhány párbeszédsort a Lady Maria találkozó előttről.",
+      "impact": "Csak a párbeszédállapotot módosítja; nem ad tárgyat, szintet vagy főellenfél-jutalmat.",
+      "warning": "Először egy másolt mentésen használd, ha jelenleg az Astral Clocktower területén vagy."
+    },
+    "dollLullaby": {
+      "label": "A Doll régi altatódalának engedélyezése",
+      "category": "Régi megjelenés",
+      "info": "Újra engedélyezi a Doll altatódal viselkedését, amely az eredeti 1.0 kiadáshoz tartozott.",
+      "impact": "Ez egy régi megjelenési állapotot állít helyre. Nem módosítja az attribútumokat, a készletet vagy a küldetésjutalmakat.",
+      "warning": "A viselkedés verziófüggő; tartsd meg a biztonsági másolatot, amíg sikeresen be nem töltötted a karaktert."
+    },
+    "bloodAddled": {
+      "label": "A Blood-addled kooperatív viselkedés engedélyezése",
+      "category": "Többjátékos viselkedés",
+      "info": "Engedélyezi a Blood-addled interakciót, amely kooperáló játékosoknál lép fel a Hunter rune használatakor.",
+      "impact": "Megváltoztatja a többjátékos ellenségességi viselkedést, amíg a vonatkozó rune feltételek teljesülnek.",
+      "warning": "Ezt csak offline használd, vagy beleegyező játékosokkal. Zavaróan ellenséges kooperatív viselkedést okozhat."
+    }
+  },
+  "nb": {
+    "restoreMaria": {
+      "label": "Gjenopprett Lady Marias dialog",
+      "category": "Narrativ gjenoppretting",
+      "info": "Gjenoppretter et lite sett med dialoglinjer før møtet med Lady Maria.",
+      "impact": "Endrer bare dialogtilstanden; gir ikke gjenstand, nivå eller boss-belønning.",
+      "warning": "Bruk først på en kopiert lagring hvis du befinner deg i Astral Clocktower-området."
+    },
+    "dollLullaby": {
+      "label": "Aktiver Dolls arvede vuggesang",
+      "category": "Arvet presentasjon",
+      "info": "Gjenskaper Dolls vuggesangsoppførsel knyttet til den opprinnelige 1.0-utgivelsen.",
+      "impact": "Dette gjenoppretter en arvet presentasjonsstatus. Den endrer ikke attributter, inventar eller oppdragsbelønninger.",
+      "warning": "Atferden er versjonsavhengig; behold sikkerhetskopien til du har lastet inn karakteren med hell."
+    },
+    "bloodAddled": {
+      "label": "Aktiver Blood-addled samspillsoppførsel",
+      "category": "Flerspillersoppførsel",
+      "info": "Aktiverer Blood-addled-interaksjonen knyttet til samspillere som bruker Hunter rune.",
+      "impact": "Endrer flerspiller fiendtlighetsatferd mens de relevante rune-betingelsene er oppfylt.",
+      "warning": "Bruk dette kun offline eller med spillere som samtykker. Det kan skape forvirrende fiendtlig samspillsoppførsel."
+    }
+  }
+};
+
+Object.entries(v021FlagEntryOverrides).forEach(([language, entries]) => {
+  const current = flagOverrides[language] ?? {};
+  flagOverrides[language] = {
+    ...current,
+    entries: { ...(current.entries ?? {}), ...entries },
+  };
+});
 
 const beta5TranslatedOverrides = {
   "fr": [
@@ -20419,6 +21007,349 @@ const v020FeatureTranslatedOverrides = {
 Object.entries(v020FeatureTranslatedOverrides).forEach(([language, translations]) => {
   const translatedResource = { ...(resources[language] ?? {}) };
   translations.forEach(({ key, value }) => applyTranslationPath(translatedResource, key, value));
+  resources[language] = translatedResource;
+});
+
+const v021RuneOriginEffectOverrides = {
+  fr: "Effet d'origine rune",
+  es: "Efecto de origen rúnico",
+  "pt-PT": "Efeito de origem rúnica",
+  "pt-BR": "Efeito de origem rúnica",
+  ru: "Эффект рунического происхождения",
+  de: "Effekt: Runenursprung",
+  it: "Effetto di origine runica",
+  nl: "Effect van rune-oorsprong",
+  pl: "Efekt pochodzenia runicznego",
+  tr: "Rün kaynaklı etki",
+  uk: "Ефект рунічного походження",
+  ja: "ルーン由来の効果",
+  ko: "룬 유래 효과",
+  "zh-CN": "符文来源效果",
+  sv: "Effekt från runor",
+  cs: "Efekt runového původu",
+  ro: "Efect de origine runică",
+  el: "Εφέ προέλευσης ρούνας",
+  id: "Efek asal rune",
+  da: "Runeoprindelseseffekt",
+  fi: "Ruunaperäinen tehoste",
+  hu: "Rúna eredetű hatás",
+  nb: "Runeopprinnelseseffekt",
+};
+
+Object.entries(v021RuneOriginEffectOverrides).forEach(([language, value]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  applyTranslationPath(translatedResource, "inventory.runeOriginEffect", value);
+  resources[language] = translatedResource;
+});
+
+const v021CharacterUiTranslatedOverrides = {
+  "fr": {
+    "exportFace": "Exporter le visage",
+    "importFace": "Importer le visage",
+    "saveFaceFile": "Enregistrer le fichier visage",
+    "selectFaceFile": "Sélectionner un fichier visage",
+    "faceExported": "Visage exporté avec succès.",
+    "faceImported": "Visage importé avec succès.",
+    "faceActionFailed": "L'action sur le visage n'a pas pu être effectuée.",
+    "iszStatus": "Statut Isz :",
+    "fixIsz": "Corriger Isz",
+    "iszFixed": "Le statut d'Isz a été mis à jour.",
+    "iszFixFailed": "Impossible de mettre à jour le statut d'Isz."
+  },
+  "es": {
+    "exportFace": "Exportar rostro",
+    "importFace": "Importar rostro",
+    "saveFaceFile": "Guardar archivo de rostro",
+    "selectFaceFile": "Seleccionar un archivo de rostro",
+    "faceExported": "Rostro exportado correctamente.",
+    "faceImported": "Rostro importado correctamente.",
+    "faceActionFailed": "No se pudo completar la acción con el rostro.",
+    "iszStatus": "Estado de Isz:",
+    "fixIsz": "Reparar Isz",
+    "iszFixed": "El estado de Isz se actualizó.",
+    "iszFixFailed": "No se pudo actualizar el estado de Isz."
+  },
+  "pt-PT": {
+    "exportFace": "Exportar rosto",
+    "importFace": "Importar rosto",
+    "saveFaceFile": "Guardar ficheiro de rosto",
+    "selectFaceFile": "Selecionar um ficheiro de rosto",
+    "faceExported": "Rosto exportado com sucesso.",
+    "faceImported": "Rosto importado com sucesso.",
+    "faceActionFailed": "Não foi possível concluir a ação no rosto.",
+    "iszStatus": "Estado de Isz:",
+    "fixIsz": "Corrigir Isz",
+    "iszFixed": "Estado de Isz atualizado.",
+    "iszFixFailed": "Não foi possível atualizar o estado de Isz."
+  },
+  "pt-BR": {
+    "exportFace": "Exportar rosto",
+    "importFace": "Importar rosto",
+    "saveFaceFile": "Salvar arquivo de rosto",
+    "selectFaceFile": "Selecionar um arquivo de rosto",
+    "faceExported": "Rosto exportado com sucesso.",
+    "faceImported": "Rosto importado com sucesso.",
+    "faceActionFailed": "A ação no rosto não pôde ser concluída.",
+    "iszStatus": "Status de Isz:",
+    "fixIsz": "Corrigir Isz",
+    "iszFixed": "Estado de Isz atualizado.",
+    "iszFixFailed": "Não foi possível atualizar o estado de Isz."
+  },
+  "ru": {
+    "exportFace": "Экспорт лица",
+    "importFace": "Импорт лица",
+    "saveFaceFile": "Сохранить файл лица",
+    "selectFaceFile": "Выбрать файл лица",
+    "faceExported": "Лицо успешно экспортировано.",
+    "faceImported": "Лицо успешно импортировано.",
+    "faceActionFailed": "Действие с лицом не удалось.",
+    "iszStatus": "Isz статус:",
+    "fixIsz": "Исправить Isz",
+    "iszFixed": "Статус Isz обновлён.",
+    "iszFixFailed": "Не удалось обновить статус Isz."
+  },
+  "de": {
+    "exportFace": "Gesicht exportieren",
+    "importFace": "Gesicht importieren",
+    "saveFaceFile": "Gesichtsdatei speichern",
+    "selectFaceFile": "Gesichtsdatei auswählen",
+    "faceExported": "Gesicht erfolgreich exportiert.",
+    "faceImported": "Gesicht erfolgreich importiert.",
+    "faceActionFailed": "Die Aktion für das Gesicht konnte nicht abgeschlossen werden.",
+    "iszStatus": "Isz-Status:",
+    "fixIsz": "Isz beheben",
+    "iszFixed": "Isz-Status wurde aktualisiert.",
+    "iszFixFailed": "Isz-Status konnte nicht aktualisiert werden."
+  },
+  "it": {
+    "exportFace": "Esporta volto",
+    "importFace": "Importa volto",
+    "saveFaceFile": "Salva file volto",
+    "selectFaceFile": "Seleziona un file volto",
+    "faceExported": "Volto esportato con successo.",
+    "faceImported": "Volto importato con successo.",
+    "faceActionFailed": "Impossibile completare l'azione sul volto.",
+    "iszStatus": "Stato di Isz:",
+    "fixIsz": "Ripara Isz",
+    "iszFixed": "Lo stato di Isz è stato aggiornato.",
+    "iszFixFailed": "Impossibile aggiornare lo stato di Isz."
+  },
+  "nl": {
+    "exportFace": "Exporteer gezicht",
+    "importFace": "Importeer gezicht",
+    "saveFaceFile": "Gezichtsbestand opslaan",
+    "selectFaceFile": "Selecteer een gezichtsbestand",
+    "faceExported": "Gezicht succesvol geëxporteerd.",
+    "faceImported": "Gezicht succesvol geïmporteerd.",
+    "faceActionFailed": "De bewerking voor het gezicht kon niet worden voltooid.",
+    "iszStatus": "Isz-status:",
+    "fixIsz": "Isz repareren",
+    "iszFixed": "Isz-status is bijgewerkt.",
+    "iszFixFailed": "Isz-status kon niet worden bijgewerkt."
+  },
+  "pl": {
+    "exportFace": "Eksportuj twarz",
+    "importFace": "Importuj twarz",
+    "saveFaceFile": "Zapisz plik twarzy",
+    "selectFaceFile": "Wybierz plik twarzy",
+    "faceExported": "Twarz została pomyślnie wyeksportowana.",
+    "faceImported": "Twarz została pomyślnie zaimportowana.",
+    "faceActionFailed": "Nie można ukończyć operacji na twarzy.",
+    "iszStatus": "Status Isz:",
+    "fixIsz": "Napraw Isz",
+    "iszFixed": "Status Isz został zaktualizowany.",
+    "iszFixFailed": "Nie można zaktualizować statusu Isz."
+  },
+  "tr": {
+    "exportFace": "Yüzü dışa aktar",
+    "importFace": "Yüzü içe aktar",
+    "saveFaceFile": "Yüz dosyasını kaydet",
+    "selectFaceFile": "Bir yüz dosyası seç",
+    "faceExported": "Yüz başarıyla dışa aktarıldı.",
+    "faceImported": "Yüz başarıyla içe aktarıldı.",
+    "faceActionFailed": "Yüz işlemi tamamlanamadı.",
+    "iszStatus": "Isz durumu:",
+    "fixIsz": "Isz'i düzelt",
+    "iszFixed": "Isz durumu güncellendi.",
+    "iszFixFailed": "Isz durumu güncellenemedi."
+  },
+  "uk": {
+    "exportFace": "Експортувати обличчя",
+    "importFace": "Імпортувати обличчя",
+    "saveFaceFile": "Зберегти файл обличчя",
+    "selectFaceFile": "Вибрати файл обличчя",
+    "faceExported": "Обличчя успішно експортовано.",
+    "faceImported": "Обличчя успішно імпортовано.",
+    "faceActionFailed": "Не вдалося виконати дію з обличчям.",
+    "iszStatus": "Isz статус:",
+    "fixIsz": "Виправити Isz",
+    "iszFixed": "Статус Isz оновлено.",
+    "iszFixFailed": "Не вдалося оновити статус Isz."
+  },
+  "ja": {
+    "exportFace": "顔をエクスポート",
+    "importFace": "顔をインポート",
+    "saveFaceFile": "顔ファイルを保存",
+    "selectFaceFile": "顔ファイルを選択",
+    "faceExported": "顔を正常にエクスポートしました。",
+    "faceImported": "顔を正常にインポートしました。",
+    "faceActionFailed": "顔の操作を完了できませんでした。",
+    "iszStatus": "Iszステータス:",
+    "fixIsz": "Iszを修正",
+    "iszFixed": "Iszステータスが更新されました。",
+    "iszFixFailed": "Iszステータスを更新できませんでした。"
+  },
+  "ko": {
+    "exportFace": "얼굴 내보내기",
+    "importFace": "얼굴 가져오기",
+    "saveFaceFile": "얼굴 파일 저장",
+    "selectFaceFile": "얼굴 파일 선택",
+    "faceExported": "얼굴이 성공적으로 내보내졌습니다.",
+    "faceImported": "얼굴이 성공적으로 가져와졌습니다.",
+    "faceActionFailed": "얼굴 작업을 완료할 수 없습니다.",
+    "iszStatus": "Isz 상태:",
+    "fixIsz": "Isz 수정",
+    "iszFixed": "Isz 상태가 업데이트되었습니다.",
+    "iszFixFailed": "Isz 상태를 업데이트할 수 없습니다."
+  },
+  "zh-CN": {
+    "exportFace": "导出人脸",
+    "importFace": "导入人脸",
+    "saveFaceFile": "保存人脸文件",
+    "selectFaceFile": "选择人脸文件",
+    "faceExported": "人脸导出成功。",
+    "faceImported": "人脸导入成功。",
+    "faceActionFailed": "无法完成该人脸操作。",
+    "iszStatus": "Isz 状态:",
+    "fixIsz": "修复 Isz",
+    "iszFixed": "Isz 状态已更新。",
+    "iszFixFailed": "无法更新 Isz 状态。"
+  },
+  "sv": {
+    "exportFace": "Exportera ansikte",
+    "importFace": "Importera ansikte",
+    "saveFaceFile": "Spara ansiktsfil",
+    "selectFaceFile": "Välj en ansiktsfil",
+    "faceExported": "Ansikte exporterades.",
+    "faceImported": "Ansikte importerades.",
+    "faceActionFailed": "Åtgärden för ansiktet kunde inte slutföras.",
+    "iszStatus": "Isz-status:",
+    "fixIsz": "Åtgärda Isz",
+    "iszFixed": "Isz-status uppdaterad.",
+    "iszFixFailed": "Kunde inte uppdatera Isz-status."
+  },
+  "cs": {
+    "exportFace": "Exportovat tvář",
+    "importFace": "Importovat tvář",
+    "saveFaceFile": "Uložit soubor tváře",
+    "selectFaceFile": "Vybrat soubor tváře",
+    "faceExported": "Tvář úspěšně exportována.",
+    "faceImported": "Tvář úspěšně importována.",
+    "faceActionFailed": "Akci s tváří nelze dokončit.",
+    "iszStatus": "Stav Isz:",
+    "fixIsz": "Opravit Isz",
+    "iszFixed": "Stav Isz byl aktualizován.",
+    "iszFixFailed": "Stav Isz nelze aktualizovat."
+  },
+  "ro": {
+    "exportFace": "Exportă față",
+    "importFace": "Importă față",
+    "saveFaceFile": "Salvează fișierul feței",
+    "selectFaceFile": "Selectează un fișier al feței",
+    "faceExported": "Fața a fost exportată cu succes.",
+    "faceImported": "Fața a fost importată cu succes.",
+    "faceActionFailed": "Acțiunea pe față nu a putut fi finalizată.",
+    "iszStatus": "Stare Isz:",
+    "fixIsz": "Repară Isz",
+    "iszFixed": "Starea Isz a fost actualizată.",
+    "iszFixFailed": "Starea Isz nu a putut fi actualizată."
+  },
+  "el": {
+    "exportFace": "Εξαγωγή προσώπου",
+    "importFace": "Εισαγωγή προσώπου",
+    "saveFaceFile": "Αποθήκευση αρχείου προσώπου",
+    "selectFaceFile": "Επιλέξτε αρχείο προσώπου",
+    "faceExported": "Το πρόσωπο εξήχθη με επιτυχία.",
+    "faceImported": "Το πρόσωπο εισήχθη με επιτυχία.",
+    "faceActionFailed": "Η ενέργεια για το πρόσωπο δεν ολοκληρώθηκε.",
+    "iszStatus": "Κατάσταση Isz:",
+    "fixIsz": "Διόρθωση Isz",
+    "iszFixed": "Η κατάσταση του Isz ενημερώθηκε.",
+    "iszFixFailed": "Δεν ήταν δυνατή η ενημέρωση της κατάστασης του Isz."
+  },
+  "id": {
+    "exportFace": "Ekspor wajah",
+    "importFace": "Impor wajah",
+    "saveFaceFile": "Simpan berkas wajah",
+    "selectFaceFile": "Pilih berkas wajah",
+    "faceExported": "Wajah berhasil diekspor.",
+    "faceImported": "Wajah berhasil diimpor.",
+    "faceActionFailed": "Tindakan pada wajah tidak dapat diselesaikan.",
+    "iszStatus": "Status Isz:",
+    "fixIsz": "Perbaiki Isz",
+    "iszFixed": "Status Isz diperbarui.",
+    "iszFixFailed": "Status Isz tidak dapat diperbarui."
+  },
+  "da": {
+    "exportFace": "Eksporter ansigt",
+    "importFace": "Importer ansigt",
+    "saveFaceFile": "Gem ansigtsfil",
+    "selectFaceFile": "Vælg en ansigtsfil",
+    "faceExported": "Ansigt eksporteret.",
+    "faceImported": "Ansigt importeret.",
+    "faceActionFailed": "Handlingen for ansigtet kunne ikke gennemføres.",
+    "iszStatus": "Isz-status:",
+    "fixIsz": "Ret Isz",
+    "iszFixed": "Isz-status blev opdateret.",
+    "iszFixFailed": "Isz-status kunne ikke opdateres."
+  },
+  "fi": {
+    "exportFace": "Vie kasvot",
+    "importFace": "Tuo kasvot",
+    "saveFaceFile": "Tallenna kasvotiedosto",
+    "selectFaceFile": "Valitse kasvotiedosto",
+    "faceExported": "Kasvot viety onnistuneesti.",
+    "faceImported": "Kasvot tuotu onnistuneesti.",
+    "faceActionFailed": "Kasvotoimintoa ei voitu suorittaa.",
+    "iszStatus": "Isz tila:",
+    "fixIsz": "Korjaa Isz",
+    "iszFixed": "Isz-tila päivitettiin.",
+    "iszFixFailed": "Iszin tilaa ei voitu päivittää."
+  },
+  "hu": {
+    "exportFace": "Arc exportálása",
+    "importFace": "Arc importálása",
+    "saveFaceFile": "Arcfájl mentése",
+    "selectFaceFile": "Válasszon arcfájlt",
+    "faceExported": "Arc sikeresen exportálva.",
+    "faceImported": "Arc sikeresen importálva.",
+    "faceActionFailed": "Nem sikerült végrehajtani az arc műveletet.",
+    "iszStatus": "Isz állapota:",
+    "fixIsz": "Isz javítása",
+    "iszFixed": "Isz állapota frissítve.",
+    "iszFixFailed": "Nem sikerült frissíteni az Isz állapotát."
+  },
+  "nb": {
+    "exportFace": "Eksporter ansikt",
+    "importFace": "Importer ansikt",
+    "saveFaceFile": "Lagre ansiktsfil",
+    "selectFaceFile": "Velg en ansiktsfil",
+    "faceExported": "Ansikt eksportert.",
+    "faceImported": "Ansikt importert.",
+    "faceActionFailed": "Handling for ansiktet kunne ikke fullføres.",
+    "iszStatus": "Isz-status:",
+    "fixIsz": "Fiks Isz",
+    "iszFixed": "Isz-status ble oppdatert.",
+    "iszFixFailed": "Kunne ikke oppdatere Isz-status."
+  }
+};
+
+
+Object.entries(v021CharacterUiTranslatedOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => {
+    applyTranslationPath(translatedResource, `characterForm.${key}`, value);
+  });
   resources[language] = translatedResource;
 });
 

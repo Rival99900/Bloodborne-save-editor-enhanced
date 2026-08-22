@@ -1,7 +1,37 @@
+import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import * as dialog from "@tauri-apps/plugin-dialog";
+import StatusDialog from "../../components/StatusDialog";
+import { useLocalization } from "../../i18n/localization";
 
 function Appearance() {
+  const { t } = useLocalization();
+  const [notice, setNotice] = useState(null);
+
+  async function exportFace() {
+    try {
+      const path = await dialog.save({ title: t("characterForm.saveFaceFile") });
+      if (!path) return;
+      await invoke("export_appearance", { path });
+      setNotice({ tone: "success", title: t("characterForm.faceExported") });
+    } catch (error) {
+      console.error("Unable to export face data.", error);
+      setNotice({ tone: "error", title: t("characterForm.faceActionFailed") });
+    }
+  }
+
+  async function importFace() {
+    try {
+      const path = await dialog.open({ title: t("characterForm.selectFaceFile") });
+      if (!path) return;
+      await invoke("import_appearance", { path });
+      setNotice({ tone: "success", title: t("characterForm.faceImported") });
+    } catch (error) {
+      console.error("Unable to import face data.", error);
+      setNotice({ tone: "error", title: t("characterForm.faceActionFailed") });
+    }
+  }
+
   return (
     <div
       style={{
@@ -13,61 +43,28 @@ function Appearance() {
     >
       <button
         className="buttonBg"
-        style={{
-          padding: "0 15px",
-          fontSize: "inherit",
-          backgroundSize: "100% 100%",
-        }}
-        onClick={async () => {
-          try {
-            const path = await dialog.save({
-              title: "Save face file",
-            });
-
-            if (path) {
-              const success = await invoke("export_appearance", {
-                path,
-              });
-
-              await dialog.message(success);
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        }}
+        style={{ padding: "0 15px", fontSize: "inherit", backgroundSize: "100% 100%" }}
+        type="button"
+        onClick={exportFace}
       >
-        Export face
+        {t("characterForm.exportFace")}
       </button>
       <button
         className="buttonBg"
-        style={{
-          padding: "0 15px",
-          fontSize: "inherit",
-          backgroundSize: "100% 100%",
-        }}
-        onClick={async () => {
-          try {
-            const path = await dialog.open({
-              title: "Select a face file",
-            });
-
-            if (path) {
-              const success = await invoke("import_appearance", {
-                path,
-              });
-
-              await dialog.message(success);
-            }
-          } catch (error) {
-            console.error(error);
-            await dialog.message(error, {
-              type: "error",
-            });
-          }
-        }}
+        style={{ padding: "0 15px", fontSize: "inherit", backgroundSize: "100% 100%" }}
+        type="button"
+        onClick={importFace}
       >
-        Import face
+        {t("characterForm.importFace")}
       </button>
+      {notice ? (
+        <StatusDialog
+          tone={notice.tone}
+          title={notice.title}
+          closeLabel={t("saveFlow.close")}
+          onClose={() => setNotice(null)}
+        />
+      ) : null}
     </div>
   );
 }

@@ -54,7 +54,7 @@ pub fn parse_equipped_gems(
     //The offset must point to the fist bit of the block
     let mut get_slots = |offset: usize| -> bool {
         let id = u64::from_le_bytes([
-            file_data.bytes[offset + 0],
+            file_data.bytes[offset],
             file_data.bytes[offset + 1],
             file_data.bytes[offset + 2],
             file_data.bytes[offset + 3],
@@ -73,7 +73,7 @@ pub fn parse_equipped_gems(
             let mut gem: Option<Upgrade> = None;
             //If the slot shape is valid
             if let Ok(shape) = SlotShape::try_from(&[
-                file_data.bytes[val + 0],
+                file_data.bytes[val],
                 file_data.bytes[val + 1],
                 file_data.bytes[val + 2],
                 file_data.bytes[val + 3],
@@ -133,7 +133,7 @@ pub fn parse_equipped_gems(
 
         //Skip the garbage
         while u64::from_le_bytes([
-            file_data.bytes[index + 0],
+            file_data.bytes[index],
             file_data.bytes[index + 1],
             file_data.bytes[index + 2],
             file_data.bytes[index + 3],
@@ -152,7 +152,7 @@ pub fn parse_equipped_gems(
         }
     }
 
-    return slots;
+    slots
 }
 
 #[cfg(test)]

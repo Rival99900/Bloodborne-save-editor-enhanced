@@ -256,9 +256,8 @@ impl Inventory {
             file_data.bytes[first_counter_index + 3],
         ]) + 1;
         let new_counter_value_bytes: [u8; 4] = new_counter_value.to_le_bytes();
-        for i in 0..4 {
-            file_data.bytes[i + first_counter_index] = new_counter_value_bytes[i];
-        }
+        file_data.bytes[first_counter_index..first_counter_index + 4]
+            .copy_from_slice(&new_counter_value_bytes);
 
         let new_counter_value = u32::from_le_bytes([
             file_data.bytes[second_counter_index],
@@ -267,9 +266,8 @@ impl Inventory {
             file_data.bytes[second_counter_index + 3],
         ]) + 1;
         let new_counter_value_bytes: [u8; 4] = new_counter_value.to_le_bytes();
-        for i in 0..4 {
-            file_data.bytes[i + second_counter_index] = new_counter_value_bytes[i];
-        }
+        file_data.bytes[second_counter_index..second_counter_index + 4]
+            .copy_from_slice(&new_counter_value_bytes);
 
         let (info, article_type) = result.expect("Err variant checked at the beginning");
 
@@ -309,11 +307,11 @@ impl Inventory {
             }
         }
 
-        let vec = self.articles.entry(article_type).or_insert(Vec::new());
+        let vec = self.articles.entry(article_type).or_default();
         new_item.index = vec.len();
         vec.push(new_item);
 
-        return Ok(self);
+        Ok(self)
     }
 
     //This method asumes that upgrade exists in file_data and it's not in the inventory
@@ -357,9 +355,7 @@ impl Inventory {
         let endian_source = u32::to_le_bytes(upgrade.source);
         let endian_quantity = [0x01, 0x00, 0x00, 0x00];
 
-        for i in 0..4 {
-            file_data.bytes[empty_slot_index + i] = endian_id[i];
-        }
+        file_data.bytes[empty_slot_index..empty_slot_index + 4].copy_from_slice(&endian_id);
         for i in 4..8 {
             file_data.bytes[empty_slot_index + i] = endian_source[i % 4];
         }
@@ -374,9 +370,8 @@ impl Inventory {
             file_data.bytes[first_counter_index + 3],
         ]) + 1;
         let new_counter_value_bytes: [u8; 4] = new_counter_value.to_le_bytes();
-        for i in 0..4 {
-            file_data.bytes[i + first_counter_index] = new_counter_value_bytes[i];
-        }
+        file_data.bytes[first_counter_index..first_counter_index + 4]
+            .copy_from_slice(&new_counter_value_bytes);
 
         let new_counter_value = u32::from_le_bytes([
             file_data.bytes[second_counter_index],
@@ -385,9 +380,8 @@ impl Inventory {
             file_data.bytes[second_counter_index + 3],
         ]) + 1;
         let new_counter_value_bytes: [u8; 4] = new_counter_value.to_le_bytes();
-        for i in 0..4 {
-            file_data.bytes[i + second_counter_index] = new_counter_value_bytes[i];
-        }
+        file_data.bytes[second_counter_index..second_counter_index + 4]
+            .copy_from_slice(&new_counter_value_bytes);
 
         //Find the first item of the storage to increase it's index
         let mut found = false;
@@ -412,10 +406,7 @@ impl Inventory {
             }
         }
 
-        let vec = self
-            .upgrades
-            .entry(upgrade.upgrade_type)
-            .or_insert(Vec::new());
+        let vec = self.upgrades.entry(upgrade.upgrade_type).or_default();
         upgrade.index = vec.len();
         vec.push(upgrade);
     }
@@ -464,7 +455,7 @@ impl Inventory {
                             slot.gem = None;
 
                             self.add_upgrade(file_data, gem, is_storage);
-                            return Ok(());
+                            Ok(())
                         } else {
                             Err(Error::CustomError(
                                 "ERROR: The specified slot does not have a gem.",
@@ -522,8 +513,8 @@ impl Inventory {
                     ));
                 }
                 //Update the index of the upgrades after the one to be removed
-                for i in upgrade_index + 1..upgrades_of_type.len() {
-                    upgrades_of_type[i].index -= 1;
+                for upgrade in upgrades_of_type.iter_mut().skip(upgrade_index + 1) {
+                    upgrade.index -= 1;
                 }
                 Ok(upgrades_of_type.remove(upgrade_index))
             } else {
@@ -575,23 +566,20 @@ impl Inventory {
                                     is_storage,
                                 );
 
-                                match result {
-                                    Ok(gem) => {
-                                        id_bytes = gem.id.to_le_bytes();
-                                        unsafe {
-                                            (*slot_raw_pointer).gem = Some(gem);
-                                        }
+                                {
+                                    let gem = result?;
+                                    id_bytes = gem.id.to_le_bytes();
+                                    unsafe {
+                                        (*slot_raw_pointer).gem = Some(gem);
                                     }
-                                    Err(error) => return Err(error),
                                 };
 
                                 //Equip the gem in the slot
                                 found = true;
                                 //24 is the index for the first gem id
                                 let slot_index = i + 24 + 8 * slot_index;
-                                for j in slot_index..slot_index + 4 {
-                                    file_data.bytes[j] = id_bytes[j - slot_index];
-                                }
+                                file_data.bytes[slot_index..slot_index + 4]
+                                    .copy_from_slice(&id_bytes);
                                 break;
                             }
                         }
@@ -601,7 +589,7 @@ impl Inventory {
                             ));
                         }
 
-                        return Ok(());
+                        Ok(())
                     } else {
                         Err(Error::CustomError("ERROR: slot_index is invalid."))
                     }
@@ -648,24 +636,20 @@ pub fn get_info_item(id: u32, _resources_path: &PathBuf) -> Result<(ItemInfo, Ar
     let items = items.as_object().unwrap();
 
     for (category, category_items) in items {
-        match category_items
+        if let Some(found) = category_items
             .as_object()
             .unwrap()
             .keys()
             .find(|x| x.parse::<u32>().unwrap() == id)
         {
-            Some(found) => {
-                let mut info: ItemInfo =
-                    serde_json::from_value(category_items[found].clone()).unwrap();
-                if category == "chalice" {
-                    info.extra_info = Some(json!({
-                        "depth": &category_items[found]["depth"],
-                        "area": &category_items[found]["area"],
-                    }));
-                }
-                return Ok((info, ArticleType::from(category.as_str())));
+            let mut info: ItemInfo = serde_json::from_value(category_items[found].clone()).unwrap();
+            if category == "chalice" {
+                info.extra_info = Some(json!({
+                    "depth": &category_items[found]["depth"],
+                    "area": &category_items[found]["area"],
+                }));
             }
-            None => (),
+            return Ok((info, ArticleType::from(category.as_str())));
         }
     }
     Err(Error::CustomError(
@@ -680,18 +664,15 @@ pub fn get_info_armor(
     let armors: Value = serde_json::from_str(include_str!("../../resources/armors.json")).unwrap();
     let armors = armors.as_object().unwrap();
 
-    match armors.keys().find(|x| x.parse::<u32>().unwrap() == id) {
-        Some(found) => {
-            let mut info: ItemInfo = serde_json::from_value(armors[found].clone()).unwrap();
-            info.extra_info = Some(json!({
-                "physicalDefense": &armors[found]["physicalDefense"],
-                "elementalDefense": &armors[found]["elementalDefense"],
-                "resistance": &armors[found]["resistance"],
-                "beasthood": &armors[found]["beasthood"]
-            }));
-            return Ok((info, ArticleType::Armor));
-        }
-        None => (),
+    if let Some(found) = armors.keys().find(|x| x.parse::<u32>().unwrap() == id) {
+        let mut info: ItemInfo = serde_json::from_value(armors[found].clone()).unwrap();
+        info.extra_info = Some(json!({
+            "physicalDefense": &armors[found]["physicalDefense"],
+            "elementalDefense": &armors[found]["elementalDefense"],
+            "resistance": &armors[found]["resistance"],
+            "beasthood": &armors[found]["beasthood"]
+        }));
+        return Ok((info, ArticleType::Armor));
     }
     Err(Error::CustomError(
         "ERROR: Failed to find info for the armor.",
@@ -712,28 +693,25 @@ pub fn get_info_weapon(
         id = (id / 100000) * 100000; //Remove the weapon mods to be able to find its info
     }
     for (category, category_weapons) in weapons {
-        match category_weapons
+        if let Some(found) = category_weapons
             .as_object()
             .unwrap()
             .keys()
             .find(|x| x.parse::<u32>().unwrap() == id)
         {
-            Some(found) => {
-                let mut info: ItemInfo =
-                    serde_json::from_value(category_weapons[found].clone()).unwrap();
-                let mut extra_info = json!({
-                    "_base_damage": &category_weapons[found]["damage"],
-                    "damage": &category_weapons[found]["damage"],
-                    "upgrade_level": weapon_mods.upgrade_level,
-                    "imprint": weapon_mods.imprint,
-                });
-                if weapon_mods.upgrade_level > 0 {
-                    scale_weapon_info(&mut extra_info);
-                }
-                info.extra_info = Some(extra_info);
-                return Ok((info, ArticleType::from(category.as_str())));
+            let mut info: ItemInfo =
+                serde_json::from_value(category_weapons[found].clone()).unwrap();
+            let mut extra_info = json!({
+                "_base_damage": &category_weapons[found]["damage"],
+                "damage": &category_weapons[found]["damage"],
+                "upgrade_level": weapon_mods.upgrade_level,
+                "imprint": weapon_mods.imprint,
+            });
+            if weapon_mods.upgrade_level > 0 {
+                scale_weapon_info(&mut extra_info);
             }
-            None => (),
+            info.extra_info = Some(extra_info);
+            return Ok((info, ArticleType::from(category.as_str())));
         }
     }
     Err(Error::CustomError(

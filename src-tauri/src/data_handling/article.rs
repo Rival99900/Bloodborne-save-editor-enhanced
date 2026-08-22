@@ -125,7 +125,7 @@ impl Article {
 
         //Set amount to 1 if the item is a key or a chalice
         if (article_type == ArticleType::Key) || (article_type == ArticleType::Chalice) {
-            let amount = vec![0x01, 0x00, 0x00, 0x00];
+            let amount = [0x01, 0x00, 0x00, 0x00];
             for j in i + 12..=i + 15 {
                 file_data.bytes[j] = amount[j - i - 12];
             }
@@ -231,7 +231,7 @@ impl Article {
         self.second_part = second_part;
         self.article_type = article_type;
         self.type_family = type_family;
-        return Ok(());
+        Ok(())
     }
 
     #[cfg_attr(not(test), allow(dead_code))]

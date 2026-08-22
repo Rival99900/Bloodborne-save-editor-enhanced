@@ -233,7 +233,7 @@ fn get_isz(state_save: tauri::State<MutexSave>) -> [u8; 2] {
     let mut save_option = state_save.inner().data.lock().unwrap();
     let save = save_option.as_mut().unwrap();
 
-    return save.file.get_isz();
+    save.file.get_isz()
 }
 
 #[tauri::command]
@@ -428,7 +428,7 @@ fn transform_item(
                     .inventory
                     .articles
                     .entry(moved_item.article_type)
-                    .or_insert_with(Vec::new);
+                    .or_default();
 
                 // Add the item to the new category
                 new_category.push(moved_item);
@@ -633,9 +633,8 @@ fn edit_slot(
     } else {
         Location::Inventory
     };
-    let article: Option<*mut Article>;
 
-    article = save
+    let article: Option<*mut Article> = save
         .get_article_mut(location, article_type, article_index)
         .map(|u| u as *mut _);
 

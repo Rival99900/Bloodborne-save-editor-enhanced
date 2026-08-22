@@ -123,9 +123,7 @@ impl Upgrade {
         let effect_offset = upgrade_offset + 16 + (value_index * 4);
         let bytes = new_value.to_le_bytes();
 
-        for i in effect_offset..effect_offset + 4 {
-            file_data.bytes[i] = bytes[i - effect_offset];
-        }
+        file_data.bytes[effect_offset..effect_offset + 4].copy_from_slice(&bytes);
         Ok(())
     }
 
@@ -212,7 +210,7 @@ pub fn parse_upgrades(file_data: &FileData) -> HashMap<u32, (Upgrade, UpgradeTyp
 
     for i in (start..end).step_by(40) {
         let id = u32::from_le_bytes([
-            file_data.bytes[i + 0],
+            file_data.bytes[i],
             file_data.bytes[i + 1],
             file_data.bytes[i + 2],
             file_data.bytes[i + 3],

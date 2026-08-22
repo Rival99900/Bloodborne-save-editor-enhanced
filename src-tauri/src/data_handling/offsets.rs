@@ -15,12 +15,12 @@ pub struct Offsets {
 
 impl Offsets {
     //Searches the username and inventories offsets
-    pub fn build(bytes: &Vec<u8>) -> Result<Offsets, Error> {
+    pub fn build(bytes: &[u8]) -> Result<Offsets, Error> {
         let mut inventory_offset = (0, 0);
         let mut upgrades_offset = (START_TO_UPGRADE, 0);
         let mut appearance_offset = (0, 0);
         let mut lced_offset = 0;
-        let appearance_start_bytes = [b'F', b'A', b'C', b'E'];
+        let appearance_start_bytes = *b"FACE";
         let lced_bytes = [0x4C, 0x43, 0x45, 0x44];
 
         let gems = [

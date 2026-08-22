@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { ImagesContext } from "../context/imagesContext";
 import { ItemsContext } from "../context/itemsContext";
+import { useLocalization } from "../i18n/localization";
 import {
   getGemPath as getSafeGemPath,
   getRunePath as getSafeRunePath,
@@ -16,6 +17,7 @@ const canvasRenderTokens = new WeakMap();
 function useDraw() {
   const { images } = useContext(ImagesContext);
   const { gemEffectCatalog = [], nativeGemEffectIds = new Set() } = useContext(ItemsContext);
+  const { t } = useLocalization();
 
   async function drawCanvas(ctx, item, isSmall = false, context = images) {
     if (!ctx?.canvas || !item) return;
@@ -94,6 +96,10 @@ function useDraw() {
 
     if (article?.upgrade_type) {
       await handleUpgrades(ctx, article, { x, y, size }, isCurrentRender);
+      // Gem cards already render their own name, rating and shape in handleUpgrades.
+      // Returning here prevents the generic item text from being drawn a second time
+      // over a Rune-origin thumbnail.
+      if (article.upgrade_type === "Gem") return;
     }
     if (!isCurrentRender()) return;
     if (type === "chalice") {
@@ -223,6 +229,12 @@ function useDraw() {
       ctx.shadowColor = "black";
       ctx.fillStyle = "#ab9e87";
       ctx.fillText(finalName, 107, 28);
+      if (runeOriginPrimaryEffect) {
+        ctx.font = "12px Reim";
+        ctx.fillStyle = "#d3b56b";
+        ctx.fillText(t("inventory.runeOriginEffect"), 107, 46);
+        ctx.font = "20px Reim";
+      }
 
       const margin = 100;
       // Draw numbers

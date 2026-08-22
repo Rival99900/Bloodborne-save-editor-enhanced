@@ -53,7 +53,7 @@ impl Coordinates {
                 });
             }
         }
-        return Err(Error::CustomError("Coordinates could not be found"));
+        Err(Error::CustomError("Coordinates could not be found"))
     }
 
     pub fn edit(&self, file: &mut FileData, x: f32, y: f32, z: f32) {

@@ -8,14 +8,19 @@ function Playtime({ ms, setMs }) {
   const [time, setTime] = useState(interpret(ms));
 
   useEffect(() => {
-    setMs(toMs(time));
-  }, [time]);
+    setTime(interpret(ms));
+  }, [ms]);
+
+  useEffect(() => {
+    const nextMs = toMs(time);
+    if (nextMs !== ms) setMs(nextMs);
+  }, [ms, setMs, time]);
 
   function handleChange(e) {
     const { name, value } = e.target;
     if (value < 0) return;
 
-    setTime((prev) => ({ ...prev, [name]: parseInt(value) }));
+    setTime((prev) => ({ ...prev, [name]: Number.parseInt(value, 10) || 0 }));
   }
 
   function handleInput(e) {

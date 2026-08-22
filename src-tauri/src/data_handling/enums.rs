@@ -32,16 +32,16 @@ pub enum ArticleType {
     Armor,
 }
 
-impl Into<TypeFamily> for ArticleType {
-    fn into(self) -> TypeFamily {
-        match self {
-            Self::Consumable => TypeFamily::Item,
-            Self::Material => TypeFamily::Item,
-            Self::Key => TypeFamily::Item,
-            Self::Chalice => TypeFamily::Item,
-            Self::RightHand => TypeFamily::Weapon,
-            Self::LeftHand => TypeFamily::Weapon,
-            Self::Armor => TypeFamily::Armor,
+impl From<ArticleType> for TypeFamily {
+    fn from(val: ArticleType) -> Self {
+        match val {
+            ArticleType::Consumable => TypeFamily::Item,
+            ArticleType::Material => TypeFamily::Item,
+            ArticleType::Key => TypeFamily::Item,
+            ArticleType::Chalice => TypeFamily::Item,
+            ArticleType::RightHand => TypeFamily::Weapon,
+            ArticleType::LeftHand => TypeFamily::Weapon,
+            ArticleType::Armor => TypeFamily::Armor,
         }
     }
 }
@@ -96,15 +96,15 @@ impl TryFrom<&[u8; 4]> for SlotShape {
         }
     }
 }
-impl Into<[u8; 4]> for SlotShape {
-    fn into(self) -> [u8; 4] {
-        match self {
-            Self::Closed => [0x00, 0x00, 0x00, 0x80],
-            Self::Radial => [0x01, 0x00, 0x00, 0x00],
-            Self::Triangle => [0x02, 0x00, 0x00, 0x00],
-            Self::Waning => [0x04, 0x00, 0x00, 0x00],
-            Self::Circle => [0x08, 0x00, 0x00, 0x00],
-            Self::Droplet => [0x3F, 0x00, 0x00, 0x00],
+impl From<SlotShape> for [u8; 4] {
+    fn from(val: SlotShape) -> Self {
+        match val {
+            SlotShape::Closed => [0x00, 0x00, 0x00, 0x80],
+            SlotShape::Radial => [0x01, 0x00, 0x00, 0x00],
+            SlotShape::Triangle => [0x02, 0x00, 0x00, 0x00],
+            SlotShape::Waning => [0x04, 0x00, 0x00, 0x00],
+            SlotShape::Circle => [0x08, 0x00, 0x00, 0x00],
+            SlotShape::Droplet => [0x3F, 0x00, 0x00, 0x00],
         }
     }
 }

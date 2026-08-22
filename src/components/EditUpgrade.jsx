@@ -93,6 +93,7 @@ function EditUpgrade({
   const [conversionConfirmOpen, setConversionConfirmOpen] = useState(false);
   // Rune presets are one-time actions; the field intentionally remains blank until chosen.
   const [runePresetSelection, setRunePresetSelection] = useState("");
+  const [runePresetResetKey, setRunePresetResetKey] = useState(0);
   // A personal preset is opt-in. Never present the current rune or gem name as a preset
   // that appears to have been selected automatically when the editor opens.
   const [presetName, setPresetName] = useState("");
@@ -102,6 +103,7 @@ function EditUpgrade({
     // The editor must never inherit a previously selected Rune preset or preset name
     // when another rune is opened. Current rune effects remain the editable draft.
     setRunePresetSelection("");
+    setRunePresetResetKey((current) => current + 1);
     setPresetName("");
     setPresetStatus("");
   }, [selected.id, selected.index, upgrade_type]);
@@ -112,12 +114,12 @@ function EditUpgrade({
         id: `rune-forge-${index}`,
         category: "Rune",
         name: preset.label,
-        description: preset.info?.note || "Validated Caryll Rune preset.",
+        description: preset.info?.note || t("forge.runePresetDescription"),
         effectIds: preset.effects,
         info: preset.info,
         shape: preset.shape,
       })),
-    [runePresets],
+    [runePresets, t],
   );
 
   // The primary effect can be a Caryll Rune id sitting in a Blood Gem slot (see the
@@ -216,7 +218,7 @@ function EditUpgrade({
     const normalizedEffects = Array.from({ length: EFFECT_SLOT_COUNT }, (_, index) => {
       const requestedId = Number(presetEffects[index]?.[0]);
       const entry = gemEffectCatalogById.get(requestedId);
-      return entry ? [Number(entry.value), entry.label] : [NO_EFFECT_ID, "No Effect"];
+      return entry ? [Number(entry.value), entry.label] : [NO_EFFECT_ID, t("forge.noEffect")];
     });
     const primary = normalizedEffects[0];
     const primaryEffect = gemEffectCatalogById.get(Number(primary[0]));
@@ -228,14 +230,14 @@ function EditUpgrade({
       info: {
         ...previous.info,
         ...preset.info,
-        name: preset.info?.name ?? `${preset.name} Forge ${upgrade_type}`,
+        name: preset.info?.name ?? preset.name,
         effect: primary[1],
         rating: primaryEffect?.rating ?? preset.info?.rating ?? previous.info.rating,
         level: primaryEffect?.level ?? preset.info?.level ?? previous.info.level,
-        note: preset.info?.note ?? `${upgrade_type} Forge preset using validated in-game effect IDs.`,
+        note: preset.info?.note ?? t("forge.runePresetDescription"),
       },
     }));
-    setPresetName(preset.name || `Custom Forge ${upgrade_type}`);
+    setPresetName(preset.name || t("forge.customSet"));
     setPresetStatus("");
     setForgeOpen(false);
   }
@@ -467,7 +469,7 @@ function EditUpgrade({
             ))}
             {upgrade_type === "Rune" ? (
               <SelectSearch
-                key={`rune-preset-${runePresetSelection || "empty"}`}
+                key={`rune-preset-${selected.id}-${selected.index}-${runePresetResetKey}`}
                 defaultValue={t("forge.runePresetPlaceholder")}
                 onChange={(event) => {
                   const { info, effects: presetEffects, shape: presetShape } = event;
@@ -482,7 +484,10 @@ function EditUpgrade({
                     effects: [...presetEffects],
                   }));
                   // Presets are immediate one-time actions, not a persistent field value.
+                  // Remount the searchable control so its internal search text cannot make
+                  // the last chosen preset look preselected on the next opened Rune.
                   setRunePresetSelection("");
+                  setRunePresetResetKey((current) => current + 1);
                 }}
                 selected={runePresetSelection}
                 options={runePresets}

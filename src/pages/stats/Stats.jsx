@@ -1,18 +1,50 @@
 import { useContext, useState } from "react";
 import { SaveContext } from "../../context/context";
 import Stat from "../../components/Stat";
+import StatusDialog from "../../components/StatusDialog";
 import { invoke } from "@tauri-apps/api/core";
 import { ImagesContext } from "../../context/imagesContext";
-import * as dialog from "@tauri-apps/plugin-dialog";
 import { useLocalization } from "../../i18n/localization";
+
+const cloneStats = (stats) => JSON.parse(JSON.stringify(stats));
+const EDITABLE_STAT_NAMES = new Set(["Echoes", "Insight", "Voice", "Gender", "Ng", "Origin"]);
 
 function Stats() {
   const { save, setSave } = useContext(SaveContext);
-  const [editedStats, setEditedStats] = useState(
-    JSON.parse(JSON.stringify(save.stats)),
-  );
+  const [editedStats, setEditedStats] = useState(() => cloneStats(save.stats));
+  const [showSuccess, setShowSuccess] = useState(false);
   const { images } = useContext(ImagesContext);
   const { t } = useLocalization();
+
+  function resetStats() {
+    setEditedStats(cloneStats(save.stats));
+  }
+
+  async function confirmStats() {
+    try {
+      const draft = cloneStats(editedStats);
+      const updatedSave = await setSave(t("revision.statsUpdated"), async (current) => {
+        for (const stat of draft) {
+          const currentStat = current.stats.find((entry) => entry.name === stat.name);
+          if (currentStat?.value !== stat.value) {
+            await invoke("edit_stat", {
+              relOffset: stat.rel_offset,
+              length: stat.length,
+              times: stat.times,
+              value: Number.parseInt(stat.value, 10),
+            });
+          }
+        }
+        return { ...current, stats: draft };
+      });
+      if (updatedSave) {
+        setEditedStats(cloneStats(updatedSave.stats));
+        setShowSuccess(true);
+      }
+    } catch (error) {
+      console.error("Unable to update statistics.", error);
+    }
+  }
 
   return (
     <div
@@ -26,80 +58,36 @@ function Stats() {
         alignItems: "center",
         justifyItems: "center",
         placeItems: "center",
-        // padding: "1.5rem",
         fontSize: "1.5rem",
         background: `url(${images.backgrounds["statsBg.png"].src})`,
         backgroundSize: "cover",
       }}
     >
       {editedStats
-        .filter(
-          (x) =>
-            x.name !== "Echoes" &&
-            x.name !== "Insight" &&
-            x.name !== "Voice" &&
-            x.name !== "Gender" &&
-            x.name !== "Ng" &&
-            x.name !== "Origin",
-        )
-        .map((x, i) => (
+        .filter((stat) => !EDITABLE_STAT_NAMES.has(stat.name))
+        .map((stat) => (
           <Stat
             editedStats={editedStats}
             setEditedStats={setEditedStats}
-            key={i}
-            stat={x}
+            key={stat.name}
+            stat={stat}
           />
         ))}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          justifySelf: "center",
-          width: "100%",
-        }}
-      >
-        <button
-          className="btn-underline"
-          style={{
-            position: "relative",
-            padding: "0 1rem",
-          }}
-          onClick={() => {
-            setEditedStats(JSON.parse(JSON.stringify(save.stats)));
-          }}
-        >
+      <div className="editor-action-row">
+        <button className="control-button control-button--quiet" type="button" onClick={resetStats}>
           {t("actions.reset")}
         </button>
-        <button
-          className="btn-underline"
-          style={{
-            position: "relative",
-            padding: "0 1rem",
-          }}
-          onClick={async () => {
-            try {
-              const updatedSave = await setSave(t("revision.statsUpdated"), async (current) => {
-                for (const [index, stat] of editedStats.entries()) {
-                  if (save.stats[index].value !== stat.value) {
-                    await invoke("edit_stat", {
-                      relOffset: stat.rel_offset,
-                      length: stat.length,
-                      times: stat.times,
-                      value: Number.parseInt(stat.value, 10),
-                    });
-                  }
-                }
-                return { ...current, stats: JSON.parse(JSON.stringify(editedStats)) };
-              });
-              if (updatedSave) await dialog.message(t("actions.changesConfirmed"));
-            } catch (error) {
-              console.error("Unable to update statistics.", error);
-            }
-          }}
-        >
+        <button className="control-button control-button--primary" type="button" onClick={confirmStats}>
           {t("actions.confirm")}
         </button>
       </div>
+      {showSuccess ? (
+        <StatusDialog
+          title={t("actions.changesConfirmed")}
+          closeLabel={t("saveFlow.close")}
+          onClose={() => setShowSuccess(false)}
+        />
+      ) : null}
     </div>
   );
 }

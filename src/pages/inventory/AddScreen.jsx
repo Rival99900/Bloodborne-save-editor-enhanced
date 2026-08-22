@@ -4,6 +4,7 @@ import { SaveContext } from "../../context/context";
 import { ItemsContext } from "../../context/itemsContext";
 import SearchAllitems from "../../components/SearchAllitems";
 import SelectSearch from "../../components/SelectSearch";
+import DarkSelect from "../../components/DarkSelect";
 import { useLocalization } from "../../i18n/localization";
 
 const NO_EFFECT_ID = 4294967295;
@@ -162,11 +163,13 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
         <div className="inventory-dialog__controls">
           <label>
             <span>{t("inventory.catalog")}</span>
-            <select value={catalog} onChange={(event) => resetCatalog(event.target.value)}>
-              {availableCatalogs.map((entry) => (
-                <option key={entry.value} value={entry.value}>{t(entry.labelKey)}</option>
-              ))}
-            </select>
+            <DarkSelect
+              className="inventory-dialog__select"
+              ariaLabel={t("inventory.catalog")}
+              options={availableCatalogs.map((entry) => ({ value: entry.value, label: t(entry.labelKey) }))}
+              value={catalog}
+              onChange={resetCatalog}
+            />
           </label>
           {isStandardItem ? (
             <label className="inventory-dialog__quantity">
@@ -186,11 +189,13 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           {isUpgrade ? (
             <label>
               <span>{catalog === "gem" ? t("inventory.gemShape") : t("inventory.runeType")}</span>
-              <select value={shape} onChange={(event) => setShape(event.target.value)}>
-                {(catalog === "gem" ? GEM_SHAPES : RUNE_TYPES).map((entry) => (
-                  <option key={entry} value={entry}>{entry}</option>
-                ))}
-              </select>
+              <DarkSelect
+                className="inventory-dialog__select"
+                ariaLabel={catalog === "gem" ? t("inventory.gemShape") : t("inventory.runeType")}
+                options={(catalog === "gem" ? GEM_SHAPES : RUNE_TYPES).map((entry) => ({ value: entry, label: entry }))}
+                value={shape}
+                onChange={setShape}
+              />
             </label>
           ) : null}
         </div>
