@@ -238,6 +238,9 @@ function App() {
       saveRef.current = loadedSnapshot;
       baselineSaveRef.current = cloneSave(loadedSnapshot);
       setSaveState(loadedSnapshot);
+      // A newly opened file is a new editing session. Rebuild all routed screens
+      // so no page keeps a draft or canvas from the previously opened save.
+      setRevisionEpoch((current) => current + 1);
       resetRevisions();
       setSaveName(await basename(selectedPath));
       setSaveStatusKey("saveFlow.loadedStatus");

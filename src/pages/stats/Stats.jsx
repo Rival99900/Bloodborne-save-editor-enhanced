@@ -13,11 +13,18 @@ function Stats() {
   const { save, setSave } = useContext(SaveContext);
   const [editedStats, setEditedStats] = useState(() => cloneStats(save.stats));
   const [showSuccess, setShowSuccess] = useState(false);
+  const [resetEpoch, setResetEpoch] = useState(0);
   const { images } = useContext(ImagesContext);
   const { t } = useLocalization();
 
+  function restoreStatsDraft(nextSave = save) {
+    setEditedStats(cloneStats(nextSave.stats));
+    setShowSuccess(false);
+    setResetEpoch((current) => current + 1);
+  }
+
   function resetStats() {
-    setEditedStats(cloneStats(save.stats));
+    restoreStatsDraft();
   }
 
   async function confirmStats() {
@@ -48,6 +55,7 @@ function Stats() {
 
   return (
     <div
+      key={resetEpoch}
       style={{
         alignContent: "center",
         gridColumn: "2/4",

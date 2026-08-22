@@ -237,11 +237,24 @@ fn get_isz(state_save: tauri::State<MutexSave>) -> [u8; 2] {
 }
 
 #[tauri::command]
-fn fix_isz(state_save: tauri::State<MutexSave>) -> String {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+fn fix_isz(state_save: tauri::State<MutexSave>) -> Result<Value, String> {
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before fixing the Isz state.".to_string())?;
 
-    save.file.fix_isz()
+    let before = save.file.get_isz();
+    let message = save.file.fix_isz();
+    let changed = before != save.file.get_isz();
+    Ok(json!({
+        "save": serde_json::to_value(&save).map_err(|error| error.to_string())?,
+        "changed": changed,
+        "message": message,
+    }))
 }
 
 #[tauri::command]
@@ -731,14 +744,19 @@ fn export_appearance(path: &str, state_save: tauri::State<MutexSave>) -> Result<
 }
 
 #[tauri::command]
-fn import_appearance(path: &str, state_save: tauri::State<MutexSave>) -> Result<String, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save: &mut SaveData = save_option.as_mut().unwrap();
+fn import_appearance(path: &str, state_save: tauri::State<MutexSave>) -> Result<Value, String> {
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save: &mut SaveData = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before importing appearance data.".to_string())?;
 
-    match appearance::import(&mut save.file, path) {
-        Ok(_) => Ok("Successfully imported".to_string()),
-        Err(_) => Err("The imported file is not a face".to_string()),
-    }
+    appearance::import(&mut save.file, path)
+        .map_err(|_| "The imported file is not a face".to_string())?;
+    serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]

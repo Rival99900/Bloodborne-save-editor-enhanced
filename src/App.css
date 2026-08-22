@@ -2930,3 +2930,112 @@
   border-color: rgba(139, 193, 133, 0.8) !important;
   background: linear-gradient(135deg, rgba(65, 126, 70, 0.76), rgba(118, 174, 105, 0.46)) !important;
 }
+
+/* Final local UI pass: keep Add content-sized, prevent multilingual control clipping,
+   and make the revision summary/log share one readable scroll region. */
+.inventory-dialog__card--add {
+  height: auto;
+  max-height: calc(100vh - 1.5rem);
+  grid-template-rows: auto auto auto auto auto;
+}
+
+.inventory-dialog__card--add .inventory-dialog__standard-content {
+  grid-template-rows: auto auto;
+  overflow: visible;
+}
+
+.inventory-dialog__card--add .catalog-picker {
+  grid-template-rows: auto auto;
+  overflow: visible;
+}
+
+.inventory-dialog__card--add .catalog-picker__results,
+.inventory-dialog__standard-content .catalog-picker__results {
+  min-height: 0;
+  height: auto;
+  max-height: min(26rem, calc(100vh - 23rem));
+}
+
+.inventory-dialog__card--add .inventory-dialog__actions {
+  padding-top: 0.7rem;
+}
+
+.editButtons .editQuantity .buttonBg,
+.inventory-btn {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-spacing: normal;
+  letter-spacing: 0;
+  white-space: normal;
+}
+
+.editButtons .editQuantity .buttonBg {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.78rem, 1.05vw, 1rem);
+}
+
+@media (min-width: 761px) {
+  .editButtons .editQuantity {
+    grid-template-columns: minmax(0, 1fr) minmax(6.75rem, 8.75rem);
+  }
+
+  .editButtons .editQuantity .buttonBg {
+    min-height: 3.25rem;
+    padding-inline: 0.65rem;
+  }
+}
+
+.App--compact .editButtons .editQuantity {
+  grid-template-columns: minmax(0, 1fr) minmax(6.25rem, 7.5rem);
+}
+
+.App--compact .editButtons .editQuantity .buttonBg,
+.App--compact .inventory-btn {
+  min-height: 2.65rem;
+  padding: 0.4rem 0.55rem;
+  font-size: clamp(0.72rem, 1vw, 0.9rem);
+  line-height: 1.16;
+}
+
+.revision-panel__content {
+  display: grid;
+  min-height: 0;
+  align-content: start;
+  gap: 0.75rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.1rem 0.35rem 0.1rem 0.1rem;
+  scrollbar-color: #b9964e #121316;
+  scrollbar-width: thin;
+}
+
+.revision-panel__content::-webkit-scrollbar { width: 0.55rem; }
+.revision-panel__content::-webkit-scrollbar-track { background: #121316; }
+.revision-panel__content::-webkit-scrollbar-thumb {
+  border: 0.12rem solid #121316;
+  border-radius: 999px;
+  background: #b9964e;
+}
+
+.revision-panel__summary {
+  margin: 0;
+}
+
+.revision-panel__list {
+  min-height: auto;
+  overflow: visible;
+  padding-right: 0;
+}
+
+.revision-panel__summary li,
+.revision-panel__list li > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 36rem) {
+  .inventory-dialog__card--add .catalog-picker__results,
+  .inventory-dialog__standard-content .catalog-picker__results {
+    max-height: min(20rem, calc(100vh - 20rem));
+  }
+}

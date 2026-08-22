@@ -1,10 +1,12 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import StatusDialog from "../../components/StatusDialog";
 import { useLocalization } from "../../i18n/localization";
+import { SaveContext } from "../../context/context";
 
 function IszGlitch() {
   const { t } = useLocalization();
+  const { setSave } = useContext(SaveContext);
   const [isz, setIsz] = useState([]);
   const [notice, setNotice] = useState(null);
 
@@ -22,9 +24,12 @@ function IszGlitch() {
 
   async function fixIsz() {
     try {
-      await invoke("fix_isz");
+      const updatedSave = await setSave(t("revision.characterUpdated"), async () => {
+        const result = await invoke("fix_isz");
+        return result.changed ? result.save : null;
+      });
       await refreshIsz();
-      setNotice({ tone: "success", title: t("characterForm.iszFixed") });
+      if (updatedSave) setNotice({ tone: "success", title: t("characterForm.iszFixed") });
     } catch (error) {
       console.error("Unable to fix Isz status.", error);
       setNotice({ tone: "error", title: t("characterForm.iszFixFailed") });

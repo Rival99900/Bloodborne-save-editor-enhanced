@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import * as dialog from "@tauri-apps/plugin-dialog";
 import StatusDialog from "../../components/StatusDialog";
 import { useLocalization } from "../../i18n/localization";
+import { SaveContext } from "../../context/context";
 
 function Appearance() {
   const { t } = useLocalization();
+  const { setSave } = useContext(SaveContext);
   const [notice, setNotice] = useState(null);
 
   async function exportFace() {
@@ -24,7 +26,10 @@ function Appearance() {
     try {
       const path = await dialog.open({ title: t("characterForm.selectFaceFile") });
       if (!path) return;
-      await invoke("import_appearance", { path });
+      const updatedSave = await setSave(t("revision.characterUpdated"), () =>
+        invoke("import_appearance", { path }),
+      );
+      if (!updatedSave) return;
       setNotice({ tone: "success", title: t("characterForm.faceImported") });
     } catch (error) {
       console.error("Unable to import face data.", error);

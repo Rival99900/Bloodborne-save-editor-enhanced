@@ -21353,6 +21353,179 @@ Object.entries(v021CharacterUiTranslatedOverrides).forEach(([language, translati
   resources[language] = translatedResource;
 });
 
+
+// Final localization completeness pass: replace the remaining English fallbacks
+// detected in active UI resources without changing keys or fallback behavior.
+const finalI18nAuditOverrides = {
+  "cs": {
+    "characterForm.teleport": "Teleport:",
+    "forge.builtIn.arcane-surge.name": "Arkanový nápor",
+    "forge.builtIn.bloodtinge-hunter.name": "Lovec Bloodtinge",
+    "forge.builtIn.blunt-breaker.name": "Lámač tupých",
+    "forge.builtIn.bolt-surge.name": "Bleskový nápor",
+    "forge.builtIn.elemental-ascendant.name": "Elementální vzestup",
+    "forge.builtIn.endless-hunt.name": "Nekonečné lovení",
+    "forge.builtIn.flame-surge.name": "Plamenný nápor",
+    "forge.builtIn.forged-endurance.name": "Kovaná výdrž",
+    "forge.builtIn.glass-cannon.name": "Skleněné dělo",
+    "forge.builtIn.last-stand.name": "Poslední odpor",
+    "forge.builtIn.sustained-hunt.name": "Vytrvalé lovení",
+    "forge.builtIn.thrust-specialist.name": "Specialista na bodné"
+  },
+  "da": {
+    "characterForm.teleport": "Teleport:",
+    "forge.builtIn.abyssal-vitality.name": "Afgrundens vitalitet +75",
+    "forge.gemForge": "Ædelstenssmedje",
+    "forge.runeForge": "Runesmedje",
+    "inventory.gems": "Ædelstene",
+    "update.version": "Version {{version}}"
+  },
+  "de": {
+    "characterForm.name": "Name:",
+    "characterForm.teleport": "Teleportieren:",
+    "forge.builtIn.bloodtinge-hunter.name": "Bloodtinge‑Jäger",
+    "forge.builtIn.last-stand.name": "Letzter Widerstand",
+    "sidebar.flags": "Flaggen",
+    "update.version": "Version {{version}}"
+  },
+  "el": {
+    "forge.builtIn.bloodtinge-hunter.name": "Κυνηγός Bloodtinge"
+  },
+  "es": {
+    "forge.categories.Elemental": "Elemental",
+    "forge.categories.Experimental": "Experimental",
+    "forge.categories.Personal": "Personal",
+    "forge.personal": "Personal",
+    "forge.presets": "Preajustes"
+  },
+  "fi": {
+    "forge.builtIn.abyssal-vitality.name": "Abyssaalinen elinvoima +75",
+    "forge.gemForge": "Jalokiviverstas",
+    "forge.runeForge": "Riimuverstas"
+  },
+  "fr": {
+    "update.version": "Version {{version}}"
+  },
+  "hu": {
+    "forge.gemForge": "Drágakőműhely",
+    "forge.runeForge": "Rúnaműhely"
+  },
+  "id": {
+    "characterForm.teleport": "Teleportasi:",
+    "forge.builtIn.bloodtinge-hunter.name": "Pemburu Bloodtinge",
+    "forge.categories.Elemental": "Elemental",
+    "inventory.catalogArmors": "Baju Besi",
+    "inventory.item": "Barang",
+    "inventory.type.chalice": "cawan",
+    "inventory.type.item": "Barang",
+    "inventory.type.key": "kunci"
+  },
+  "ko": {
+    "forge.builtIn.bloodtinge-hunter.name": "블러딩티지 헌터"
+  },
+  "nb": {
+    "forge.builtIn.abyssal-vitality.name": "Avgrunnens livskraft +75",
+    "forge.builtIn.all-damage-vanguard.name": "Forpost",
+    "forge.builtIn.apex-nourishing.name": "Apex nærende",
+    "forge.builtIn.apex-physical.name": "Apex fysisk",
+    "forge.builtIn.arcane-surge.name": "Arkan bølge",
+    "forge.builtIn.bloodtinge-hunter.name": "Bloodtinge‑jeger",
+    "forge.builtIn.blunt-breaker.name": "Slagknuser",
+    "forge.builtIn.bolt-surge.name": "Lynbølge",
+    "forge.builtIn.elemental-ascendant.name": "Elementær oppstigning",
+    "forge.builtIn.endless-hunt.name": "Endeløs jakt",
+    "forge.builtIn.flame-surge.name": "Flammebølge",
+    "forge.builtIn.forged-endurance.name": "Smidd utholdenhet",
+    "forge.builtIn.glass-cannon.name": "Glasskanon",
+    "forge.builtIn.last-stand.name": "Siste forsvar",
+    "forge.builtIn.sustained-hunt.name": "Varig jakt",
+    "forge.builtIn.thrust-specialist.name": "Stikkspesialist",
+    "forge.categories.Elemental": "Elementær",
+    "forge.gemForge": "Perlesmed",
+    "forge.presets": "Forhåndsinnstillinger",
+    "forge.runeForge": "Runesmed",
+    "inventory.gems": "Perler"
+  },
+  "nl": {
+    "forge.effect": "Effect {{index}}",
+    "sidebar.flags": "Vlaggen"
+  },
+  "pl": {
+    "characterForm.teleport": "Teleportacja:",
+    "forge.builtIn.abyssal-vitality.name": "Witalność Otchłani +75",
+    "forge.builtIn.bloodtinge-hunter.name": "Łowca Bloodtinge"
+  },
+  "pt-BR": {
+    "forge.builtIn.bloodtinge-hunter.name": "Caçador de Bloodtinge",
+    "forge.categories.Elemental": "Elemental",
+    "forge.categories.Experimental": "Experimental",
+    "inventory.item": "item",
+    "inventory.type.chalice": "cálice",
+    "inventory.type.item": "item",
+    "inventory.type.key": "chave",
+    "sidebar.flags": "Bandeiras"
+  },
+  "pt-PT": {
+    "forge.builtIn.bloodtinge-hunter.name": "Caçador de Bloodtinge",
+    "forge.categories.Elemental": "Elemental",
+    "forge.categories.Experimental": "Experimental",
+    "inventory.item": "item",
+    "inventory.type.chalice": "cálice",
+    "inventory.type.item": "item",
+    "inventory.type.key": "chave",
+    "sidebar.flags": "Bandeiras"
+  },
+  "ro": {
+    "forge.builtIn.bloodtinge-hunter.name": "Vânător Bloodtinge",
+    "forge.categories.Elemental": "Elemental",
+    "forge.categories.Experimental": "Experimental",
+    "forge.categories.Personal": "Personal",
+    "forge.personal": "Personal",
+    "inventory.catalog": "Catalog"
+  },
+  "ru": {
+    "forge.builtIn.bloodtinge-hunter.name": "Охотник Bloodtinge"
+  },
+  "sv": {
+    "forge.builtIn.bloodtinge-hunter.name": "Bloodtingejägare",
+    "update.version": "Version {{version}}"
+  },
+  "tr": {
+    "forge.builtIn.abyssal-vitality.name": "Uçurum Canı +75",
+    "forge.builtIn.bloodtinge-hunter.name": "Bloodtinge Avcısı",
+    "forge.builtIn.glass-cannon.name": "Kırılgan Güç",
+    "forge.categories.Elemental": "Elementsel"
+  },
+  "uk": {
+    "forge.builtIn.abyssal-vitality.name": "Життєвість Безодні +75",
+    "forge.builtIn.all-damage-vanguard.name": "Авангард",
+    "forge.builtIn.apex-nourishing.name": "Пікове живлення",
+    "forge.builtIn.apex-physical.name": "Пік фізичної сили",
+    "forge.builtIn.arcane-surge.name": "Арканний сплеск",
+    "forge.builtIn.bloodtinge-hunter.name": "Мисливець Bloodtinge",
+    "forge.builtIn.blunt-breaker.name": "Руйнівник тупих",
+    "forge.builtIn.bolt-surge.name": "Блискавичний сплеск",
+    "forge.builtIn.elemental-ascendant.name": "Повелитель стихій",
+    "forge.builtIn.endless-hunt.name": "Нескінченне полювання",
+    "forge.builtIn.flame-surge.name": "Полум'яний сплеск",
+    "forge.builtIn.forged-endurance.name": "Кована витривалість",
+    "forge.builtIn.glass-cannon.name": "Скляна гармата",
+    "forge.builtIn.last-stand.name": "Останній опір",
+    "forge.builtIn.sustained-hunt.name": "Тривале полювання",
+    "forge.builtIn.thrust-specialist.name": "Спеціаліст із колючих"
+  },
+  "zh-CN": {
+    "forge.builtIn.abyssal-vitality.name": "深渊活力 +75",
+    "forge.builtIn.bloodtinge-hunter.name": "血质猎人"
+  }
+};
+Object.entries(finalI18nAuditOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => {
+    applyTranslationPath(translatedResource, key, value);
+  });
+  resources[language] = translatedResource;
+});
 Object.keys(resources).forEach((language) => {
   const flags = flagOverrides[language] ?? {};
   resources[language] = {

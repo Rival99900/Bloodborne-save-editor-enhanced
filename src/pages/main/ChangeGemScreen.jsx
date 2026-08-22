@@ -6,7 +6,6 @@ import { useLocalization } from "../../i18n/localization";
 
 function ChangeGemScreen({
   article,
-  setArticle,
   setSelected,
   setScreen,
   slotIndex,
@@ -108,12 +107,6 @@ function ChangeGemScreen({
                   }),
                 );
                 if (!edited) return;
-                setArticle((prev) => {
-                  const copy = JSON.parse(JSON.stringify(prev));
-                  copy.slots[slotIndex].gem = null;
-                  return copy;
-                });
-
                 setSelected(null);
 
                 setScreen(false);
@@ -138,12 +131,6 @@ function ChangeGemScreen({
                   });
                 });
                 if (!edited) return;
-                setArticle((prev) => {
-                  const copy = JSON.parse(JSON.stringify(prev));
-                  copy.slots[slotIndex].gem = selectedGem;
-                  return copy;
-                });
-
                 setSelected(null);
 
                 setScreen(false);

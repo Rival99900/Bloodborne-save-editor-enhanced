@@ -57,28 +57,30 @@ function RevisionPanel({ entries, summary = [], onClose, onUndo, onRedo, canUndo
           <button type="button" onClick={onUndo} disabled={!canUndo}>{t("revision.undo")}</button>
           <button type="button" onClick={onRedo} disabled={!canRedo}>{t("revision.redo")}</button>
         </div>
-        {summary.length ? (
-          <section className="revision-panel__summary" aria-labelledby="revision-summary-title">
-            <h3 id="revision-summary-title">{t("revision.summaryTitle")}</h3>
-            <ul>
-              {summary.map((entry) => (
-                <li key={entry.key}>{t(entry.key, { count: entry.count })}</li>
+        <div className="revision-panel__content">
+          {summary.length ? (
+            <section className="revision-panel__summary" aria-labelledby="revision-summary-title">
+              <h3 id="revision-summary-title">{t("revision.summaryTitle")}</h3>
+              <ul>
+                {summary.map((entry) => (
+                  <li key={entry.key}>{t(entry.key, { count: entry.count })}</li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+          {entries.length ? (
+            <ol className="revision-panel__list">
+              {[...entries].reverse().map((entry) => (
+                <li key={entry.id}>
+                  <span className="revision-panel__time">{formatTime(entry.timestamp, language)}</span>
+                  <span>{entry.label}</span>
+                </li>
               ))}
-            </ul>
-          </section>
-        ) : null}
-        {entries.length ? (
-          <ol className="revision-panel__list">
-            {[...entries].reverse().map((entry) => (
-              <li key={entry.id}>
-                <span className="revision-panel__time">{formatTime(entry.timestamp, language)}</span>
-                <span>{entry.label}</span>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="revision-panel__empty">{t("revision.empty")}</p>
-        )}
+            </ol>
+          ) : (
+            <p className="revision-panel__empty">{t("revision.empty")}</p>
+          )}
+        </div>
         <p className="revision-panel__notice">{t("revision.notice")}</p>
       </section>
     </div>

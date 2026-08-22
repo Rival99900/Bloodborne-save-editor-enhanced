@@ -23,14 +23,21 @@ function Character() {
   const [editedPlaytime, setEditedPlaytime] = useState(save.playtime);
   const [editedCoordinates, setEditedCoordinates] = useState(() => ({ ...save.position.coordinates }));
   const [showSuccess, setShowSuccess] = useState(false);
+  const [resetEpoch, setResetEpoch] = useState(0);
   const { images } = useContext(ImagesContext);
   const { t } = useLocalization();
 
+  function restoreCharacterDraft(nextSave = save) {
+    setEditedStats(cloneStats(nextSave.stats));
+    setEditedPlaytime(nextSave.playtime);
+    setEditedCoordinates({ ...nextSave.position.coordinates });
+    setUsername(nextSave.username.string);
+    setShowSuccess(false);
+    setResetEpoch((current) => current + 1);
+  }
+
   function resetCharacter() {
-    setEditedStats(cloneStats(save.stats));
-    setEditedPlaytime(save.playtime);
-    setEditedCoordinates({ ...save.position.coordinates });
-    setUsername(save.username.string);
+    restoreCharacterDraft();
   }
 
   async function confirmCharacter() {
@@ -85,6 +92,7 @@ function Character() {
 
   return (
     <div
+      key={resetEpoch}
       style={{
         gridColumn: "2/4",
         display: "grid",
