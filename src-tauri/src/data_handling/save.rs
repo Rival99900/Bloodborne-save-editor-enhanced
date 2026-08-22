@@ -162,13 +162,15 @@ impl SaveData {
             ));
         }
 
+        const EQUIPMENT_BLOCK_SIZE: usize = 60;
+        const EQUIPMENT_RESERVATION_SIZE: usize = 64;
+        const EQUIPMENT_PREFIX_MASK: u32 = 0xFF80_0000;
+        const EQUIPMENT_SUFFIX_MASK: u32 = 0x007F_FFFF;
+        const WEAPON_PREFIX: u32 = 0x8080_0000;
+        const ARMOR_PREFIX: u32 = 0x9080_0000;
+
         let reserved_block = [0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF];
         let slot_limit = self.file.offsets.username.saturating_sub(147);
-        // Do not reclaim a slot block solely because the editor did not parse its
-        // inventory entry. A malformed or partially understood entry may still be
-        // perfectly valid to the game; reusing its pair corrupts that equipment or
-        // makes the newly added one disappear. Raw inventory references are the
-        // authoritative safety boundary here.
         let referenced_pairs: HashSet<(u32, u32)> = [
             self.file.offsets.inventory,
             self.file.offsets.key_inventory,
@@ -188,7 +190,9 @@ impl SaveData {
         })
         .collect();
         let is_valid_slot_block = |offset: usize| {
-            offset + 60 <= slot_limit
+            offset
+                .checked_add(EQUIPMENT_BLOCK_SIZE)
+                .is_some_and(|end| end <= slot_limit)
                 && self.file.bytes[offset..offset + 8] != [0; 8]
                 && self.file.bytes[offset + 16..offset + 20] == [1, 0, 0, 0]
                 && (0..5).all(|slot| {
@@ -197,41 +201,93 @@ impl SaveData {
                     SlotShape::try_from(&shape).is_ok()
                 })
         };
-        let orphan_block =
-            (self.file.offsets.equipped_gems.0..slot_limit.saturating_sub(60)).find(|offset| {
-                let first =
-                    u32::from_le_bytes(self.file.bytes[*offset..*offset + 4].try_into().unwrap());
-                let second = u32::from_le_bytes(
-                    self.file.bytes[*offset + 4..*offset + 8]
-                        .try_into()
-                        .unwrap(),
-                );
-                is_valid_slot_block(*offset) && !referenced_pairs.contains(&(first, second))
-            });
-        let reserved_offset =
-            (self.file.offsets.equipped_gems.1 + 1..slot_limit.saturating_sub(60)).find(|offset| {
-                (0..8).all(|block| {
-                    self.file.bytes[*offset + block * 8..*offset + (block + 1) * 8]
-                        == reserved_block
-                })
-            });
-        let block_offset = orphan_block.or(reserved_offset).ok_or(Error::CustomError(
-            "ERROR: No safe orphaned or reserved equipment-slot block is available in this save.",
-        ))?;
 
-        let used_codes: HashSet<u32> = referenced_pairs.iter().map(|(first, _)| *first).collect();
-        let prefix = if is_armor { 0x9080_0000 } else { 0x8080_0000 };
-        let first_part = (1..=0x00FF_FFFF)
-            .map(|suffix| prefix | suffix)
-            .find(|candidate| !used_codes.contains(candidate))
+        // A structurally valid slot block can be owned by game state that is not
+        // represented in the three inventory arrays. Never reclaim it merely
+        // because this editor cannot currently resolve a raw inventory reference.
+        // New equipment is permitted only in the explicit all-garbage reservation
+        // immediately following the parser-confirmed equipment region.
+        let after_last_block =
+            self.file
+                .offsets
+                .equipped_gems
+                .1
+                .checked_add(1)
+                .ok_or(Error::CustomError(
+                    "ERROR: Equipment-slot boundary overflow.",
+                ))?;
+        let reservation_offset = after_last_block
+            .checked_add(7)
+            .map(|offset| offset & !7)
+            .ok_or(Error::CustomError(
+                "ERROR: Equipment-slot reservation alignment overflow.",
+            ))?;
+        let reservation_end = reservation_offset
+            .checked_add(EQUIPMENT_RESERVATION_SIZE)
+            .ok_or(Error::CustomError(
+                "ERROR: Equipment-slot reservation overflow.",
+            ))?;
+        if reservation_end > slot_limit
+            || !(0..(EQUIPMENT_RESERVATION_SIZE / reserved_block.len())).all(|block| {
+                self.file.bytes[reservation_offset + block * reserved_block.len()
+                    ..reservation_offset + (block + 1) * reserved_block.len()]
+                    == reserved_block
+            })
+        {
+            return Err(Error::CustomError(
+                "ERROR: No explicit reserved equipment-slot block is available in this save.",
+            ));
+        }
+        let block_offset = reservation_offset;
+
+        // Use a monotonic code above every structurally valid equipment block and
+        // every raw inventory reference, including records the editor cannot parse.
+        // The low 23 bits are the suffix; bit 23 belongs to the equipment prefix.
+        let mut used_codes: HashSet<u32> =
+            referenced_pairs.iter().map(|(first, _)| *first).collect();
+        let mut known_pairs = referenced_pairs.clone();
+        for offset in
+            self.file.offsets.equipped_gems.0..=slot_limit.saturating_sub(EQUIPMENT_BLOCK_SIZE)
+        {
+            if is_valid_slot_block(offset) {
+                let first =
+                    u32::from_le_bytes(self.file.bytes[offset..offset + 4].try_into().unwrap());
+                let second =
+                    u32::from_le_bytes(self.file.bytes[offset + 4..offset + 8].try_into().unwrap());
+                used_codes.insert(first);
+                known_pairs.insert((first, second));
+            }
+        }
+        let highest_suffix = used_codes
+            .iter()
+            .filter_map(|code| {
+                matches!(*code & EQUIPMENT_PREFIX_MASK, WEAPON_PREFIX | ARMOR_PREFIX)
+                    .then_some(*code & EQUIPMENT_SUFFIX_MASK)
+            })
+            .max()
+            .unwrap_or(0);
+        let suffix = highest_suffix
+            .checked_add(1)
+            .filter(|suffix| *suffix != 0 && *suffix <= EQUIPMENT_SUFFIX_MASK)
             .ok_or(Error::CustomError(
                 "ERROR: No unique equipment code is available.",
             ))?;
+        let prefix = if is_armor {
+            ARMOR_PREFIX
+        } else {
+            WEAPON_PREFIX
+        };
+        let first_part = prefix | suffix;
         let second_part = if is_armor {
             (id & 0x00FF_FFFF) | 0x1000_0000
         } else {
             id
         };
+        if used_codes.contains(&first_part) || known_pairs.contains(&(first_part, second_part)) {
+            return Err(Error::CustomError(
+                "ERROR: Generated equipment code collides with an existing record.",
+            ));
+        }
 
         let username = self.file.offsets.username;
         let counter_offsets = [
@@ -537,6 +593,18 @@ mod tests {
         utils::test_utils::{build_save_data, check_bytes},
     };
 
+    fn reserve_equipment_blocks(save: &mut SaveData, count: usize) -> usize {
+        const RESERVATION: [u8; 8] = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
+        const RESERVATION_SIZE: usize = 64;
+        let start = (save.file.offsets.equipped_gems.1 + 8) & !7;
+        let end = start + count * RESERVATION_SIZE;
+        assert!(end <= save.file.offsets.username - 147);
+        for offset in (start..end).step_by(RESERVATION.len()) {
+            save.file.bytes[offset..offset + RESERVATION.len()].copy_from_slice(&RESERVATION);
+        }
+        start
+    }
+
     #[test]
     fn direct_upgrade_reclaims_only_an_orphaned_record() {
         let mut save = build_save_data("testsave9");
@@ -594,7 +662,7 @@ mod tests {
     }
 
     #[test]
-    fn direct_equipment_reclaims_only_an_orphaned_slot_block() {
+    fn direct_equipment_uses_explicit_reserved_slot_block() {
         let mut save = build_save_data("testsave9");
         let original = save
             .inventory
@@ -603,31 +671,36 @@ mod tests {
             .and_then(|weapons| weapons.first())
             .cloned()
             .expect("test save must contain a right-hand weapon");
-        let record_offset = save
-            .file
-            .find_article_offset(original.number, original.id, TypeFamily::Weapon, false)
-            .expect("weapon record must exist");
-        save.file.bytes[record_offset + 4..record_offset + 16]
-            .copy_from_slice(&[0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0]);
-        let weapons = save
-            .inventory
-            .articles
-            .get_mut(&ArticleType::RightHand)
-            .unwrap();
-        weapons.remove(0);
-        for (index, weapon) in weapons.iter_mut().enumerate() {
-            weapon.index = index;
-        }
+        let original_block_offset = (save.file.offsets.equipped_gems.0
+            ..save.file.offsets.username - 147)
+            .find(|offset| {
+                save.file.bytes[*offset..*offset + 4] == original.first_part.to_le_bytes()
+                    && save.file.bytes[*offset + 4..*offset + 8]
+                        == original.second_part.to_le_bytes()
+            })
+            .expect("weapon slot block must exist");
+        let original_block =
+            save.file.bytes[original_block_offset..original_block_offset + 60].to_vec();
+        let reserved_offset = reserve_equipment_blocks(&mut save, 1);
 
         let added = save
             .add_direct_equipment(original.id, false)
-            .expect("an orphaned weapon block must be reusable");
+            .expect("an explicit reservation must be reusable");
         assert_eq!(added.id, original.id);
         assert_eq!(added.type_family, TypeFamily::Weapon);
         assert_eq!(added.slots.as_ref().map(Vec::len), Some(5));
-        assert!(added.slots.as_ref().is_some_and(|slots| slots
-            .iter()
-            .all(|slot| slot.shape == SlotShape::Closed && slot.gem.is_none())));
+        assert_eq!(
+            save.file.bytes[original_block_offset..original_block_offset + 60],
+            original_block
+        );
+        assert_eq!(
+            u32::from_le_bytes(
+                save.file.bytes[reserved_offset..reserved_offset + 4]
+                    .try_into()
+                    .unwrap()
+            ),
+            added.first_part
+        );
 
         let mut parsed = parse_upgrades(&save.file);
         let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
@@ -648,7 +721,7 @@ mod tests {
     }
 
     #[test]
-    fn direct_armor_reclaims_only_an_orphaned_slot_block() {
+    fn direct_armor_uses_explicit_reserved_slot_block() {
         let mut save = build_save_data("testsave9");
         let original = save
             .inventory
@@ -657,29 +730,23 @@ mod tests {
             .and_then(|armors| armors.first())
             .cloned()
             .expect("test save must contain armor");
-        let record_offset = save
-            .file
-            .find_article_offset(original.number, original.id, TypeFamily::Armor, false)
-            .expect("armor record must exist");
-        save.file.bytes[record_offset + 4..record_offset + 16]
-            .copy_from_slice(&[0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0]);
-        let armors = save
-            .inventory
-            .articles
-            .get_mut(&ArticleType::Armor)
-            .unwrap();
-        armors.remove(0);
-        for (index, armor) in armors.iter_mut().enumerate() {
-            armor.index = index;
-        }
+        let reserved_offset = reserve_equipment_blocks(&mut save, 1);
 
         let added = save
             .add_direct_equipment(original.id, true)
-            .expect("an orphaned armor block must be reusable");
+            .expect("an explicit reservation must be reusable");
         assert_eq!(added.id, original.id);
         assert_eq!(added.type_family, TypeFamily::Armor);
         assert_eq!(added.second_part & 0xFF00_0000, 0x1000_0000);
         assert_eq!(added.slots.as_ref().map(Vec::len), Some(5));
+        assert_eq!(
+            u32::from_le_bytes(
+                save.file.bytes[reserved_offset..reserved_offset + 4]
+                    .try_into()
+                    .unwrap()
+            ),
+            added.first_part
+        );
 
         let mut parsed = parse_upgrades(&save.file);
         let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
@@ -1202,5 +1269,479 @@ mod tests {
                 0x00, 0x00
             ]
         ));
+    }
+}
+
+#[cfg(test)]
+mod direct_equipment_safety_regression_tests {
+    use std::collections::HashSet;
+
+    use super::*;
+    use crate::data_handling::{
+        constants::{USERNAME_TO_FIRST_INVENTORY_COUNTER, USERNAME_TO_SECOND_INVENTORY_COUNTER},
+        utils::test_utils::build_save_data,
+    };
+
+    const RESERVATION: [u8; 8] = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
+    const RESERVATION_SIZE: usize = 64;
+    const EQUIPMENT_PREFIX_MASK: u32 = 0xFF80_0000;
+    const EQUIPMENT_SUFFIX_MASK: u32 = 0x007F_FFFF;
+    const WEAPON_PREFIX: u32 = 0x8080_0000;
+    const ARMOR_PREFIX: u32 = 0x9080_0000;
+
+    fn reserve_equipment_blocks(save: &mut SaveData, count: usize) -> usize {
+        let start = (save.file.offsets.equipped_gems.1 + 8) & !7;
+        let end = start + count * RESERVATION_SIZE;
+        assert!(end <= save.file.offsets.username - 147);
+        for offset in (start..end).step_by(RESERVATION.len()) {
+            save.file.bytes[offset..offset + RESERVATION.len()].copy_from_slice(&RESERVATION);
+        }
+        start
+    }
+
+    fn find_equipment_block(save: &SaveData, first_part: u32, second_part: u32) -> usize {
+        (save.file.offsets.equipped_gems.0..save.file.offsets.username - 147)
+            .find(|offset| {
+                save.file.bytes[*offset..*offset + 4] == first_part.to_le_bytes()
+                    && save.file.bytes[*offset + 4..*offset + 8] == second_part.to_le_bytes()
+            })
+            .expect("equipment block must exist")
+    }
+
+    fn highest_observed_equipment_suffix(save: &SaveData) -> u32 {
+        let slot_limit = save.file.offsets.username - 147;
+        let mut codes = HashSet::new();
+        for (start, end) in [
+            save.file.offsets.inventory,
+            save.file.offsets.key_inventory,
+            save.file.offsets.storage,
+        ] {
+            for offset in (start..end).step_by(16) {
+                let first =
+                    u32::from_le_bytes(save.file.bytes[offset + 4..offset + 8].try_into().unwrap());
+                let second = u32::from_le_bytes(
+                    save.file.bytes[offset + 8..offset + 12].try_into().unwrap(),
+                );
+                if first != 0 || second != u32::MAX {
+                    codes.insert(first);
+                }
+            }
+        }
+        for offset in save.file.offsets.equipped_gems.0..=slot_limit.saturating_sub(60) {
+            let first = u32::from_le_bytes(save.file.bytes[offset..offset + 4].try_into().unwrap());
+            let marker = u32::from_le_bytes(
+                save.file.bytes[offset + 16..offset + 20]
+                    .try_into()
+                    .unwrap(),
+            );
+            let shapes_are_valid = (0..5).all(|slot| {
+                let start = offset + 20 + slot * 8;
+                let shape: [u8; 4] = save.file.bytes[start..start + 4].try_into().unwrap();
+                SlotShape::try_from(&shape).is_ok()
+            });
+            if first != 0 && marker == 1 && shapes_are_valid {
+                codes.insert(first);
+            }
+        }
+        codes
+            .into_iter()
+            .filter(|code| matches!(*code & EQUIPMENT_PREFIX_MASK, WEAPON_PREFIX | ARMOR_PREFIX))
+            .map(|code| code & EQUIPMENT_SUFFIX_MASK)
+            .max()
+            .unwrap_or(0)
+    }
+
+    fn rebuild_inventory(save: &SaveData) -> Inventory {
+        let mut file = save.file.clone();
+        let mut upgrades = parse_upgrades(&file);
+        let mut slots = parse_equipped_gems(&mut file, &mut upgrades);
+        Inventory::build(
+            &file,
+            file.offsets.inventory,
+            file.offsets.key_inventory,
+            &mut upgrades,
+            &mut slots,
+        )
+    }
+
+    #[test]
+    fn direct_equipment_refuses_to_reclaim_a_valid_unreferenced_block() {
+        let mut save = build_save_data("testsave9");
+        let protected = save
+            .inventory
+            .articles
+            .get(&ArticleType::RightHand)
+            .and_then(|weapons| weapons.first())
+            .cloned()
+            .expect("test save must contain a right-hand weapon");
+        let protected_record = save
+            .file
+            .find_article_offset(protected.number, protected.id, TypeFamily::Weapon, false)
+            .expect("weapon record must exist");
+        let protected_block_offset =
+            find_equipment_block(&save, protected.first_part, protected.second_part);
+        let protected_block =
+            save.file.bytes[protected_block_offset..protected_block_offset + 60].to_vec();
+
+        save.file.bytes[protected_record + 4..protected_record + 16]
+            .copy_from_slice(&[0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0]);
+        let weapons = save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::RightHand)
+            .expect("weapon category must exist");
+        weapons.remove(0);
+        for (index, weapon) in weapons.iter_mut().enumerate() {
+            weapon.index = index;
+        }
+
+        let before = save.file.clone();
+        assert!(save.add_direct_equipment(2_020_000, false).is_err());
+        assert_eq!(save.file, before);
+        assert_eq!(
+            save.file.bytes[protected_block_offset..protected_block_offset + 60],
+            protected_block
+        );
+    }
+
+    #[test]
+    fn direct_equipment_uses_reservation_and_monotonic_code_without_overwrite() {
+        let mut save = build_save_data("testsave9");
+        let protected = save
+            .inventory
+            .articles
+            .get(&ArticleType::RightHand)
+            .and_then(|weapons| weapons.first())
+            .cloned()
+            .expect("test save must contain a right-hand weapon");
+        let protected_block_offset =
+            find_equipment_block(&save, protected.first_part, protected.second_part);
+        let protected_block =
+            save.file.bytes[protected_block_offset..protected_block_offset + 60].to_vec();
+        let highest_suffix = highest_observed_equipment_suffix(&save);
+        let reserved_offset = reserve_equipment_blocks(&mut save, 1);
+
+        let added = save
+            .add_direct_equipment(2_020_000, false)
+            .expect("Lost Chikage must use the explicit reservation");
+        assert_eq!(added.article_type, ArticleType::RightHand);
+        assert_eq!(added.id, 2_020_000);
+        assert_eq!(added.first_part & EQUIPMENT_PREFIX_MASK, WEAPON_PREFIX);
+        assert!(added.first_part & EQUIPMENT_SUFFIX_MASK > highest_suffix);
+        assert_eq!(
+            u32::from_le_bytes(
+                save.file.bytes[reserved_offset..reserved_offset + 4]
+                    .try_into()
+                    .unwrap()
+            ),
+            added.first_part
+        );
+        assert_eq!(
+            save.file.bytes[protected_block_offset..protected_block_offset + 60],
+            protected_block
+        );
+    }
+
+    #[test]
+    fn lost_chikage_and_wooden_shield_allocate_distinct_reserved_records() {
+        let mut save = build_save_data("testsave9");
+        let reserved_offset = reserve_equipment_blocks(&mut save, 2);
+        let username = save.file.offsets.username;
+        let first_counter_before = u32::from_le_bytes(
+            save.file.bytes[username + USERNAME_TO_FIRST_INVENTORY_COUNTER
+                ..username + USERNAME_TO_FIRST_INVENTORY_COUNTER + 4]
+                .try_into()
+                .unwrap(),
+        );
+        let second_counter_before = u32::from_le_bytes(
+            save.file.bytes[username + USERNAME_TO_SECOND_INVENTORY_COUNTER
+                ..username + USERNAME_TO_SECOND_INVENTORY_COUNTER + 4]
+                .try_into()
+                .unwrap(),
+        );
+
+        let chikage = save
+            .add_direct_equipment(2_020_000, false)
+            .expect("Lost Chikage must be added");
+        let shield = save
+            .add_direct_equipment(19_000_000, false)
+            .expect("Wooden Shield must be added");
+        assert_eq!(chikage.article_type, ArticleType::RightHand);
+        assert_eq!(shield.article_type, ArticleType::LeftHand);
+        assert_eq!(
+            shield.first_part & EQUIPMENT_SUFFIX_MASK,
+            (chikage.first_part & EQUIPMENT_SUFFIX_MASK) + 1
+        );
+        assert_eq!(
+            find_equipment_block(&save, chikage.first_part, chikage.second_part),
+            reserved_offset
+        );
+        assert_eq!(
+            find_equipment_block(&save, shield.first_part, shield.second_part),
+            reserved_offset + RESERVATION_SIZE
+        );
+        assert_eq!(
+            u32::from_le_bytes(
+                save.file.bytes[username + USERNAME_TO_FIRST_INVENTORY_COUNTER
+                    ..username + USERNAME_TO_FIRST_INVENTORY_COUNTER + 4]
+                    .try_into()
+                    .unwrap(),
+            ),
+            first_counter_before + 2
+        );
+        assert_eq!(
+            u32::from_le_bytes(
+                save.file.bytes[username + USERNAME_TO_SECOND_INVENTORY_COUNTER
+                    ..username + USERNAME_TO_SECOND_INVENTORY_COUNTER + 4]
+                    .try_into()
+                    .unwrap(),
+            ),
+            second_counter_before + 2
+        );
+
+        let rebuilt = rebuild_inventory(&save);
+        assert!(rebuilt
+            .articles
+            .get(&ArticleType::RightHand)
+            .is_some_and(|weapons| weapons
+                .iter()
+                .any(|weapon| weapon.first_part == chikage.first_part)));
+        assert!(rebuilt
+            .articles
+            .get(&ArticleType::LeftHand)
+            .is_some_and(|weapons| weapons
+                .iter()
+                .any(|weapon| weapon.first_part == shield.first_part)));
+    }
+
+    #[test]
+    fn full_charred_hunter_set_allocates_four_distinct_reserved_records() {
+        let mut save = build_save_data("testsave9");
+        let reserved_offset = reserve_equipment_blocks(&mut save, 4);
+        let armor_ids = [10_000u32, 11_000u32, 12_000u32, 13_000u32];
+        let mut added = Vec::new();
+        for id in armor_ids {
+            added.push(
+                save.add_direct_equipment(id, true)
+                    .expect("each Charred Hunter armor piece must be added"),
+            );
+        }
+
+        let codes: HashSet<u32> = added.iter().map(|article| article.first_part).collect();
+        assert_eq!(codes.len(), armor_ids.len());
+        for (index, article) in added.iter().enumerate() {
+            assert_eq!(article.article_type, ArticleType::Armor);
+            assert_eq!(article.id, armor_ids[index]);
+            assert_eq!(article.first_part & EQUIPMENT_PREFIX_MASK, ARMOR_PREFIX);
+            assert_eq!(article.second_part & 0x00FF_FFFF, armor_ids[index]);
+            assert_eq!(
+                find_equipment_block(&save, article.first_part, article.second_part),
+                reserved_offset + index * RESERVATION_SIZE
+            );
+        }
+
+        let rebuilt = rebuild_inventory(&save);
+        let rebuilt_armors = rebuilt
+            .articles
+            .get(&ArticleType::Armor)
+            .expect("rebuild must retain armor entries");
+        for article in &added {
+            assert!(rebuilt_armors
+                .iter()
+                .any(|armor| armor.first_part == article.first_part && armor.id == article.id));
+        }
+    }
+}
+
+#[cfg(test)]
+mod complete_equipment_catalogue_tests {
+    use std::collections::HashSet;
+
+    use super::*;
+    use crate::data_handling::{
+        inventory::{get_info_armor, get_info_weapon},
+        utils::test_utils::build_save_data,
+    };
+    use serde_json::Value;
+
+    const RESERVATION: [u8; 8] = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
+    const RESERVATION_SIZE: usize = 64;
+
+    #[derive(Debug)]
+    struct CatalogueEntry {
+        id: u32,
+        is_armor: bool,
+        article_type: ArticleType,
+        name: String,
+    }
+
+    fn reserve_equipment_blocks(save: &mut SaveData, count: usize) -> usize {
+        let start = (save.file.offsets.equipped_gems.1 + 8) & !7;
+        let end = start + count * RESERVATION_SIZE;
+        assert!(
+            end <= save.file.offsets.username - 147,
+            "the fixture must have enough explicit safe reservation space"
+        );
+        for offset in (start..end).step_by(RESERVATION.len()) {
+            save.file.bytes[offset..offset + RESERVATION.len()].copy_from_slice(&RESERVATION);
+        }
+        start
+    }
+
+    fn catalogue_entries() -> Vec<CatalogueEntry> {
+        let weapons: Value = serde_json::from_str(include_str!("../../resources/weapons.json"))
+            .expect("weapons catalogue must be valid JSON");
+        let armors: Value = serde_json::from_str(include_str!("../../resources/armors.json"))
+            .expect("armors catalogue must be valid JSON");
+        let mut entries = Vec::new();
+
+        for (category, expected_type) in [
+            ("rightHand", ArticleType::RightHand),
+            ("leftHand", ArticleType::LeftHand),
+        ] {
+            for (id, entry) in weapons[category]
+                .as_object()
+                .expect("weapon category must be an object")
+            {
+                entries.push(CatalogueEntry {
+                    id: id.parse().expect("weapon IDs must be numeric"),
+                    is_armor: false,
+                    article_type: expected_type,
+                    name: entry["item_name"]
+                        .as_str()
+                        .expect("weapon name must be text")
+                        .to_owned(),
+                });
+            }
+        }
+        for (id, entry) in armors
+            .as_object()
+            .expect("armor catalogue must be an object")
+        {
+            entries.push(CatalogueEntry {
+                id: id.parse().expect("armor IDs must be numeric"),
+                is_armor: true,
+                article_type: ArticleType::Armor,
+                name: entry["item_name"]
+                    .as_str()
+                    .expect("armor name must be text")
+                    .to_owned(),
+            });
+        }
+        entries.sort_by_key(|entry| (entry.is_armor, entry.id));
+        entries
+    }
+
+    fn rebuild_inventory(save: &SaveData) -> Inventory {
+        let mut file = save.file.clone();
+        let mut upgrades = parse_upgrades(&file);
+        let mut slots = parse_equipped_gems(&mut file, &mut upgrades);
+        Inventory::build(
+            &file,
+            file.offsets.inventory,
+            file.offsets.key_inventory,
+            &mut upgrades,
+            &mut slots,
+        )
+    }
+
+    #[test]
+    fn every_weapon_and_armor_catalogue_entry_is_safe_to_allocate_and_rebuild() {
+        let entries = catalogue_entries();
+        let weapon_count = entries.iter().filter(|entry| !entry.is_armor).count();
+        let armor_count = entries.iter().filter(|entry| entry.is_armor).count();
+        assert_eq!(
+            weapon_count, 97,
+            "catalogue weapon coverage must be complete"
+        );
+        assert_eq!(
+            armor_count, 255,
+            "catalogue armor coverage must be complete"
+        );
+
+        let mut save = build_save_data("testsave9");
+        let reservation_offset = reserve_equipment_blocks(&mut save, entries.len());
+        let mut added = Vec::with_capacity(entries.len());
+        let mut codes = HashSet::new();
+
+        for (index, entry) in entries.iter().enumerate() {
+            let (catalogue_info, catalogue_type) = if entry.is_armor {
+                get_info_armor(entry.id, &save.file.resources_path)
+            } else {
+                get_info_weapon(entry.id, &save.file.resources_path)
+            }
+            .unwrap_or_else(|error| panic!("catalogue lookup failed for {}: {error}", entry.name));
+            assert_eq!(
+                catalogue_type, entry.article_type,
+                "wrong catalogue family for {}",
+                entry.name
+            );
+            assert_eq!(
+                catalogue_info.item_name, entry.name,
+                "wrong catalogue name for id {}",
+                entry.id
+            );
+
+            let article = save
+                .add_direct_equipment(entry.id, entry.is_armor)
+                .unwrap_or_else(|error| {
+                    panic!("direct allocation failed for {}: {error}", entry.name)
+                });
+            assert_eq!(
+                article.article_type, entry.article_type,
+                "wrong allocated family for {}",
+                entry.name
+            );
+            assert_eq!(
+                article.info.item_name, entry.name,
+                "wrong allocated name for id {}",
+                entry.id
+            );
+            assert_eq!(article.slots.as_ref().map(Vec::len), Some(5));
+            assert!(
+                codes.insert(article.first_part),
+                "duplicate equipment code for {}",
+                entry.name
+            );
+
+            let expected_block = reservation_offset + index * RESERVATION_SIZE;
+            assert_eq!(
+                u32::from_le_bytes(
+                    save.file.bytes[expected_block..expected_block + 4]
+                        .try_into()
+                        .unwrap()
+                ),
+                article.first_part,
+                "wrong reserved block for {}",
+                entry.name
+            );
+            assert_eq!(
+                u32::from_le_bytes(
+                    save.file.bytes[expected_block + 4..expected_block + 8]
+                        .try_into()
+                        .unwrap()
+                ),
+                article.second_part,
+                "wrong equipment key for {}",
+                entry.name
+            );
+            added.push(article);
+        }
+
+        let rebuilt = rebuild_inventory(&save);
+        for article in added {
+            assert!(
+                rebuilt
+                    .articles
+                    .get(&article.article_type)
+                    .is_some_and(|articles| articles.iter().any(|candidate| {
+                        candidate.first_part == article.first_part
+                            && candidate.second_part == article.second_part
+                            && candidate.id == article.id
+                    })),
+                "rebuild lost {}",
+                article.info.item_name
+            );
+        }
     }
 }

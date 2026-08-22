@@ -680,7 +680,7 @@ pub fn get_info_armor(
 }
 
 pub fn get_info_weapon(
-    mut id: u32,
+    id: u32,
     _resources_path: &PathBuf,
 ) -> Result<(ItemInfo, ArticleType), Error> {
     let weapons: Value =
@@ -688,22 +688,28 @@ pub fn get_info_weapon(
     let weapons = weapons.as_object().unwrap();
 
     let weapon_mods = WeaponMods::try_from(id)?;
-    if id != 12080000 && id != 6180000 {
-        //Special case
-        id = (id / 100000) * 100000; //Remove the weapon mods to be able to find its info
-    }
+    // Keep an exact catalogue variant whenever it exists. For an upgraded
+    // Uncanny/Lost weapon, remove only the two upgrade digits while retaining
+    // the imprint variant. The previous 100,000-step normalization collapsed
+    // every variant into its base weapon (for example Lost Chikage -> Chikage).
+    let fallback_id = if id == 12_080_000 || id == 6_180_000 {
+        id
+    } else {
+        (id / 100_000) * 100_000 + ((id % 100_000) / 10_000) * 10_000
+    };
+    let exact_id = id.to_string();
+    let fallback_id = fallback_id.to_string();
+
     for (category, category_weapons) in weapons {
-        if let Some(found) = category_weapons
-            .as_object()
-            .unwrap()
-            .keys()
-            .find(|x| x.parse::<u32>().unwrap() == id)
+        let category_weapons = category_weapons.as_object().unwrap();
+        if let Some(entry) = category_weapons
+            .get(&exact_id)
+            .or_else(|| category_weapons.get(&fallback_id))
         {
-            let mut info: ItemInfo =
-                serde_json::from_value(category_weapons[found].clone()).unwrap();
+            let mut info: ItemInfo = serde_json::from_value(entry.clone()).unwrap();
             let mut extra_info = json!({
-                "_base_damage": &category_weapons[found]["damage"],
-                "damage": &category_weapons[found]["damage"],
+                "_base_damage": &entry["damage"],
+                "damage": &entry["damage"],
                 "upgrade_level": weapon_mods.upgrade_level,
                 "imprint": weapon_mods.imprint,
             });
@@ -1619,5 +1625,34 @@ mod tests {
             0x8fe8,
             &[0x51, 0x40, 0x89, 0x13, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0]
         ));
+    }
+}
+
+#[cfg(test)]
+mod weapon_variant_catalogue_regression_tests {
+    use super::*;
+    use crate::data_handling::enums::Imprint;
+
+    #[test]
+    fn exact_weapon_variants_keep_their_catalogue_identity_after_upgrade_normalization() {
+        let resources = PathBuf::new();
+        let (base, base_type) = get_info_weapon(2_000_000, &resources).unwrap();
+        let (uncanny, uncanny_type) = get_info_weapon(2_010_000, &resources).unwrap();
+        let (lost, lost_type) = get_info_weapon(2_020_100, &resources).unwrap();
+
+        assert_eq!(base_type, ArticleType::RightHand);
+        assert_eq!(uncanny_type, ArticleType::RightHand);
+        assert_eq!(lost_type, ArticleType::RightHand);
+        assert_eq!(base.item_name, "Chikage");
+        assert_eq!(uncanny.item_name, "Uncanny Chikage");
+        assert_eq!(lost.item_name, "Lost Chikage");
+        assert_eq!(
+            lost.extra_info.as_ref().unwrap()["upgrade_level"],
+            Value::from(1)
+        );
+        assert_eq!(
+            lost.extra_info.as_ref().unwrap()["imprint"],
+            json!(Some(Imprint::Lost))
+        );
     }
 }
