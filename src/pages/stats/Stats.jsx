@@ -77,27 +77,24 @@ function Stats() {
             padding: "0 1rem",
           }}
           onClick={async () => {
-            editedStats.forEach(
-              async ({ rel_offset, length, times, value }, i) => {
-                try {
-                  if (save.stats[i].value !== value) {
+            try {
+              const updatedSave = await setSave(t("revision.statsUpdated"), async (current) => {
+                for (const [index, stat] of editedStats.entries()) {
+                  if (save.stats[index].value !== stat.value) {
                     await invoke("edit_stat", {
-                      relOffset: rel_offset,
-                      length,
-                      times,
-                      value: parseInt(value),
+                      relOffset: stat.rel_offset,
+                      length: stat.length,
+                      times: stat.times,
+                      value: Number.parseInt(stat.value, 10),
                     });
                   }
-                } catch (error) {
-                  console.error(error);
                 }
-              },
-            );
-            setSave((prev) => {
-              prev.stats = JSON.parse(JSON.stringify(editedStats));
-              return prev;
-            });
-            await dialog.message(t("actions.changesConfirmed"));
+                return { ...current, stats: JSON.parse(JSON.stringify(editedStats)) };
+              });
+              if (updatedSave) await dialog.message(t("actions.changesConfirmed"));
+            } catch (error) {
+              console.error("Unable to update statistics.", error);
+            }
           }}
         >
           {t("actions.confirm")}

@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import * as dialog from "@tauri-apps/plugin-dialog";
+import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import SelectSearch from "./SelectSearch";
 import ConfirmDialog from "./ConfirmDialog";
 import { useLocalization } from "../i18n/localization";
@@ -135,6 +137,9 @@ function GemPresetPanel({
   userGemPresets = [],
   onApply,
   onDeletePreset,
+  onDuplicatePreset,
+  onExportPresets,
+  onImportPresets,
   onClose,
   forgeType = "gem",
   builtInPresets = GEM_PRESETS,
@@ -145,6 +150,8 @@ function GemPresetPanel({
   const [category, setCategory] = useState("All");
   const [mode, setMode] = useState("presets");
   const [pendingDelete, setPendingDelete] = useState(null);
+  const [libraryStatus, setLibraryStatus] = useState("");
+  const [isLibraryBusy, setIsLibraryBusy] = useState(false);
   const [customEffects, setCustomEffects] = useState(() =>
     Array(EFFECT_SLOTS).fill(NO_EFFECT_ID),
   );
@@ -259,6 +266,54 @@ function GemPresetPanel({
     setPendingDelete(null);
   }
 
+  function duplicatePreset(preset) {
+    const duplicate = onDuplicatePreset?.(preset.id);
+    if (duplicate) setLibraryStatus(t("forge.duplicateCreated", { name: duplicate.name }));
+  }
+
+  async function exportPresets() {
+    if (!onExportPresets) return;
+    try {
+      setIsLibraryBusy(true);
+      setLibraryStatus("");
+      const path = await dialog.save({
+        title: t("forge.exportTitle"),
+        defaultPath: "bloodborne-forge-presets.json",
+        filters: [{ name: "JSON", extensions: ["json"] }],
+      });
+      if (!path) return;
+      await writeTextFile(path, `${JSON.stringify(onExportPresets(), null, 2)}\n`);
+      setLibraryStatus(t("forge.exportedStatus"));
+    } catch (error) {
+      console.error("Unable to export Forge presets.", error);
+      setLibraryStatus(t("forge.libraryFailed"));
+    } finally {
+      setIsLibraryBusy(false);
+    }
+  }
+
+  async function importPresets() {
+    if (!onImportPresets) return;
+    try {
+      setIsLibraryBusy(true);
+      setLibraryStatus("");
+      const path = await dialog.open({
+        title: t("forge.importTitle"),
+        multiple: false,
+        filters: [{ name: "JSON", extensions: ["json"] }],
+      });
+      if (!path) return;
+      const payload = JSON.parse(await readTextFile(path));
+      const imported = onImportPresets(payload);
+      setLibraryStatus(t("forge.importedStatus", { count: imported }));
+    } catch (error) {
+      console.error("Unable to import Forge presets.", error);
+      setLibraryStatus(t("forge.libraryFailed"));
+    } finally {
+      setIsLibraryBusy(false);
+    }
+  }
+
   return (
     <>
       {pendingDelete ? (
@@ -368,7 +423,12 @@ function GemPresetPanel({
               <h3>{t("forge.sharedPresetsTitle")}</h3>
               <p>{t("forge.sharedPresetsDescription")}</p>
             </div>
+            <div className="gem-forge__library-actions">
+              <button onClick={importPresets} disabled={isLibraryBusy}>{t("forge.importPresets")}</button>
+              <button onClick={exportPresets} disabled={isLibraryBusy || !userGemPresets.length}>{t("forge.exportPresets")}</button>
+            </div>
           </div>
+          {libraryStatus ? <p className="gem-forge__library-status" role="status">{libraryStatus}</p> : null}
 
           {userGemPresets.length ? (
             <div className="gem-forge__grid">
@@ -380,6 +440,7 @@ function GemPresetPanel({
                   <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
                   <div className="gem-forge__card-actions">
                     <button onClick={() => applySavedPreset(preset)}>{t("forge.loadIntoDraft")}</button>
+                    <button onClick={() => duplicatePreset(preset)}>{t("forge.duplicate")}</button>
                     <button className="gem-forge__delete" onClick={() => deletePreset(preset)}>
                       {t("forge.delete")}
                     </button>

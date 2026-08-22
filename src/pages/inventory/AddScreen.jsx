@@ -78,23 +78,28 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
       setIsSubmitting(true);
       if (isStandardItem) {
         if (!selected) return;
-        const editedSave = await invoke("add_item", {
-          id: selected.id,
-          quantity,
-          isStorage,
-        });
-        setSave(editedSave);
+        const editedSave = await setSave(t("revision.itemAdded"), () =>
+          invoke("add_item", {
+            id: selected.id,
+            quantity,
+            isStorage,
+          }),
+        );
+        if (!editedSave) return;
         dismiss();
         return;
       }
 
       if (isEquipment) {
         if (!selected) return;
-        const result = await invoke("add_direct_equipment", {
-          id: selected.id,
-          isArmor: catalog === "armor",
+        const editedSave = await setSave(t("revision.equipmentAdded"), async () => {
+          const result = await invoke("add_direct_equipment", {
+            id: selected.id,
+            isArmor: catalog === "armor",
+          });
+          return result.save;
         });
-        setSave(result.save);
+        if (!editedSave) return;
         dismiss();
         return;
       }
@@ -104,13 +109,16 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
         setError(t("inventory.directUpgradePrimaryRequired"));
         return;
       }
-      const result = await invoke("add_direct_upgrade", {
-        upgradeType: catalog === "gem" ? "Gem" : "Rune",
-        shape,
-        effectIds,
-        isStorage,
+      const editedSave = await setSave(t("revision.upgradeAdded"), async () => {
+        const result = await invoke("add_direct_upgrade", {
+          upgradeType: catalog === "gem" ? "Gem" : "Rune",
+          shape,
+          effectIds,
+          isStorage,
+        });
+        return result.save;
       });
-      setSave(result.save);
+      if (!editedSave) return;
       dismiss();
     } catch (reason) {
       console.error(reason);

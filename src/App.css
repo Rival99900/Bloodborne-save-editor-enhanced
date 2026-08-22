@@ -133,12 +133,16 @@
   gap: 0.55rem;
 }
 
-.language-select {
+.language-picker {
+  position: relative;
   display: grid;
-  gap: 0.18rem;
-  min-width: 8.5rem;
+  min-width: 10.25rem;
+  gap: 0.24rem;
   color: #bca66f;
   font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.language-picker__label {
   font-size: 0.57rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -146,25 +150,119 @@
   text-transform: uppercase;
 }
 
-.language-select select {
-  min-height: 2.1rem;
+.language-picker__trigger {
+  display: flex;
+  min-height: 2.5rem;
   width: 100%;
-  border: 1px solid rgba(229, 220, 199, 0.26);
-  border-radius: 0.22rem;
-  padding: 0.35rem 0.45rem;
-  background: rgba(0, 0, 0, 0.34);
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  border: 1px solid rgba(229, 220, 199, 0.34);
+  border-radius: 0.28rem;
+  padding: 0.5rem 0.65rem;
+  background:
+    linear-gradient(135deg, rgba(38, 35, 28, 0.94), rgba(12, 13, 15, 0.98)),
+    url("/assets/bg.png") center / cover;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.56), 0 0.3rem 0.9rem rgba(0, 0, 0, 0.2);
   color: #f2ead9;
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.7rem;
-  font-weight: 650;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
   letter-spacing: 0;
+  text-align: left;
   text-transform: none;
 }
 
-.language-select select:focus-visible {
+.language-picker__trigger:hover,
+.language-picker__trigger[aria-expanded="true"] {
+  border-color: #d8b968;
+  background:
+    linear-gradient(135deg, rgba(56, 49, 34, 0.96), rgba(13, 14, 16, 0.98)),
+    url("/assets/bg.png") center / cover;
+}
+
+.language-picker__trigger:focus-visible,
+.language-picker__option:focus-visible {
   border-color: #e3c67e;
-  outline: 2px solid rgba(227, 198, 126, 0.28);
+  outline: 2px solid rgba(227, 198, 126, 0.38);
   outline-offset: 2px;
+}
+
+.language-picker__chevron {
+  width: 0.48rem;
+  height: 0.48rem;
+  flex: 0 0 auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-0.12rem) rotate(45deg);
+  transition: transform 160ms ease;
+}
+
+.language-picker__trigger[aria-expanded="true"] .language-picker__chevron {
+  transform: translateY(0.12rem) rotate(225deg);
+}
+
+.language-picker__menu {
+  z-index: 90;
+  max-height: min(21rem, calc(100vh - 1.5rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(214, 181, 105, 0.66);
+  border-radius: 0.34rem;
+  padding: 0.3rem;
+  background:
+    linear-gradient(145deg, rgba(27, 25, 21, 0.99), rgba(8, 9, 11, 0.99)),
+    url("/assets/bg.png") center / cover;
+  box-shadow: 0 1rem 2.6rem rgba(0, 0, 0, 0.68);
+  scrollbar-color: #b9964e #121316;
+  scrollbar-width: thin;
+}
+
+.language-picker__menu::-webkit-scrollbar {
+  width: 0.55rem;
+}
+
+.language-picker__menu::-webkit-scrollbar-track {
+  background: #121316;
+}
+
+.language-picker__menu::-webkit-scrollbar-thumb {
+  border: 0.12rem solid #121316;
+  border-radius: 999px;
+  background: #b9964e;
+}
+
+.language-picker__option {
+  display: flex;
+  min-height: 2.35rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 0.22rem;
+  padding: 0.45rem 0.55rem;
+  background: transparent;
+  color: #ede6d7;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 650;
+  text-align: left;
+}
+
+.language-picker__option:hover,
+.language-picker__option[aria-selected="true"] {
+  border-color: rgba(215, 181, 96, 0.56);
+  background: linear-gradient(90deg, rgba(174, 134, 56, 0.3), rgba(92, 72, 33, 0.18));
+  color: #fff8e7;
+}
+
+.language-picker__selected {
+  color: #e5c36e;
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .control-button {
@@ -550,8 +648,8 @@
     flex-wrap: wrap;
   }
 
-  .language-select {
-    min-width: 7.25rem;
+  .language-picker {
+    min-width: 8.75rem;
   }
 
   .editor-shell {
@@ -2048,11 +2146,11 @@
   }
 }
 
-/* Beta 5: resilient localisation layout and separated standard Add catalogue. */
+/* Local v0.2.0: resilient localisation layout and separated standard Add catalogue. */
 .editButtons {
   min-width: 0;
-  padding: 0.5rem 0.6rem 1rem;
-  gap: 0.45rem;
+  padding: 0.7rem 0.7rem 1.15rem;
+  gap: 0.6rem;
 }
 
 .editButtons > span {
@@ -2060,32 +2158,34 @@
   max-width: 100%;
   overflow-wrap: anywhere;
   font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(0.78rem, 1.5vw, 1rem) !important;
+  font-size: clamp(0.84rem, 1.55vw, 1.08rem) !important;
   line-height: 1.25;
   text-align: center;
 }
 
 .editButtons .editQuantity {
   display: grid;
-  width: min(100%, 12.5rem);
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.35rem;
+  width: min(100%, 15.25rem);
+  grid-template-columns: minmax(0, 1fr) minmax(5.5rem, 6.2rem);
+  gap: 0.5rem;
 }
 
 .editButtons .editQuantity input {
+  min-height: 3.2rem;
   width: 100% !important;
   min-width: 0;
+  font-size: clamp(0.9rem, 1.25vw, 1.05rem);
 }
 
 .inventory-btn {
   display: grid;
-  width: min(100%, 12.5rem);
-  min-height: 3.15rem;
-  padding: 0.5rem 0.7rem;
+  width: min(100%, 15.25rem);
+  min-height: 3.45rem;
+  padding: 0.6rem 0.8rem;
   place-items: center;
   overflow-wrap: anywhere;
-  font-size: clamp(0.8rem, 1.3vw, 1rem);
-  line-height: 1.18;
+  font-size: clamp(0.9rem, 1.35vw, 1.08rem);
+  line-height: 1.2;
   text-align: center;
   white-space: normal;
 }
@@ -2172,11 +2272,13 @@
 }
 
 .editButtons .editQuantity .buttonBg {
-  min-height: 2.6rem;
+  display: grid;
+  min-height: 3.2rem;
   min-width: 0;
-  padding: 0.35rem 0.55rem;
+  padding: 0.5rem 0.75rem;
+  place-items: center;
   overflow-wrap: anywhere;
-  font-size: clamp(0.76rem, 1.15vw, 0.9rem);
+  font-size: clamp(0.88rem, 1.25vw, 1rem);
   line-height: 1.15;
   white-space: normal;
 }
@@ -2240,4 +2342,351 @@
 .confirm-dialog__actions .control-button--danger {
   border-color: #92575d;
   background: linear-gradient(135deg, #57252a, #2b1517);
+}
+
+/* Local review history: snapshots stay in memory until the user explicitly saves. */
+.nav-history {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.control-button--history {
+  min-height: 2.5rem;
+  padding-inline: 0.65rem;
+  font-size: 0.67rem;
+  white-space: nowrap;
+}
+
+.revision-panel {
+  position: fixed;
+  z-index: 1250;
+  inset: 0;
+  display: grid;
+  padding: clamp(1rem, 3vw, 3rem);
+  place-items: center;
+  background: rgb(0 0 0 / 74%);
+  backdrop-filter: blur(5px);
+}
+
+.revision-panel__card {
+  width: min(100%, 43rem);
+  max-height: min(44rem, calc(100vh - 2rem));
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  overflow: hidden;
+  border: 1px solid #8e7948;
+  border-radius: 0.42rem;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  background:
+    linear-gradient(145deg, rgb(27 24 18 / 98%), rgb(8 9 11 / 99%)),
+    url("/assets/bg.png") center / cover;
+  box-shadow: 0 1.3rem 4rem rgb(0 0 0 / 68%);
+}
+
+.revision-panel__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.revision-panel__eyebrow {
+  color: #d9b663;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.revision-panel h2 {
+  margin-top: 0.22rem;
+  color: #f2ead9;
+  font-size: clamp(1.28rem, 3vw, 1.7rem);
+  line-height: 1.1;
+}
+
+.revision-panel__close {
+  width: 2.25rem;
+  min-height: 2.25rem;
+  border: 1px solid rgb(229 220 199 / 28%);
+  border-radius: 0.3rem;
+  background: rgb(0 0 0 / 30%);
+  color: #f3e9d2;
+  cursor: pointer;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.revision-panel__description,
+.revision-panel__notice,
+.revision-panel__empty {
+  margin: 0;
+  color: #d8d1c2;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.revision-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.revision-panel__actions button {
+  min-height: 2.45rem;
+  border: 1px solid rgb(213 180 100 / 48%);
+  border-radius: 0.28rem;
+  padding: 0.45rem 0.85rem;
+  background: linear-gradient(135deg, rgb(110 81 36 / 78%), rgb(40 32 20 / 86%));
+  color: #fff6df;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.revision-panel__actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.revision-panel__list {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  min-height: 0;
+  margin: 0;
+  overflow-y: auto;
+  padding: 0.1rem 0.2rem 0.1rem 1.4rem;
+  color: #f0e8d9;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.83rem;
+  scrollbar-color: #b9964e #121316;
+  scrollbar-width: thin;
+}
+
+.revision-panel__list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.65rem;
+  border-bottom: 1px solid rgb(220 200 151 / 14%);
+  padding: 0.35rem 0.1rem;
+}
+
+.revision-panel__time {
+  color: #bea668;
+  font-variant-numeric: tabular-nums;
+}
+
+.revision-panel__notice {
+  border-top: 1px solid rgb(220 200 151 / 18%);
+  padding-top: 0.75rem;
+  color: #c7b78e;
+}
+
+@media (max-width: 760px) {
+  .nav-history {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .control-button--history {
+    flex: 1 1 7rem;
+  }
+
+  .revision-panel {
+    padding: 0.7rem;
+  }
+
+  .revision-panel__card {
+    max-height: calc(100vh - 1.4rem);
+  }
+}
+
+@media (max-width: 32rem) {
+  .revision-panel__list li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
+}
+
+/* Productivity tools: local search, favorites, and portable Forge libraries. */
+.inventory-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.45rem;
+  width: 100%;
+  max-width: 49.7rem;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid rgb(217 183 103 / 18%);
+  background: linear-gradient(90deg, rgb(10 11 13 / 88%), rgb(27 24 18 / 74%));
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.inventory-search label {
+  display: grid;
+  min-width: min(100%, 15rem);
+  flex: 1 1 15rem;
+  gap: 0.2rem;
+  color: #d8b768;
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.inventory-search input {
+  min-height: 2.3rem;
+  width: 100%;
+  border: 1px solid rgb(229 220 199 / 28%);
+  border-radius: 0.25rem;
+  padding: 0.4rem 0.55rem;
+  background: rgb(0 0 0 / 38%);
+  color: #f4ecdd;
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.inventory-search button,
+.gem-forge__library-actions button,
+.gem-forge__card-actions button {
+  min-height: 2.3rem;
+  border: 1px solid rgb(213 180 100 / 36%);
+  border-radius: 0.25rem;
+  padding: 0.4rem 0.6rem;
+  background: rgb(0 0 0 / 34%);
+  color: #efe7d8;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.inventory-search button:hover,
+.inventory-search button.is-active,
+.gem-forge__library-actions button:hover,
+.gem-forge__card-actions button:hover {
+  border-color: #d8b968;
+  background: linear-gradient(135deg, rgb(111 81 35 / 75%), rgb(43 34 20 / 86%));
+  color: #fff7e4;
+}
+
+.inventory-search button:disabled,
+.gem-forge__library-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.inventory-btn--favorite {
+  border-color: rgb(205 168 79 / 56%) !important;
+}
+
+.gem-forge__personal-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.gem-forge__library-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.gem-forge__library-status {
+  margin: 0.15rem 0 0;
+  color: #dcc57e;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.76rem;
+}
+
+@media (max-width: 42rem) {
+  .inventory-search label {
+    flex-basis: 100%;
+  }
+
+  .inventory-search button,
+  .gem-forge__library-actions button {
+    flex: 1 1 8rem;
+  }
+}
+
+.control-button--density {
+  min-height: 2.5rem;
+  padding-inline: 0.62rem;
+  font-size: 0.66rem;
+}
+
+.App--compact .nav {
+  min-height: 4.95rem;
+  gap: 0.9rem;
+  padding-block: 0.58rem;
+}
+
+.App--compact .brand-mark {
+  width: 2.35rem;
+  height: 2.35rem;
+}
+
+.App--compact .control-button,
+.App--compact .language-picker__trigger {
+  min-height: 2.2rem;
+}
+
+.App--compact .inventory-btn {
+  min-height: 2.8rem;
+  padding-block: 0.42rem;
+}
+
+.App--compact .editButtons {
+  gap: 0.42rem;
+  padding-block: 0.48rem 0.75rem;
+}
+
+.App--compact .editButtons .editQuantity input,
+.App--compact .editButtons .editQuantity .buttonBg {
+  min-height: 2.7rem;
+}
+
+.App--compact .inventory-search {
+  padding-block: 0.35rem;
+}
+
+.App--compact .inventory-search input,
+.App--compact .inventory-search button {
+  min-height: 2.05rem;
+}
+
+.revision-panel__summary {
+  border: 1px solid rgb(211 178 97 / 24%);
+  border-radius: 0.3rem;
+  padding: 0.6rem 0.75rem;
+  background: rgb(0 0 0 / 22%);
+  color: #e9dec3;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.revision-panel__summary h3 {
+  margin: 0 0 0.35rem;
+  color: #dabe79;
+  font-size: 0.69rem;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.revision-panel__summary ul {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding-left: 1.05rem;
+  font-size: 0.76rem;
+  line-height: 1.38;
 }

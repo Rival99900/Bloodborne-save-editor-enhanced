@@ -12,6 +12,7 @@ import Main from "./pages/main/Main";
 import { ImagesProvider } from "./context/imagesContext";
 import { UpdateModal } from "./Update";
 import { useLocalization } from "./i18n/localization";
+import RevisionPanel from "./components/RevisionPanel";
 
 function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
   const { t } = useLocalization();
@@ -54,37 +55,168 @@ function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirm
   );
 }
 
+const MAX_REVISIONS = 40;
+const DENSITY_STORAGE_KEY = "bloodborne-save-editor.interface-density.v1";
+
+function readDensityPreference() {
+  try {
+    return globalThis.localStorage?.getItem(DENSITY_STORAGE_KEY) === "compact" ? "compact" : "comfortable";
+  } catch {
+    return "comfortable";
+  }
+}
+
+function cloneSave(value) {
+  return value == null ? value : JSON.parse(JSON.stringify(value));
+}
+
+function isEditableTarget(target) {
+  return target instanceof HTMLElement && (
+    target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)
+  );
+}
+
+function countInventoryRecords(inventory, field) {
+  return Object.values(inventory?.[field] ?? {}).reduce((total, records) => total + records.length, 0);
+}
+
+function buildRevisionSummary(baseline, current) {
+  if (!baseline || !current) return [];
+  const summary = [];
+  const changedStats = (current.stats ?? []).filter((stat, index) => stat.value !== baseline.stats?.[index]?.value).length;
+  if (changedStats) summary.push({ key: "revision.summaryStats", count: changedStats });
+  if (baseline.username?.string !== current.username?.string) summary.push({ key: "revision.summaryUsername" });
+  if (baseline.playtime !== current.playtime) summary.push({ key: "revision.summaryPlaytime" });
+  if (JSON.stringify(baseline.position) !== JSON.stringify(current.position)) summary.push({ key: "revision.summaryPosition" });
+  if (JSON.stringify(baseline.bosses) !== JSON.stringify(current.bosses)) summary.push({ key: "revision.summaryBosses" });
+  for (const [kind, labelKey] of [["articles", "revision.summaryItems"], ["upgrades", "revision.summaryUpgrades"]]) {
+    const inventoryDelta = countInventoryRecords(current.inventory, kind) - countInventoryRecords(baseline.inventory, kind);
+    const storageDelta = countInventoryRecords(current.storage, kind) - countInventoryRecords(baseline.storage, kind);
+    if (inventoryDelta || storageDelta) summary.push({ key: labelKey, count: Math.abs(inventoryDelta) + Math.abs(storageDelta) });
+  }
+  return summary;
+}
+
 function App() {
   const { t } = useLocalization();
-  const [save, setSave] = useState(null);
+  const [save, setSaveState] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saveName, setSaveName] = useState("");
   const [saveStatusKey, setSaveStatusKey] = useState("");
   const [isDirty, setIsDirty] = useState(false);
   const [exitRequested, setExitRequested] = useState(false);
   const [openSaveDialog, setOpenSaveDialog] = useState("");
+  const [revisionState, setRevisionState] = useState({ past: [], future: [] });
+  const [revisionPanelOpen, setRevisionPanelOpen] = useState(false);
+  const [density, setDensity] = useState(readDensityPreference);
   const dirtyRef = useRef(false);
   const forceCloseRef = useRef(false);
+  const saveRef = useRef(null);
+  const baselineSaveRef = useRef(null);
+  const revisionRef = useRef({ past: [], future: [] });
+  const revisionQueueRef = useRef(Promise.resolve());
 
   const setDirtyState = useCallback((nextDirty) => {
     dirtyRef.current = nextDirty;
     setIsDirty(nextDirty);
   }, []);
 
-  const applyEditorSave = useCallback(
-    (nextSave) => {
-      setSave(nextSave);
-      if (nextSave) {
+  const resetRevisions = useCallback(() => {
+    const emptyHistory = { past: [], future: [] };
+    revisionRef.current = emptyHistory;
+    setRevisionState(emptyHistory);
+    setRevisionPanelOpen(false);
+  }, []);
+
+  const enqueueRevision = useCallback((operation) => {
+    const queued = revisionQueueRef.current.then(operation, operation);
+    revisionQueueRef.current = queued.catch(() => undefined);
+    return queued;
+  }, []);
+
+  const commitEditorMutation = useCallback(
+    (label, operation) => enqueueRevision(async () => {
+      if (!saveRef.current || typeof operation !== "function") return null;
+
+      await invoke("start_revision");
+      try {
+        const nextSave = await operation(cloneSave(saveRef.current));
+        if (!nextSave) {
+          await invoke("discard_revision");
+          return null;
+        }
+
+        const nextSnapshot = cloneSave(nextSave);
+        const entry = {
+          id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          label: label || t("revision.genericChange"),
+          timestamp: Date.now(),
+        };
+        const nextHistory = {
+          past: [...revisionRef.current.past, entry].slice(-MAX_REVISIONS),
+          future: [],
+        };
+        revisionRef.current = nextHistory;
+        setRevisionState(nextHistory);
+        saveRef.current = nextSnapshot;
+        setSaveState(nextSnapshot);
         setDirtyState(true);
         setSaveStatusKey("saveFlow.unsavedStatus");
-      } else {
-        setDirtyState(false);
+        return nextSnapshot;
+      } catch (error) {
+        await invoke("discard_revision").catch(() => undefined);
+        throw error;
       }
-    },
-    [setDirtyState],
+    }),
+    [enqueueRevision, setDirtyState, t],
   );
 
+  const undoRevision = useCallback(() => enqueueRevision(async () => {
+    const { past, future } = revisionRef.current;
+    const latest = past.at(-1);
+    if (!latest || !saveRef.current) return;
+
+    try {
+      const restored = cloneSave(await invoke("undo_revision"));
+      const nextHistory = {
+        past: past.slice(0, -1),
+        future: [latest, ...future].slice(0, MAX_REVISIONS),
+      };
+      revisionRef.current = nextHistory;
+      setRevisionState(nextHistory);
+      saveRef.current = restored;
+      setSaveState(restored);
+      setDirtyState(true);
+      setSaveStatusKey("saveFlow.unsavedStatus");
+    } catch (error) {
+      console.error("Unable to undo the last revision.", error);
+    }
+  }), [enqueueRevision, setDirtyState]);
+
+  const redoRevision = useCallback(() => enqueueRevision(async () => {
+    const { past, future } = revisionRef.current;
+    const next = future.at(0);
+    if (!next || !saveRef.current) return;
+
+    try {
+      const restored = cloneSave(await invoke("redo_revision"));
+      const nextHistory = {
+        past: [...past, next].slice(-MAX_REVISIONS),
+        future: future.slice(1),
+      };
+      revisionRef.current = nextHistory;
+      setRevisionState(nextHistory);
+      saveRef.current = restored;
+      setSaveState(restored);
+      setDirtyState(true);
+      setSaveStatusKey("saveFlow.unsavedStatus");
+    } catch (error) {
+      console.error("Unable to redo the revision.", error);
+    }
+  }), [enqueueRevision, setDirtyState]);
+
   const chooseSaveFile = useCallback(async () => {
+    await revisionQueueRef.current;
     try {
       const selectedPath = await dialog.open({
         multiple: false,
@@ -95,7 +227,11 @@ function App() {
       setSaveStatusKey("");
       setLoading(true);
       const parsedSave = await invoke("make_save", { path: selectedPath });
-      setSave(parsedSave);
+      const loadedSnapshot = cloneSave(parsedSave);
+      saveRef.current = loadedSnapshot;
+      baselineSaveRef.current = cloneSave(loadedSnapshot);
+      setSaveState(loadedSnapshot);
+      resetRevisions();
       setSaveName(await basename(selectedPath));
       setSaveStatusKey("saveFlow.loadedStatus");
       setDirtyState(false);
@@ -107,9 +243,10 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, [setDirtyState, t]);
+  }, [resetRevisions, setDirtyState, t]);
 
   const openSave = useCallback(async () => {
+    await revisionQueueRef.current;
     if (dirtyRef.current) {
       setOpenSaveDialog("discard");
       return false;
@@ -118,7 +255,8 @@ function App() {
   }, [chooseSaveFile]);
 
   const saveChanges = useCallback(async () => {
-    if (!save) return false;
+    await revisionQueueRef.current;
+    if (!saveRef.current) return false;
 
     const path = await dialog.save({
       title: t("saveFlow.saveTitle"),
@@ -140,6 +278,7 @@ function App() {
     try {
       setLoading(true);
       const saved = await invoke("save", { path });
+      baselineSaveRef.current = cloneSave(saveRef.current);
       setSaveStatusKey("saveFlow.savedStatus");
       setSaveName(await basename(path));
       setDirtyState(false);
@@ -185,6 +324,7 @@ function App() {
   }, []);
 
   const discardAndClose = useCallback(async () => {
+    await revisionQueueRef.current;
     setDirtyState(false);
     setExitRequested(false);
     await closeApplication();
@@ -197,6 +337,14 @@ function App() {
       await closeApplication();
     }
   }, [closeApplication, saveChanges]);
+
+  useEffect(() => {
+    try {
+      globalThis.localStorage?.setItem(DENSITY_STORAGE_KEY, density);
+    } catch {
+      // This presentation preference is optional and never affects save editing.
+    }
+  }, [density]);
 
   useEffect(() => {
     const preventContextMenu = (event) => event.preventDefault();
@@ -218,6 +366,19 @@ function App() {
         return;
       }
 
+      if (!isEditableTarget(event.target) && event.ctrlKey && event.code === "KeyZ") {
+        event.preventDefault();
+        if (event.shiftKey) redoRevision();
+        else undoRevision();
+        return;
+      }
+
+      if (!isEditableTarget(event.target) && event.ctrlKey && event.code === "KeyY") {
+        event.preventDefault();
+        redoRevision();
+        return;
+      }
+
       if (!event.ctrlKey || !["Equal", "Minus", "Digit0"].includes(event.code)) return;
 
       event.preventDefault();
@@ -235,7 +396,7 @@ function App() {
 
     document.addEventListener("keydown", handleShortcut);
     return () => document.removeEventListener("keydown", handleShortcut);
-  }, [openSave, saveChanges]);
+  }, [openSave, redoRevision, saveChanges, undoRevision]);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -260,12 +421,14 @@ function App() {
         // dialog to display, so immediately use the explicitly authorized Tauri
         // exit path instead of relying on an implicit platform close.
         event.preventDefault();
-        if (!dirtyRef.current) {
-          void closeApplication();
-          return;
-        }
-
-        setExitRequested(true);
+        void revisionQueueRef.current.then(() => {
+          if (forceCloseRef.current) return;
+          if (!dirtyRef.current) {
+            void closeApplication();
+            return;
+          }
+          setExitRequested(true);
+        });
       })
       .then((listener) => {
         if (disposed) listener();
@@ -280,7 +443,7 @@ function App() {
   }, [closeApplication]);
 
   return (
-    <div className="App">
+    <div className={`App App--${density}`}>
       <UpdateModal />
       {openSaveDialog === "discard" ? (
         <SaveFlowDialog
@@ -306,6 +469,17 @@ function App() {
           onConfirm={() => setOpenSaveDialog("")}
         />
       ) : null}
+      {revisionPanelOpen ? (
+        <RevisionPanel
+          entries={revisionState.past}
+          summary={buildRevisionSummary(baselineSaveRef.current, save)}
+          canUndo={revisionState.past.length > 0}
+          canRedo={revisionState.future.length > 0}
+          onUndo={undoRevision}
+          onRedo={redoRevision}
+          onClose={() => setRevisionPanelOpen(false)}
+        />
+      ) : null}
       {exitRequested && isDirty ? (
         <UnsavedChangesDialog
           saving={loading}
@@ -319,11 +493,19 @@ function App() {
           save={save}
           name={saveName}
           statusKey={saveStatusKey}
+          canUndo={revisionState.past.length > 0}
+          canRedo={revisionState.future.length > 0}
+          revisionCount={revisionState.past.length}
           onOpenSave={openSave}
           onSaveChanges={saveChanges}
+          onUndo={undoRevision}
+          onRedo={redoRevision}
+          onShowRevisions={() => setRevisionPanelOpen(true)}
+          density={density}
+          onToggleDensity={() => setDensity((current) => current === "compact" ? "comfortable" : "compact")}
         />
         <ImagesProvider>
-          <Main save={save} setSave={applyEditorSave} loading={loading} />
+          <Main save={save} setSave={commitEditorMutation} loading={loading} />
         </ImagesProvider>
       </Router>
     </div>

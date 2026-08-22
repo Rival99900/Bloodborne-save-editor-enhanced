@@ -23,11 +23,54 @@ export const SUPPORTED_LANGUAGES = [
   { code: "ro", label: "Română" },
   { code: "el", label: "Ελληνικά" },
   { code: "id", label: "Bahasa Indonesia" },
+  { code: "da", label: "Dansk" },
+  { code: "fi", label: "Suomi" },
+  { code: "hu", label: "Magyar" },
+  { code: "nb", label: "Norsk bokmål" },
 ];
 
 const en = {
   language: {
     label: "Language",
+  },
+  preferences: {
+    compact: "Compact view",
+    comfortable: "Comfortable view",
+  },
+  revision: {
+    controls: "Revision controls",
+    eyebrow: "Local review",
+    title: "Change log",
+    description: "Review in-memory changes before saving. Undo and redo never write to the file automatically.",
+    changes: "{{count}} changes",
+    genericChange: "Edited save data",
+    quantityChanged: "Updated item quantity",
+    weaponLevelChanged: "Updated weapon level",
+    itemAdded: "Added an inventory item",
+    equipmentAdded: "Added equipment directly",
+    upgradeAdded: "Added a Gem or Rune directly",
+    itemReplaced: "Replaced an inventory item",
+    upgradeEdited: "Updated a Gem or Rune",
+    upgradeConverted: "Converted a Gem or Rune",
+    slotShapeChanged: "Updated an equipment slot shape",
+    slotGemChanged: "Updated equipment slot content",
+    statsUpdated: "Updated character statistics",
+    characterUpdated: "Updated character data",
+    bossUpdated: "Updated boss progress",
+    flagUpdated: "Applied an advanced save Flag",
+    undo: "Undo",
+    redo: "Redo",
+    close: "Close change log",
+    empty: "No in-memory changes have been recorded yet.",
+    notice: "Saving writes the current revision only. Keep the automatic .bak backup until the save has been verified in-game.",
+    summaryTitle: "Changes since the last file checkpoint",
+    summaryStats: "{{count}} statistic value(s) changed",
+    summaryUsername: "Character name changed",
+    summaryPlaytime: "Playtime changed",
+    summaryPosition: "Position or destination changed",
+    summaryBosses: "Boss progress changed",
+    summaryItems: "{{count}} inventory item record(s) added or removed",
+    summaryUpgrades: "{{count}} Gem or Rune record(s) added or removed",
   },
   nav: {
     controls: "Save file controls",
@@ -152,6 +195,15 @@ const en = {
     deleteConfirm: "Delete the personal preset “{{name}}”?",
     noPersonalPreset: "No personal preset has been saved yet.",
     noPersonalPresetDescription: "Edit a gem or rune, then use Save as preset to make it available in both forges.",
+    duplicate: "Duplicate",
+    duplicateCreated: "Created a copy named “{{name}}”.",
+    importPresets: "Import JSON",
+    exportPresets: "Export JSON",
+    importTitle: "Import Forge presets",
+    exportTitle: "Export Forge presets",
+    importedStatus: "Imported {{count}} new preset(s).",
+    exportedStatus: "Preset library exported successfully.",
+    libraryFailed: "The preset library operation could not be completed.",
     customName: "Custom {{subject}} Forge",
     customDescription: "Custom set — {{count}} selected effect(s).",
     runePresetDescription: "Validated Caryll Rune preset.",
@@ -257,6 +309,12 @@ const en = {
     setValue: "Set",
     edit: "Edit",
     gems: "Gems",
+    searchInventory: "Search inventory",
+    searchPlaceholder: "Name, type, effect…",
+    clearSearch: "Clear",
+    favoritesOnly: "Favorites only",
+    addFavorite: "Add to favorites",
+    removeFavorite: "Remove from favorites",
   },
 };
 
@@ -12025,6 +12083,8342 @@ const beta5TerminologyOverrides = {
 Object.entries(beta5TerminologyOverrides).forEach(([language, translations]) => {
   const translatedResource = { ...(resources[language] ?? {}) };
   Object.entries(translations).forEach(([key, value]) => applyTranslationPath(translatedResource, key, value));
+  resources[language] = translatedResource;
+});
+
+const finalV020TranslatedOverrides = {
+  "da": [
+    {
+      "key": "actions.back",
+      "value": "Tilbage"
+    },
+    {
+      "key": "actions.change",
+      "value": "Skift"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Ændringer bekræftet"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Bekræft"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Rediger"
+    },
+    {
+      "key": "actions.reset",
+      "value": "Nulstil"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Levende"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Død"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordinater:"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Navn:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Spilletid:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Vælg et sted"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleport:"
+    },
+    {
+      "key": "flags.eyebrow",
+      "value": "Avancerede gemningsindstillinger"
+    },
+    {
+      "key": "flags.introduction",
+      "value": "Kun uafhængigt dokumenterede byte-mønstre vises her. Ukendte offsets er bevidst udeladt for at beskytte gemningen mod utilsigtet korruption."
+    },
+    {
+      "key": "flags.listLabel",
+      "value": "Kendte gemningsflag"
+    },
+    {
+      "key": "flags.safetyDescription",
+      "value": "Anvend én ændring ad gangen, og brug derefter Gem ændringer. Behold den automatiske backup, indtil karakteren indlæses normalt."
+    },
+    {
+      "key": "flags.safetyTitle",
+      "value": "Før du anvender et flag"
+    },
+    {
+      "key": "flags.title",
+      "value": "Kendte flag"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Byg et seks-effekters {{subject}}"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Bruger den indbyggede +75 kontinuerlige HP-genopretnings-effekt med holdbarheds- og skadestøtte."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssal Vitality +75"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Forøgelse af al skade med fysisk pres og stor helingsbonus."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Forpost"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Skadeforøgelse for alle typer med pres ved fuld sundhed og heling."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Nærende"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fysisk skade, pres ved fuld sundhed og holdbarhedsstøtte."
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex Fysisk"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arkane skader med støtte til heling og holdbarhed."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arkane Stigning"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Høj Bloodtinge-skade med støtte til al skade og heling."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge-jæger"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Høj stump skade med støtte til al skade og holdbarhed."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Slagknuser"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Lynskade med støtte til al skade og holdbarhed."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Lynbølge"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arkane-, ild- og lyn-effekter i én bevidst eksperimentel opstilling."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elementær Ascendant"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Maksimale kendte helings- og holdbarhedseffekter med fuld-sundheds skadebonus."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Endeløs Jagt"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Ildskade med støtte til al skade og heling."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Flammebølge"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Det stærkeste kendte bundtede holdbarhedsbonus parret med høj heling og fysisk skade."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Smedet Udholdenhed"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Stakker fysisk, al-skade og nær-død-multiplikatorer kun til test."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glaskanon"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Høje nær-død- og fuld-sundheds-multiplikatorer. Hold denne opstilling offline."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Sidste Stand"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Heling, holdbarhed og støtte til al skade for lange udforskningssessioner."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Varig Jagt"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Høj stikkende skade med støtte til al skade og holdbarhed."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Stikspecialist"
+    },
+    {
+      "key": "forge.cancel",
+      "value": "Annuller"
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Alle"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Angreb"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Brugerdefineret"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elementær"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Eksperimentel"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Personlig"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Genopretning"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.close",
+      "value": "Luk"
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Luk {{subject}} Forge"
+    },
+    {
+      "key": "forge.confirm",
+      "value": "Bekræft"
+    },
+    {
+      "key": "forge.confirming",
+      "value": "Bekræfter…"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Konverter denne {{source}} til en {{destination}}? Behold den automatiske backup, indtil du har testet gemningen."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Konverter til {{subject}}"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Brugerdefineret sæt — {{count}} valgte effekter."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Brugerdefineret {{subject}} Forge"
+    },
+    {
+      "key": "forge.customSet",
+      "value": "Brugerdefineret sæt"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Vælg op til seks validerede effekter. Tomme felter forbliver som Ingen effekt. Editoren validerer hvert valgt ID igen, når du bekræfter."
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Brugerdefineret {{subject}} effektsæt"
+    },
+    {
+      "key": "forge.delete",
+      "value": "Slet"
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Slet den personlige forudindstilling “{{name}}”?"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Rediger {{subject}}"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Vælg mindst én effekt for at indlæse et brugerdefineret udkast."
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Udkastvisning"
+    },
+    {
+      "key": "forge.editing",
+      "value": "Redigerer:"
+    },
+    {
+      "key": "forge.effect",
+      "value": "Effekt {{index}}"
+    },
+    {
+      "key": "forge.gemForge",
+      "value": "Gem Forge"
+    },
+    {
+      "key": "forge.loadCustomDraft",
+      "value": "Indlæs brugerdefineret sæt i udkast"
+    },
+    {
+      "key": "forge.loadIntoDraft",
+      "value": "Indlæs i udkast"
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge-tilstand"
+    },
+    {
+      "key": "forge.myPresets",
+      "value": "Mine forudindstillinger"
+    },
+    {
+      "key": "forge.noEffect",
+      "value": "Ingen effekt"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Ingen personlig forudindstilling er gemt endnu."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Rediger en gem eller rune, og brug derefter Gem som forudindstilling for at gøre den tilgængelig i begge forger."
+    },
+    {
+      "key": "forge.notice",
+      "value": "Indlæsning af en forudindstilling opdaterer kun det synlige udkast. Vælg Bekræft i editoren for at skrive det til gemningen. Hver effekt nedenfor kommer fra editorens indbyggede validerede katalog. Personlige forudindstillinger deles af Gem Forge og Rune Forge; destinationseditoren bevarer sin egen gyldige form eller type."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Personlig"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Personlig Forge-forudindstilling delt af Gem Forge og Rune Forge."
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Personligt {{subject}}-forudindstillingsnavn"
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Personlige {{subject}}-forudindstillinger"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Forudindstillingskategorier"
+    },
+    {
+      "key": "forge.presetName",
+      "value": "Forudindstillingsnavn"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Forudindstillinger"
+    },
+    {
+      "key": "forge.runeForge",
+      "value": "Rune Forge"
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Valideret Caryll-rune-forudindstilling."
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Vælg en rune-forudindstilling"
+    },
+    {
+      "key": "forge.saveAsPreset",
+      "value": "Gem som forudindstilling"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Gemt “{{name}}” i Mine forudindstillinger for Gem Forge og Rune Forge."
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Gem et redigeret gem eller rune én gang, og indlæs derefter den samme forudindstilling fra Gem Forge eller Rune Forge."
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Personlige forudindstillinger delt af både Gem Forge og Rune Forge"
+    },
+    {
+      "key": "forge.title",
+      "value": "Validerede effekter og brugerdefinerede sæt"
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Kan ikke anvende denne ændring."
+    },
+    {
+      "key": "home.eyebrow",
+      "value": "Offline karakteradministration"
+    },
+    {
+      "key": "home.guide",
+      "value": "Læs dekrypteringsvejledningen"
+    },
+    {
+      "key": "home.lead",
+      "value": "Åbn en dekrypteret Bloodborne-karaktergemning for at inspicere inventar, attributter, karakterindstillinger, bosser og flag. Editoren opretter en backup, når en fil åbnes; behold altid den, indtil du har tjekket resultatet i spillet."
+    },
+    {
+      "key": "home.stepOneDescription",
+      "value": "PlayStation-eksporter skal dekrypteres, før editoren kan læse dem."
+    },
+    {
+      "key": "home.stepOneTitle",
+      "value": "Brug en dekrypteret gemning"
+    },
+    {
+      "key": "home.stepThreeDescription",
+      "value": "Test den eksporterede fil, før du fjerner den automatiske .bak-kopi."
+    },
+    {
+      "key": "home.stepThreeTitle",
+      "value": "Bekræft før udskiftning"
+    },
+    {
+      "key": "home.stepTwoDescription",
+      "value": "Gennemgå hver ændring og undgå at bruge modificerede gemninger online."
+    },
+    {
+      "key": "home.stepTwoTitle",
+      "value": "Foretag målrettede ændringer"
+    },
+    {
+      "key": "home.title",
+      "value": "Rediger med omtanke. Bevar din jagt."
+    },
+    {
+      "key": "inventory.addDescription",
+      "value": "Vælg en genstand fra et sikkert katalog og vælg dens antal."
+    },
+    {
+      "key": "inventory.addDialogLabel",
+      "value": "Tilføj katalogiseret genstand"
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Tilføj direkte"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Tilføj udstyr"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Tilføj en færdig gem eller rune"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Tilføj udstyr"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Tilføj en genstand"
+    },
+    {
+      "key": "inventory.addNotice",
+      "value": "Våben og rustning bevarer ekstra slot-data. Brug Erstat på et eksisterende våben eller rustning i stedet for Tilføj, så disse data forbliver gyldige."
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Tilføj valgte genstand"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Annuller"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalog"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Rustning"
+    },
+    {
+      "key": "inventory.catalogChaliceItems",
+      "value": "Bægergenstande"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (eksperimentel direkte tilføjelse)"
+    },
+    {
+      "key": "inventory.catalogItems",
+      "value": "Genstande og forbrugsvarer"
+    },
+    {
+      "key": "inventory.catalogKeyItems",
+      "value": "Nøglegenstande"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll-runer (eksperimentel direkte tilføjelse)"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Våben"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Luk"
+    },
+    {
+      "key": "inventory.closeAddLabel",
+      "value": "Luk Tilføj genstand"
+    },
+    {
+      "key": "inventory.closeReplaceLabel",
+      "value": "Luk Erstat genstand"
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Den direkte tilføjelse kunne ikke gennemføres sikkert."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Opret et katalogført våben eller rustning direkte, når gemningen indeholder en sikker genbrugelig udstyrs-slot-blok."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Eksperimentel: denne operation genbruger kun en sikker forældreløs udstyrs-slot-blok og opretter fem lukkede gem-slots. Åbn slottene senere med Gems, hvis nødvendigt."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Direkte gem- og runebygger"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Opret en færdig Blood Gem eller Caryll Rune direkte fra validerede effekter, når en sikker genbrugelig post er tilgængelig i gemningen."
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Eksperimentel: denne operation genbruger kun en sikker forældreløs opgraderingspost. Den ændrer aldrig gemningslayoutet. Behold den automatiske backup, indtil karakteren har indlæst normalt."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Vælg en valideret første effekt før du tilføjer en gem eller rune."
+    },
+    {
+      "key": "inventory.directUpgradeUnavailable",
+      "value": "Denne gemning har ingen sikker genbrugelig Gem/Rune-post. Ingen ændring blev foretaget. Opret en kompatibel slot i spillet, og prøv igen."
+    },
+    {
+      "key": "inventory.edit",
+      "value": "Rediger"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gems"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Gem-form"
+    },
+    {
+      "key": "inventory.item",
+      "value": "genstand"
+    },
+    {
+      "key": "inventory.itemQuantity",
+      "value": "Genstandsantal:"
+    },
+    {
+      "key": "inventory.matchingItems",
+      "value": "Matchende genstande"
+    },
+    {
+      "key": "inventory.noMatchingItem",
+      "value": "Ingen matchende genstand fundet."
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Antal"
+    },
+    {
+      "key": "inventory.replaceDescription",
+      "value": "Vælg en kompatibel {{type}} fra kataloget. Pladsens position bevares."
+    },
+    {
+      "key": "inventory.replaceDialogLabel",
+      "value": "Erstat valgte genstand"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Erstat genstand"
+    },
+    {
+      "key": "inventory.replacing",
+      "value": "Erstatter"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Rune-type"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Søg i katalog"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Søg efter {{type}}-genstande"
+    },
+    {
+      "key": "inventory.selectNew",
+      "value": "Vælg en ny {{type}}"
+    },
+    {
+      "key": "inventory.setValue",
+      "value": "Indstil"
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventar"
+    },
+    {
+      "key": "inventory.type.armor",
+      "value": "rustning"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "bægergenstand"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "genstand"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "nøglegenstand"
+    },
+    {
+      "key": "inventory.type.weapon",
+      "value": "våben"
+    },
+    {
+      "key": "inventory.weaponLevel",
+      "value": "Våbenniveau:"
+    },
+    {
+      "key": "language.label",
+      "value": "Sprog"
+    },
+    {
+      "key": "nav.activeSave",
+      "value": "Aktivt gem"
+    },
+    {
+      "key": "nav.controls",
+      "value": "Gemfilkontroller"
+    },
+    {
+      "key": "nav.noSaveLoaded",
+      "value": "Ingen gemning indlæst"
+    },
+    {
+      "key": "nav.openFileToBegin",
+      "value": "Åbn en dekrypteret karakterfil for at begynde"
+    },
+    {
+      "key": "nav.openSave",
+      "value": "Åbn gemning"
+    },
+    {
+      "key": "nav.saveChanges",
+      "value": "Gem ændringer"
+    },
+    {
+      "key": "operation.eyebrow",
+      "value": "Arbejder med gemdata"
+    },
+    {
+      "key": "operation.preparing",
+      "value": "Forbereder editoren"
+    },
+    {
+      "key": "operation.title",
+      "value": "Hold dette vindue åbent."
+    },
+    {
+      "key": "saveFlow.close",
+      "value": "Luk"
+    },
+    {
+      "key": "saveFlow.confirmSaveDescription",
+      "value": "Dette skriver de aktuelle ændringer til den valgte fil. Behold den automatiske .bak-kopi, indtil du har verificeret gemningen i spillet."
+    },
+    {
+      "key": "saveFlow.confirmSaveTitle",
+      "value": "Bekræft gemning"
+    },
+    {
+      "key": "saveFlow.discardAndOpen",
+      "value": "Forkast og åbn"
+    },
+    {
+      "key": "saveFlow.discardOpenDescription",
+      "value": "Du har ugemte ændringer. Hvis du åbner en anden gemning, vil de nuværende ændringer blive forkastet."
+    },
+    {
+      "key": "saveFlow.discardOpenTitle",
+      "value": "Forkast ugemte ændringer?"
+    },
+    {
+      "key": "saveFlow.keepEditing",
+      "value": "Fortsæt redigering"
+    },
+    {
+      "key": "saveFlow.loadedStatus",
+      "value": "Gemning indlæst. En backup blev oprettet før redigering."
+    },
+    {
+      "key": "saveFlow.openFailedDescription",
+      "value": "Den valgte fil kunne ikke læses. Vælg en dekrypteret Bloodborne-karaktergemning og prøv igen."
+    },
+    {
+      "key": "saveFlow.openFailedTitle",
+      "value": "Kan ikke åbne gemning"
+    },
+    {
+      "key": "saveFlow.openTitle",
+      "value": "Åbn dekrypteret Bloodborne-gemning"
+    },
+    {
+      "key": "saveFlow.saveCompletedDescription",
+      "value": "Behold din .bak-kopi indtil den redigerede gemning er verificeret."
+    },
+    {
+      "key": "saveFlow.saveCompletedTitle",
+      "value": "Gemning fuldført"
+    },
+    {
+      "key": "saveFlow.savedStatus",
+      "value": "Ændringer gemt."
+    },
+    {
+      "key": "saveFlow.saveFailedDescription",
+      "value": "Den redigerede gemning kunne ikke skrives. Kontroller destinationen og rettigheder, og prøv igen."
+    },
+    {
+      "key": "saveFlow.saveFailedTitle",
+      "value": "Kan ikke gemme"
+    },
+    {
+      "key": "saveFlow.saveTitle",
+      "value": "Gem redigeret karakter"
+    },
+    {
+      "key": "saveFlow.unsavedStatus",
+      "value": "Ugemte ændringer"
+    },
+    {
+      "key": "sidebar.backupDescription",
+      "value": "Når du åbner en gemning, oprettes en .bak-kopi, før ændringer foretages."
+    },
+    {
+      "key": "sidebar.backupTitle",
+      "value": "Backup-først arbejdsgang"
+    },
+    {
+      "key": "sidebar.bosses",
+      "value": "Bosser"
+    },
+    {
+      "key": "sidebar.bossesDescription",
+      "value": "Fremdriftsstatus"
+    },
+    {
+      "key": "sidebar.character",
+      "value": "Karakter"
+    },
+    {
+      "key": "sidebar.characterData",
+      "value": "Karakterdata"
+    },
+    {
+      "key": "sidebar.characterDescription",
+      "value": "Identitet og placering"
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Flag"
+    },
+    {
+      "key": "sidebar.flagsDescription",
+      "value": "Avancerede indstillinger"
+    },
+    {
+      "key": "sidebar.inventory",
+      "value": "Inventar"
+    },
+    {
+      "key": "sidebar.inventoryDescription",
+      "value": "Genstande og udstyr"
+    },
+    {
+      "key": "sidebar.stats",
+      "value": "Statistik"
+    },
+    {
+      "key": "sidebar.statsDescription",
+      "value": "Attributter og ekkoer"
+    },
+    {
+      "key": "sidebar.storage",
+      "value": "Opbevaring"
+    },
+    {
+      "key": "sidebar.storageDescription",
+      "value": "Opbevarede genstande"
+    },
+    {
+      "key": "sidebar.workspace",
+      "value": "Redigeringsområde"
+    },
+    {
+      "key": "unsaved.cancel",
+      "value": "Annuller"
+    },
+    {
+      "key": "unsaved.description",
+      "value": "Dine aktuelle ændringer er ikke skrevet til en gemfil. Vælg Gem ændringer for at beholde dem, eller luk uden at gemme for at forkaste dem."
+    },
+    {
+      "key": "unsaved.discard",
+      "value": "Luk uden at gemme"
+    },
+    {
+      "key": "unsaved.eyebrow",
+      "value": "Ugemte ændringer"
+    },
+    {
+      "key": "unsaved.save",
+      "value": "Gem ændringer"
+    },
+    {
+      "key": "unsaved.saving",
+      "value": "Gemmer…"
+    },
+    {
+      "key": "unsaved.title",
+      "value": "Gem før lukning?"
+    },
+    {
+      "key": "update.available",
+      "value": "Opdatering tilgængelig"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB downloadet"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Downloader: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Downloader underskrevet opdatering…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Opdatering installeret. Genstarter editor…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Opdateringen kunne ikke installeres. Din nuværende version forbliver uændret."
+    },
+    {
+      "key": "update.installing",
+      "value": "Installerer opdatering…"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Ikke nu"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Starter sikker download…"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Opdater og genstart"
+    },
+    {
+      "key": "update.version",
+      "value": "Version {{version}}"
+    }
+  ],
+  "fi": [
+    {
+      "key": "actions.back",
+      "value": "Takaisin"
+    },
+    {
+      "key": "actions.change",
+      "value": "Vaihda"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Muutokset vahvistettu"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Vahvista"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Muokkaa"
+    },
+    {
+      "key": "actions.reset",
+      "value": "Nollaa"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Elossa"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Kuollut"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordinaatit:"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Nimi:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Peliaika:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Valitse sijainti"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleportointi:"
+    },
+    {
+      "key": "flags.eyebrow",
+      "value": "Edistyneet tallennusasetukset"
+    },
+    {
+      "key": "flags.introduction",
+      "value": "Tässä näkyvät vain itsenäisesti dokumentoidut tavumallit. Tuntemattomat offsetit on jätetty tahallisesti pois tallennetta vahingoittumasta."
+    },
+    {
+      "key": "flags.listLabel",
+      "value": "Tunnetut tallennusliput"
+    },
+    {
+      "key": "flags.safetyDescription",
+      "value": "Tee yksi muutos kerrallaan ja käytä sitten 'Tallenna muutokset'. Säilytä automaattisesti luotu varmuuskopio, kunnes hahmo latautuu normaalisti."
+    },
+    {
+      "key": "flags.safetyTitle",
+      "value": "Ennen lipun soveltamista"
+    },
+    {
+      "key": "flags.title",
+      "value": "Tunnetut liput"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Rakenna kuusi-efektinen {{subject}}"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Käyttää sisäänrakennettua +75 jatkuvaa HP‑palautusefektiä sekä kestävyyden ja vahingon tukea."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssal Vitality +75"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Kaikkien vahinkojen vahvistus fyysisellä paineella ja korkealla palautusbonuksella."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Etujoukko"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Kaikkien vahinkojen vahvistus, täyden terveyden bonus ja palautus."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Ravitseva"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fyysinen vahinko, täyden terveyden bonus ja kestävyyden tuki."
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex (fyysinen)"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arkaani‑vahinko, palautus ja kestävyyden tuki."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arkaani‑purkaus"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Korkea Bloodtinge‑vahinko sekä kaikkien vahinkojen ja palautuksen tuki."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge-metsästäjä"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Korkea tylppä vahinko, kaikkien vahinkojen ja kestävyyden tuki."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Tylppä murskaaja"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Salamavahinko, kaikkien vahinkojen ja kestävyyden tuki."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Salamapurkaus"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arkaani-, tuli- ja salamaefektit yhdessä, tarkoituksellisesti kokeellinen kokoonpano."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elementaalinen nousija"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Tunnetuista suurimmat palautus- ja kestävyysefektit täyden terveyden vahinkobonuksella."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Loputon metsästys"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Tulivahinko, kaikkien vahinkojen ja palautuksen tuki."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Tulipurkaus"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Tunnetuin paketoitu kestävyysetu, yhdistettynä korkeaan palautukseen ja fyysiseen vahinkoon."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Takomakestävyys"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Pinottaa fyysisiä, kaikkien vahinkojen ja lähellä‑kuolemaa kertoimia vain testaukseen."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Lasikanuuna"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Korkeat lähellä-kuolemaa ja täyden terveyden kertoimet. Käytä tätä kokoonpanoa vain offline‑tilassa."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Viimeinen taistelu"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Palautus, kestävyys ja kaikkien vahinkojen tuki pitkille tutkimusretkille."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Pitkäkestoinen metsästys"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Korkea pistosvahinko, kaikkien vahinkojen ja kestävyyden tuki."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Pistosasiantuntija"
+    },
+    {
+      "key": "forge.cancel",
+      "value": "Peruuta"
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Kaikki"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Hyökkäys"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Mukautettu"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elementaalinen"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Kokeellinen"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Henkilökohtainen"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Palautus"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Runi"
+    },
+    {
+      "key": "forge.close",
+      "value": "Sulje"
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Sulje {{subject}} Forge"
+    },
+    {
+      "key": "forge.confirm",
+      "value": "Vahvista"
+    },
+    {
+      "key": "forge.confirming",
+      "value": "Vahvistetaan…"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Muunna tämä {{source}} {{destination}}ksi? Säilytä automaattinen varmuuskopio, kunnes olet testannut tallennetta."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Muunna {{subject}}ksi"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Mukautettu sarja — {{count}} valittua efektiä."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Mukautettu {{subject}} Forge"
+    },
+    {
+      "key": "forge.customSet",
+      "value": "Mukautettu sarja"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Valitse enintään kuusi vahvistettua efektiä. Tyhjät paikat pysyvät Ei vaikutusta -tilassa. Editori tarkistaa jokaisen valitun ID:n uudelleen vahvistettaessa."
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Mukautettu {{subject}}-efektisarja"
+    },
+    {
+      "key": "forge.delete",
+      "value": "Poista"
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Poistetaanko henkilökohtainen esiasetus “{{name}}”?"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Muokkaa {{subject}}"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Valitse vähintään yksi efekti ladataksesi mukautetun luonnoksen."
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Luonnoksen esikatselu"
+    },
+    {
+      "key": "forge.editing",
+      "value": "Muokataan:"
+    },
+    {
+      "key": "forge.effect",
+      "value": "Efekti {{index}}"
+    },
+    {
+      "key": "forge.gemForge",
+      "value": "Gem Forge"
+    },
+    {
+      "key": "forge.loadCustomDraft",
+      "value": "Lataa mukautettu sarja luonnokseen"
+    },
+    {
+      "key": "forge.loadIntoDraft",
+      "value": "Lataa luonnokseen"
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge -tila"
+    },
+    {
+      "key": "forge.myPresets",
+      "value": "Omat esiasetukset"
+    },
+    {
+      "key": "forge.noEffect",
+      "value": "Ei vaikutusta"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Henkilökohtaista esiasetusta ei ole vielä tallennettu."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Muokkaa gemiä tai runia, käytä sitten 'Tallenna esiasetuksena' tehdäksesi sen saataville molemmissa forgeissa."
+    },
+    {
+      "key": "forge.notice",
+      "value": "Esiasetuksen lataus päivittää vain näkyvän luonnoksen. Valitse editorissa Vahvista kirjoittaaksesi sen tallenteeseen. Alla olevat efektit tulevat editorin sisäänrakennetusta vahvistetusta luettelosta. Henkilökohtaiset esiasetukset ovat yhteisiä Gem Forgelle ja Rune Forgelle; kohteen editori säilyttää oman kelvollisen muodon tai tyypin."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Henkilökohtainen"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Henkilökohtainen Forge-esiasetus, jota Gem Forge ja Rune Forge jakavat."
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Oma {{subject}}-esiasetuksen nimi"
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Henkilökohtaiset {{subject}}-esiasetukset"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Esiasetusten kategoriat"
+    },
+    {
+      "key": "forge.presetName",
+      "value": "Esiasetuksen nimi"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Esiasetukset"
+    },
+    {
+      "key": "forge.runeForge",
+      "value": "Rune Forge"
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Vahvistettu Caryll Rune -esiasetus."
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Valitse rune-esiasetus"
+    },
+    {
+      "key": "forge.saveAsPreset",
+      "value": "Tallenna esiasetuksena"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Tallennettu “{{name}}” omiin esiasetuksiin Gem Forgea ja Rune Forgea varten."
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Tallenna kerran muokattu gem tai rune, sitten lataa sama esiasetus Gem Forgesta tai Rune Forgesta."
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Henkilökohtaiset esiasetukset, joita Gem Forge ja Rune Forge jakavat"
+    },
+    {
+      "key": "forge.title",
+      "value": "Vahvistetut efektit ja mukautetut sarjat"
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Muutosta ei voitu soveltaa."
+    },
+    {
+      "key": "home.eyebrow",
+      "value": "Offline-hahmon hallinta"
+    },
+    {
+      "key": "home.guide",
+      "value": "Lue purkuohjeet"
+    },
+    {
+      "key": "home.lead",
+      "value": "Avaa purettu Bloodborne-hahmon tallenne tarkastellaksesi varastoa, ominaisuuksia, hahmoasetuksia, pomoja ja lippuja. Editori luo varmuuskopion avatessa tiedoston; säilytä se aina, kunnes olet tarkistanut tuloksen pelissä."
+    },
+    {
+      "key": "home.stepOneDescription",
+      "value": "PlayStationin vientitiedostot on purettava ennen kuin editori voi lukea niitä."
+    },
+    {
+      "key": "home.stepOneTitle",
+      "value": "Käytä purettua tallennetta"
+    },
+    {
+      "key": "home.stepThreeDescription",
+      "value": "Testaa viedyt tiedosto ennen automaattisen .bak‑kopion poistamista."
+    },
+    {
+      "key": "home.stepThreeTitle",
+      "value": "Varmista ennen korvaamista"
+    },
+    {
+      "key": "home.stepTwoDescription",
+      "value": "Tarkista jokainen muutos ja vältä muokattujen tallenteiden käyttöä verkkopeleissä."
+    },
+    {
+      "key": "home.stepTwoTitle",
+      "value": "Tee kohdennettuja muokkauksia"
+    },
+    {
+      "key": "home.title",
+      "value": "Muokkaa harkiten. Säilytä metsästyksesi."
+    },
+    {
+      "key": "inventory.addDescription",
+      "value": "Valitse esine turvallisesta luettelosta ja määritä määrä."
+    },
+    {
+      "key": "inventory.addDialogLabel",
+      "value": "Lisää luettelosta löytyvä esine"
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Lisää suoraan"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Lisää ase tai haarniska"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Lisää valmis gem tai rune"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Lisää varuste"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Lisää esine"
+    },
+    {
+      "key": "inventory.addNotice",
+      "value": "Aseet ja haarniskat säilyttävät lisätiedot paikassa. Käytä 'Korvaa' olemassa olevalle aseelle tai haarniskalle 'Lisää'-toiminnon sijaan, jotta tiedot pysyvät kelvollisina."
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Lisää valittu esine"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Peruuta"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Luettelo"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Haarniskat"
+    },
+    {
+      "key": "inventory.catalogChaliceItems",
+      "value": "Chalice-esineet"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (kokeellinen suora lisäys)"
+    },
+    {
+      "key": "inventory.catalogItems",
+      "value": "Esineet ja kulutettavat"
+    },
+    {
+      "key": "inventory.catalogKeyItems",
+      "value": "Tärkeät esineet"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (kokeellinen suora lisäys)"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Aseet"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Sulje"
+    },
+    {
+      "key": "inventory.closeAddLabel",
+      "value": "Sulje 'Lisää esine'"
+    },
+    {
+      "key": "inventory.closeReplaceLabel",
+      "value": "Sulje 'Korvaa esine'"
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Suoraa lisäystä ei voitu suorittaa turvallisesti."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Luo luettelossa oleva ase tai haarniska suoraan, kun tallenteessa on turvallinen uudelleenkäytettävä varustepaikkalohko."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Kokeellinen: tämä toiminto käyttää uudelleen vain turvallista hylättyä varustepaikkalohkoa ja luo viisi suljettua gem-paikkaa. Avaa paikat myöhemmin Gems‑toiminnolla tarvittaessa."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Suora gemien ja runien rakentaja"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Luo valmis Blood Gem tai Caryll Rune suoraan vahvistetuista efekteistä, kun tallenteessa on turvallinen uudelleenkäytettävä tietue."
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Kokeellinen: tämä toiminto käyttää uudelleen vain turvallista hylättyä päivitystietuetta. Se ei koskaan siirrä tallenteen rakennetta. Säilytä automaattinen varmuuskopio, kunnes hahmo latautuu normaalisti."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Valitse vahvistettu ensiefekti ennen gemin tai runin lisäämistä."
+    },
+    {
+      "key": "inventory.directUpgradeUnavailable",
+      "value": "Tässä tallenteessa ei ole turvallista uudelleenkäytettävää Gem/Rune‑tietuetta. Muutosta ei tehty. Luo yhteensopiva paikka pelissä ja yritä uudelleen."
+    },
+    {
+      "key": "inventory.edit",
+      "value": "Muokkaa"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gemit"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Gemin muoto"
+    },
+    {
+      "key": "inventory.item",
+      "value": "esine"
+    },
+    {
+      "key": "inventory.itemQuantity",
+      "value": "Esineiden määrä:"
+    },
+    {
+      "key": "inventory.matchingItems",
+      "value": "Vastaavat esineet"
+    },
+    {
+      "key": "inventory.noMatchingItem",
+      "value": "Yhtään vastaavaa esinettä ei löytynyt."
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Määrä"
+    },
+    {
+      "key": "inventory.replaceDescription",
+      "value": "Valitse yhteensopiva {{type}} luettelosta. Paikan sijainti säilyy."
+    },
+    {
+      "key": "inventory.replaceDialogLabel",
+      "value": "Korvaa valittu esine"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Korvaa esine"
+    },
+    {
+      "key": "inventory.replacing",
+      "value": "Korvataan"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Runen tyyppi"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Hae luettelosta"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Hae {{type}}-esineitä"
+    },
+    {
+      "key": "inventory.selectNew",
+      "value": "Valitse uusi {{type}}"
+    },
+    {
+      "key": "inventory.setValue",
+      "value": "Aseta"
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventaario"
+    },
+    {
+      "key": "inventory.type.armor",
+      "value": "haarniska"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "esine"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "esine"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "esine"
+    },
+    {
+      "key": "inventory.type.weapon",
+      "value": "ase"
+    },
+    {
+      "key": "inventory.weaponLevel",
+      "value": "Aseen taso:"
+    },
+    {
+      "key": "language.label",
+      "value": "Kieli"
+    },
+    {
+      "key": "nav.activeSave",
+      "value": "Aktiivinen tallenne"
+    },
+    {
+      "key": "nav.controls",
+      "value": "Tallennustiedoston toiminnot"
+    },
+    {
+      "key": "nav.noSaveLoaded",
+      "value": "Ei tallennetta avattu"
+    },
+    {
+      "key": "nav.openFileToBegin",
+      "value": "Aloita avaamalla purettu hahmotiedosto"
+    },
+    {
+      "key": "nav.openSave",
+      "value": "Avaa tallenne"
+    },
+    {
+      "key": "nav.saveChanges",
+      "value": "Tallenna muutokset"
+    },
+    {
+      "key": "operation.eyebrow",
+      "value": "Tallennusdatan käsittely"
+    },
+    {
+      "key": "operation.preparing",
+      "value": "Valmistellaan editoria"
+    },
+    {
+      "key": "operation.title",
+      "value": "Pidä tämä ikkuna avoinna."
+    },
+    {
+      "key": "saveFlow.close",
+      "value": "Sulje"
+    },
+    {
+      "key": "saveFlow.confirmSaveDescription",
+      "value": "Tämä kirjoittaa nykyiset muokkaukset valittuun tiedostoon. Säilytä automaattinen .bak-varmuuskopio, kunnes olet varmistanut tallenteen pelissä."
+    },
+    {
+      "key": "saveFlow.confirmSaveTitle",
+      "value": "Vahvista tallennus"
+    },
+    {
+      "key": "saveFlow.discardAndOpen",
+      "value": "Hylkää ja avaa"
+    },
+    {
+      "key": "saveFlow.discardOpenDescription",
+      "value": "Sinulla on tallentamattomia muutoksia. Toisen tallenteen avaaminen hylkää nykyiset muokkaukset."
+    },
+    {
+      "key": "saveFlow.discardOpenTitle",
+      "value": "Hylätään tallentamattomat muutokset?"
+    },
+    {
+      "key": "saveFlow.keepEditing",
+      "value": "Jatka muokkausta"
+    },
+    {
+      "key": "saveFlow.loadedStatus",
+      "value": "Tallenne ladattu. Varmuuskopio luotiin ennen muokkausta."
+    },
+    {
+      "key": "saveFlow.openFailedDescription",
+      "value": "Valittua tiedostoa ei voitu jäsentää. Valitse purettu Bloodborne-hahmon tallenne ja yritä uudelleen."
+    },
+    {
+      "key": "saveFlow.openFailedTitle",
+      "value": "Tallennetta ei voida avata"
+    },
+    {
+      "key": "saveFlow.openTitle",
+      "value": "Avaa purettu Bloodborne-tallenne"
+    },
+    {
+      "key": "saveFlow.saveCompletedDescription",
+      "value": "Pidä .bak-varmuuskopio tallessa, kunnes muokattu tallenne on vahvistettu."
+    },
+    {
+      "key": "saveFlow.saveCompletedTitle",
+      "value": "Tallennus valmis"
+    },
+    {
+      "key": "saveFlow.savedStatus",
+      "value": "Muutokset tallennettu."
+    },
+    {
+      "key": "saveFlow.saveFailedDescription",
+      "value": "Muokattua tallennetta ei voitu kirjoittaa. Tarkista kohde ja käyttöoikeudet, yritä sitten uudelleen."
+    },
+    {
+      "key": "saveFlow.saveFailedTitle",
+      "value": "Tallentaminen epäonnistui"
+    },
+    {
+      "key": "saveFlow.saveTitle",
+      "value": "Tallenna muokattu hahmo"
+    },
+    {
+      "key": "saveFlow.unsavedStatus",
+      "value": "Tallentamattomat muutokset"
+    },
+    {
+      "key": "sidebar.backupDescription",
+      "value": "Tallennetta avatessa luodaan .bak-kopio ennen muokkauksia."
+    },
+    {
+      "key": "sidebar.backupTitle",
+      "value": "Varmuuskopio ensin"
+    },
+    {
+      "key": "sidebar.bosses",
+      "value": "Pomot"
+    },
+    {
+      "key": "sidebar.bossesDescription",
+      "value": "Edistymistila"
+    },
+    {
+      "key": "sidebar.character",
+      "value": "Hahmo"
+    },
+    {
+      "key": "sidebar.characterData",
+      "value": "Hahmotiedot"
+    },
+    {
+      "key": "sidebar.characterDescription",
+      "value": "Henkilöllisyys ja sijainti"
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Liput"
+    },
+    {
+      "key": "sidebar.flagsDescription",
+      "value": "Lisäasetukset"
+    },
+    {
+      "key": "sidebar.inventory",
+      "value": "Inventaario"
+    },
+    {
+      "key": "sidebar.inventoryDescription",
+      "value": "Esineet ja varusteet"
+    },
+    {
+      "key": "sidebar.stats",
+      "value": "Ominaisuudet"
+    },
+    {
+      "key": "sidebar.statsDescription",
+      "value": "Ominaisuudet ja kaiut"
+    },
+    {
+      "key": "sidebar.storage",
+      "value": "Säilytys"
+    },
+    {
+      "key": "sidebar.storageDescription",
+      "value": "Säilytetyt esineet"
+    },
+    {
+      "key": "sidebar.workspace",
+      "value": "Editorin työtila"
+    },
+    {
+      "key": "unsaved.cancel",
+      "value": "Peruuta"
+    },
+    {
+      "key": "unsaved.description",
+      "value": "Nykyisiä muokkauksia ei ole tallennettu tiedostoon. Valitse 'Tallenna muutokset' säilyttääksesi ne, tai sulje ilman tallennusta hylätäksesi ne."
+    },
+    {
+      "key": "unsaved.discard",
+      "value": "Sulje tallentamatta"
+    },
+    {
+      "key": "unsaved.eyebrow",
+      "value": "Tallentamattomat muutokset"
+    },
+    {
+      "key": "unsaved.save",
+      "value": "Tallenna muutokset"
+    },
+    {
+      "key": "unsaved.saving",
+      "value": "Tallennetaan…"
+    },
+    {
+      "key": "unsaved.title",
+      "value": "Tallennetaanko ennen sulkemista?"
+    },
+    {
+      "key": "update.available",
+      "value": "Päivitys saatavilla"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB ladattu"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Ladataan: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Ladataan allekirjoitettua päivitystä…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Päivitys asennettu. Editorin uudelleenkäynnistys…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Päivityksen asennus epäonnistui. Nykyinen versiosi ei muuttunut."
+    },
+    {
+      "key": "update.installing",
+      "value": "Asennetaan päivitystä…"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Ei nyt"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Aloitetaan turvallinen lataus…"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Päivitä ja käynnistä uudelleen"
+    },
+    {
+      "key": "update.version",
+      "value": "Versio {{version}}"
+    }
+  ],
+  "hu": [
+    {
+      "key": "actions.back",
+      "value": "Vissza"
+    },
+    {
+      "key": "actions.change",
+      "value": "Módosítás"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Változtatások megerősítve"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Megerősít"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Szerkesztés"
+    },
+    {
+      "key": "actions.reset",
+      "value": "Visszaállítás"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Élő"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Halott"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordináták:"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Név:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Játékidő:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Válasszon helyszínt"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleportálás:"
+    },
+    {
+      "key": "flags.eyebrow",
+      "value": "Speciális mentésbeállítások"
+    },
+    {
+      "key": "flags.introduction",
+      "value": "Itt csak függetlenül dokumentált bájtminták jelennek meg. Az ismeretlen eltolásokat szándékosan kizártuk, hogy megóvjuk a mentést a véletlen sérüléstől."
+    },
+    {
+      "key": "flags.listLabel",
+      "value": "Ismert mentészászlók"
+    },
+    {
+      "key": "flags.safetyDescription",
+      "value": "Alkalmazzon egyszerre egy változtatást, majd használja a 'Változtatások mentése'-t. Tartsa meg az automatikusan létrehozott biztonsági másolatot, amíg a karakter normálisan be nem töltődik."
+    },
+    {
+      "key": "flags.safetyTitle",
+      "value": "Zászló alkalmazása előtt"
+    },
+    {
+      "key": "flags.title",
+      "value": "Ismert zászlók"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Hozzon létre egy hat hatású {{subject}}-et"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "A beágyazott +75 folyamatos HP-visszanyerő hatást használja, tartósság- és sebzéstámogatással."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abisszális vitalitás +75"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Általános sebzésnövelés, fizikai nyomás és magas gyógyulás-bónusz."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Előőrs"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Minden típusú sebzés növelése, teljes-életerőn alapuló nyomás és gyógyulás."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Csúcstápláló"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fizikai sebzés, teljes-életerőn alapuló nyomás és tartóssági támogatás."
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Csúcspont (fizikai)"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arkán sebzés, gyógyulás- és tartósságtámogatással."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arkán hullám"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Magas Bloodtinge sebzés, általános sebzés- és gyógyulástámogatással."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge-vadász"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Magas tompa sebzés, általános sebzés- és tartósságtámogatással."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Tompa törő"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Villámsebzés, általános sebzés- és tartósságtámogatással."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Villámhullám"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arkán, tűz és villám hatások egy szándékosan kísérleti összeállításban."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elementális felemelkedés"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "A legismertebb maximális gyógyulás- és tartóssághatások, teljes-életerő sebzésbónusszal."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Végtelen vadászat"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Tűzsebzés, általános sebzés- és gyógyulástámogatással."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Lánghullám"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "A legerősebb ismert tartósságbónusz, magas gyógyulás- és fizikai sebzés-támogatással."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Kovácsolt állóképesség"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Fizikai, általános sebzés- és közelhalál-szorzókat halmoz, csak teszteléshez."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Üvegágyú"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Magas közelhalál- és teljes-életerő szorzók. Tartsa ezt az összeállítást offline."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Utolsó állás"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Gyógyulás-, tartósság- és általános sebzés-támogatás hosszú felfedező utakhoz."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Tartós vadászat"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Magas szúrósebzés, általános sebzés- és tartósságtámogatással."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Szúró specialist"
+    },
+    {
+      "key": "forge.cancel",
+      "value": "Mégse"
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Minden"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Támadás"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Egyéni"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elementális"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Kísérleti"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Személyes"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Visszanyerés"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.close",
+      "value": "Bezárás"
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Bezárás: {{subject}} Forge"
+    },
+    {
+      "key": "forge.confirm",
+      "value": "Megerősít"
+    },
+    {
+      "key": "forge.confirming",
+      "value": "Megerősítés…"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Átalakítja ezt a {{source}}-t {{destination}}-ra? Tartsa meg az automatikus biztonsági másolatot, amíg ki nem próbálta a mentést."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Átalakítás {{subject}}-ra"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Egyéni készlet — {{count}} kiválasztott hatás."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Egyéni {{subject}} Forge"
+    },
+    {
+      "key": "forge.customSet",
+      "value": "Egyéni készlet"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Válasszon legfeljebb hat ellenőrzött hatást. Az üres helyek Nincs hatás maradnak. A szerkesztő minden kiválasztott azonosítót újból ellenőriz, amikor megerősíti."
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Egyéni {{subject}} hatáskészlet"
+    },
+    {
+      "key": "forge.delete",
+      "value": "Törlés"
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Törli a személyes “{{name}}” előbeállítást?"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Szerkesztés: {{subject}}"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Legalább egy hatást válasszon a személyre szabott vázlat betöltéséhez."
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Vázlat előnézet"
+    },
+    {
+      "key": "forge.editing",
+      "value": "Szerkesztés:"
+    },
+    {
+      "key": "forge.effect",
+      "value": "Hatás {{index}}"
+    },
+    {
+      "key": "forge.gemForge",
+      "value": "Gem Forge"
+    },
+    {
+      "key": "forge.loadCustomDraft",
+      "value": "Egyéni készlet betöltése a vázlatba"
+    },
+    {
+      "key": "forge.loadIntoDraft",
+      "value": "Betöltés a vázlatba"
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge mód"
+    },
+    {
+      "key": "forge.myPresets",
+      "value": "Saját előbeállítások"
+    },
+    {
+      "key": "forge.noEffect",
+      "value": "Nincs hatás"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Még nincs elmentett személyes előbeállítás."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Szerkesszen egy gemet vagy runét, majd használja a 'Mentés előbeállításként'-t, hogy elérhető legyen mindkét forge-ban."
+    },
+    {
+      "key": "forge.notice",
+      "value": "Egy előbeállítás betöltése csak a látható vázlatot frissíti. A szerkesztőben válassza a Megerősítést, hogy a változtatás a mentésbe kerüljön. Az alábbi hatások mind a szerkesztő beágyazott, ellenőrzött katalógusából származnak. A személyes előbeállítások a Gem Forge és Rune Forge között megosztottak; a cél szerkesztő megtartja saját érvényes Shape vagy Type-ját."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Személyes"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Személyes Forge előbeállítás, amelyet a Gem Forge és a Rune Forge megoszt."
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Személyes {{subject}} előbeállítás neve"
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Személyes {{subject}} előbeállítások"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Előbeállítás kategóriák"
+    },
+    {
+      "key": "forge.presetName",
+      "value": "Előbeállítás neve"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Előbeállítások"
+    },
+    {
+      "key": "forge.runeForge",
+      "value": "Rune Forge"
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Ellenőrzött Caryll Rune előbeállítás."
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Válasszon rune előbeállítást"
+    },
+    {
+      "key": "forge.saveAsPreset",
+      "value": "Mentés előbeállításként"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Elmentve “{{name}}” a Saját előbeállításokba a Gem Forge és Rune Forge számára."
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Mentse el egyszer a szerkesztett gemet vagy runét, majd töltse be ugyanazt az előbeállítást a Gem Forge-ból vagy a Rune Forge-ból."
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Mindkét Forge által megosztott személyes előbeállítások"
+    },
+    {
+      "key": "forge.title",
+      "value": "Ellenőrzött hatások és egyéni készletek"
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Nem sikerült alkalmazni ezt a változtatást."
+    },
+    {
+      "key": "home.eyebrow",
+      "value": "Offline karakterkezelés"
+    },
+    {
+      "key": "home.guide",
+      "value": "Olvassa el a dekódolási útmutatót"
+    },
+    {
+      "key": "home.lead",
+      "value": "Nyisson meg egy dekódolt Bloodborne karaktermentést az inventár, tulajdonságok, karakterbeállítások, főnökök és zászlók ellenőrzéséhez. A szerkesztő fájlmegnyitáskor létrehoz egy biztonsági másolatot; mindig tartsa meg, amíg az eredményt a játékban nem ellenőrizte."
+    },
+    {
+      "key": "home.stepOneDescription",
+      "value": "A PlayStationről exportált fájlokat dekódolni kell, mielőtt a szerkesztő olvasni tudja."
+    },
+    {
+      "key": "home.stepOneTitle",
+      "value": "Használjon dekódolt mentést"
+    },
+    {
+      "key": "home.stepThreeDescription",
+      "value": "Tesztelje az exportált fájlt, mielőtt eltávolítja az automatikus .bak másolatot."
+    },
+    {
+      "key": "home.stepThreeTitle",
+      "value": "Ellenőrizze, mielőtt felülírja"
+    },
+    {
+      "key": "home.stepTwoDescription",
+      "value": "Ellenőrizzen minden változtatást, és ne használjon módosított mentéseket online játékhoz."
+    },
+    {
+      "key": "home.stepTwoTitle",
+      "value": "Végezzen célzott szerkesztéseket"
+    },
+    {
+      "key": "home.title",
+      "value": "Szerkeszd megfontoltan. Őrizd meg a vadászatod."
+    },
+    {
+      "key": "inventory.addDescription",
+      "value": "Válasszon egy tárgyat egy biztonságos katalógusból, majd adja meg a mennyiséget."
+    },
+    {
+      "key": "inventory.addDialogLabel",
+      "value": "Katalógusból tárgy hozzáadása"
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Közvetlen hozzáadás"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Fegyver vagy páncél hozzáadása"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Befejezett gem vagy rune hozzáadása"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Felszerelés hozzáadása"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Tárgy hozzáadása"
+    },
+    {
+      "key": "inventory.addNotice",
+      "value": "A fegyverek és páncélok extra slotadatokat tartanak. Használja a Cserét meglévő fegyvernél/páncélnál a Hozzáadás helyett, hogy ezek az adatok érvényben maradjanak."
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Kiválasztott tárgy hozzáadása"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Mégse"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalógus"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Páncél"
+    },
+    {
+      "key": "inventory.catalogChaliceItems",
+      "value": "Kelyhes tárgyak"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Vérdrágakövek (kísérleti közvetlen hozzáadás)"
+    },
+    {
+      "key": "inventory.catalogItems",
+      "value": "Tárgyak és fogyóeszközök"
+    },
+    {
+      "key": "inventory.catalogKeyItems",
+      "value": "Kulcstárgyak"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll-rúnák (kísérleti közvetlen hozzáadás)"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Fegyverek"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Bezárás"
+    },
+    {
+      "key": "inventory.closeAddLabel",
+      "value": "Hozzáadás bezárása"
+    },
+    {
+      "key": "inventory.closeReplaceLabel",
+      "value": "Cserélés bezárása"
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "A közvetlen hozzáadás nem volt biztonságosan végrehajtható."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Hozzon létre közvetlenül egy katalógusolt fegyvert vagy páncélt, ha a mentés biztonságos, újrahasználható felszerelés-slot blokkot tartalmaz."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Kísérleti: ez a művelet csak egy biztonságos, árva felszerelés-slot blokkot használ újra, és létrehoz öt zárt gem-slotot. Nyissa meg a slotokat később a Gems-szel, ha szükséges."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Közvetlen gem és rune készítő"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Kész Vérdrágakő vagy Caryll-rúna létrehozása közvetlenül az ellenőrzött hatásokból, ha a mentésben biztonságos, újrahasználható rekord áll rendelkezésre."
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Kísérleti: ez a művelet csak egy biztonságos, árva fejlesztési rekordot használ újra. Soha nem módosítja a mentés elrendezését. Tartsa meg az automatikus biztonsági másolatot, amíg a karakter normálisan nem töltődik be."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Válasszon egy ellenőrzött első hatást, mielőtt gemet vagy runét ad hozzá."
+    },
+    {
+      "key": "inventory.directUpgradeUnavailable",
+      "value": "Ennek a mentésnek nincs biztonságos, újrahasználható Gem/Rune rekordja. Nem történt változtatás. Hozzon létre kompatibilis slotot a játékban, majd próbálja újra."
+    },
+    {
+      "key": "inventory.edit",
+      "value": "Szerkesztés"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Drágakövek"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Gem forma"
+    },
+    {
+      "key": "inventory.item",
+      "value": "tárgy"
+    },
+    {
+      "key": "inventory.itemQuantity",
+      "value": "Tárgy mennyisége:"
+    },
+    {
+      "key": "inventory.matchingItems",
+      "value": "Egyező tárgyak"
+    },
+    {
+      "key": "inventory.noMatchingItem",
+      "value": "Nincs egyező tárgy."
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Mennyiség"
+    },
+    {
+      "key": "inventory.replaceDescription",
+      "value": "Válasszon kompatibilis {{type}}-ot a katalógusból. A hely pozíciója változatlan marad."
+    },
+    {
+      "key": "inventory.replaceDialogLabel",
+      "value": "Kiválasztott tárgy cseréje"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Tárgy cseréje"
+    },
+    {
+      "key": "inventory.replacing",
+      "value": "Cserélés"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Rune típus"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Katalógus keresése"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Keresés {{type}} tárgyak között"
+    },
+    {
+      "key": "inventory.selectNew",
+      "value": "Válasszon új {{type}}-ot"
+    },
+    {
+      "key": "inventory.setValue",
+      "value": "Beállít"
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventár"
+    },
+    {
+      "key": "inventory.type.armor",
+      "value": "páncél"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "tárgy"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "tárgy"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "tárgy"
+    },
+    {
+      "key": "inventory.type.weapon",
+      "value": "fegyver"
+    },
+    {
+      "key": "inventory.weaponLevel",
+      "value": "Fegyver szintje:"
+    },
+    {
+      "key": "language.label",
+      "value": "Nyelv"
+    },
+    {
+      "key": "nav.activeSave",
+      "value": "Aktív mentés"
+    },
+    {
+      "key": "nav.controls",
+      "value": "Mentésfájl-vezérlők"
+    },
+    {
+      "key": "nav.noSaveLoaded",
+      "value": "Nincs betöltött mentés"
+    },
+    {
+      "key": "nav.openFileToBegin",
+      "value": "Kezdéshez nyisson meg egy dekódolt karakterfájlt"
+    },
+    {
+      "key": "nav.openSave",
+      "value": "Mentés megnyitása"
+    },
+    {
+      "key": "nav.saveChanges",
+      "value": "Változtatások mentése"
+    },
+    {
+      "key": "operation.eyebrow",
+      "value": "Mentésadatok kezelése"
+    },
+    {
+      "key": "operation.preparing",
+      "value": "Szerkesztő előkészítése"
+    },
+    {
+      "key": "operation.title",
+      "value": "Kérjük, tartsa nyitva ezt az ablakot."
+    },
+    {
+      "key": "saveFlow.close",
+      "value": "Bezárás"
+    },
+    {
+      "key": "saveFlow.confirmSaveDescription",
+      "value": "Ez a művelet a jelenlegi szerkesztéseket írja a kiválasztott fájlba. Tartsa meg az automatikus .bak biztonsági másolatot, amíg a mentést a játékban nem ellenőrizte."
+    },
+    {
+      "key": "saveFlow.confirmSaveTitle",
+      "value": "Mentés megerősítése"
+    },
+    {
+      "key": "saveFlow.discardAndOpen",
+      "value": "Elvetés és megnyitás"
+    },
+    {
+      "key": "saveFlow.discardOpenDescription",
+      "value": "Vannak mentetlen változtatások. Egy másik mentés megnyitása elveti a jelenlegi szerkesztéseket."
+    },
+    {
+      "key": "saveFlow.discardOpenTitle",
+      "value": "Mentetlen változtatások elvetése?"
+    },
+    {
+      "key": "saveFlow.keepEditing",
+      "value": "Szerkesztés folytatása"
+    },
+    {
+      "key": "saveFlow.loadedStatus",
+      "value": "Mentés betöltve. Szerkesztés előtt biztonsági másolat készült."
+    },
+    {
+      "key": "saveFlow.openFailedDescription",
+      "value": "A kiválasztott fájl nem elemezhető. Válasszon egy dekódolt Bloodborne karaktermentést, majd próbálja újra."
+    },
+    {
+      "key": "saveFlow.openFailedTitle",
+      "value": "Nem lehet megnyitni a mentést"
+    },
+    {
+      "key": "saveFlow.openTitle",
+      "value": "Dekódolt Bloodborne mentés megnyitása"
+    },
+    {
+      "key": "saveFlow.saveCompletedDescription",
+      "value": "Tartsa meg a .bak biztonsági másolatot, amíg a szerkesztett mentést nem ellenőrizte."
+    },
+    {
+      "key": "saveFlow.saveCompletedTitle",
+      "value": "Mentés befejezve"
+    },
+    {
+      "key": "saveFlow.savedStatus",
+      "value": "Változtatások mentve."
+    },
+    {
+      "key": "saveFlow.saveFailedDescription",
+      "value": "A szerkesztett mentést nem sikerült menteni. Ellenőrizze a célhelyet és a jogosultságokat, majd próbálja újra."
+    },
+    {
+      "key": "saveFlow.saveFailedTitle",
+      "value": "Nem lehet menteni"
+    },
+    {
+      "key": "saveFlow.saveTitle",
+      "value": "Szerkesztett karakter mentése"
+    },
+    {
+      "key": "saveFlow.unsavedStatus",
+      "value": "Mentetlen változtatások"
+    },
+    {
+      "key": "sidebar.backupDescription",
+      "value": "Mentés megnyitásakor létrejön egy .bak másolat, mielőtt a szerkesztések megtörténnének."
+    },
+    {
+      "key": "sidebar.backupTitle",
+      "value": "Biztonsági mentés-első munkafolyamat"
+    },
+    {
+      "key": "sidebar.bosses",
+      "value": "Főnökök"
+    },
+    {
+      "key": "sidebar.bossesDescription",
+      "value": "Előrehaladási állapot"
+    },
+    {
+      "key": "sidebar.character",
+      "value": "Karakter"
+    },
+    {
+      "key": "sidebar.characterData",
+      "value": "Karakteradatok"
+    },
+    {
+      "key": "sidebar.characterDescription",
+      "value": "Identitás és pozíció"
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Zászlók"
+    },
+    {
+      "key": "sidebar.flagsDescription",
+      "value": "Speciális beállítások"
+    },
+    {
+      "key": "sidebar.inventory",
+      "value": "Inventár"
+    },
+    {
+      "key": "sidebar.inventoryDescription",
+      "value": "Tárgyak és felszerelés"
+    },
+    {
+      "key": "sidebar.stats",
+      "value": "Statisztikák"
+    },
+    {
+      "key": "sidebar.statsDescription",
+      "value": "Tulajdonságok és echo-k"
+    },
+    {
+      "key": "sidebar.storage",
+      "value": "Tároló"
+    },
+    {
+      "key": "sidebar.storageDescription",
+      "value": "Tárolt tárgyak"
+    },
+    {
+      "key": "sidebar.workspace",
+      "value": "Szerkesztő munkaterület"
+    },
+    {
+      "key": "unsaved.cancel",
+      "value": "Mégse"
+    },
+    {
+      "key": "unsaved.description",
+      "value": "A jelenlegi szerkesztések nincsenek mentve. Válassza a 'Változtatások mentése' lehetőséget a megtartáshoz, vagy zárjon be mentés nélkül az elvetéshez."
+    },
+    {
+      "key": "unsaved.discard",
+      "value": "Bezárás mentés nélkül"
+    },
+    {
+      "key": "unsaved.eyebrow",
+      "value": "Mentetlen változtatások"
+    },
+    {
+      "key": "unsaved.save",
+      "value": "Változtatások mentése"
+    },
+    {
+      "key": "unsaved.saving",
+      "value": "Mentés…"
+    },
+    {
+      "key": "unsaved.title",
+      "value": "Mentés bezárás előtt?"
+    },
+    {
+      "key": "update.available",
+      "value": "Frissítés elérhető"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB letöltve"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Letöltés: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Aláírt frissítés letöltése…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Frissítés telepítve. A szerkesztő újraindul…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "A frissítést nem sikerült telepíteni. A jelenlegi verzió változatlan maradt."
+    },
+    {
+      "key": "update.installing",
+      "value": "Frissítés telepítése…"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Most nem"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Biztonságos letöltés indítása…"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Frissítés és újraindítás"
+    },
+    {
+      "key": "update.version",
+      "value": "Verzió {{version}}"
+    }
+  ],
+  "nb": [
+    {
+      "key": "actions.back",
+      "value": "Tilbake"
+    },
+    {
+      "key": "actions.change",
+      "value": "Endre"
+    },
+    {
+      "key": "actions.changesConfirmed",
+      "value": "Endringer bekreftet"
+    },
+    {
+      "key": "actions.confirm",
+      "value": "Bekreft"
+    },
+    {
+      "key": "actions.edit",
+      "value": "Rediger"
+    },
+    {
+      "key": "actions.reset",
+      "value": "Tilbakestill"
+    },
+    {
+      "key": "bosses.alive",
+      "value": "Levende"
+    },
+    {
+      "key": "bosses.dead",
+      "value": "Død"
+    },
+    {
+      "key": "characterForm.coordinates",
+      "value": "Koordinater:"
+    },
+    {
+      "key": "characterForm.name",
+      "value": "Navn:"
+    },
+    {
+      "key": "characterForm.playtime",
+      "value": "Spilletid:"
+    },
+    {
+      "key": "characterForm.selectLocation",
+      "value": "Velg en lokasjon"
+    },
+    {
+      "key": "characterForm.teleport",
+      "value": "Teleportering:"
+    },
+    {
+      "key": "flags.eyebrow",
+      "value": "Avanserte lagringsinnstillinger"
+    },
+    {
+      "key": "flags.introduction",
+      "value": "Kun byte-mønstre som er dokumentert uavhengig vises her. Ukjente offseter er bevisst utelatt for å beskytte lagringen mot utilsiktet korrupsjon."
+    },
+    {
+      "key": "flags.listLabel",
+      "value": "Kjente lagringsflagg"
+    },
+    {
+      "key": "flags.safetyDescription",
+      "value": "Utfør én endring om gangen, og bruk deretter Lagre endringer. Behold den automatisk opprettede sikkerhetskopien til karakteren laster normalt."
+    },
+    {
+      "key": "flags.safetyTitle",
+      "value": "Før du bruker et flagg"
+    },
+    {
+      "key": "flags.title",
+      "value": "Kjente flagg"
+    },
+    {
+      "key": "forge.buildSixEffect",
+      "value": "Bygg en seks-effekts {{subject}}"
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.description",
+      "value": "Bruker den innebygde +75 kontinuerlige HP-gjenopprettingseffekten med holdbarhet og skade-støtte."
+    },
+    {
+      "key": "forge.builtIn.abyssal-vitality.name",
+      "value": "Abyssal Vitality +75"
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.description",
+      "value": "Forsterkning av all skade med fysisk press og høy gjenopprettingsbonus."
+    },
+    {
+      "key": "forge.builtIn.all-damage-vanguard.name",
+      "value": "Vanguard"
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.description",
+      "value": "Forsterkning av all skade med full-helse press og gjenoppretting."
+    },
+    {
+      "key": "forge.builtIn.apex-nourishing.name",
+      "value": "Apex Nourishing"
+    },
+    {
+      "key": "forge.builtIn.apex-physical.description",
+      "value": "Fysisk skade, press ved full helse og støtte for holdbarhet."
+    },
+    {
+      "key": "forge.builtIn.apex-physical.name",
+      "value": "Apex Physical"
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.description",
+      "value": "Arcane-skade med støtte for gjenoppretting og holdbarhet."
+    },
+    {
+      "key": "forge.builtIn.arcane-surge.name",
+      "value": "Arcane Surge"
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.description",
+      "value": "Høy Bloodtinge-skade med støtte for all skade og gjenoppretting."
+    },
+    {
+      "key": "forge.builtIn.bloodtinge-hunter.name",
+      "value": "Bloodtinge Hunter"
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.description",
+      "value": "Høy stump skade med støtte for all skade og holdbarhet."
+    },
+    {
+      "key": "forge.builtIn.blunt-breaker.name",
+      "value": "Blunt Breaker"
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.description",
+      "value": "Lynskade med støtte for all skade og holdbarhet."
+    },
+    {
+      "key": "forge.builtIn.bolt-surge.name",
+      "value": "Bolt Surge"
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.description",
+      "value": "Arcane-, ild- og lyn-effekter i ett bevisst eksperimentelt oppsett."
+    },
+    {
+      "key": "forge.builtIn.elemental-ascendant.name",
+      "value": "Elemental Ascendant"
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.description",
+      "value": "Maksimale kjente gjenopprettings- og holdbarhetseffekter med bonus for full helse."
+    },
+    {
+      "key": "forge.builtIn.endless-hunt.name",
+      "value": "Endless Hunt"
+    },
+    {
+      "key": "forge.builtIn.flame-surge.description",
+      "value": "Ildskade med støtte for all skade og gjenoppretting."
+    },
+    {
+      "key": "forge.builtIn.flame-surge.name",
+      "value": "Flame Surge"
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.description",
+      "value": "Den sterkeste kjente samlede holdbarhetsbonusen kombinert med høy gjenoppretting og fysisk skade."
+    },
+    {
+      "key": "forge.builtIn.forged-endurance.name",
+      "value": "Forged Endurance"
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.description",
+      "value": "Stabler fysisk, all-skade og nær-død multiplikatorer kun for testing."
+    },
+    {
+      "key": "forge.builtIn.glass-cannon.name",
+      "value": "Glass Cannon"
+    },
+    {
+      "key": "forge.builtIn.last-stand.description",
+      "value": "Høye nær-død- og full-helse-multiplikatorer. Hold dette oppsettet offline."
+    },
+    {
+      "key": "forge.builtIn.last-stand.name",
+      "value": "Last Stand"
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.description",
+      "value": "Gjenoppretting, holdbarhet og støtte for all skade ved lange utforskningsøkter."
+    },
+    {
+      "key": "forge.builtIn.sustained-hunt.name",
+      "value": "Sustained Hunt"
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.description",
+      "value": "Høy stikkskade med støtte for all skade og holdbarhet."
+    },
+    {
+      "key": "forge.builtIn.thrust-specialist.name",
+      "value": "Thrust Specialist"
+    },
+    {
+      "key": "forge.cancel",
+      "value": "Avbryt"
+    },
+    {
+      "key": "forge.categories.All",
+      "value": "Alle"
+    },
+    {
+      "key": "forge.categories.Attack",
+      "value": "Angrep"
+    },
+    {
+      "key": "forge.categories.Custom",
+      "value": "Egendefinert"
+    },
+    {
+      "key": "forge.categories.Elemental",
+      "value": "Elemental"
+    },
+    {
+      "key": "forge.categories.Experimental",
+      "value": "Eksperimentell"
+    },
+    {
+      "key": "forge.categories.Personal",
+      "value": "Personlig"
+    },
+    {
+      "key": "forge.categories.Recovery",
+      "value": "Gjenoppretting"
+    },
+    {
+      "key": "forge.categories.Rune",
+      "value": "Rune"
+    },
+    {
+      "key": "forge.close",
+      "value": "Lukk"
+    },
+    {
+      "key": "forge.closeLabel",
+      "value": "Lukk {{subject}} Forge"
+    },
+    {
+      "key": "forge.confirm",
+      "value": "Bekreft"
+    },
+    {
+      "key": "forge.confirming",
+      "value": "Bekrefter…"
+    },
+    {
+      "key": "forge.convertConfirm",
+      "value": "Konverter denne {{source}} til en {{destination}}? Behold den automatiske sikkerhetskopien til du har testet lagringen."
+    },
+    {
+      "key": "forge.convertTo",
+      "value": "Konverter til {{subject}}"
+    },
+    {
+      "key": "forge.customDescription",
+      "value": "Egendefinert sett — {{count}} valgt(e) effekt(er)."
+    },
+    {
+      "key": "forge.customName",
+      "value": "Egendefinert {{subject}} Forge"
+    },
+    {
+      "key": "forge.customSet",
+      "value": "Egendefinert sett"
+    },
+    {
+      "key": "forge.customSetDescription",
+      "value": "Velg opptil seks validerte effekter. Tomme plasser forblir som Ingen effekt. Redigeringsprogrammet validerer hver valgt ID på nytt når du bekrefter."
+    },
+    {
+      "key": "forge.customSetLabel",
+      "value": "Egendefinert {{subject}}-effektsett"
+    },
+    {
+      "key": "forge.delete",
+      "value": "Slett"
+    },
+    {
+      "key": "forge.deleteConfirm",
+      "value": "Slett den personlige preset “{{name}}”?"
+    },
+    {
+      "key": "forge.dialogLabel",
+      "value": "Rediger {{subject}}"
+    },
+    {
+      "key": "forge.draftEmpty",
+      "value": "Velg minst én effekt for å laste et egendefinert utkast."
+    },
+    {
+      "key": "forge.draftPreview",
+      "value": "Utkastforhåndsvisning"
+    },
+    {
+      "key": "forge.editing",
+      "value": "Redigerer:"
+    },
+    {
+      "key": "forge.effect",
+      "value": "Effekt {{index}}"
+    },
+    {
+      "key": "forge.gemForge",
+      "value": "Gem Forge"
+    },
+    {
+      "key": "forge.loadCustomDraft",
+      "value": "Last egendefinert sett inn i utkast"
+    },
+    {
+      "key": "forge.loadIntoDraft",
+      "value": "Last inn i utkast"
+    },
+    {
+      "key": "forge.modeLabel",
+      "value": "{{subject}} Forge-modus"
+    },
+    {
+      "key": "forge.myPresets",
+      "value": "Mine presets"
+    },
+    {
+      "key": "forge.noEffect",
+      "value": "Ingen effekt"
+    },
+    {
+      "key": "forge.noPersonalPreset",
+      "value": "Ingen personlig preset er lagret ennå."
+    },
+    {
+      "key": "forge.noPersonalPresetDescription",
+      "value": "Rediger en gem eller rune, bruk så Lagre som preset for å gjøre den tilgjengelig i begge forges."
+    },
+    {
+      "key": "forge.notice",
+      "value": "Laste inn et preset oppdaterer bare det synlige utkastet. Velg Bekreft i redigeringsprogrammet for å skrive det til lagringen. Hver effekt under kommer fra redigeringsprogrammets innebygde validerte katalog. Personlige presets deles av Gem Forge og Rune Forge; målredigereren beholder sin egen gyldige Shape eller Type."
+    },
+    {
+      "key": "forge.personal",
+      "value": "Personlig"
+    },
+    {
+      "key": "forge.personalPresetDescription",
+      "value": "Personlig Forge-preset delt av Gem Forge og Rune Forge."
+    },
+    {
+      "key": "forge.personalPresetName",
+      "value": "Personlig {{subject}}-presetnavn"
+    },
+    {
+      "key": "forge.personalPresetsLabel",
+      "value": "Personlige {{subject}}-presets"
+    },
+    {
+      "key": "forge.presetCategories",
+      "value": "Preset-kategorier"
+    },
+    {
+      "key": "forge.presetName",
+      "value": "Preset-navn"
+    },
+    {
+      "key": "forge.presets",
+      "value": "Presets"
+    },
+    {
+      "key": "forge.runeForge",
+      "value": "Rune Forge"
+    },
+    {
+      "key": "forge.runePresetDescription",
+      "value": "Validert Caryll Rune-preset."
+    },
+    {
+      "key": "forge.runePresetPlaceholder",
+      "value": "Velg rune-preset"
+    },
+    {
+      "key": "forge.saveAsPreset",
+      "value": "Lagre som preset"
+    },
+    {
+      "key": "forge.savedStatus",
+      "value": "Lagret “{{name}}” i Mine presets for Gem Forge og Rune Forge."
+    },
+    {
+      "key": "forge.sharedPresetsDescription",
+      "value": "Lagre en redigert gem eller rune én gang, og last deretter samme preset fra Gem Forge eller Rune Forge."
+    },
+    {
+      "key": "forge.sharedPresetsTitle",
+      "value": "Personlige presets delt av begge forges"
+    },
+    {
+      "key": "forge.title",
+      "value": "Validerte effekter og egendefinerte sett"
+    },
+    {
+      "key": "forge.unableToApply",
+      "value": "Kan ikke anvende denne endringen."
+    },
+    {
+      "key": "home.eyebrow",
+      "value": "Offline karakterbehandling"
+    },
+    {
+      "key": "home.guide",
+      "value": "Les dekrypteringsveiledningen"
+    },
+    {
+      "key": "home.lead",
+      "value": "Åpne en dekryptert Bloodborne-karakterlagring for å inspisere inventar, attributter, karakterinnstillinger, sjefer og flagg. Redigeringsprogrammet oppretter en sikkerhetskopi når en fil åpnes; behold alltid denne til du har kontrollert resultatet i spillet."
+    },
+    {
+      "key": "home.stepOneDescription",
+      "value": "PlayStation-eksporter må dekrypteres før de kan leses av redigeringsprogrammet."
+    },
+    {
+      "key": "home.stepOneTitle",
+      "value": "Bruk en dekryptert lagring"
+    },
+    {
+      "key": "home.stepThreeDescription",
+      "value": "Test den eksporterte filen før du fjerner den automatiske .bak-kopien."
+    },
+    {
+      "key": "home.stepThreeTitle",
+      "value": "Verifiser før du erstatter"
+    },
+    {
+      "key": "home.stepTwoDescription",
+      "value": "Gå gjennom hver endring, og unngå å bruke endrede lagringer i nettspill."
+    },
+    {
+      "key": "home.stepTwoTitle",
+      "value": "Gjør målrettede endringer"
+    },
+    {
+      "key": "home.title",
+      "value": "Rediger med omhu. Bevar jakten."
+    },
+    {
+      "key": "inventory.addDescription",
+      "value": "Velg en gjenstand fra en sikker katalog og velg antallet."
+    },
+    {
+      "key": "inventory.addDialogLabel",
+      "value": "Legg til gjenstand fra katalogen"
+    },
+    {
+      "key": "inventory.addDirect",
+      "value": "Legg til direkte"
+    },
+    {
+      "key": "inventory.addDirectEquipment",
+      "value": "Legg til et våpen eller en rustning"
+    },
+    {
+      "key": "inventory.addDirectUpgrade",
+      "value": "Legg til en ferdig gem eller rune"
+    },
+    {
+      "key": "inventory.addEquipment",
+      "value": "Legg til utstyr"
+    },
+    {
+      "key": "inventory.addItem",
+      "value": "Legg til en gjenstand"
+    },
+    {
+      "key": "inventory.addNotice",
+      "value": "Våpen og rustning beholder tilleggsdata for slot. Bruk Erstatt på et eksisterende våpen eller rustning i stedet for Legg til, slik at disse dataene forblir gyldige."
+    },
+    {
+      "key": "inventory.addSelected",
+      "value": "Legg til valgt gjenstand"
+    },
+    {
+      "key": "inventory.cancel",
+      "value": "Avbryt"
+    },
+    {
+      "key": "inventory.catalog",
+      "value": "Katalog"
+    },
+    {
+      "key": "inventory.catalogArmors",
+      "value": "Rustning"
+    },
+    {
+      "key": "inventory.catalogChaliceItems",
+      "value": "Chalice-gjenstander"
+    },
+    {
+      "key": "inventory.catalogGems",
+      "value": "Blood Gems (eksperimentell direkte tillegg)"
+    },
+    {
+      "key": "inventory.catalogItems",
+      "value": "Gjenstander og forbruksvarer"
+    },
+    {
+      "key": "inventory.catalogKeyItems",
+      "value": "Nøkkelgjenstander"
+    },
+    {
+      "key": "inventory.catalogRunes",
+      "value": "Caryll Runes (eksperimentell direkte tillegg)"
+    },
+    {
+      "key": "inventory.catalogWeapons",
+      "value": "Våpen"
+    },
+    {
+      "key": "inventory.close",
+      "value": "Lukk"
+    },
+    {
+      "key": "inventory.closeAddLabel",
+      "value": "Lukk Legg til gjenstand"
+    },
+    {
+      "key": "inventory.closeReplaceLabel",
+      "value": "Lukk Erstatt gjenstand"
+    },
+    {
+      "key": "inventory.directAddFailed",
+      "value": "Det direkte tillegg kunne ikke fullføres på en sikker måte."
+    },
+    {
+      "key": "inventory.directEquipmentDescription",
+      "value": "Opprett et katalogført våpen eller rustning direkte når lagringen inneholder en sikker gjenbrukbar equipment-slot-blokk."
+    },
+    {
+      "key": "inventory.directEquipmentNotice",
+      "value": "Eksperimentelt: denne operasjonen gjenbruker kun en sikker foreldreløs equipment-slot-blokk og oppretter fem lukkede gem-slots. Åpne slotene senere med Gems om nødvendig."
+    },
+    {
+      "key": "inventory.directUpgradeBuilder",
+      "value": "Direkte gem- og runebygger"
+    },
+    {
+      "key": "inventory.directUpgradeDescription",
+      "value": "Opprett en ferdig Blood Gem eller Caryll Rune direkte fra validerte effekter når en sikker gjenbrukbar post er tilgjengelig i lagringen."
+    },
+    {
+      "key": "inventory.directUpgradeNotice",
+      "value": "Eksperimentelt: denne operasjonen gjenbruker kun en sikker foreldreløs oppgraderingspost. Den endrer aldri lagringsoppsettet. Behold den automatiske sikkerhetskopien til karakteren har lastet normalt."
+    },
+    {
+      "key": "inventory.directUpgradePrimaryRequired",
+      "value": "Velg en validert primæreffekt før du legger til en gem eller rune."
+    },
+    {
+      "key": "inventory.directUpgradeUnavailable",
+      "value": "Denne lagringen har ingen sikker gjenbrukbar Gem/Rune-post. Ingen endring ble gjort. Opprett en kompatibel slot i spillet, og prøv igjen."
+    },
+    {
+      "key": "inventory.edit",
+      "value": "Rediger"
+    },
+    {
+      "key": "inventory.gems",
+      "value": "Gems"
+    },
+    {
+      "key": "inventory.gemShape",
+      "value": "Gem-form"
+    },
+    {
+      "key": "inventory.item",
+      "value": "gjenstand"
+    },
+    {
+      "key": "inventory.itemQuantity",
+      "value": "Antall gjenstander:"
+    },
+    {
+      "key": "inventory.matchingItems",
+      "value": "Matchende gjenstander"
+    },
+    {
+      "key": "inventory.noMatchingItem",
+      "value": "Ingen matchende gjenstand funnet."
+    },
+    {
+      "key": "inventory.quantity",
+      "value": "Antall"
+    },
+    {
+      "key": "inventory.replaceDescription",
+      "value": "Velg en kompatibel {{type}} fra katalogen. Slot-posisjonen bevares."
+    },
+    {
+      "key": "inventory.replaceDialogLabel",
+      "value": "Erstatt valgt gjenstand"
+    },
+    {
+      "key": "inventory.replaceItem",
+      "value": "Erstatt gjenstand"
+    },
+    {
+      "key": "inventory.replacing",
+      "value": "Erstatter"
+    },
+    {
+      "key": "inventory.runeType",
+      "value": "Rune-type"
+    },
+    {
+      "key": "inventory.searchCatalog",
+      "value": "Søk i katalogen"
+    },
+    {
+      "key": "inventory.searchItems",
+      "value": "Søk etter {{type}}-gjenstander"
+    },
+    {
+      "key": "inventory.selectNew",
+      "value": "Velg en ny {{type}}"
+    },
+    {
+      "key": "inventory.setValue",
+      "value": "Angi"
+    },
+    {
+      "key": "inventory.title",
+      "value": "Inventar"
+    },
+    {
+      "key": "inventory.type.armor",
+      "value": "rustning"
+    },
+    {
+      "key": "inventory.type.chalice",
+      "value": "gjenstand"
+    },
+    {
+      "key": "inventory.type.item",
+      "value": "gjenstand"
+    },
+    {
+      "key": "inventory.type.key",
+      "value": "gjenstand"
+    },
+    {
+      "key": "inventory.type.weapon",
+      "value": "våpen"
+    },
+    {
+      "key": "inventory.weaponLevel",
+      "value": "Våpennivå:"
+    },
+    {
+      "key": "language.label",
+      "value": "Språk"
+    },
+    {
+      "key": "nav.activeSave",
+      "value": "Aktiv lagring"
+    },
+    {
+      "key": "nav.controls",
+      "value": "Kontroller for lagringsfil"
+    },
+    {
+      "key": "nav.noSaveLoaded",
+      "value": "Ingen lagring lastet"
+    },
+    {
+      "key": "nav.openFileToBegin",
+      "value": "Åpne en dekryptert karakterfil for å begynne"
+    },
+    {
+      "key": "nav.openSave",
+      "value": "Åpne lagring"
+    },
+    {
+      "key": "nav.saveChanges",
+      "value": "Lagre endringer"
+    },
+    {
+      "key": "operation.eyebrow",
+      "value": "Arbeider med lagringsdata"
+    },
+    {
+      "key": "operation.preparing",
+      "value": "Forbereder redigeringsprogrammet"
+    },
+    {
+      "key": "operation.title",
+      "value": "Vennligst hold dette vinduet åpent."
+    },
+    {
+      "key": "saveFlow.close",
+      "value": "Lukk"
+    },
+    {
+      "key": "saveFlow.confirmSaveDescription",
+      "value": "Dette skriver de nåværende endringene til den valgte filen. Behold den automatiske .bak-sikkerhetskopien til du har verifisert lagringen i spillet."
+    },
+    {
+      "key": "saveFlow.confirmSaveTitle",
+      "value": "Bekreft lagring"
+    },
+    {
+      "key": "saveFlow.discardAndOpen",
+      "value": "Forkast og åpne"
+    },
+    {
+      "key": "saveFlow.discardOpenDescription",
+      "value": "Du har ikke-lagrede endringer. Åpning av en annen lagring vil forkaste de nåværende endringene."
+    },
+    {
+      "key": "saveFlow.discardOpenTitle",
+      "value": "Forkast ikke-lagrede endringer?"
+    },
+    {
+      "key": "saveFlow.keepEditing",
+      "value": "Fortsett å redigere"
+    },
+    {
+      "key": "saveFlow.loadedStatus",
+      "value": "Lagring lastet. En sikkerhetskopi ble opprettet før redigering."
+    },
+    {
+      "key": "saveFlow.openFailedDescription",
+      "value": "Den valgte filen kunne ikke tolkes. Velg en dekryptert Bloodborne-karakterlagring og prøv igjen."
+    },
+    {
+      "key": "saveFlow.openFailedTitle",
+      "value": "Kan ikke åpne lagring"
+    },
+    {
+      "key": "saveFlow.openTitle",
+      "value": "Åpne dekryptert Bloodborne-lagring"
+    },
+    {
+      "key": "saveFlow.saveCompletedDescription",
+      "value": "Behold .bak-sikkerhetskopien til den redigerte lagringen er verifisert."
+    },
+    {
+      "key": "saveFlow.saveCompletedTitle",
+      "value": "Lagring fullført"
+    },
+    {
+      "key": "saveFlow.savedStatus",
+      "value": "Endringer lagret."
+    },
+    {
+      "key": "saveFlow.saveFailedDescription",
+      "value": "Den redigerte lagringen kunne ikke skrives. Sjekk målplassering og rettigheter, og prøv igjen."
+    },
+    {
+      "key": "saveFlow.saveFailedTitle",
+      "value": "Kan ikke lagre"
+    },
+    {
+      "key": "saveFlow.saveTitle",
+      "value": "Lagre redigert karakter"
+    },
+    {
+      "key": "saveFlow.unsavedStatus",
+      "value": "Ulagrede endringer"
+    },
+    {
+      "key": "sidebar.backupDescription",
+      "value": "Åpning av en lagring oppretter en .bak-kopi før endringer gjøres."
+    },
+    {
+      "key": "sidebar.backupTitle",
+      "value": "Sikkerhetskopi-først arbeidsflyt"
+    },
+    {
+      "key": "sidebar.bosses",
+      "value": "Sjefer"
+    },
+    {
+      "key": "sidebar.bossesDescription",
+      "value": "Fremdriftsstatus"
+    },
+    {
+      "key": "sidebar.character",
+      "value": "Karakter"
+    },
+    {
+      "key": "sidebar.characterData",
+      "value": "Karakterdata"
+    },
+    {
+      "key": "sidebar.characterDescription",
+      "value": "Identitet og posisjon"
+    },
+    {
+      "key": "sidebar.flags",
+      "value": "Flagg"
+    },
+    {
+      "key": "sidebar.flagsDescription",
+      "value": "Avanserte innstillinger"
+    },
+    {
+      "key": "sidebar.inventory",
+      "value": "Inventar"
+    },
+    {
+      "key": "sidebar.inventoryDescription",
+      "value": "Gjenstander og utstyr"
+    },
+    {
+      "key": "sidebar.stats",
+      "value": "Statistikk"
+    },
+    {
+      "key": "sidebar.statsDescription",
+      "value": "Attributter og ekkoer"
+    },
+    {
+      "key": "sidebar.storage",
+      "value": "Lager"
+    },
+    {
+      "key": "sidebar.storageDescription",
+      "value": "Lagrede gjenstander"
+    },
+    {
+      "key": "sidebar.workspace",
+      "value": "Redigeringsarbeidsområde"
+    },
+    {
+      "key": "unsaved.cancel",
+      "value": "Avbryt"
+    },
+    {
+      "key": "unsaved.description",
+      "value": "Dine nåværende endringer er ikke skrevet til en lagringsfil. Velg Lagre endringer for å beholde dem, eller lukk uten å lagre for å forkaste dem."
+    },
+    {
+      "key": "unsaved.discard",
+      "value": "Lukk uten å lagre"
+    },
+    {
+      "key": "unsaved.eyebrow",
+      "value": "Ulagrede endringer"
+    },
+    {
+      "key": "unsaved.save",
+      "value": "Lagre endringer"
+    },
+    {
+      "key": "unsaved.saving",
+      "value": "Lagrer…"
+    },
+    {
+      "key": "unsaved.title",
+      "value": "Lagre før lukking?"
+    },
+    {
+      "key": "update.available",
+      "value": "Oppdatering tilgjengelig"
+    },
+    {
+      "key": "update.downloadedMegabytes",
+      "value": "{{megabytes}} MB lastet ned"
+    },
+    {
+      "key": "update.downloadingProgress",
+      "value": "Laster ned: {{percentage}}%"
+    },
+    {
+      "key": "update.downloadingSigned",
+      "value": "Laster ned signert oppdatering…"
+    },
+    {
+      "key": "update.installedRestarting",
+      "value": "Oppdatering installert. Starter redigeringsprogrammet på nytt…"
+    },
+    {
+      "key": "update.installFailed",
+      "value": "Oppdateringen kunne ikke installeres. Din nåværende versjon er uendret."
+    },
+    {
+      "key": "update.installing",
+      "value": "Installerer oppdatering…"
+    },
+    {
+      "key": "update.notNow",
+      "value": "Ikke nå"
+    },
+    {
+      "key": "update.startingDownload",
+      "value": "Starter sikker nedlasting…"
+    },
+    {
+      "key": "update.updateAndRestart",
+      "value": "Oppdater og start på nytt"
+    },
+    {
+      "key": "update.version",
+      "value": "Versjon {{version}}"
+    }
+  ]
+};
+
+Object.entries(finalV020TranslatedOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  translations.forEach(({ key, value }) => applyTranslationPath(translatedResource, key, value));
+  resources[language] = translatedResource;
+});
+
+const v020FeatureTranslatedOverrides = {
+  "fr": [
+    {
+      "key": "preferences.compact",
+      "value": "Vue compacte"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Vue confortable"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Contrôles de révision"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Revue locale"
+    },
+    {
+      "key": "revision.title",
+      "value": "Journal des modifications"
+    },
+    {
+      "key": "revision.description",
+      "value": "Vérifiez les modifications en mémoire avant d'enregistrer. Annuler et refaire n'écrivent jamais automatiquement dans le fichier."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} modifications"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Données de sauvegarde modifiées"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Quantité de l'objet mise à jour"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Niveau d'arme mis à jour"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Objet ajouté à l'inventaire"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Équipement ajouté directement"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Gemme ou rune ajoutée directement"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Objet de l'inventaire remplacé"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Gemme ou rune mise à jour"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Gemme ou rune convertie"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Forme d'emplacement d'équipement mise à jour"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Contenu de l'emplacement d'équipement mis à jour"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Statistiques du personnage mises à jour"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Données du personnage mises à jour"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Progression des boss mise à jour"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Option avancée de sauvegarde appliquée"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Annuler"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Refaire"
+    },
+    {
+      "key": "revision.close",
+      "value": "Fermer le journal des modifications"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Aucune modification en mémoire enregistrée pour le moment."
+    },
+    {
+      "key": "revision.notice",
+      "value": "L'enregistrement n'écrit que la révision actuelle. Conservez la sauvegarde automatique .bak jusqu'à vérification en jeu."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Modifications depuis le dernier point de contrôle du fichier"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} valeur(s) de statistique modifiée(s)"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Nom du personnage modifié"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Temps de jeu modifié"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Position ou destination modifiée"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Progression des boss modifiée"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} élément(s) d'inventaire ajouté(s) ou supprimé(s)"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} gemme(s) ou rune(s) ajoutée(s) ou supprimée(s)"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Rechercher dans l'inventaire"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nom, type, effet…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Effacer"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Favoris uniquement"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Ajouter aux favoris"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Retirer des favoris"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Dupliquer"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Copie créée nommée «{{name}}»."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importer JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Exporter JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importer les préréglages Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Exporter les préréglages Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "{{count}} nouveau(x) préréglage(s) importé(s)."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Bibliothèque de préréglages exportée avec succès."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "L'opération sur la bibliothèque de préréglages n'a pas pu être complétée."
+    }
+  ],
+  "es": [
+    {
+      "key": "preferences.compact",
+      "value": "Vista compacta"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Vista cómoda"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Controles de revisión"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Revisión local"
+    },
+    {
+      "key": "revision.title",
+      "value": "Registro de cambios"
+    },
+    {
+      "key": "revision.description",
+      "value": "Revisa los cambios en memoria antes de guardar. Deshacer y rehacer no escriben en el archivo automáticamente."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} cambios"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Datos de guardado editados"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Cantidad de objeto actualizada"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Nivel de arma actualizado"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Objeto añadido al inventario"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Equipo añadido directamente"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Gema o Runa añadida directamente"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Objeto del inventario reemplazado"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Gema o Runa actualizada"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Gema o Runa convertida"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Forma de ranura de equipo actualizada"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Contenido de ranura de equipo actualizado"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Estadísticas del personaje actualizadas"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Datos del personaje actualizados"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Progreso de jefes actualizado"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Bandera avanzada de guardado aplicada"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Deshacer"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Rehacer"
+    },
+    {
+      "key": "revision.close",
+      "value": "Cerrar registro de cambios"
+    },
+    {
+      "key": "revision.empty",
+      "value": "No se han registrado cambios en memoria todavía."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Guardar escribe solo la revisión actual. Mantén la copia automática .bak hasta verificar la partida en el juego."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Cambios desde el último punto de control del archivo"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} valor(es) de estadística modificado(s)"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Nombre del personaje cambiado"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Tiempo de juego cambiado"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Posición o destino cambiado"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Progreso de jefes cambiado"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} registro(s) de inventario añadido(s) o eliminado(s)"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} registro(s) de Gema o Runa añadido(s) o eliminado(s)"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Buscar en inventario"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nombre, tipo, efecto…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Borrar"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Solo favoritos"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Añadir a favoritos"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Quitar de favoritos"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplicar"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Se creó una copia llamada “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importar presets de Forge"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Exportar presets de Forge"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importar presets de Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Exportar presets de Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Se importaron {{count}} presets nuevos."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Biblioteca de presets exportada correctamente."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "No se pudo completar la operación de la biblioteca de presets."
+    }
+  ],
+  "pt-PT": [
+    {
+      "key": "preferences.compact",
+      "value": "Vista compacta"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Vista confortável"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Controlos de revisão"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Revisão local"
+    },
+    {
+      "key": "revision.title",
+      "value": "Registo de alterações"
+    },
+    {
+      "key": "revision.description",
+      "value": "Reveja as alterações em memória antes de guardar. Desfazer e refazer nunca escrevem automaticamente no ficheiro."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} alterações"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Dados de gravação editados"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Quantidade do item atualizada"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Nível da arma atualizado"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Item de inventário adicionado"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Equipamento adicionado diretamente"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Gema ou Runa adicionada diretamente"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Item de inventário substituído"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Gema ou Runa atualizada"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Gema ou Runa convertida"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Forma do encaixe do equipamento atualizada"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Conteúdo do encaixe do equipamento atualizado"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Estatísticas do personagem atualizadas"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Dados do personagem atualizados"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Progresso dos chefes atualizado"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Flag de gravação avançada aplicada"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Desfazer"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Refazer"
+    },
+    {
+      "key": "revision.close",
+      "value": "Fechar registo de alterações"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Ainda não foram registadas alterações em memória."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Gravar escreve apenas a revisão atual. Mantenha a cópia automática .bak até verificar a gravação no jogo."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Alterações desde o último ponto de verificação do ficheiro"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} valor(es) de estatística alterado(s)"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Nome da personagem alterado"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Tempo de jogo alterado"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Posição ou destino alterado"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Progresso dos chefes alterado"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} registo(s) de item de inventário adicionados ou removidos"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} registo(s) de Gema ou Runa adicionados ou removidos"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Pesquisar no inventário"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nome, tipo, efeito…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Limpar"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Apenas favoritos"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Adicionar aos favoritos"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Remover dos favoritos"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplicar"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Criada uma cópia chamada “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importar JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Exportar JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importar predefinições do Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Exportar predefinições do Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importadas {{count}} predefinição(ões) nova(s)."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Biblioteca de predefinições exportada com sucesso."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "A operação da biblioteca de predefinições não pôde ser concluída."
+    }
+  ],
+  "pt-BR": [
+    {
+      "key": "preferences.compact",
+      "value": "Visual compacto"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Visual confortável"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Controles de revisão"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Revisão local"
+    },
+    {
+      "key": "revision.title",
+      "value": "Registro de alterações"
+    },
+    {
+      "key": "revision.description",
+      "value": "Revise as alterações em memória antes de salvar. Desfazer e refazer nunca gravam automaticamente no arquivo."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} alterações"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Dados de salvamento editados"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Quantidade do item atualizada"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Nível da arma atualizado"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Item do inventário adicionado"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Equipamento adicionado diretamente"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Gema ou Runa adicionada diretamente"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Item do inventário substituído"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Gema ou Runa atualizada"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Gema ou Runa convertida"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Formato do slot de equipamento atualizado"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Conteúdo do slot de equipamento atualizado"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Estatísticas do personagem atualizadas"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Dados do personagem atualizados"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Progresso de chefes atualizado"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Flag avançada aplicada"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Desfazer"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Refazer"
+    },
+    {
+      "key": "revision.close",
+      "value": "Fechar registro de alterações"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Nenhuma alteração em memória foi registrada ainda."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Salvar grava apenas a revisão atual. Mantenha o backup automático .bak até que o salvamento seja verificado no jogo."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Alterações desde o último checkpoint do arquivo"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} valor(es) de estatística alterado(s)"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Nome do personagem alterado"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Tempo de jogo alterado"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Posição ou destino alterado"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Progresso de chefes alterado"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} registro(s) de item do inventário adicionados ou removidos"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} registro(s) de Gema ou Runa adicionados ou removidos"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Buscar no inventário"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nome, tipo, efeito…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Limpar"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Somente favoritos"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Adicionar aos favoritos"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Remover dos favoritos"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplicar"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Criada uma cópia chamada “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importar JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Exportar JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importar presets do Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Exportar presets do Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importados {{count}} preset(s) novos."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Biblioteca de presets exportada com sucesso."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "A operação na biblioteca de presets não pôde ser concluída."
+    }
+  ],
+  "ru": [
+    {
+      "key": "preferences.compact",
+      "value": "Компактный вид"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Комфортный вид"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Управление изменениями"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Локальная проверка"
+    },
+    {
+      "key": "revision.title",
+      "value": "Журнал изменений"
+    },
+    {
+      "key": "revision.description",
+      "value": "Просмотрите изменения в памяти перед сохранением. Отмена и повтор не записывают файл автоматически."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} изменений"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Изменены данные сохранения"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Обновлено количество предмета"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Обновлён уровень оружия"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Добавлен предмет в инвентарь"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Добавлено оборудование напрямую"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Добавлен камень или руна напрямую"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Заменён предмет в инвентаре"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Обновлён камень или руна"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Конвертирован камень или руна"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Изменён тип слота экипировки"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Обновлено содержимое слота экипировки"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Обновлены характеристики персонажа"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Обновлены данные персонажа"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Обновлён прогресс боссов"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Применён расширенный флаг сохранения"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Отменить"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Повторить"
+    },
+    {
+      "key": "revision.close",
+      "value": "Закрыть журнал изменений"
+    },
+    {
+      "key": "revision.empty",
+      "value": "В памяти ещё нет изменений."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Сохранение записывает только текущую ревизию. Оставьте автоматический .bak до проверки сохранения в игре."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Изменения с последней контрольной точки файла"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} изменений характеристик"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Изменено имя персонажа"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Изменено время игры"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Изменено положение или пункт назначения"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Изменён прогресс боссов"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} записей предметов инвентаря добавлено или удалено"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} записей камней или рун добавлено или удалено"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Поиск по инвентарю"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Название, тип, эффект…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Очистить"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Только избранные"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Добавить в избранное"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Убрать из избранного"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Дублировать"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Создана копия с именем “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Импорт JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Экспорт JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Импорт пресетов Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Экспорт пресетов Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Импортировано {{count}} новых пресетов."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Библиотека пресетов успешно экспортирована."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Не удалось завершить операцию с библиотекой пресетов."
+    }
+  ],
+  "de": [
+    {
+      "key": "preferences.compact",
+      "value": "Kompakte Ansicht"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Komfortable Ansicht"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Revision-Steuerung"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Lokale Überprüfung"
+    },
+    {
+      "key": "revision.title",
+      "value": "Änderungsprotokoll"
+    },
+    {
+      "key": "revision.description",
+      "value": "Änderungen im Arbeitsspeicher vor dem Speichern überprüfen. Rückgängig/Wiederherstellen schreibt nie automatisch in die Datei."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} Änderungen"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Speicherdaten bearbeitet"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Gegenstandsmenge aktualisiert"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Waffenstufe aktualisiert"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Inventargegenstand hinzugefügt"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Ausrüstung direkt hinzugefügt"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Juwel oder Rune direkt hinzugefügt"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Inventargegenstand ersetzt"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Juwel oder Rune aktualisiert"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Juwel oder Rune konvertiert"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Ausrüstungs-Slotform aktualisiert"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Inhalt des Ausrüstungs-Slots aktualisiert"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Charakterwerte aktualisiert"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Charakterdaten aktualisiert"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Boss-Fortschritt aktualisiert"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Erweiterte Speicher-Flag angewendet"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Rückgängig"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Wiederherstellen"
+    },
+    {
+      "key": "revision.close",
+      "value": "Änderungsprotokoll schließen"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Im Arbeitsspeicher wurden noch keine Änderungen protokolliert."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Speichern schreibt nur die aktuelle Revision. Bewahre die automatische .bak-Sicherung, bis der Speicherstand im Spiel bestätigt wurde."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Änderungen seit dem letzten Dateikontrollpunkt"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} Statistikwert(e) geändert"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Charaktername geändert"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Spielzeit geändert"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Position oder Ziel geändert"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Boss-Fortschritt geändert"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} Inventarposten hinzugefügt oder entfernt"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} Juwel- oder Rune-Eintrag(e) hinzugefügt oder entfernt"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Inventar durchsuchen"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Name, Typ, Effekt…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Löschen"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Nur Favoriten"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Zu Favoriten hinzufügen"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Aus Favoriten entfernen"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplizieren"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Kopie namens \"{{name}}\" erstellt."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "JSON importieren"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "JSON exportieren"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Forge-Voreinstellungen importieren"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Forge-Voreinstellungen exportieren"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "{{count}} neue Voreinstellung(en) importiert."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Voreinstellungsbibliothek erfolgreich exportiert."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Die Operation der Voreinstellungsbibliothek konnte nicht abgeschlossen werden."
+    }
+  ],
+  "it": [
+    {
+      "key": "preferences.compact",
+      "value": "Vista compatta"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Vista comoda"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Controlli revisione"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Revisione locale"
+    },
+    {
+      "key": "revision.title",
+      "value": "Registro modifiche"
+    },
+    {
+      "key": "revision.description",
+      "value": "Esamina le modifiche in memoria prima di salvare. Annulla e ripristina non scrivono mai automaticamente sul file."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} modifiche"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Dati di salvataggio modificati"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Quantità oggetto aggiornata"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Livello arma aggiornato"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Oggetto aggiunto all'inventario"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Equipaggiamento aggiunto direttamente"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Gemma o Runa aggiunta direttamente"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Oggetto dell'inventario sostituito"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Gemma o Runa aggiornata"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Gemma o Runa convertita"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Forma dello slot dell'equipaggiamento aggiornata"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Contenuto dello slot dell'equipaggiamento aggiornato"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Statistiche del personaggio aggiornate"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Dati del personaggio aggiornati"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Progresso boss aggiornato"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Flag di salvataggio avanzata applicata"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Annulla"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Ripristina"
+    },
+    {
+      "key": "revision.close",
+      "value": "Chiudi registro modifiche"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Non sono state registrate modifiche in memoria."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Il salvataggio scrive solo la revisione corrente. Mantieni il backup automatico .bak finché il salvataggio non è stato verificato nel gioco."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Modifiche dall'ultimo checkpoint del file"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "Modificati {{count}} valori statistici"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Nome del personaggio modificato"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Tempo di gioco modificato"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Posizione o destinazione modificata"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Progresso dei boss modificato"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} elementi dell'inventario aggiunti o rimossi"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} Gemme o Rune aggiunte o rimosse"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Cerca nell'inventario"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nome, tipo, effetto…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Cancella"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Solo preferiti"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Aggiungi ai preferiti"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Rimuovi dai preferiti"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplica"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Creata una copia chiamata “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importa JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Esporta JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importa preset di Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Esporta preset di Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importati {{count}} nuovi preset."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Libreria preset esportata con successo."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "L'operazione sulla libreria preset non è riuscita."
+    }
+  ],
+  "nl": [
+    {
+      "key": "preferences.compact",
+      "value": "Compacte weergave"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Comfortabele weergave"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Revisiebediening"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Lokale controle"
+    },
+    {
+      "key": "revision.title",
+      "value": "Wijzigingslogboek"
+    },
+    {
+      "key": "revision.description",
+      "value": "Bekijk wijzigingen in het geheugen voordat u opslaat. Ongedaan maken en opnieuw uitvoeren schrijven nooit automatisch naar het bestand."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} wijzigingen"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Opgeslagen gegevens bewerkt"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Itemaantal bijgewerkt"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Wapenniveau bijgewerkt"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Inventarisitem toegevoegd"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Uitrusting direct toegevoegd"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Steen of rune direct toegevoegd"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Inventarisitem vervangen"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Steen of rune bijgewerkt"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Steen of rune geconverteerd"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Uitrustingsslotvorm bijgewerkt"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Inhoud van uitrustingsslot bijgewerkt"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Personage-statistieken bijgewerkt"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Personagegegevens bijgewerkt"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Voortgang van baas bijgewerkt"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Geavanceerde save-vlag toegepast"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Ongedaan maken"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Opnieuw uitvoeren"
+    },
+    {
+      "key": "revision.close",
+      "value": "Wijzigingslogboek sluiten"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Er zijn nog geen wijzigingen in het geheugen geregistreerd."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Opslaan schrijft alleen de huidige revisie. Bewaar de automatische .bak-back-up totdat het opgeslagen bestand in het spel is gecontroleerd."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Wijzigingen sinds het laatste bestandscontrolepunt"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} statistiekwaarde(n) gewijzigd"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Personagenaam gewijzigd"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Speeltijd gewijzigd"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Positie of bestemming gewijzigd"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Voortgang van bazen gewijzigd"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} inventarisitem(s) toegevoegd of verwijderd"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} steen- of rune-record(s) toegevoegd of verwijderd"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Inventaris doorzoeken"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Naam, type, effect…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Wissen"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Alleen favorieten"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Aan favorieten toevoegen"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Uit favorieten verwijderen"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Dupliceren"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Een kopie gemaakt met de naam “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "JSON importeren"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "JSON exporteren"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Forge-presets importeren"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Forge-presets exporteren"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "{{count}} nieuwe preset(s) geïmporteerd."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Presetbibliotheek succesvol geëxporteerd."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "De bewerking op de presetbibliotheek kon niet worden voltooid."
+    }
+  ],
+  "pl": [
+    {
+      "key": "preferences.compact",
+      "value": "Widok kompaktowy"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Widok komfortowy"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Kontrolki rewizji"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Przegląd lokalny"
+    },
+    {
+      "key": "revision.title",
+      "value": "Dziennik zmian"
+    },
+    {
+      "key": "revision.description",
+      "value": "Przejrzyj zmiany w pamięci przed zapisem. Cofnij i ponów nie zapisują automatycznie do pliku."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} zmian"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Zmodyfikowano dane zapisu"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Zmieniono ilość przedmiotu"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Zaktualizowano poziom broni"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Dodano przedmiot do ekwipunku"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Dodano wyposażenie bezpośrednio"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Bezpośrednio dodano klejnot lub runę"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Zastąpiono przedmiot w ekwipunku"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Zmieniono klejnot lub runę"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Przekształcono klejnot lub runę"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Zmieniono kształt gniazda wyposażenia"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Zmieniono zawartość gniazda wyposażenia"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Zaktualizowano statystyki postaci"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Zaktualizowano dane postaci"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Zaktualizowano postęp bossów"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Zastosowano zaawansowaną flagę zapisu"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Cofnij"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Ponów"
+    },
+    {
+      "key": "revision.close",
+      "value": "Zamknij dziennik zmian"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Nie zanotowano jeszcze żadnych zmian w pamięci."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Zapisuje jedynie bieżącą rewizję. Zachowaj automatyczny plik .bak, dopóki zapis nie zostanie zweryfikowany w grze."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Zmiany od ostatniego zapisu pliku"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} zmienionych wartości statystyk"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Zmieniono nazwę postaci"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Czas gry zmieniony"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Zmieniono pozycję lub cel"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Zmieniono postęp bossów"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} rekordów przedmiotów ekwipunku dodanych lub usuniętych"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} rekordów klejnotów lub run dodanych lub usuniętych"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Szukaj w ekwipunku"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nazwa, typ, efekt…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Wyczyść"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Tylko ulubione"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Dodaj do ulubionych"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Usuń z ulubionych"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplikuj"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Utworzono kopię o nazwie „{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importuj JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Eksportuj JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Import presetów Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Eksport presetów Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Zaimportowano {{count}} nowych presetów."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Biblioteka presetów została pomyślnie wyeksportowana."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Operacja na bibliotece presetów nie mogła zostać ukończona."
+    }
+  ],
+  "tr": [
+    {
+      "key": "preferences.compact",
+      "value": "Kompakt görünüm"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Konforlu görünüm"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Değişiklik kontrolleri"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Yerel inceleme"
+    },
+    {
+      "key": "revision.title",
+      "value": "Değişiklik günlüğü"
+    },
+    {
+      "key": "revision.description",
+      "value": "Kaydetmeden önce bellekteki değişiklikleri inceleyin. Geri al ve yinele eylemleri dosyaya otomatik olarak yazmaz."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} değişiklik"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Kayıt verileri düzenlendi"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Eşya miktarı güncellendi"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Silah seviyesi güncellendi"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Envantere eşya eklendi"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Ekipman doğrudan eklendi"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Gem veya Rune doğrudan eklendi"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Envanter öğesi değiştirildi"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Gem veya Rune güncellendi"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Gem veya Rune dönüştürüldü"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Ekipman yuvası şekli güncellendi"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Ekipman yuvası içeriği güncellendi"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Karakter istatistikleri güncellendi"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Karakter verileri güncellendi"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Boss ilerlemesi güncellendi"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Gelişmiş bir kayıt bayrağı uygulandı"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Geri al"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Yinele"
+    },
+    {
+      "key": "revision.close",
+      "value": "Değişiklik günlüğünü kapat"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Henüz bellekte değişiklik kaydedilmedi."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Kaydetme yalnızca mevcut revizyonu yazar. Oyunda doğrulanana kadar otomatik .bak yedeğini saklayın."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Son dosya kontrol noktasından bu yana değişiklikler"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} istatistik değeri değişti"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Karakter adı değiştirildi"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Oynama süresi değişti"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Konum veya varış noktası değişti"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Boss ilerlemesi değişti"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} envanter öğesi kaydı eklendi veya kaldırıldı"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} Gem veya Rune kaydı eklendi veya kaldırıldı"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Envanteri ara"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "İsim, tür, etki…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Temizle"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Sadece favoriler"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Favorilere ekle"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Favorilerden kaldır"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Çoğalt"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "“{{name}}” adlı bir kopya oluşturuldu."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "JSON içe aktar"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "JSON dışa aktar"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Forge önayarlarını içe aktar"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Forge önayarlarını dışa aktar"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "{{count}} yeni önayar içe aktarıldı."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Önayar kütüphanesi başarıyla dışa aktarıldı."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Önayar kütüphanesi işlemi tamamlanamadı."
+    }
+  ],
+  "uk": [
+    {
+      "key": "preferences.compact",
+      "value": "Компактний вигляд"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Комфортний вигляд"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Керування змінами"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Локальний перегляд"
+    },
+    {
+      "key": "revision.title",
+      "value": "Журнал змін"
+    },
+    {
+      "key": "revision.description",
+      "value": "Перегляньте зміни в оперативній пам'яті перед збереженням. Скасування та повтор ніколи не записують файл автоматично."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} змін"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Змінено дані збереження"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Оновлено кількість предмета"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Оновлено рівень зброї"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Додано предмет до інвентарю"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Додано спорядження безпосередньо"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Додано камінь або руну безпосередньо"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Замінено предмет в інвентарі"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Оновлено камінь або руну"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Перетворено камінь або руну"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Оновлено форму слота спорядження"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Оновлено вміст слота спорядження"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Оновлено характеристики персонажа"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Оновлено дані персонажа"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Оновлено прогрес босів"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Застосовано розширений прапорець збереження"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Скасувати"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Повторити"
+    },
+    {
+      "key": "revision.close",
+      "value": "Закрити журнал змін"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Поки що не зафіксовано змін в оперативній пам'яті."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Збереження записує лише поточну ревізію. Залиште автоматичну резервну копію .bak до підтвердження збереження в грі."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Зміни з останнього контрольного збереження файлу"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} змінено значень статистики"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Змінено ім'я персонажа"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Змінено ігровий час"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Змінено позицію або пункт призначення"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Змінено прогрес босів"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} запис(ів) предметів інвентарю додано або видалено"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} запис(ів) каменів або рун додано або видалено"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Пошук інвентарю"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Назва, тип, ефект…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Очистити"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Лише обране"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Додати в обране"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Вилучити з обраного"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Створити копію"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Створено копію з іменем «{{name}}»."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Імпортувати JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Експортувати JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Імпортувати пресети Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Експортувати пресети Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Імпортовано {{count}} нових пресетів."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Бібліотека пресетів успішно експортована."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Не вдалося виконати операцію з бібліотекою пресетів."
+    }
+  ],
+  "ja": [
+    {
+      "key": "preferences.compact",
+      "value": "コンパクト表示"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "快適表示"
+    },
+    {
+      "key": "revision.controls",
+      "value": "リビジョン操作"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "ローカル確認"
+    },
+    {
+      "key": "revision.title",
+      "value": "変更履歴"
+    },
+    {
+      "key": "revision.description",
+      "value": "保存前にメモリ上の変更を確認します。元に戻す/やり直しはファイルに自動で書き込まれません。"
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} 件の変更"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "セーブデータを編集"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "アイテム数を更新"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "武器強化レベルを更新"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "所持品を追加"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "装備を直接追加"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "血晶石やルーンを直接追加"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "所持品を置換"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "血晶石やルーンを更新"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "血晶石やルーンを変換"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "装備スロット形状を更新"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "装備スロットの内容を更新"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "ステータスを更新"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "キャラクターデータを更新"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "ボス進行状況を更新"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "高度なセーブフラグを適用"
+    },
+    {
+      "key": "revision.undo",
+      "value": "元に戻す"
+    },
+    {
+      "key": "revision.redo",
+      "value": "やり直す"
+    },
+    {
+      "key": "revision.close",
+      "value": "変更履歴を閉じる"
+    },
+    {
+      "key": "revision.empty",
+      "value": "メモリ上の変更はまだ記録されていません。"
+    },
+    {
+      "key": "revision.notice",
+      "value": "保存すると現在のリビジョンのみが書き込まれます。ゲーム内でセーブを確認するまで、自動作成された .bak バックアップを保持してください。"
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "最終ファイルチェックポイント以降の変更"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} 件のステータスが変更されました"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "キャラクター名が変更されました"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "プレイ時間が変更されました"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "位置または行き先が変更されました"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "ボス進行が変更されました"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} 件の所持品レコードが追加または削除されました"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} 件の血晶石またはルーンのレコードが追加または削除されました"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "所持品を検索"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "名前、タイプ、効果…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "クリア"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "お気に入りのみ"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "お気に入りに追加"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "お気に入りから削除"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "複製"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "「{{name}}」という名前のコピーを作成しました。"
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "JSON をインポート"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "JSON をエクスポート"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Forge プリセットをインポート"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Forge プリセットをエクスポート"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "{{count}} 件の新しいプリセットをインポートしました。"
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "プリセットライブラリを正常にエクスポートしました。"
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "プリセットライブラリの操作を完了できませんでした。"
+    }
+  ],
+  "ko": [
+    {
+      "key": "preferences.compact",
+      "value": "간결 보기"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "여유 있는 보기"
+    },
+    {
+      "key": "revision.controls",
+      "value": "변경 제어"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "로컬 검토"
+    },
+    {
+      "key": "revision.title",
+      "value": "변경 기록"
+    },
+    {
+      "key": "revision.description",
+      "value": "저장하기 전에 메모리상의 변경사항을 검토하세요. 실행 취소와 다시 실행은 파일에 자동으로 기록되지 않습니다."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}}개 변경"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "세이브 데이터 수정됨"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "아이템 수량 변경됨"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "무기 레벨 변경됨"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "인벤토리 아이템 추가됨"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "장비 직접 추가됨"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "젬/룬 직접 추가됨"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "인벤토리 아이템 교체됨"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "젬/룬 수정됨"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "젬/룬 변환됨"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "장비 슬롯 형태 변경됨"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "장비 슬롯 내용 변경됨"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "캐릭터 능력치 변경됨"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "캐릭터 데이터 변경됨"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "보스 진행도 변경됨"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "고급 세이브 플래그 적용됨"
+    },
+    {
+      "key": "revision.undo",
+      "value": "실행 취소"
+    },
+    {
+      "key": "revision.redo",
+      "value": "다시 실행"
+    },
+    {
+      "key": "revision.close",
+      "value": "변경 기록 닫기"
+    },
+    {
+      "key": "revision.empty",
+      "value": "메모리상의 변경사항이 아직 없습니다."
+    },
+    {
+      "key": "revision.notice",
+      "value": "저장하면 현재 리비전만 기록됩니다. 게임에서 저장을 확인하기 전까지 자동 생성된 .bak 백업을 유지하세요."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "마지막 파일 체크포인트 이후 변경사항"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}}개 능력치 값 변경"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "캐릭터 이름 변경됨"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "플레이 시간 변경됨"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "위치/목적지 변경됨"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "보스 진행도 변경됨"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}}개 인벤토리 아이템 레코드 추가/제거"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}}개 젬/룬 레코드 추가/제거"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "인벤토리 검색"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "이름, 종류, 효과…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "지우기"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "즐겨찾기만"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "즐겨찾기에 추가"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "즐겨찾기에서 제거"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "복제"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "이름이 “{{name}}”인 복사본을 생성했습니다."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "JSON 가져오기"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "JSON 내보내기"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Forge 프리셋 가져오기"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Forge 프리셋 내보내기"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "{{count}}개의 새 프리셋을 가져왔습니다."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "프리셋 라이브러리 내보내기 완료."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "프리셋 라이브러리 작업을 완료할 수 없습니다."
+    }
+  ],
+  "zh-CN": [
+    {
+      "key": "preferences.compact",
+      "value": "紧凑视图"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "舒适视图"
+    },
+    {
+      "key": "revision.controls",
+      "value": "修订控制"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "本地审查"
+    },
+    {
+      "key": "revision.title",
+      "value": "变更记录"
+    },
+    {
+      "key": "revision.description",
+      "value": "在保存前查看内存中更改。撤销和重做不会自动写入文件。"
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} 项更改"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "编辑了存档数据"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "已更新物品数量"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "已更新武器等级"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "已添加库存物品"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "直接添加装备"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "直接添加宝石或符文"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "替换了库存物品"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "已更新宝石或符文"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "已转换宝石或符文"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "已更新装备槽形状"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "已更新装备槽内容"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "已更新角色属性"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "已更新角色数据"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "已更新首领进度"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "已应用高级存档标记"
+    },
+    {
+      "key": "revision.undo",
+      "value": "撤销"
+    },
+    {
+      "key": "revision.redo",
+      "value": "重做"
+    },
+    {
+      "key": "revision.close",
+      "value": "关闭变更记录"
+    },
+    {
+      "key": "revision.empty",
+      "value": "尚未记录任何内存更改。"
+    },
+    {
+      "key": "revision.notice",
+      "value": "保存仅写入当前修订。请保留自动生成的 .bak 备份，直到在游戏中验证保存为止。"
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "自上次文件检查点以来的更改"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} 个统计数值已更改"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "角色名称已更改"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "游玩时间已更改"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "位置或目的地已更改"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "首领进度已更改"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} 条库存物品记录已添加或移除"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} 条宝石或符文记录已添加或移除"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "搜索物品"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "名称、类型、效果…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "清除"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "仅显示收藏"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "添加到收藏"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "从收藏移除"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "复制"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "已创建名为“{{name}}”的副本。"
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "导入 JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "导出 JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "导入 Forge 预设"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "导出 Forge 预设"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "已导入 {{count}} 个新预设。"
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "预设库导出成功。"
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "预设库操作无法完成。"
+    }
+  ],
+  "sv": [
+    {
+      "key": "preferences.compact",
+      "value": "Kompakt vy"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Bekväm vy"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Revisionskontroller"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Lokal granskning"
+    },
+    {
+      "key": "revision.title",
+      "value": "Ändringslogg"
+    },
+    {
+      "key": "revision.description",
+      "value": "Granska förändringar i minnet innan du sparar. Ångra och gör om skriver aldrig automatiskt till filen."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} ändring(ar)"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Redigerade spardata"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Uppdaterade mängd"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Uppdaterade vapennivå"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Lade till ett föremål i inventariet"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Lade till utrustning direkt"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Lade till en juvel eller rune direkt"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Ersatte ett föremål i inventariet"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Uppdaterade en juvel eller rune"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Konverterade en juvel eller rune"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Uppdaterade utrustningsplatsens form"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Uppdaterade utrustningsplatsens innehåll"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Uppdaterade karaktärens statistik"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Uppdaterade karaktärsdata"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Uppdaterade bossframsteg"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Tillämpade en avancerad sparflagga"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Ångra"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Gör om"
+    },
+    {
+      "key": "revision.close",
+      "value": "Stäng ändringslogg"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Inga ändringar i minnet har registrerats ännu."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Sparning skriver endast den aktuella revisionen. Behåll den automatiska .bak-backupen tills sparningen verifierats i spelet."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Ändringar sedan senaste filkontrollpunkten"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} statistikvärde(n) ändrade"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Karaktärsnamn ändrat"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Speltid ändrad"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Position eller destination ändrad"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Bossframsteg ändrat"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} inventariepost(er) tillagda eller borttagna"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} juvel- eller runepost(er) tillagda eller borttagna"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Sök i inventariet"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Namn, typ, effekt…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Rensa"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Endast favoriter"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Lägg till i favoriter"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Ta bort från favoriter"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplicera"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Skapade en kopia med namnet “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importera JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Exportera JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importera Forge-förinställningar"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Exportera Forge-förinställningar"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importerade {{count}} nya förinställning(ar)."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Förinställningsbiblioteket exporterades."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Åtgärden för förinställningsbiblioteket kunde inte slutföras."
+    }
+  ],
+  "cs": [
+    {
+      "key": "preferences.compact",
+      "value": "Kompaktní zobrazení"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Pohodlné zobrazení"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Ovládání revizí"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Lokální kontrola"
+    },
+    {
+      "key": "revision.title",
+      "value": "Záznam změn"
+    },
+    {
+      "key": "revision.description",
+      "value": "Prohlédněte změny v paměti před uložením. Akce zpět/znova nikdy automaticky nezapisují do souboru."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} změn"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Upravená uložená data"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Aktualizované množství položky"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Aktualizována úroveň zbraně"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Přidán předmět do inventáře"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Vybavení přidáno přímo"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Přidán drahokam nebo runa přímo"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Nahrazen předmět v inventáři"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Aktualizován drahokam nebo runa"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Převeden drahokam nebo runa"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Aktualizován tvar slotu vybavení"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Aktualizován obsah slotu vybavení"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Aktualizovány statistiky postavy"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Aktualizována data postavy"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Aktualizován postup bossů"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Použit pokročilý flag"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Zpět"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Znovu"
+    },
+    {
+      "key": "revision.close",
+      "value": "Zavřít záznam změn"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Dosud nebyly zaznamenány žádné změny v paměti."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Uložením se zapíše pouze aktuální revize. Neodstraňujte automatickou zálohu .bak, dokud není uložení ověřeno ve hře."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Změny od posledního kontrolního bodu souboru"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} změněných statistických hodnot"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Změněno jméno postavy"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Změněn čas hraní"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Změněna pozice nebo cíl"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Změněn postup bossů"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} záznamů položek inventáře přidáno nebo odebráno"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} záznamů drahokamů nebo run přidáno nebo odebráno"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Prohledat inventář"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Název, typ, efekt…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Vymazat"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Pouze oblíbené"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Přidat do oblíbených"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Odebrat z oblíbených"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplikovat"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Vytvořena kopie s názvem “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importovat JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Exportovat JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Import přednastavení Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Export přednastavení Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importováno {{count}} nových přednastavení."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Knihovna přednastavení byla úspěšně exportována."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Operaci s knihovnou přednastavení nelze dokončit."
+    }
+  ],
+  "ro": [
+    {
+      "key": "preferences.compact",
+      "value": "Vizualizare compactă"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Vizualizare confortabilă"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Controale revizuire"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Revizuire locală"
+    },
+    {
+      "key": "revision.title",
+      "value": "Jurnal modificări"
+    },
+    {
+      "key": "revision.description",
+      "value": "Revizuiește modificările din memorie înainte de salvare. Anularea și refacerea nu scriu niciodată automat în fișier."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} modificări"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Date de salvare modificate"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Cantitate obiect actualizată"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Nivelul armei actualizat"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Obiect adăugat în inventar"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Echipament adăugat direct"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Gemă sau rună adăugată direct"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Obiect în inventar înlocuit"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Gemă sau rună actualizată"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Gemă sau rună convertită"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Forma slotului de echipament actualizată"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Conținut slot echipament actualizat"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Statistici personaj actualizate"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Datele personajului actualizate"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Progres șef actualizat"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Flag de salvare avansat aplicat"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Anulează"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Refă"
+    },
+    {
+      "key": "revision.close",
+      "value": "Închide jurnalul modificărilor"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Nu au fost înregistrate încă modificări în memorie."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Salvarea scrie doar revizia curentă. Păstrează copia automată .bak până la verificarea salvării în joc."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Modificări de la ultimul punct de control al fișierului"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} valori statistice modificate"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Nume personaj schimbat"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Timp de joc modificat"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Poziție sau destinație modificată"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Progres boss modificat"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} înregistrări obiecte din inventar adăugate sau eliminate"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} înregistrări de gemă sau rună adăugate sau eliminate"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Caută în inventar"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nume, tip, efect…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Șterge"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Doar favorite"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Adaugă la favorite"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Elimină din favorite"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplică"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "S-a creat o copie numită “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importă JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Exportă JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importă presetări Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Exportă presetări Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "{{count}} preseturi noi importate."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Biblioteca de preseturi exportată cu succes."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Nu s-a putut finaliza operațiunea asupra bibliotecii de presetări."
+    }
+  ],
+  "el": [
+    {
+      "key": "preferences.compact",
+      "value": "Συμπαγής προβολή"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Άνετη προβολή"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Έλεγχοι αναθεώρησης"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Τοπική ανασκόπηση"
+    },
+    {
+      "key": "revision.title",
+      "value": "Καταγραφή αλλαγών"
+    },
+    {
+      "key": "revision.description",
+      "value": "Ελέγξτε τις αλλαγές στη μνήμη πριν την αποθήκευση. Η αναίρεση και η επαναφορά δεν γράφουν ποτέ το αρχείο αυτόματα."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} αλλαγές"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Επεξεργασμένα δεδομένα αποθήκευσης"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Ενημερώθηκε ποσότητα αντικειμένου"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Ενημερώθηκε επίπεδο όπλου"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Προστέθηκε αντικείμενο στο απόθεμα"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Προστέθηκε εξοπλισμός απευθείας"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Προστέθηκε Gem ή Rune απευθείας"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Αντικαταστάθηκε αντικείμενο στο απόθεμα"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Ενημερώθηκε Gem ή Rune"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Μετατράπηκε Gem ή Rune"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Ενημερώθηκε σχήμα υποδοχής εξοπλισμού"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Ενημερώθηκε το περιεχόμενο υποδοχής εξοπλισμού"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Ενημερώθηκαν στατιστικά χαρακτήρα"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Ενημερώθηκαν δεδομένα χαρακτήρα"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Ενημερώθηκε πρόοδος αφεντικού"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Εφαρμόστηκε προχωρημένη σημαία αποθήκευσης"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Αναίρεση"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Επαναφορά"
+    },
+    {
+      "key": "revision.close",
+      "value": "Κλείσιμο καταγραφής αλλαγών"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Δεν έχουν καταγραφεί αλλαγές στη μνήμη."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Η αποθήκευση γράφει μόνο την τρέχουσα αναθεώρηση. Διατηρήστε το αυτόματο αντίγραφο .bak μέχρι να επαληθευτεί η αποθήκευση στο παιχνίδι."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Αλλαγές από το τελευταίο σημείο ελέγχου αρχείου"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} τιμή(ές) στατιστικού τροποποιήθηκαν"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Αλλαγή ονόματος χαρακτήρα"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Αλλαγή χρόνου παιχνιδιού"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Αλλαγή θέσης ή προορισμού"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Αλλαγή προόδου αφεντικών"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} εγγραφή(ές) αντικειμένου αποθέματος προστέθηκαν ή αφαιρέθηκαν"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} εγγραφή(ές) Gem ή Rune προστέθηκαν ή αφαιρέθηκαν"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Αναζήτηση αποθέματος"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Όνομα, τύπος, αποτέλεσμα…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Καθαρισμός"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Μόνο αγαπημένα"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Προσθήκη στα αγαπημένα"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Αφαίρεση από αγαπημένα"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Δημιουργία αντιγράφου"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Δημιουργήθηκε αντίγραφο με όνομα “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Εισαγωγή JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Εξαγωγή JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Εισαγωγή προεπιλογών Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Εξαγωγή προεπιλογών Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Εισήχθησαν {{count}} νέες προεπιλογές."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Η βιβλιοθήκη προεπιλογών εξήχθη με επιτυχία."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Η λειτουργία της βιβλιοθήκης προεπιλογών δεν μπόρεσε να ολοκληρωθεί."
+    }
+  ],
+  "id": [
+    {
+      "key": "preferences.compact",
+      "value": "Tampilan ringkas"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Tampilan nyaman"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Kontrol revisi"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Tinjauan lokal"
+    },
+    {
+      "key": "revision.title",
+      "value": "Log perubahan"
+    },
+    {
+      "key": "revision.description",
+      "value": "Tinjau perubahan di memori sebelum menyimpan. Batalkan dan ulangi tidak akan menulis ke file secara otomatis."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} perubahan"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Data simpanan diubah"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Jumlah item diperbarui"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Level senjata diperbarui"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Item inventaris ditambahkan"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Perlengkapan ditambahkan langsung"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Permata atau Rune ditambahkan langsung"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Item inventaris diganti"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Permata atau Rune diperbarui"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Permata atau Rune dikonversi"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Bentuk slot perlengkapan diperbarui"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Isi slot perlengkapan diperbarui"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Statistik karakter diperbarui"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Data karakter diperbarui"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Kemajuan bos diperbarui"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Flag simpanan lanjutan diterapkan"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Batalkan"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Ulangi"
+    },
+    {
+      "key": "revision.close",
+      "value": "Tutup log perubahan"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Belum ada perubahan di memori."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Menyimpan hanya menulis revisi saat ini. Pertahankan cadangan .bak otomatis sampai simpanan diverifikasi di dalam game."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Perubahan sejak checkpoint file terakhir"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} nilai statistik diubah"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Nama karakter diubah"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Waktu bermain diubah"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Posisi atau tujuan diubah"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Kemajuan bos diubah"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} catatan item inventaris ditambahkan atau dihapus"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} catatan Permata atau Rune ditambahkan atau dihapus"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Cari inventaris"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nama, tipe, efek…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Bersihkan"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Hanya favorit"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Tambahkan ke favorit"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Hapus dari favorit"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Gandakan"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Membuat salinan bernama “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Impor JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Ekspor JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Impor preset Forge"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Ekspor preset Forge"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Diimpor {{count}} preset baru."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Perpustakaan preset berhasil diekspor."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Operasi perpustakaan preset tidak dapat diselesaikan."
+    }
+  ],
+  "da": [
+    {
+      "key": "preferences.compact",
+      "value": "Kompakt visning"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Komfortabel visning"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Ændringskontroller"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Lokal gennemgang"
+    },
+    {
+      "key": "revision.title",
+      "value": "Ændringslog"
+    },
+    {
+      "key": "revision.description",
+      "value": "Gennemgå ændringer i hukommelsen før gemning. Fortryd og gentag skriver aldrig automatisk til filen."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} ændringer"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Redigerede gemmedata"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Opdateret vareantal"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Opdateret våbenniveau"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Tilføjede en genstand til inventaret"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Tilføjede udstyr direkte"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Tilføjede en Gem eller Rune direkte"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Udskiftede en genstand i inventaret"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Opdaterede en Gem eller Rune"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Konverterede en Gem eller Rune"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Opdaterede udstyrspladsens form"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Opdaterede indholdet i udstyrspladsen"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Opdaterede karakterstatistikker"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Opdaterede karakterdata"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Opdaterede boss-fremgang"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Anvendt et avanceret gemmeflag"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Fortryd"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Gentag"
+    },
+    {
+      "key": "revision.close",
+      "value": "Luk ændringsloggen"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Ingen ændringer i hukommelsen er registreret endnu."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Gemning skriver kun den aktuelle revision. Behold den automatiske .bak-backup indtil gemmet er verificeret i spillet."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Ændringer siden sidste fil-checkpoint"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} statistikværdi(er) ændret"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Karakternavn ændret"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Spilletid ændret"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Position eller destination ændret"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Boss-fremgang ændret"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} inventarpost(er) tilføjet eller fjernet"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} Gem- eller Runepost(er) tilføjet eller fjernet"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Søg i inventar"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Navn, type, effekt…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Ryd"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Kun favoritter"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Tilføj til favoritter"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Fjern fra favoritter"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Dupliker"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Oprettede en kopi med navnet “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importer JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Eksporter JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importer Forge-forudindstillinger"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Eksporter Forge-forudindstillinger"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importerede {{count}} nye forudindstilling(er)."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Forudindstillingsbiblioteket blev eksporteret med succes."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Operationen for forudindstillingsbiblioteket kunne ikke gennemføres."
+    }
+  ],
+  "fi": [
+    {
+      "key": "preferences.compact",
+      "value": "Tiivis näkymä"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Mukava näkymä"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Muutosten hallinta"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Paikallinen tarkastus"
+    },
+    {
+      "key": "revision.title",
+      "value": "Muutosloki"
+    },
+    {
+      "key": "revision.description",
+      "value": "Tarkista muistissa olevat muutokset ennen tallennusta. Kumoa- ja tee uudelleen -toiminnot eivät koskaan kirjoita tiedostoa automaattisesti."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} muutosta"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Tallennustietoja muokattu"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Esineen määrä päivitetty"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Aseen taso päivitetty"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Lisätty inventaarioesine"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Lisätty varuste suoraan"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Lisätty jalokivi tai riimu suoraan"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Korvattu inventaarioesine"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Päivitetty jalokivi tai riimu"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Muunnettu jalokivi tai riimu"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Varustepaikan muoto päivitetty"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Varustepaikan sisältö päivitetty"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Päivitetty hahmon tilastot"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Päivitetty hahmon tiedot"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Pomon eteneminen päivitetty"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Sovellettu edistynyt tallennuslippu"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Kumoa"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Tee uudelleen"
+    },
+    {
+      "key": "revision.close",
+      "value": "Sulje muutosloki"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Muistimuutoksia ei ole vielä kirjattu."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Tallennus kirjoittaa vain nykyisen revision. Säilytä automaattinen .bak-varmuuskopio, kunnes tallennus on varmennettu pelissä."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Muutokset viimeisestä tallennuspisteestä"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} tilastoa muutettu"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Hahmon nimi muutettu"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Peliaika muutettu"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Sijainti tai kohde muutettu"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Pomon eteneminen muutettu"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} inventaarioesinettä lisätty tai poistettu"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} jalokiveä tai riimua lisätty tai poistettu"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Hae inventaariosta"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Nimi, tyyppi, vaikutus…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Tyhjennä"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Vain suosikit"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Lisää suosikkeihin"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Poista suosikeista"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Kopioi"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Luotu kopio nimeltä “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Tuo JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Vie JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Tuo Forge-esiasetukset"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Vie Forge-esiasetukset"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Tuotu {{count}} uutta esiasetusta."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Esiasetuskirjasto viety onnistuneesti."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Esiasetuskirjaston toimintoa ei voitu suorittaa."
+    }
+  ],
+  "hu": [
+    {
+      "key": "preferences.compact",
+      "value": "Kompakt nézet"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Kényelmes nézet"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Változtatások kezelése"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Helyi ellenőrzés"
+    },
+    {
+      "key": "revision.title",
+      "value": "Változásnapló"
+    },
+    {
+      "key": "revision.description",
+      "value": "Ellenőrizze a memóriában lévő módosításokat mentés előtt. A visszavonás és visszaállítás soha nem írja automatikusan a fájlt."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} módosítás"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Mentés adatai módosítva"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Tárgy mennyisége frissítve"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Fegyver szintje frissítve"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Tárgy hozzáadva a készlethez"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Felszerelés közvetlenül hozzáadva"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Drágakő vagy rúna közvetlenül hozzáadva"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Készletbeli tárgy kicserélve"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Drágakő vagy rúna frissítve"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Drágakő vagy rúna átalakítva"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Felszerelési foglalat alakja frissítve"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Felszerelési foglalat tartalma frissítve"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Karakter statisztikái frissítve"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Karakter adatai frissítve"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Főnök előrehaladása frissítve"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Fejlett mentés zászló alkalmazva"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Visszavonás"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Visszaállítás"
+    },
+    {
+      "key": "revision.close",
+      "value": "Változásnapló bezárása"
+    },
+    {
+      "key": "revision.empty",
+      "value": "A memóriában még nincs rögzített módosítás."
+    },
+    {
+      "key": "revision.notice",
+      "value": "A mentés csak az aktuális revíziót írja. Tartsa meg az automatikus .bak mentést, amíg a mentés nincs ellenőrizve a játékban."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Változások az utolsó fájl-ellenőrzőpont óta"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} statisztikai érték módosult"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Karakter neve megváltozott"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Játékidő megváltozott"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Pozíció/cél megváltozott"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Főnökök előrehaladása megváltozott"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} készletbeli tárgyrekord hozzáadva vagy eltávolítva"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} drágakő vagy rúna rekord hozzáadva vagy eltávolítva"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Készlet keresése"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Név, típus, hatás…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Törlés"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Csak kedvencek"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Hozzáadás a kedvencekhez"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Eltávolítás a kedvencekből"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Duplikálás"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Létrehozva egy „{{name}}” nevű másolat."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "JSON importálása"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "JSON exportálása"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Forge előbeállítások importálása"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Forge előbeállítások exportálása"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importálva {{count}} új előbeállítás."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Előbeállítások könyvtára sikeresen exportálva."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Az előbeállítás-könyvtár műveletét nem sikerült végrehajtani."
+    }
+  ],
+  "nb": [
+    {
+      "key": "preferences.compact",
+      "value": "Kompakt visning"
+    },
+    {
+      "key": "preferences.comfortable",
+      "value": "Komfortabel visning"
+    },
+    {
+      "key": "revision.controls",
+      "value": "Revisjonskontroller"
+    },
+    {
+      "key": "revision.eyebrow",
+      "value": "Lokal gjennomgang"
+    },
+    {
+      "key": "revision.title",
+      "value": "Endringslogg"
+    },
+    {
+      "key": "revision.description",
+      "value": "Gå gjennom endringer i minnet før lagring. Angre og gjør om skriver aldri til filen automatisk."
+    },
+    {
+      "key": "revision.changes",
+      "value": "{{count}} endringer"
+    },
+    {
+      "key": "revision.genericChange",
+      "value": "Redigert lagringsdata"
+    },
+    {
+      "key": "revision.quantityChanged",
+      "value": "Oppdatert gjenstandsantall"
+    },
+    {
+      "key": "revision.weaponLevelChanged",
+      "value": "Oppdatert våpennivå"
+    },
+    {
+      "key": "revision.itemAdded",
+      "value": "Lagt til gjenstand i inventar"
+    },
+    {
+      "key": "revision.equipmentAdded",
+      "value": "Lagt til utstyr direkte"
+    },
+    {
+      "key": "revision.upgradeAdded",
+      "value": "Lagt til Gem eller Rune direkte"
+    },
+    {
+      "key": "revision.itemReplaced",
+      "value": "Erstattet gjenstand i inventar"
+    },
+    {
+      "key": "revision.upgradeEdited",
+      "value": "Oppdatert Gem eller Rune"
+    },
+    {
+      "key": "revision.upgradeConverted",
+      "value": "Konvertert Gem eller Rune"
+    },
+    {
+      "key": "revision.slotShapeChanged",
+      "value": "Oppdatert utstyrsplassens form"
+    },
+    {
+      "key": "revision.slotGemChanged",
+      "value": "Oppdatert innhold i utstyrsplass"
+    },
+    {
+      "key": "revision.statsUpdated",
+      "value": "Oppdatert karakterstatistikk"
+    },
+    {
+      "key": "revision.characterUpdated",
+      "value": "Oppdatert karakterdata"
+    },
+    {
+      "key": "revision.bossUpdated",
+      "value": "Oppdatert bossframgang"
+    },
+    {
+      "key": "revision.flagUpdated",
+      "value": "Brukt avansert lagringsflagg"
+    },
+    {
+      "key": "revision.undo",
+      "value": "Angre"
+    },
+    {
+      "key": "revision.redo",
+      "value": "Gjør om"
+    },
+    {
+      "key": "revision.close",
+      "value": "Lukk endringslogg"
+    },
+    {
+      "key": "revision.empty",
+      "value": "Ingen endringer i minnet er registrert ennå."
+    },
+    {
+      "key": "revision.notice",
+      "value": "Lagring skriver kun den gjeldende revisjonen. Behold den automatiske .bak-sikkerhetskopien til lagringen er bekreftet i spillet."
+    },
+    {
+      "key": "revision.summaryTitle",
+      "value": "Endringer siden siste fil-sjekkpunkt"
+    },
+    {
+      "key": "revision.summaryStats",
+      "value": "{{count}} statistikkverdi(er) endret"
+    },
+    {
+      "key": "revision.summaryUsername",
+      "value": "Karakternavn endret"
+    },
+    {
+      "key": "revision.summaryPlaytime",
+      "value": "Spilletid endret"
+    },
+    {
+      "key": "revision.summaryPosition",
+      "value": "Posisjon eller destinasjon endret"
+    },
+    {
+      "key": "revision.summaryBosses",
+      "value": "Bossframgang endret"
+    },
+    {
+      "key": "revision.summaryItems",
+      "value": "{{count}} inventarpost(er) lagt til eller fjernet"
+    },
+    {
+      "key": "revision.summaryUpgrades",
+      "value": "{{count}} Gem eller Rune-oppføring(er) lagt til eller fjernet"
+    },
+    {
+      "key": "inventory.searchInventory",
+      "value": "Søk i inventaret"
+    },
+    {
+      "key": "inventory.searchPlaceholder",
+      "value": "Navn, type, effekt…"
+    },
+    {
+      "key": "inventory.clearSearch",
+      "value": "Tøm"
+    },
+    {
+      "key": "inventory.favoritesOnly",
+      "value": "Kun favoritter"
+    },
+    {
+      "key": "inventory.addFavorite",
+      "value": "Legg til i favoritter"
+    },
+    {
+      "key": "inventory.removeFavorite",
+      "value": "Fjern fra favoritter"
+    },
+    {
+      "key": "forge.duplicate",
+      "value": "Dupliser"
+    },
+    {
+      "key": "forge.duplicateCreated",
+      "value": "Opprettet en kopi kalt “{{name}}”."
+    },
+    {
+      "key": "forge.importPresets",
+      "value": "Importer JSON"
+    },
+    {
+      "key": "forge.exportPresets",
+      "value": "Eksporter JSON"
+    },
+    {
+      "key": "forge.importTitle",
+      "value": "Importer Forge-forhåndsinnstillinger"
+    },
+    {
+      "key": "forge.exportTitle",
+      "value": "Eksporter Forge-forhåndsinnstillinger"
+    },
+    {
+      "key": "forge.importedStatus",
+      "value": "Importerte {{count}} nye forhåndsinnstilling(er)."
+    },
+    {
+      "key": "forge.exportedStatus",
+      "value": "Forhåndsinnstillingsbibliotek eksportert."
+    },
+    {
+      "key": "forge.libraryFailed",
+      "value": "Operasjonen for forhåndsinnstillingsbiblioteket kunne ikke fullføres."
+    }
+  ]
+};
+
+Object.entries(v020FeatureTranslatedOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  translations.forEach(({ key, value }) => applyTranslationPath(translatedResource, key, value));
   resources[language] = translatedResource;
 });
 

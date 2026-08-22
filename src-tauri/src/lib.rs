@@ -7,14 +7,129 @@ mod data_handling;
 use data_handling::{
     appearance,
     article::Article,
+    bosses,
     enums::{ArticleType, Location, SlotShape, UpgradeType},
+    position::Pos,
     save::SaveData,
     upgrades::Upgrade,
 };
 use serde_json::{json, Value};
 use tauri::{path::BaseDirectory, Manager};
+const MAX_REVISION_HISTORY: usize = 40;
+
+#[derive(Default)]
+struct SaveHistory {
+    past: Vec<SaveData>,
+    future: Vec<SaveData>,
+}
+
 struct MutexSave {
     data: Mutex<Option<SaveData>>,
+    history: Mutex<SaveHistory>,
+}
+
+fn begin_revision(state_save: &MutexSave) -> Result<(), String> {
+    // Always acquire the history lock first. Undo/redo use the same order, keeping the
+    // in-memory transaction state free of lock-order inversions.
+    let mut history = state_save
+        .history
+        .lock()
+        .map_err(|_| "Revision history is unavailable.".to_string())?;
+    let data = state_save
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let snapshot = data
+        .as_ref()
+        .cloned()
+        .ok_or_else(|| "Open a decrypted save before creating a revision.".to_string())?;
+
+    history.past.push(snapshot);
+    if history.past.len() > MAX_REVISION_HISTORY {
+        history.past.remove(0);
+    }
+    history.future.clear();
+    Ok(())
+}
+
+#[tauri::command]
+fn start_revision(state_save: tauri::State<MutexSave>) -> Result<(), String> {
+    begin_revision(state_save.inner())
+}
+
+#[tauri::command]
+fn discard_revision(state_save: tauri::State<MutexSave>) {
+    // A failed multi-step mutation may already have changed bytes. Restore the snapshot
+    // captured by start_revision so a failed operation is atomic from the user’s view.
+    if let (Ok(mut history), Ok(mut data)) = (state_save.history.lock(), state_save.data.lock()) {
+        if let Some(snapshot) = history.past.pop() {
+            *data = Some(snapshot);
+        }
+    }
+}
+
+fn undo_revision_inner(state_save: &MutexSave) -> Result<SaveData, String> {
+    let mut history = state_save
+        .history
+        .lock()
+        .map_err(|_| "Revision history is unavailable.".to_string())?;
+    let mut data = state_save
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let previous = history
+        .past
+        .pop()
+        .ok_or_else(|| "There is no change to undo.".to_string())?;
+    let current = data
+        .as_ref()
+        .cloned()
+        .ok_or_else(|| "Open a decrypted save before undoing a change.".to_string())?;
+
+    history.future.push(current);
+    if history.future.len() > MAX_REVISION_HISTORY {
+        history.future.remove(0);
+    }
+    *data = Some(previous.clone());
+    Ok(previous)
+}
+
+fn redo_revision_inner(state_save: &MutexSave) -> Result<SaveData, String> {
+    let mut history = state_save
+        .history
+        .lock()
+        .map_err(|_| "Revision history is unavailable.".to_string())?;
+    let mut data = state_save
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let next = history
+        .future
+        .pop()
+        .ok_or_else(|| "There is no change to redo.".to_string())?;
+    let current = data
+        .as_ref()
+        .cloned()
+        .ok_or_else(|| "Open a decrypted save before redoing a change.".to_string())?;
+
+    history.past.push(current);
+    if history.past.len() > MAX_REVISION_HISTORY {
+        history.past.remove(0);
+    }
+    *data = Some(next.clone());
+    Ok(next)
+}
+
+#[tauri::command]
+fn undo_revision(state_save: tauri::State<MutexSave>) -> Result<Value, String> {
+    serde_json::to_value(undo_revision_inner(state_save.inner())?)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+fn redo_revision(state_save: tauri::State<MutexSave>) -> Result<Value, String> {
+    serde_json::to_value(redo_revision_inner(state_save.inner())?)
+        .map_err(|error| error.to_string())
 }
 
 pub fn run() -> Result<(), Box<dyn Error>> {
@@ -36,6 +151,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
         .plugin(tauri_plugin_process::init())
         .manage(MutexSave {
             data: Mutex::new(None),
+            history: Mutex::new(SaveHistory::default()),
         })
         .invoke_handler(tauri::generate_handler![
             make_save,
@@ -69,7 +185,11 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             edit_coordinates,
             teleport,
             change_weapon_level,
-            apply_mask
+            apply_mask,
+            start_revision,
+            discard_revision,
+            undo_revision,
+            redo_revision
         ])
         .run(tauri::generate_context!())?;
 
@@ -81,25 +201,31 @@ fn set_flag(
     offset: usize,
     new_value: u8,
     state_save: tauri::State<MutexSave>,
-) -> Result<(), String> {
+) -> Result<Value, String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before applying a flag.".to_string())?;
 
     save.file.set_flag(offset, new_value);
-    Ok(())
+    save.bosses = bosses::new(&save.file).map_err(|error| error.to_string())?;
+    serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
-fn apply_mask(offset: usize, mask: u8, state_save: tauri::State<MutexSave>) -> Result<(), String> {
+fn apply_mask(
+    offset: usize,
+    mask: u8,
+    state_save: tauri::State<MutexSave>,
+) -> Result<Value, String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before applying a flag.".to_string())?;
 
     save.file.apply_mask(offset, mask);
-    Ok(())
+    save.bosses = bosses::new(&save.file).map_err(|error| error.to_string())?;
+    serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -127,11 +253,15 @@ fn get_playtime(state_save: tauri::State<MutexSave>) -> u32 {
 }
 
 #[tauri::command]
-fn set_playtime(new_playtime: [u8; 4], state_save: tauri::State<MutexSave>) {
+fn set_playtime(new_playtime: [u8; 4], state_save: tauri::State<MutexSave>) -> Result<(), String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before editing playtime.".to_string())?;
 
     save.file.set_playtime(new_playtime);
+    save.playtime = save.file.get_playtime();
+    Ok(())
 }
 
 #[tauri::command]
@@ -147,8 +277,11 @@ fn make_save(
 
     match SaveData::build(path, resource_path) {
         Ok(s) => {
+            let mut history = state_save.history.lock().unwrap();
             let mut data = state_save.data.lock().unwrap();
             *data = Some(s.clone());
+            history.past.clear();
+            history.future.clear();
             Ok(serde_json::to_value(&s).map_err(|x| x.to_string())?)
         }
         Err(_) => Err("Failed to load file, make sure its a decrypted character.".to_string()),
@@ -341,11 +474,19 @@ fn edit_stat(
     times: usize,
     value: u32,
     state_save: tauri::State<MutexSave>,
-) {
+) -> Result<(), String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before editing statistics.".to_string())?;
+    let stat = save
+        .stats
+        .iter_mut()
+        .find(|stat| stat.rel_offset == rel_offset && stat.length == length && stat.times == times)
+        .ok_or_else(|| "The requested statistic is not part of this save.".to_string())?;
 
-    save.file.edit(rel_offset, length, times, value);
+    stat.edit(value, &mut save.file);
+    Ok(())
 }
 
 #[tauri::command]
@@ -705,24 +846,44 @@ fn add_item(
 }
 
 #[tauri::command]
-fn edit_coordinates(x: f32, y: f32, z: f32, state_save: tauri::State<MutexSave>) {
+fn edit_coordinates(
+    x: f32,
+    y: f32,
+    z: f32,
+    state_save: tauri::State<MutexSave>,
+) -> Result<(), String> {
     let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before editing coordinates.".to_string())?;
 
     save.position.coordinates.edit(&mut save.file, x, y, z);
+    save.position = Pos::new(&save.file).map_err(|error| error.to_string())?;
+    Ok(())
 }
 
 #[tauri::command]
-fn teleport(x: f32, y: f32, z: f32, map_id: Vec<u8>, state_save: tauri::State<MutexSave>) {
+fn teleport(
+    x: f32,
+    y: f32,
+    z: f32,
+    map_id: Vec<u8>,
+    state_save: tauri::State<MutexSave>,
+) -> Result<(), String> {
+    if map_id.len() < 2 {
+        return Err("The selected destination has an invalid map identifier.".to_string());
+    }
     let mut save_option = state_save.inner().data.lock().unwrap();
-    let save: &mut SaveData = save_option.as_mut().unwrap();
-    let le_map = [00, 00, map_id[1], map_id[0]];
-
+    let save: &mut SaveData = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before teleporting.".to_string())?;
+    let le_map = [0, 0, map_id[1], map_id[0]];
     for (i, j) in (0x04..0x08).enumerate() {
         save.file.bytes[j] = le_map[i];
     }
-
     save.position.coordinates.edit(&mut save.file, x, y, z);
+    save.position = Pos::new(&save.file).map_err(|error| error.to_string())?;
+    Ok(())
 }
 
 #[tauri::command]
@@ -763,5 +924,34 @@ fn change_weapon_level(
             "weapon": weapon
         })),
         Err(e) => Err(e.to_string()),
+    }
+}
+
+#[cfg(test)]
+mod revision_history_tests {
+    use super::*;
+    use crate::data_handling::utils::test_utils::build_save_data;
+
+    #[test]
+    fn revision_history_restores_and_reapplies_backend_bytes() {
+        let original = build_save_data("testsave9");
+        let state = MutexSave {
+            data: Mutex::new(Some(original.clone())),
+            history: Mutex::new(SaveHistory::default()),
+        };
+
+        begin_revision(&state).expect("the original save must be captured before mutation");
+        let changed = {
+            let mut data = state.data.lock().unwrap();
+            let save = data.as_mut().unwrap();
+            save.file.bytes[0] ^= 0x5A;
+            save.clone()
+        };
+
+        let undone = undo_revision_inner(&state).expect("the saved snapshot must be restored");
+        assert_eq!(undone.file, original.file);
+
+        let redone = redo_revision_inner(&state).expect("the changed snapshot must be reapplied");
+        assert_eq!(redone.file, changed.file);
     }
 }

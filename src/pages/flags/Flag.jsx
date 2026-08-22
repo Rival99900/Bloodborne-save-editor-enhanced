@@ -1,11 +1,13 @@
 import { invoke } from "@tauri-apps/api/core";
 import { message } from "@tauri-apps/plugin-dialog";
-import { memo, useState } from "react";
+import { memo, useContext, useState } from "react";
 import { useLocalization } from "../../i18n/localization";
+import { SaveContext } from "../../context/context";
 import ConfirmDialog from "../../components/ConfirmDialog";
 
 function Flag({ label, offset, values, info, impact, warning = "", category = "Known flag", isMask = false }) {
   const { t } = useLocalization();
+  const { setSave } = useContext(SaveContext);
   const [isApplying, setIsApplying] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -13,16 +15,19 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
   async function apply() {
     setIsApplying(true);
     try {
-      if (isMask) {
-        await invoke("apply_mask", { offset, mask: values[0] });
-      } else {
+      const editedSave = await setSave(t("revision.flagUpdated"), async () => {
+        if (isMask) return invoke("apply_mask", { offset, mask: values[0] });
+
+        let updatedSave = null;
         for (let index = 0; index < values.length; index += 1) {
-          await invoke("set_flag", {
+          updatedSave = await invoke("set_flag", {
             offset: offset + index,
             newValue: values[index],
           });
         }
-      }
+        return updatedSave;
+      });
+      if (!editedSave) return;
       await message(t("flags.card.applied"));
     } catch (error) {
       await message(t("flags.card.applyFailed", { error: String(error) }));

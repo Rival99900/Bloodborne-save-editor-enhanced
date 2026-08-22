@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import useDraw from "../../utils/useDraw";
 import ShapeSelector from "../../components/ShapeSelector";
+import { ItemsContext } from "../../context/itemsContext";
 
 function EquippedGem({
   gem,
@@ -13,7 +14,8 @@ function EquippedGem({
   index,
 }) {
   const canvasRef = useRef();
-  const { getGemPath, getUnique, loadImage, isCursed } = useDraw();
+  const { getGemPath, getUnique, loadImage } = useDraw();
+  const { gemEffectCatalog = [], nativeGemEffectIds = new Set() } = useContext(ItemsContext);
 
   useEffect(() => {
     if (gem != null) {
@@ -28,9 +30,16 @@ function EquippedGem({
       if (canvas) {
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const unique = getUnique(effects[0][0], shape, source);
-        const cursed = isCursed(effects);
-        const path = getGemPath(effects, shape, level, unique, cursed);
+        const primaryEffectId = Number(effects[0]?.[0]);
+        const primaryEffect = gemEffectCatalog.find(
+          (effect) => Number(effect.value) === primaryEffectId,
+        );
+        // Rune-origin effects can legitimately occupy an equipment gem slot. In that
+        // case, resolve the real Caryll Rune artwork instead of a guessed gem colour.
+        const runeOriginPrimaryEffect =
+          primaryEffect && !nativeGemEffectIds.has(primaryEffectId) ? primaryEffect : undefined;
+        const unique = getUnique(primaryEffectId, shape, source);
+        const path = getGemPath(effects, shape, level, unique, runeOriginPrimaryEffect);
 
         loadImage(path)
           .then((img) => {
@@ -45,7 +54,7 @@ function EquippedGem({
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       }
     }
-  }, [gem]);
+  }, [gem, gemEffectCatalog, nativeGemEffectIds]);
 
   return (
     <>

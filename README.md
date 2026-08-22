@@ -2,7 +2,7 @@
 
 > A passion-driven modernisation of the original Bloodborne save editor, designed to make advanced save editing clearer, safer, and more comfortable to use.
 
-[![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=37B700)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![Pre-release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&include_prereleases&label=pre-release&color=dea607 )](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases )
+[![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=37B700)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases)
  [![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
 
 **Bloodborne Save Editor Enhanced** expands the work of the original [Bloodborne Save Editor by Noxde](https://github.com/Noxde/Bloodborne-save-editor). This project was made with passion and respect for that foundation, with the aim of providing a cleaner interface, safer save workflows, more complete Gem and Rune editing, and practical quality-of-life improvements for the Bloodborne community.
@@ -13,14 +13,14 @@
 
 Download the latest **Windows x64 installer** from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). Each public release contains only the `.exe` installer.
 
-### Current pre-release
+### Current stable release
 
 | Field | Details |
 | --- | --- |
-| **Name** | **Bloodborne Save Editor Enhanced v0.2.0 Beta 5** |
-| **Version** | `v0.2.0-beta.5` |
-| **Status** | Pre-release — test on a copied, decrypted save and retain the automatic `.bak` backup. |
-| **Download** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.2.0-beta.5/Bloodborne_Save_Editor_Enhanced_0.2.0-beta.5_x64-setup.exe) |
+| **Name** | **Bloodborne Save Editor Enhanced v0.2.0** |
+| **Version** | `v0.2.0` |
+| **Status** | Stable release — still test on a copied, decrypted save and retain the automatic `.bak` backup. |
+| **Download** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.2.0/Bloodborne_Save_Editor_Enhanced_0.2.0_x64-setup.exe) |
 
 | Step | What to do |
 | --- | --- |
@@ -45,6 +45,10 @@ Download the latest **Windows x64 installer** from the [Releases page](https://g
 | **Effect compatibility** | The editor recognises compatible rune-origin effects found in gem slots, keeping their descriptions and previews available instead of silently dropping them. |
 | **Flags** | Clearer explanations, impact details, warnings, confirmation before applying, and smoother large-list scrolling. |
 | **Safe closing** | When there are unsaved changes, choose to save, close without saving, or cancel. The discard-and-close action exits correctly. |
+| **Revision control** | A local change log, real backend-synchronised Undo/Redo, rollback on failed composite edits, and a summary since the last checkpoint. |
+| **Inventory tools** | Text/effect search, locally stored favorites, and responsive compact/comfortable density preferences. |
+| **Preset library** | Duplicate personal presets and exchange validated Gem/Rune Forge collections through explicit JSON import/export. |
+| **Languages** | 24 fully localised interface languages, including Danish, Finnish, Hungarian and Norwegian Bokmål. |
 
 ## Gem Forge and Rune Forge
 
@@ -66,6 +70,8 @@ When loading a preset in the other editor type, its effects are applied to the d
 | --- | --- |
 | Open a decrypted save | `Ctrl+O` |
 | Save changes | `Ctrl+S` |
+| Undo / Redo an in-memory change | `Ctrl+Z` / `Ctrl+Y` or `Ctrl+Shift+Z` |
+| Review recent in-memory changes | **Change log** in the header |
 | Close the Add window | Close button, `Escape`, or click outside the window |
 | Zoom the interface | `Ctrl` + `+`, `Ctrl` + `-`, or `Ctrl` + `0` |
 | Discard edited changes and exit | **Close without saving** in the unsaved-changes dialog |

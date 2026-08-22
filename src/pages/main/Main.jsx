@@ -1,16 +1,16 @@
-import { useContext } from "react";
+import { lazy, Suspense, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import SideBar from "./SideBar";
-import Inventory from "../inventory/Inventory";
-import Stats from "../stats/Stats";
-import Character from "../character/Character";
 import { SaveContext } from "../../context/context";
 import { ItemsProvider } from "../../context/itemsContext";
 import { ImagesContext } from "../../context/imagesContext";
 import { useLocalization } from "../../i18n/localization";
-import EquippedGems from "./EquippedGems";
-import Bosses from "../bosses/Bosses";
-import Flags from "../flags/Flags";
+const Inventory = lazy(() => import("../inventory/Inventory"));
+const Stats = lazy(() => import("../stats/Stats"));
+const Character = lazy(() => import("../character/Character"));
+const EquippedGems = lazy(() => import("./EquippedGems"));
+const Bosses = lazy(() => import("../bosses/Bosses"));
+const Flags = lazy(() => import("../flags/Flags"));
 
 const Main = ({ save, setSave, loading }) => {
   const { loading: loadingImages } = useContext(ImagesContext);
@@ -42,37 +42,49 @@ const Main = ({ save, setSave, loading }) => {
           ) : null}
 
           {save ? (
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <ItemsProvider>
-                    <Inventory key="inventory" inv={save.inventory} isStorage={false} />
-                  </ItemsProvider>
-                }
-              />
-              <Route
-                path="/storage"
-                element={
-                  <ItemsProvider>
-                    <Inventory key="storage" inv={save.storage} isStorage />
-                  </ItemsProvider>
-                }
-              />
-              <Route path="/stats" element={<Stats />} />
-              <Route path="/character" element={<Character />} />
-              <Route
-                path="/equippedGems"
-                element={
-                  <ItemsProvider>
-                    <EquippedGems />
-                  </ItemsProvider>
-                }
-              />
-              <Route path="/bosses" element={<Bosses />} />
-              <Route path="/flags" element={<Flags />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <Suspense
+              fallback={
+                <div className="operation-state" role="status">
+                  <div className="spinner" />
+                  <div>
+                    <p className="operation-state__eyebrow">{t("operation.preparing")}</p>
+                    <p className="operation-state__title">{t("operation.title")}</p>
+                  </div>
+                </div>
+              }
+            >
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <ItemsProvider>
+                      <Inventory key="inventory" inv={save.inventory} isStorage={false} />
+                    </ItemsProvider>
+                  }
+                />
+                <Route
+                  path="/storage"
+                  element={
+                    <ItemsProvider>
+                      <Inventory key="storage" inv={save.storage} isStorage />
+                    </ItemsProvider>
+                  }
+                />
+                <Route path="/stats" element={<Stats />} />
+                <Route path="/character" element={<Character />} />
+                <Route
+                  path="/equippedGems"
+                  element={
+                    <ItemsProvider>
+                      <EquippedGems />
+                    </ItemsProvider>
+                  }
+                />
+                <Route path="/bosses" element={<Bosses />} />
+                <Route path="/flags" element={<Flags />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
           ) : (
             <section className="empty-state" aria-labelledby="welcome-title">
               <p className="empty-state__eyebrow">{t("home.eyebrow")}</p>

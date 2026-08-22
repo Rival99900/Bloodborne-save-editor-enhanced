@@ -1512,6 +1512,58 @@ export const ItemsProvider = ({ children }) => {
     });
   }
 
+  function duplicateUserForgePreset(id) {
+    const source = userForgePresets.find((preset) => preset.id === id);
+    if (!source) return null;
+    return saveUserForgePreset({
+      ...source,
+      id: undefined,
+      name: `${source.name} Copy`.slice(0, 60),
+      createdAt: new Date().toISOString(),
+    });
+  }
+
+  function exportUserForgePresets() {
+    return {
+      schemaVersion: 1,
+      kind: "bloodborne-save-editor-enhanced-forge-presets",
+      exportedAt: new Date().toISOString(),
+      presets: userForgePresets,
+    };
+  }
+
+  function importUserForgePresets(payload) {
+    const rawPresets = Array.isArray(payload) ? payload : payload?.presets;
+    if (!Array.isArray(rawPresets)) {
+      throw new Error("The selected file does not contain a preset list.");
+    }
+
+    const imported = rawPresets.slice(0, USER_FORGE_PRESET_LIMIT).map((preset) =>
+      normalizePersonalForgePreset({
+        ...preset,
+        id: undefined,
+        createdAt: new Date().toISOString(),
+      }),
+    );
+    let importedCount = 0;
+    setUserForgePresets((current) => {
+      const existingSignatures = new Set(
+        current.map((preset) => `${preset.sourceType}|${preset.shape}|${preset.name}|${JSON.stringify(preset.effects)}`),
+      );
+      const uniqueImported = imported.filter((preset) => {
+        const signature = `${preset.sourceType}|${preset.shape}|${preset.name}|${JSON.stringify(preset.effects)}`;
+        if (existingSignatures.has(signature)) return false;
+        existingSignatures.add(signature);
+        return true;
+      });
+      importedCount = Math.min(uniqueImported.length, Math.max(0, USER_FORGE_PRESET_LIMIT - current.length));
+      const next = [...uniqueImported.slice(0, importedCount), ...current];
+      persistPersonalForgePresets(next);
+      return next;
+    });
+    return importedCount;
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const weapons = await invoke("return_weapons");
@@ -1638,6 +1690,9 @@ export const ItemsProvider = ({ children }) => {
         userForgePresets,
         saveUserForgePreset,
         deleteUserForgePreset,
+        duplicateUserForgePreset,
+        exportUserForgePresets,
+        importUserForgePresets,
       }}
     >
       {children}

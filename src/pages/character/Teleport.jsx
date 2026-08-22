@@ -8,25 +8,21 @@ function Teleport({ setSave, setEditedCoordinates }) {
     const parsed = JSON.parse(target.value);
     const { x, y, z, mapId } = parsed;
 
-    await invoke("teleport", parsed);
-
-    setEditedCoordinates({ x, y, z });
-
-    setSave((prev) => {
-      return JSON.parse(
-        JSON.stringify({
-          ...prev,
+    try {
+      const updatedSave = await setSave(t("revision.characterUpdated"), async (current) => {
+        await invoke("teleport", parsed);
+        return {
+          ...current,
           position: {
-            coordinates: {
-              x,
-              y,
-              z,
-            },
+            coordinates: { x, y, z },
             loaded_map: mapId,
           },
-        }),
-      );
-    });
+        };
+      });
+      if (updatedSave) setEditedCoordinates({ x, y, z });
+    } catch (error) {
+      console.error("Unable to teleport the character.", error);
+    }
   }
 
   return (

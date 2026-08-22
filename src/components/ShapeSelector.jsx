@@ -1,29 +1,50 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { SaveContext } from "../context/context";
+import { useLocalization } from "../i18n/localization";
 
 function ShapeSelector({ shape, isStorage, article, setArticle, slotIndex }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(shape);
+  const didMountRef = useRef(false);
   const { setSave } = useContext(SaveContext);
+  const { t } = useLocalization();
   const shapes = ["Closed", "Radial", "Triangle", "Waning", "Circle"];
 
   useEffect(() => {
-    setArticle((prev) => {
-      const copy = JSON.parse(JSON.stringify(prev));
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+    let cancelled = false;
 
-      copy.slots[slotIndex].shape = selected;
+    async function updateShape() {
+      try {
+        const updatedSave = await setSave(t("revision.slotShapeChanged"), () =>
+          invoke("edit_slot", {
+            isStorage,
+            articleType: article.article_type,
+            articleIndex: article.index,
+            slotIndex,
+            newShape: selected,
+          }),
+        );
+        if (!updatedSave || cancelled) return;
+        setArticle((prev) => {
+          const copy = JSON.parse(JSON.stringify(prev));
+          copy.slots[slotIndex].shape = selected;
+          return copy;
+        });
+      } catch (error) {
+        console.error("Unable to update the equipment slot shape.", error);
+        if (!cancelled) setSelected(shape);
+      }
+    }
 
-      return copy;
-    });
-
-    invoke("edit_slot", {
-      isStorage,
-      articleType: article.article_type,
-      articleIndex: article.index,
-      slotIndex,
-      newShape: selected,
-    }).then((save) => setSave(save));
+    void updateShape();
+    return () => {
+      cancelled = true;
+    };
   }, [selected]);
 
   return (

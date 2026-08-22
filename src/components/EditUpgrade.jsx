@@ -58,6 +58,9 @@ function EditUpgrade({
     userForgePresets,
     saveUserForgePreset,
     deleteUserForgePreset,
+    duplicateUserForgePreset,
+    exportUserForgePresets,
+    importUserForgePresets,
   } = useContext(ItemsContext);
   const { drawCanvas } = useDraw();
   const { setSave } = useContext(SaveContext);
@@ -148,28 +151,33 @@ function EditUpgrade({
 
       info.isStorage = isStorage;
       info.isGem = upgrade_type === "Gem";
+      const hasChanges = shape !== selected.shape || effects.some(
+        (currentEffect, index) => Number(currentEffect[0]) !== Number(selected.effects[index]?.[0]),
+      );
       let updatedSave = null;
 
-      if (shape !== selected.shape) {
-        updatedSave = await invoke("edit_shape", {
-          newShape: shape,
-          info,
+      if (hasChanges) {
+        updatedSave = await setSave(t("revision.upgradeEdited"), async () => {
+          let nextSave = null;
+          if (shape !== selected.shape) {
+            nextSave = await invoke("edit_shape", {
+              newShape: shape,
+              info,
+            });
+          }
+
+          for (const [index, currentEffect] of effects.entries()) {
+            const [id] = currentEffect;
+            if (Number(id) === Number(selected.effects[index]?.[0])) continue;
+
+            nextSave = await invoke("edit_effect", {
+              newEffectId: Number(id),
+              index,
+              info,
+            });
+          }
+          return nextSave;
         });
-      }
-
-      for (const [index, currentEffect] of effects.entries()) {
-        const [id] = currentEffect;
-        if (Number(id) === Number(selected.effects[index]?.[0])) continue;
-
-        updatedSave = await invoke("edit_effect", {
-          newEffectId: Number(id),
-          index,
-          info,
-        });
-      }
-
-      if (updatedSave) {
-        setSave(updatedSave);
       }
 
       const committedUpgrade = JSON.parse(JSON.stringify(edited));
@@ -251,13 +259,18 @@ function EditUpgrade({
 
   async function transformUpgrade() {
     try {
-      const result = await invoke("transform_upgrade", {
-        upgradeType: upgrade_type,
-        upgradeIndex: selected.index,
-        isStorage,
+      let convertedUpgrade = null;
+      const updatedSave = await setSave(t("revision.upgradeConverted"), async () => {
+        const result = await invoke("transform_upgrade", {
+          upgradeType: upgrade_type,
+          upgradeIndex: selected.index,
+          isStorage,
+        });
+        convertedUpgrade = result.upgrade;
+        return result.save;
       });
-      setSave(result.save);
-      setSelected(result.upgrade);
+      if (!updatedSave || !convertedUpgrade) return;
+      setSelected(convertedUpgrade);
       // Conversion already writes a complete, valid six-slot upgrade in Rust. Closing
       // here prevents a second Confirm from reapplying the stale pre-conversion draft.
       setEditScreen(false);
@@ -289,6 +302,9 @@ function EditUpgrade({
           userGemPresets={userForgePresets}
           onApply={applyForgePreset}
           onDeletePreset={deleteUserForgePreset}
+          onDuplicatePreset={duplicateUserForgePreset}
+          onExportPresets={exportUserForgePresets}
+          onImportPresets={importUserForgePresets}
           onClose={() => setForgeOpen(false)}
           forgeType={upgrade_type.toLowerCase()}
           builtInPresets={upgrade_type === "Gem" ? undefined : runeForgePresets}

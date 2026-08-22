@@ -147,48 +147,42 @@ function Character() {
           }}
           onClick={async () => {
             try {
-              editedStats.forEach(
-                async ({ rel_offset, length, times, value }) => {
-                  await invoke("edit_stat", {
-                    relOffset: rel_offset,
-                    length,
-                    times,
-                    value: parseInt(value),
-                  });
-                },
-              );
+              const nextUsername = username.length > 0 ? username : save.username.string;
+              if (!username.length) setUsername(save.username.string);
 
-              if (username.length > 0 && username !== save.username.string) {
-                await invoke("set_username", {
-                  newUsername: username,
+              const updatedSave = await setSave(t("revision.characterUpdated"), async (current) => {
+                for (const [index, stat] of editedStats.entries()) {
+                  if (save.stats[index].value !== stat.value) {
+                    await invoke("edit_stat", {
+                      relOffset: stat.rel_offset,
+                      length: stat.length,
+                      times: stat.times,
+                      value: Number.parseInt(stat.value, 10),
+                    });
+                  }
+                }
+
+                if (nextUsername !== save.username.string) {
+                  await invoke("set_username", { newUsername: nextUsername });
+                }
+                await invoke("set_playtime", { newPlaytime: represent(editedPlaytime) });
+                await invoke("edit_coordinates", {
+                  x: Number(editedCoordinates.x),
+                  y: Number(editedCoordinates.y),
+                  z: Number(editedCoordinates.z),
                 });
-              } else {
-                setUsername(save.username.string);
-              }
-              await invoke("set_playtime", {
-                newPlaytime: represent(editedPlaytime),
+
+                return {
+                  ...current,
+                  position: { ...current.position, coordinates: JSON.parse(JSON.stringify(editedCoordinates)) },
+                  stats: JSON.parse(JSON.stringify(editedStats)),
+                  playtime: editedPlaytime,
+                  username: { ...current.username, string: nextUsername },
+                };
               });
-
-              await invoke("edit_coordinates", {
-                x: +editedCoordinates.x,
-                y: +editedCoordinates.y,
-                z: +editedCoordinates.z,
-              });
-
-              await dialog.message(t("actions.changesConfirmed"));
-
-              setSave((prev) => {
-                prev.position.coordinates = JSON.parse(
-                  JSON.stringify(editedCoordinates),
-                );
-                prev.stats = JSON.parse(JSON.stringify(editedStats));
-                prev.playtime = editedPlaytime;
-                prev.username.string = username;
-
-                return prev;
-              });
+              if (updatedSave) await dialog.message(t("actions.changesConfirmed"));
             } catch (error) {
-              console.error(error);
+              console.error("Unable to update character data.", error);
             }
           }}
         >

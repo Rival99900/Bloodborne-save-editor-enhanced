@@ -3,6 +3,7 @@ import { SaveContext } from "../../context/context";
 import { invoke } from "@tauri-apps/api/core";
 import { ImagesContext } from "../../context/imagesContext";
 import Boss from "./Boss";
+import { useLocalization } from "../../i18n/localization";
 
 function Bosses() {
   const { save, setSave } = useContext(SaveContext);
@@ -10,20 +11,23 @@ function Bosses() {
   const scrollDiv = useRef(null);
 
   const { images } = useContext(ImagesContext);
+  const { t } = useLocalization();
 
-  async function handleChange(e, i) {
-    e.forEach(async (x) => {
-      await invoke("set_flag", {
-        offset: x.rel_offset,
-        newValue: x.current_value,
+  async function handleChange(flags) {
+    try {
+      await setSave(t("revision.bossUpdated"), async () => {
+        let updatedSave = null;
+        for (const flag of flags) {
+          updatedSave = await invoke("set_flag", {
+            offset: flag.rel_offset,
+            newValue: flag.current_value,
+          });
+        }
+        return updatedSave;
       });
-    });
-
-    bosses[i].flags = e;
-    setSave((prev) => {
-      prev.bosses = bosses;
-      return prev;
-    });
+    } catch (error) {
+      console.error("Unable to update boss progress.", error);
+    }
   }
 
   useEffect(() => {
@@ -40,7 +44,7 @@ function Bosses() {
     >
       {bosses.map((x, i) => {
         return (
-          <Boss boss={x} onChange={async (e) => await handleChange(e, i)} />
+          <Boss boss={x} onChange={handleChange} />
         );
       })}
     </div>

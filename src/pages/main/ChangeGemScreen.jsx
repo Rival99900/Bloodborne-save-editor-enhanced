@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { SaveContext } from "../../context/context";
 import Item from "../../components/Item";
 import { invoke } from "@tauri-apps/api/core";
+import { useLocalization } from "../../i18n/localization";
 
 function ChangeGemScreen({
   article,
@@ -12,6 +13,7 @@ function ChangeGemScreen({
   isStorage,
 }) {
   const { save, setSave } = useContext(SaveContext);
+  const { t } = useLocalization();
   const gems = isStorage
     ? [...(save.storage.upgrades.Gem ?? [])]
     : [...(save.inventory.upgrades.Gem ?? [])];
@@ -92,19 +94,20 @@ function ChangeGemScreen({
             style={{ marginRight: "1rem" }}
             onClick={() => setScreen(false)}
           >
-            Cancel
+            {t("inventory.cancel")}
           </button>
           <button
             onClick={async () => {
               if (selectedGem.number === -1) {
-                const edited = await invoke("unequip_gem", {
-                  articleType: article.article_type,
-                  articleIndex: article.index,
-                  slotIndex: slotIndex,
-                  isStorage: isStorage,
-                });
-
-                setSave(edited);
+                const edited = await setSave(t("revision.slotGemChanged"), () =>
+                  invoke("unequip_gem", {
+                    articleType: article.article_type,
+                    articleIndex: article.index,
+                    slotIndex: slotIndex,
+                    isStorage: isStorage,
+                  }),
+                );
+                if (!edited) return;
                 setArticle((prev) => {
                   const copy = JSON.parse(JSON.stringify(prev));
                   copy.slots[slotIndex].gem = null;
@@ -115,25 +118,26 @@ function ChangeGemScreen({
 
                 setScreen(false);
               } else {
-                // Unequip the current gem before trying to equip the selected one
-                if (article.slots[slotIndex]?.gem !== null) {
-                  await invoke("unequip_gem", {
+                const edited = await setSave(t("revision.slotGemChanged"), async () => {
+                  // Unequip the current gem before trying to equip the selected one.
+                  if (article.slots[slotIndex]?.gem !== null) {
+                    await invoke("unequip_gem", {
+                      articleType: article.article_type,
+                      articleIndex: article.index,
+                      slotIndex: slotIndex,
+                      isStorage: isStorage,
+                    });
+                  }
+
+                  return invoke("equip_gem", {
+                    upgradeIndex: selectedGem.index,
                     articleType: article.article_type,
                     articleIndex: article.index,
                     slotIndex: slotIndex,
                     isStorage: isStorage,
                   });
-                }
-
-                const edited = await invoke("equip_gem", {
-                  upgradeIndex: selectedGem.index,
-                  articleType: article.article_type,
-                  articleIndex: article.index,
-                  slotIndex: slotIndex,
-                  isStorage: isStorage,
                 });
-
-                setSave(edited);
+                if (!edited) return;
                 setArticle((prev) => {
                   const copy = JSON.parse(JSON.stringify(prev));
                   copy.slots[slotIndex].gem = selectedGem;
@@ -151,7 +155,7 @@ function ChangeGemScreen({
                 article.slots[slotIndex]?.gem === null)
             }
           >
-            Confirm
+            {t("forge.confirm")}
           </button>
         </div>
       </div>

@@ -1,7 +1,22 @@
-import { SUPPORTED_LANGUAGES, useLocalization } from "../i18n/localization";
+import { useLocalization } from "../i18n/localization";
+import LanguagePicker from "./LanguagePicker";
 
-function Nav({ save, name, statusKey, onOpenSave, onSaveChanges }) {
-  const { language, setLanguage, t } = useLocalization();
+function Nav({
+  save,
+  name,
+  statusKey,
+  canUndo,
+  canRedo,
+  revisionCount,
+  onOpenSave,
+  onSaveChanges,
+  onUndo,
+  onRedo,
+  onShowRevisions,
+  density,
+  onToggleDensity,
+}) {
+  const { t } = useLocalization();
 
   return (
     <nav className="nav" aria-label={t("nav.controls")}>
@@ -23,14 +38,23 @@ function Nav({ save, name, statusKey, onOpenSave, onSaveChanges }) {
       </div>
 
       <div className="nav-actions">
-        <label className="language-select">
-          <span>{t("language.label")}</span>
-          <select value={language} onChange={(event) => setLanguage(event.target.value)}>
-            {SUPPORTED_LANGUAGES.map(({ code, label }) => (
-              <option key={code} value={code}>{label}</option>
-            ))}
-          </select>
-        </label>
+        <LanguagePicker />
+        <button className="control-button control-button--density" type="button" onClick={onToggleDensity}>
+          {density === "compact" ? t("preferences.comfortable") : t("preferences.compact")}
+        </button>
+        {save ? (
+          <div className="nav-history" aria-label={t("revision.controls")}>
+            <button className="control-button control-button--history" type="button" onClick={onUndo} disabled={!canUndo}>
+              {t("revision.undo")}
+            </button>
+            <button className="control-button control-button--history" type="button" onClick={onRedo} disabled={!canRedo}>
+              {t("revision.redo")}
+            </button>
+            <button className="control-button control-button--history" type="button" onClick={onShowRevisions}>
+              {t("revision.changes", { count: revisionCount })}
+            </button>
+          </div>
+        ) : null}
         <button className="control-button control-button--quiet" id="openSave" onClick={onOpenSave}>
           {t("nav.openSave")}
         </button>

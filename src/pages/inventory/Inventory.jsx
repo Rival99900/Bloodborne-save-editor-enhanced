@@ -5,12 +5,23 @@ import { invoke } from "@tauri-apps/api/core";
 import ReplaceScreen from "../../components/ReplaceScreen";
 import { getType } from "../../utils/upgrades";
 import FilterButtons from "./FilterButtons";
-import FilterComponent from "./FilterComponent";
+import FilterComponent, { getItemKey } from "./FilterComponent";
 import EditUpgrade from "../../components/EditUpgrade";
 import AddScreen from "./AddScreen";
 import { ImagesContext } from "../../context/imagesContext";
 import { useNavigate } from "react-router-dom";
 import { useLocalization } from "../../i18n/localization";
+
+const INVENTORY_FAVORITES_STORAGE_KEY = "bloodborne-save-editor.inventory-favorites.v1";
+
+function readFavoriteKeys() {
+  try {
+    const saved = JSON.parse(globalThis.localStorage?.getItem(INVENTORY_FAVORITES_STORAGE_KEY) ?? "[]");
+    return Array.isArray(saved) ? saved.filter((value) => typeof value === "string") : [];
+  } catch {
+    return [];
+  }
+}
 
 function Inventory({ inv, isStorage }) {
   const inventoryRef = useRef(null);
@@ -23,6 +34,9 @@ function Inventory({ inv, isStorage }) {
   const [editScreen, setEditScreen] = useState(false);
   const [addScreen, setAddScreen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("0");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [favoriteKeys, setFavoriteKeys] = useState(readFavoriteKeys);
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
   const nav = useNavigate();
   const {
     images: { items, backgrounds },
@@ -74,6 +88,26 @@ function Inventory({ inv, isStorage }) {
     }
   }, [selected]);
 
+  useEffect(() => {
+    try {
+      globalThis.localStorage?.setItem(INVENTORY_FAVORITES_STORAGE_KEY, JSON.stringify(favoriteKeys));
+    } catch {
+      // Favorites are optional local-only metadata; the editor remains functional if storage is unavailable.
+    }
+  }, [favoriteKeys]);
+
+  const selectedFavoriteKey = selected ? getItemKey(selected) : null;
+  const isSelectedFavorite = selectedFavoriteKey ? favoriteKeys.includes(selectedFavoriteKey) : false;
+
+  function toggleSelectedFavorite() {
+    if (!selectedFavoriteKey) return;
+    setFavoriteKeys((current) =>
+      current.includes(selectedFavoriteKey)
+        ? current.filter((key) => key !== selectedFavoriteKey)
+        : [selectedFavoriteKey, ...current].slice(0, 120),
+    );
+  }
+
   return (
     <>
       {/* Optional modal like screens */}
@@ -112,10 +146,34 @@ function Inventory({ inv, isStorage }) {
         ref={inventoryRef}
       >
         <FilterButtons selectedFilter={selectedFilter} />
+        <div className="inventory-search" role="search">
+          <label>
+            <span>{t("inventory.searchInventory")}</span>
+            <input
+              type="search"
+              value={searchQuery}
+              placeholder={t("inventory.searchPlaceholder")}
+              onChange={(event) => setSearchQuery(event.target.value)}
+            />
+          </label>
+          {searchQuery ? (
+            <button type="button" onClick={() => setSearchQuery("")}>{t("inventory.clearSearch")}</button>
+          ) : null}
+          <button
+            className={favoritesOnly ? "is-active" : ""}
+            type="button"
+            onClick={() => setFavoritesOnly((value) => !value)}
+          >
+            {t("inventory.favoritesOnly")}
+          </button>
+        </div>
         <FilterComponent
           inventory={inv}
           selectedFilter={selectedFilter}
           selectedIndex={selectedIndex}
+          searchQuery={searchQuery}
+          favoriteKeys={favoriteKeys}
+          favoritesOnly={favoritesOnly}
         />
       </div>
       {/* Right side buttons */}
@@ -156,13 +214,15 @@ function Inventory({ inv, isStorage }) {
             className="buttonBg"
             onClick={async () => {
               console.log(selected);
-              const editedSave = await invoke("edit_quantity", {
-                number: selected.number,
-                id: selected.id,
-                value: quantity,
-                isStorage,
-              });
-              setSave(editedSave);
+              const editedSave = await setSave(t("revision.quantityChanged"), () =>
+                invoke("edit_quantity", {
+                  number: selected.number,
+                  id: selected.id,
+                  value: quantity,
+                  isStorage,
+                }),
+              );
+              if (!editedSave) return;
               const canvas = selectedRef.current;
               const ctx = canvas.getContext("2d");
               const itemImage = backgrounds["item.png"];
@@ -205,18 +265,20 @@ function Inventory({ inv, isStorage }) {
           <button
             className="buttonBg"
             onClick={async () => {
-              const { save: editedSave, weapon } = await invoke(
-                "change_weapon_level",
-                {
+              let updatedWeapon = null;
+              const editedSave = await setSave(t("revision.weaponLevelChanged"), async () => {
+                const result = await invoke("change_weapon_level", {
                   articleType: selected.article_type,
                   articleIndex: selected.index,
                   slotIndex: selected.number,
                   isStorage,
                   level,
-                },
-              );
-              setSave(editedSave);
-              setSelected(weapon);
+                });
+                updatedWeapon = result.weapon;
+                return result.save;
+              });
+              if (!editedSave) return;
+              setSelected(updatedWeapon);
             }}
             disabled={
               getType(selected?.article_type) === "weapon" && quantity > 0
@@ -227,6 +289,13 @@ function Inventory({ inv, isStorage }) {
             {t("inventory.setValue")}
           </button>
         </div>
+        <button
+          className="buttonBg inventory-btn inventory-btn--favorite"
+          disabled={!selected}
+          onClick={toggleSelectedFavorite}
+        >
+          {isSelectedFavorite ? t("inventory.removeFavorite") : t("inventory.addFavorite")}
+        </button>
         <button
           className="buttonBg inventory-btn"
           disabled={selected?.article_type === undefined}

@@ -35,15 +35,16 @@ function ReplaceScreen({
     if (!replacement) return;
 
     try {
-      const edited = await invoke("transform_item", {
-        index: selected.index,
-        id: selected.id,
-        newId: Number.parseInt(replacement.id, 10),
-        articleType: selected.article_type,
-        isStorage,
-      });
-
-      setSave(edited);
+      const edited = await setSave(t("revision.itemReplaced"), () =>
+        invoke("transform_item", {
+          index: selected.index,
+          id: selected.id,
+          newId: Number.parseInt(replacement.id, 10),
+          articleType: selected.article_type,
+          isStorage,
+        }),
+      );
+      if (!edited) return;
       setSelected(null);
       dismiss();
     } catch (error) {

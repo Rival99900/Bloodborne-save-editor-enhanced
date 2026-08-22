@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import { useLocalization } from "../i18n/localization";
 
 /**
@@ -15,6 +15,8 @@ function ConfirmDialog({
   onCancel,
 }) {
   const { t } = useLocalization();
+  const titleId = useId();
+  const descriptionId = useId();
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -30,12 +32,13 @@ function ConfirmDialog({
         className="confirm-dialog__panel"
         role="alertdialog"
         aria-modal="true"
-        aria-labelledby="confirm-dialog-title"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <p className="confirm-dialog__eyebrow">{t("actions.confirm")}</p>
-        <h2 id="confirm-dialog-title">{title}</h2>
-        <p className="confirm-dialog__description">{description}</p>
+        <h2 id={titleId}>{title}</h2>
+        <p id={descriptionId} className="confirm-dialog__description">{description}</p>
         <div className="confirm-dialog__actions">
           <button className="control-button control-button--quiet" onClick={onCancel} autoFocus>
             {cancelLabel ?? t("forge.cancel")}
