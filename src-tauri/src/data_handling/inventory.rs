@@ -1521,7 +1521,7 @@ mod tests {
             .articles
             .get(&ArticleType::RightHand)
             .unwrap()
-            .get(0)
+            .first()
             .unwrap();
         let slots = hunter_axe.slots.as_ref().unwrap();
         //The slot n4 is empty
@@ -1567,7 +1567,7 @@ mod tests {
             .articles
             .get(&ArticleType::RightHand)
             .unwrap()
-            .get(0)
+            .first()
             .unwrap();
         let slots = hunter_axe.slots.as_ref().unwrap();
         //Now the slot n4 contains the gem
@@ -1601,7 +1601,7 @@ mod tests {
             .articles
             .get(&ArticleType::RightHand)
             .unwrap()
-            .get(0)
+            .first()
             .unwrap();
         let slots = hunter_axe.slots.as_ref().unwrap();
         assert_eq!(*slots[4].gem.as_ref().unwrap(), gem);

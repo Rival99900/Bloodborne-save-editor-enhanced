@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::file::FileData;
-use std::io;
+use super::{enums::Error, file::FileData};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Stat {
@@ -21,13 +20,15 @@ impl Stat {
     }
 }
 
-pub fn new(file: &FileData) -> Result<Vec<Stat>, io::Error> {
+pub fn new(file: &FileData) -> Result<Vec<Stat>, Error> {
     let offsets_str = include_str!("../../resources/offsets.json");
 
-    // Read the JSON contents of the file as Vec<Stat>.
-    let mut stats: Vec<Stat> = serde_json::from_str(offsets_str)?;
-    for s in &mut stats {
-        s.value = file.get_number(s.rel_offset, s.length);
+    // The bundled schema is static, but keep the failure controlled if it is
+    // ever damaged in a future package.
+    let mut stats: Vec<Stat> = serde_json::from_str(offsets_str)
+        .map_err(|_| Error::CustomError("Failed to parse the bundled statistics schema."))?;
+    for stat in &mut stats {
+        stat.value = file.get_number(stat.rel_offset, stat.length)?;
     }
 
     Ok(stats)

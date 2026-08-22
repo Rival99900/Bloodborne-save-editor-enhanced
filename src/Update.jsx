@@ -11,7 +11,10 @@ export function UpdateModal() {
   const [statusText, setStatusText] = useState("");
 
   useEffect(() => {
-    checkForUpdates();
+    // The updater bridge is available only in the native Tauri webview.
+    if (!window.__TAURI_INTERNALS__) return undefined;
+    void checkForUpdates();
+    return undefined;
   }, []);
 
   async function checkForUpdates() {

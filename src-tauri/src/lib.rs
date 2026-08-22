@@ -8,7 +8,7 @@ use data_handling::{
     appearance,
     article::Article,
     bosses,
-    enums::{ArticleType, Location, SlotShape, UpgradeType},
+    enums::{ArticleType, Error as SaveError, Location, SlotShape, UpgradeType},
     position::Pos,
     save::SaveData,
     upgrades::Upgrade,
@@ -26,6 +26,12 @@ struct SaveHistory {
 struct MutexSave {
     data: Mutex<Option<SaveData>>,
     history: Mutex<SaveHistory>,
+}
+
+fn format_load_error(error: SaveError) -> String {
+    format!(
+        "Unable to load the selected save: {error} Verify that it is a complete decrypted Bloodborne character save."
+    )
 }
 
 fn begin_revision(state_save: &MutexSave) -> Result<(), String> {
@@ -258,22 +264,35 @@ fn fix_isz(state_save: tauri::State<MutexSave>) -> Result<Value, String> {
 }
 
 #[tauri::command]
-fn get_playtime(state_save: tauri::State<MutexSave>) -> u32 {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+fn get_playtime(state_save: tauri::State<MutexSave>) -> Result<u32, String> {
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before reading playtime.".to_string())?;
 
-    save.file.get_playtime()
+    save.file.get_playtime().map_err(|error| error.to_string())
 }
 
 #[tauri::command]
 fn set_playtime(new_playtime: [u8; 4], state_save: tauri::State<MutexSave>) -> Result<(), String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before editing playtime.".to_string())?;
 
     save.file.set_playtime(new_playtime);
-    save.playtime = save.file.get_playtime();
+    save.playtime = save
+        .file
+        .get_playtime()
+        .map_err(|error| error.to_string())?;
     Ok(())
 }
 
@@ -286,19 +305,25 @@ fn make_save(
     let resource_path = handle
         .path()
         .resolve("resources/", BaseDirectory::Resource)
-        .unwrap();
+        .map_err(|error| format!("Application resources are unavailable: {error}"))?;
 
-    match SaveData::build(path, resource_path) {
-        Ok(s) => {
-            let mut history = state_save.history.lock().unwrap();
-            let mut data = state_save.data.lock().unwrap();
-            *data = Some(s.clone());
-            history.past.clear();
-            history.future.clear();
-            Ok(serde_json::to_value(&s).map_err(|x| x.to_string())?)
-        }
-        Err(_) => Err("Failed to load file, make sure its a decrypted character.".to_string()),
-    }
+    // Parse and serialize first. The active save remains untouched if the new
+    // file is invalid, incomplete, or cannot be represented for the frontend.
+    let loaded_save = SaveData::build(path, resource_path).map_err(format_load_error)?;
+    let response = serde_json::to_value(&loaded_save).map_err(|error| error.to_string())?;
+
+    let mut history = state_save
+        .history
+        .lock()
+        .map_err(|_| "Revision history is unavailable.".to_string())?;
+    let mut data = state_save
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    *data = Some(loaded_save);
+    history.past.clear();
+    history.future.clear();
+    Ok(response)
 }
 
 #[tauri::command]
@@ -345,6 +370,9 @@ fn save(path: String, state_save: tauri::State<MutexSave>) -> Result<String, Str
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before saving changes.".to_string())?;
+
+    save.validate_game_load_safety()
+        .map_err(|error| error.to_string())?;
 
     save.file
         .save(&path)
@@ -520,11 +548,9 @@ fn edit_effect(
         .map_err(|_| "The upgrade type is missing from this edit request.".to_string())?;
     let catalog_name = if is_gem { "gemEffects" } else { "runeEffects" };
     let fallback_catalog_name = if is_gem { "runeEffects" } else { "gemEffects" };
-    // `Upgrade::change_effect` already accepts an id from either catalogue — it falls
-    // back to the other one when the primary lookup misses (see data_handling/upgrades.rs).
-    // Some gems (from other tools, or valid in-game combinations) legitimately carry a
-    // Caryll Rune effect id. This gate must accept exactly what `change_effect` accepts,
-    // otherwise a perfectly valid edit is rejected here before it ever reaches it.
+    // Existing saves can legitimately contain an effect from the other catalogue.
+    // Keep the editor capable of preserving and editing those records; the final
+    // save gate instead protects the structural slot invariant that caused this crash.
     let is_known_effect = new_effect_id == u32::MAX
         || effect_catalog[catalog_name].get(&effect_id).is_some()
         || effect_catalog[fallback_catalog_name]

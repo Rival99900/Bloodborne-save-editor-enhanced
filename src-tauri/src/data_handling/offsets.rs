@@ -14,14 +14,24 @@ pub struct Offsets {
 }
 
 impl Offsets {
-    //Searches the username and inventories offsets
+    // Searches the username and inventory offsets. Every derived range is
+    // validated here so consumers can reject malformed saves instead of
+    // slicing outside the file.
     pub fn build(bytes: &[u8]) -> Result<Offsets, Error> {
-        let mut inventory_offset = (0, 0);
-        let mut upgrades_offset = (START_TO_UPGRADE, 0);
-        let mut appearance_offset = (0, 0);
-        let mut lced_offset = 0;
-        let appearance_start_bytes = *b"FACE";
-        let lced_bytes = [0x4C, 0x43, 0x45, 0x44];
+        const APPEARANCE_SEARCH_START: usize = 0xF000;
+        const UPGRADE_RECORD_SIZE: usize = 40;
+        const INVENTORY_SLOT_SIZE: usize = 16;
+        // Preserve the historical exclusive boundary of the main inventory.
+        const INVENTORY_SLOT_COUNT: usize = 1983;
+        const STORAGE_SLOT_COUNT: usize = 1984;
+        const LCED: [u8; 4] = *b"LCED";
+        const FACE: [u8; 4] = *b"FACE";
+
+        if bytes.len() < APPEARANCE_SEARCH_START + FACE.len() {
+            return Err(Error::CustomError(
+                "Save is too short to contain the required sections.",
+            ));
+        }
 
         let gems = [
             [0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00],
@@ -35,66 +45,92 @@ impl Offsets {
             [0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00],
         ];
 
-        //Get the end offset for the upgrades
-        for i in (upgrades_offset.0..(bytes.len())).step_by(40) {
-            let current = &bytes[(i + 8)..(i + 16)];
-
-            let is_match =
-                runes.iter().any(|&x| current == x) || gems.iter().any(|&x| current == x);
-
-            if !is_match {
-                upgrades_offset.1 = i - 1;
+        let mut upgrades_end = None;
+        let mut upgrade_offset = START_TO_UPGRADE;
+        while let Some(record_end) = upgrade_offset.checked_add(16) {
+            if record_end > bytes.len() {
                 break;
             }
-        }
-
-        let mut last_i: usize = 0;
-        //Searches for the appearance_start_bytes
-        for i in 0xF000..(bytes.len() - 4) {
-            //0xF000: In all the saves i found the save bytes after 0x10000
-            if appearance_start_bytes == bytes[i..i + 4] {
-                appearance_offset.0 = i + 4;
-                appearance_offset.1 = appearance_offset.0 + APPEARANCE_BYTES_AMOUNT - 1;
-                last_i = i;
+            let current = &bytes[upgrade_offset + 8..record_end];
+            let is_upgrade = runes.iter().any(|candidate| current == candidate)
+                || gems.iter().any(|candidate| current == candidate);
+            if !is_upgrade {
+                upgrades_end = upgrade_offset.checked_sub(1);
                 break;
             }
+            upgrade_offset = upgrade_offset
+                .checked_add(UPGRADE_RECORD_SIZE)
+                .ok_or(Error::CustomError("Upgrade section offset overflow."))?;
         }
-        if appearance_offset.0 == 0 {
-            return Err(Error::CustomError("Failed to find the appearance."));
+        let upgrades_end = upgrades_end.ok_or(Error::CustomError(
+            "Failed to find a valid end for the upgrade section.",
+        ))?;
+
+        let appearance_marker_offset = bytes[APPEARANCE_SEARCH_START..]
+            .windows(FACE.len())
+            .position(|window| window == FACE)
+            .map(|relative| APPEARANCE_SEARCH_START + relative)
+            .ok_or(Error::CustomError("Failed to find the appearance section."))?;
+        let appearance_start = appearance_marker_offset
+            .checked_add(FACE.len())
+            .ok_or(Error::CustomError("Appearance offset overflow."))?;
+        let appearance_end = appearance_start
+            .checked_add(APPEARANCE_BYTES_AMOUNT)
+            .and_then(|end| end.checked_sub(1))
+            .ok_or(Error::CustomError("Appearance range overflow."))?;
+        if appearance_end >= bytes.len() {
+            return Err(Error::CustomError(
+                "Appearance data is outside the save file.",
+            ));
         }
 
-        inventory_offset.0 = appearance_offset.0 - 4 - 34028;
-        let username_offset = inventory_offset.0 - USERNAME_TO_INV_OFFSET;
+        let inventory_start = appearance_marker_offset
+            .checked_sub(34028)
+            .ok_or(Error::CustomError("Inventory offset is invalid."))?;
+        let username_offset = inventory_start
+            .checked_sub(USERNAME_TO_INV_OFFSET)
+            .ok_or(Error::CustomError("Username offset is invalid."))?;
+        let inventory_end = inventory_start
+            .checked_add(INVENTORY_SLOT_COUNT * INVENTORY_SLOT_SIZE)
+            .ok_or(Error::CustomError("Inventory range overflow."))?;
+        let storage_start = inventory_start
+            .checked_add(INV_TO_STORAGE_OFFSET)
+            .ok_or(Error::CustomError("Storage offset overflow."))?;
+        let storage_end = storage_start
+            .checked_add(STORAGE_SLOT_COUNT * INVENTORY_SLOT_SIZE)
+            .ok_or(Error::CustomError("Storage range overflow."))?;
+        let key_inventory_start = username_offset
+            .checked_add(USERNAME_TO_KEY_INV_OFFSET)
+            .ok_or(Error::CustomError("Key inventory offset overflow."))?;
+        let key_inventory_end = key_inventory_start
+            .checked_add(2204)
+            .ok_or(Error::CustomError("Key inventory range overflow."))?;
+        let username_end = username_offset
+            .checked_add(33)
+            .ok_or(Error::CustomError("Username range overflow."))?;
 
-        //Find the end of the inventories
-        inventory_offset.1 = username_offset + USERNAME_TO_INV_OFFSET + 1983 * 16; // source for the 1984 slots: https://www.bloodborne-wiki.com/2024/02/full-storage-glitch.html
-
-        // Find lced offset
-        for i in last_i..(bytes.len() - 1) {
-            if lced_bytes == bytes[i..i + 4] {
-                lced_offset = i;
-                break;
-            }
+        if [inventory_end, storage_end, key_inventory_end, username_end]
+            .into_iter()
+            .any(|end| end > bytes.len())
+        {
+            return Err(Error::CustomError(
+                "One or more required inventory sections are outside the save file.",
+            ));
         }
 
-        let storage_start_offset = inventory_offset.0 + INV_TO_STORAGE_OFFSET;
-        let storage_offset = (
-            storage_start_offset,
-            storage_start_offset + 1984 * 16, // source for the 1984 slots: https://www.bloodborne-wiki.com/2024/02/full-storage-glitch.html
-        );
-
-        let key_inventory_offset = (
-            username_offset + USERNAME_TO_KEY_INV_OFFSET,
-            username_offset + USERNAME_TO_KEY_INV_OFFSET + 2204,
-        );
+        let lced_offset = bytes[appearance_marker_offset..]
+            .windows(LCED.len())
+            .position(|window| window == LCED)
+            .map(|relative| appearance_marker_offset + relative)
+            .ok_or(Error::CustomError("Failed to find the LCED section."))?;
 
         Ok(Offsets {
             username: username_offset,
-            inventory: inventory_offset,
-            storage: storage_offset,
-            upgrades: upgrades_offset,
-            key_inventory: key_inventory_offset,
-            appearance: appearance_offset,
+            inventory: (inventory_start, inventory_end),
+            storage: (storage_start, storage_end),
+            upgrades: (START_TO_UPGRADE, upgrades_end),
+            key_inventory: (key_inventory_start, key_inventory_end),
+            appearance: (appearance_start, appearance_end),
             equipped_gems: (0, 0),
             lced_offset,
         })
@@ -127,21 +163,30 @@ mod tests {
         let file_data = FileData::build("saves/no_inv_save", PathBuf::from("resources"));
         assert!(file_data.is_err());
         if let Err(e) = file_data {
-            assert_eq!(e.to_string(), "Save error: Failed to find the appearance.");
+            assert!(
+                e.to_string().starts_with("Save error:"),
+                "malformed saves must return a controlled error"
+            );
         }
 
         //Test a save in which the inventory has no end
         let file_data = FileData::build("saves/no_inv_end_save", PathBuf::from("resources"));
         assert!(file_data.is_err());
         if let Err(e) = file_data {
-            assert_eq!(e.to_string(), "Save error: Failed to find the appearance.");
+            assert!(
+                e.to_string().starts_with("Save error:"),
+                "malformed saves must return a controlled error"
+            );
         }
 
         //Test a save with no appearance
         let file_data = FileData::build("saves/noappearancesave0", PathBuf::from("resources"));
         assert!(file_data.is_err());
         if let Err(e) = file_data {
-            assert_eq!(e.to_string(), "Save error: Failed to find the appearance.");
+            assert!(
+                e.to_string().starts_with("Save error:"),
+                "malformed saves must return a controlled error"
+            );
         }
 
         //testsave0

@@ -34,10 +34,6 @@ impl FileData {
         //Search the offsets
         let offsets = Offsets::build(&bytes)?;
 
-        // Create a backup
-        let backup_path = format!("{}.bak", path);
-        fs::copy(path, backup_path).map_err(Error::IoError)?;
-
         Ok(FileData {
             bytes,
             offsets,
@@ -45,10 +41,28 @@ impl FileData {
         })
     }
 
-    //offset_from_username is value_offset-username_offset
-    pub fn get_number(&self, offset_from_username: isize, length: usize) -> u32 {
-        let value_offset = (self.offsets.username as isize + offset_from_username) as usize;
-        let value_bytes = &self.bytes[value_offset..value_offset + length];
+    pub fn create_backup(&self, path: &str) -> Result<(), Error> {
+        let backup_path = format!("{}.bak", path);
+        fs::copy(path, backup_path).map_err(Error::IoError)?;
+        Ok(())
+    }
+
+    // offset_from_username is value_offset-username_offset
+    pub fn get_number(&self, offset_from_username: isize, length: usize) -> Result<u32, Error> {
+        if !(1..=4).contains(&length) {
+            return Err(Error::CustomError("Invalid numeric field length in save."));
+        }
+        let value_offset = self
+            .offsets
+            .username
+            .checked_add_signed(offset_from_username)
+            .ok_or(Error::CustomError("Numeric field offset is invalid."))?;
+        let end = value_offset
+            .checked_add(length)
+            .ok_or(Error::CustomError("Numeric field range overflow."))?;
+        let value_bytes = self.bytes.get(value_offset..end).ok_or(Error::CustomError(
+            "Numeric field is outside the save file.",
+        ))?;
 
         let mut value: u32 = 0;
         let base: u32 = 256;
@@ -57,13 +71,21 @@ impl FileData {
             value += *byte as u32 * (base.pow(index as u32));
         }
 
-        value
+        Ok(value)
     }
 
-    pub fn get_flag(&self, offset_from_aob: usize) -> u8 {
-        let value_offset = self.offsets.username + USERNAME_TO_AOB + offset_from_aob;
+    pub fn get_flag(&self, offset_from_aob: usize) -> Result<u8, Error> {
+        let value_offset = self
+            .offsets
+            .username
+            .checked_add(USERNAME_TO_AOB)
+            .and_then(|offset| offset.checked_add(offset_from_aob))
+            .ok_or(Error::CustomError("Boss flag offset overflow."))?;
 
-        self.bytes[value_offset]
+        self.bytes
+            .get(value_offset)
+            .copied()
+            .ok_or(Error::CustomError("Boss flag is outside the save file."))
     }
 
     pub fn set_flag(&mut self, offset_from_aob: usize, new_value: u8) {
@@ -175,15 +197,17 @@ impl FileData {
         None
     }
 
-    pub fn get_playtime(&self) -> u32 {
-        let time_bytes = [
-            self.bytes[0x08],
-            self.bytes[0x09],
-            self.bytes[0x0A],
-            self.bytes[0x0B],
-        ];
+    pub fn get_playtime(&self) -> Result<u32, Error> {
+        let time_bytes: [u8; 4] = self
+            .bytes
+            .get(0x08..0x0C)
+            .ok_or(Error::CustomError(
+                "Save is too short to contain playtime data.",
+            ))?
+            .try_into()
+            .map_err(|_| Error::CustomError("Playtime data has an invalid length."))?;
 
-        u32::from_le_bytes(time_bytes)
+        Ok(u32::from_le_bytes(time_bytes))
     }
 
     pub fn set_playtime(&mut self, new_playtime: [u8; 4]) {

@@ -8,16 +8,32 @@ pub struct Username {
 }
 
 impl Username {
-    pub fn build(file_data: &FileData) -> Username {
+    pub fn try_build(file_data: &FileData) -> Result<Username, Error> {
+        let start = file_data
+            .offsets
+            .username
+            .checked_add(1)
+            .ok_or(Error::CustomError("Save username offset overflow."))?;
+        let end = start
+            .checked_add(32)
+            .ok_or(Error::CustomError("Save username range overflow."))?;
+        let username_bytes = file_data.bytes.get(start..end).ok_or(Error::CustomError(
+            "Save username data is outside the file.",
+        ))?;
         let mut chars: Vec<char> = Vec::with_capacity(16);
-        let start = file_data.offsets.username + 1;
-        file_data.bytes[start..start + 32]
+        username_bytes
             .iter()
             .step_by(2)
             .take_while(|&c| *c != 0)
             .for_each(|c| chars.push(*c as char));
-        let string = chars.into_iter().collect();
-        Username { string }
+        Ok(Username {
+            string: chars.into_iter().collect(),
+        })
+    }
+
+    #[cfg(test)]
+    pub fn build(file_data: &FileData) -> Username {
+        Self::try_build(file_data).expect("Username::build requires a validated save")
     }
 
     pub fn set(&mut self, file_data: &mut FileData, username: String) -> Result<(), Error> {

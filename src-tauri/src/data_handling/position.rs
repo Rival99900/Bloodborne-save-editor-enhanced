@@ -19,41 +19,57 @@ pub struct Pos {
 
 impl Pos {
     pub fn new(file: &FileData) -> Result<Pos, Error> {
-        let bytes = &file.bytes;
+        let map_bytes: [u8; 4] = file
+            .bytes
+            .get(4..8)
+            .ok_or(Error::CustomError("Save is too short to contain map data."))?
+            .try_into()
+            .map_err(|_| Error::CustomError("Save map data has an invalid length."))?;
         Ok(Pos {
-            coordinates: Coordinates::new(file).unwrap(),
-            loaded_map: u32::from_le_bytes([bytes[4], bytes[5], bytes[6], bytes[7]]),
+            coordinates: Coordinates::new(file)?,
+            loaded_map: u32::from_le_bytes(map_bytes),
         })
     }
 }
 
 impl Coordinates {
     pub fn new(file: &FileData) -> Result<Coordinates, Error> {
+        const COORDINATE_MARKER: [u8; 12] = [
+            0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        ];
+        const COORDINATE_RECORD_SIZE: usize = 24;
+
         let bytes = &file.bytes;
         let lced_offset = file.offsets.lced_offset;
+        let search_region = bytes
+            .get(lced_offset..)
+            .ok_or(Error::CustomError("Save has an invalid LCED offset."))?;
 
-        for i in lced_offset..(bytes.len() - 1) {
-            if [
-                0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-            ] == bytes[i..=i + 11]
-            {
-                let x: [u8; 4] = [bytes[i + 12], bytes[i + 13], bytes[i + 14], bytes[i + 15]];
-                let y: [u8; 4] = [bytes[i + 16], bytes[i + 17], bytes[i + 18], bytes[i + 19]];
-                let z: [u8; 4] = [bytes[i + 20], bytes[i + 21], bytes[i + 22], bytes[i + 23]];
-
-                let x = f32::from_le_bytes(x);
-                let y = f32::from_le_bytes(y);
-                let z = f32::from_le_bytes(z);
-
-                return Ok(Coordinates {
-                    offset: i,
-                    x: format!("{:.3}", x),
-                    y: format!("{:.3}", y),
-                    z: format!("{:.3}", z),
-                });
+        for (relative_offset, record) in search_region.windows(COORDINATE_RECORD_SIZE).enumerate() {
+            if record[..COORDINATE_MARKER.len()] != COORDINATE_MARKER {
+                continue;
             }
+            let x_bytes: [u8; 4] = record[12..16]
+                .try_into()
+                .map_err(|_| Error::CustomError("Coordinate X data has an invalid length."))?;
+            let y_bytes: [u8; 4] = record[16..20]
+                .try_into()
+                .map_err(|_| Error::CustomError("Coordinate Y data has an invalid length."))?;
+            let z_bytes: [u8; 4] = record[20..24]
+                .try_into()
+                .map_err(|_| Error::CustomError("Coordinate Z data has an invalid length."))?;
+            let x = f32::from_le_bytes(x_bytes);
+            let y = f32::from_le_bytes(y_bytes);
+            let z = f32::from_le_bytes(z_bytes);
+
+            return Ok(Coordinates {
+                offset: lced_offset + relative_offset,
+                x: format!("{:.3}", x),
+                y: format!("{:.3}", y),
+                z: format!("{:.3}", z),
+            });
         }
-        Err(Error::CustomError("Coordinates could not be found"))
+        Err(Error::CustomError("Coordinates could not be found."))
     }
 
     pub fn edit(&self, file: &mut FileData, x: f32, y: f32, z: f32) {
@@ -67,5 +83,19 @@ impl Coordinates {
         for i in 0..3 {
             bytes[self.offset + 12 + 4 * i..=self.offset + 15 + 4 * i].copy_from_slice(&coords[i]);
         }
+    }
+}
+
+#[cfg(test)]
+mod malformed_coordinate_reproduction {
+    use super::*;
+    use crate::data_handling::file::FileData;
+    use std::path::PathBuf;
+
+    #[test]
+    fn coordinate_scan_returns_an_error_when_marker_is_missing() {
+        let mut file = FileData::build("saves/testsave9", PathBuf::from("resources")).unwrap();
+        file.bytes[file.offsets.lced_offset..].fill(0);
+        assert!(Coordinates::new(&file).is_err());
     }
 }

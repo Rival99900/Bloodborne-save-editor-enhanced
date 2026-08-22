@@ -110,6 +110,7 @@ function App() {
   const [isDirty, setIsDirty] = useState(false);
   const [exitRequested, setExitRequested] = useState(false);
   const [openSaveDialog, setOpenSaveDialog] = useState("");
+  const [loadError, setLoadError] = useState("");
   const [pendingSavePath, setPendingSavePath] = useState("");
   const [revisionState, setRevisionState] = useState({ past: [], future: [] });
   const [revisionPanelOpen, setRevisionPanelOpen] = useState(false);
@@ -238,6 +239,7 @@ function App() {
       if (!selectedPath) return false;
 
       setSaveStatusKey("");
+      setLoadError("");
       setLoading(true);
       const parsedSave = await invoke("make_save", { path: selectedPath });
       const loadedSnapshot = cloneSave(parsedSave);
@@ -254,6 +256,8 @@ function App() {
       return true;
     } catch (error) {
       console.error(error);
+      const detail = error instanceof Error ? error.message : String(error ?? "");
+      setLoadError(detail);
       setOpenSaveDialog("error");
       return false;
     } finally {
@@ -437,6 +441,10 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // The native close-request API only exists inside a Tauri webview. Guard
+    // it so browser previews used for UI review do not unmount the whole app.
+    if (!window.__TAURI_INTERNALS__) return undefined;
+
     let unlisten;
     let disposed = false;
 
@@ -510,9 +518,14 @@ function App() {
           tone="error"
           eyebrow={t("saveFlow.openTitle")}
           title={t("saveFlow.openFailedTitle")}
-          description={t("saveFlow.openFailedDescription")}
+          description={loadError
+            ? `${t("saveFlow.openFailedDescription")} ${loadError}`
+            : t("saveFlow.openFailedDescription")}
           confirmLabel={t("saveFlow.close")}
-          onConfirm={() => setOpenSaveDialog("")}
+          onConfirm={() => {
+            setLoadError("");
+            setOpenSaveDialog("");
+          }}
         />
       ) : null}
       {openSaveDialog === "save-complete" ? (

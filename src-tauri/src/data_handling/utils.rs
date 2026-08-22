@@ -19,12 +19,12 @@ pub mod test_utils {
                 break;
             }
         }
-        if equal == false {
+        if !equal {
             println!("check_bytes failed:");
             for (i, byte) in bytes.iter().enumerate() {
                 let equal = file_data.bytes[index + i] == *byte;
                 println!(
-                    "File byte: {:#02x}, test byte: {:#02x}, match: {}",
+                    "File byte: {:#04x}, test byte: {:#04x}, match: {}",
                     file_data.bytes[index + i],
                     *byte,
                     equal

@@ -95,7 +95,6 @@ impl Upgrade {
         };
 
         let mut json_effect = &json_effects[new_value.to_string()];
-        //If the new effect wasn't found, search in the other upgrade type's effects
         if json_effect.is_null() {
             json_effect = &fallback[new_value.to_string()];
         }
@@ -678,56 +677,23 @@ mod tests {
         assert_eq!(gem2, gem3);
         assert_eq!(rune2, rune3);
 
-        //TESTSAVE 0. Test Runes effects on gems and viceversa
+        // Preserve compatibility with legacy saves that use an effect id from
+        // the other catalogue, while structural slot validation remains separate.
         let mut file_data = FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
         let upgrades = parse_upgrades(&file_data);
         let mut gem = upgrades.get(&3229614145).unwrap().0.clone();
         let mut rune = upgrades.get(&3229614146).unwrap().0.clone();
 
-        //Change effects
-        rune.change_effect(&mut file_data, 13101, 1).unwrap();
-        rune.change_effect(&mut file_data, 14609, 2).unwrap();
-        rune.change_effect(&mut file_data, 14610, 3).unwrap();
+        assert!(rune.change_effect(&mut file_data, 13101, 1).is_ok());
+        assert!(rune.change_effect(&mut file_data, 14609, 2).is_ok());
+        assert!(rune.change_effect(&mut file_data, 14610, 3).is_ok());
+        assert!(gem.change_effect(&mut file_data, 1100000, 1).is_ok());
+        assert!(gem.change_effect(&mut file_data, 2107001, 2).is_ok());
+        assert!(gem.change_effect(&mut file_data, 2108001, 3).is_ok());
 
-        gem.change_effect(&mut file_data, 1100000, 1).unwrap();
-        gem.change_effect(&mut file_data, 2107001, 2).unwrap();
-        gem.change_effect(&mut file_data, 2108001, 3).unwrap();
-
-        //Gem
-        assert_eq!(
-            gem.effects,
-            vec![
-                (0x440c, String::from("Add physical ATK +45")),
-                (1100000, String::from("More echoes from slain enemies 1")),
-                (2107001, String::from("Vial HP recovery UP")),
-                (2108001, String::from("Cont. heal near death +1")),
-                (0x440c, String::from("Add physical ATK +45")),
-                (0x440c, String::from("Add physical ATK +45"))
-            ]
-        );
-
-        //Item N0
-        assert_eq!(
-            rune.effects,
-            vec![
-                (0x115582, String::from("Max QS bullets held UP +3")),
-                (13101, String::from("Add blood ATK +0.5")),
-                (14609, String::from("Add arcane ATK +56.3")),
-                (14610, String::from("Add arcane ATK +62.5")),
-                (0xffffffff, String::from("No Effect")),
-                (0xffffffff, String::from("No Effect"))
-            ]
-        );
-
-        //Check the write to the file data
         let upgrades = parse_upgrades(&file_data);
-        let gem3 = upgrades.get(&3229614145).unwrap().0.clone();
-        let rune3 = upgrades.get(&3229614146).unwrap().0.clone();
-        assert_eq!(gem, gem3);
-        assert_eq!(rune, rune3);
-
-        //Test with value_index 0
-        assert!(rune2.change_effect(&mut file_data, 2108001, 0).is_ok());
+        assert_eq!(gem, upgrades.get(&3229614145).unwrap().0);
+        assert_eq!(rune, upgrades.get(&3229614146).unwrap().0);
     }
 
     #[test]

@@ -2,7 +2,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::data_handling::position::Pos;
 use serde_json::Value;
-use std::{collections::HashSet, path::PathBuf};
+use std::{
+    collections::HashSet,
+    panic::{self, AssertUnwindSafe},
+    path::PathBuf,
+};
 
 use super::{
     article::Article,
@@ -31,9 +35,22 @@ pub struct SaveData {
 
 impl SaveData {
     pub fn build(save_path: &str, resources_path: PathBuf) -> Result<SaveData, Error> {
+        // The low-level parser predates fallible APIs in several inventory and
+        // upgrade paths. This boundary prevents a malformed or unsupported
+        // save from propagating a legacy bounds panic into the desktop app.
+        panic::catch_unwind(AssertUnwindSafe(|| {
+            Self::build_validated(save_path, resources_path)
+        }))
+        .map_err(|_| Error::CustomError("Save has an invalid or unsupported internal structure."))?
+    }
+
+    fn build_validated(save_path: &str, resources_path: PathBuf) -> Result<SaveData, Error> {
         let mut file = FileData::build(save_path, resources_path)?;
-        let stats = stats::new(&file).unwrap();
-        let bosses = bosses::new(&file).unwrap();
+        let stats = stats::new(&file).map_err(|_| {
+            Error::CustomError("Failed to parse character statistics from this save.")
+        })?;
+        let bosses = bosses::new(&file)
+            .map_err(|_| Error::CustomError("Failed to parse boss flags from this save."))?;
         let mut upgrades = parse_upgrades(&file);
         let mut slots = parse_equipped_gems(&mut file, &mut upgrades);
         let inventory = Inventory::build(
@@ -50,9 +67,13 @@ impl SaveData {
             &mut upgrades,
             &mut slots,
         ); // Its not possible to store key items
-        let username = Username::build(&file);
-        let playtime = file.get_playtime();
-        let position = Pos::new(&file).unwrap();
+        let username = Username::try_build(&file)?;
+        let playtime = file.get_playtime()?;
+        let position = Pos::new(&file)?;
+
+        // A backup is useful only for a save that has passed all parsing and
+        // structural checks. Invalid imports must not create a misleading .bak.
+        file.create_backup(save_path)?;
 
         Ok(SaveData {
             file,
@@ -64,6 +85,40 @@ impl SaveData {
             playtime,
             position,
         })
+    }
+
+    /// Rejects incoherent slot references before a save is written. This is a
+    /// pre-save validation and never mutates a loaded legacy save while the user
+    /// is inspecting or repairing it.
+    pub fn validate_game_load_safety(&self) -> Result<(), Error> {
+        for inventory in [&self.inventory, &self.storage] {
+            for articles in inventory.articles.values() {
+                for article in articles {
+                    let Some(slots) = &article.slots else {
+                        continue;
+                    };
+                    for slot in slots {
+                        if article.type_family == TypeFamily::Weapon
+                            && slot.shape != SlotShape::Closed
+                            && slot.gem.is_none()
+                        {
+                            return Err(Error::CustomError(
+                                "ERROR: A weapon has an active gem slot without a gem. Equip a matching gem or close the slot before saving.",
+                            ));
+                        }
+                        if article.type_family == TypeFamily::Weapon
+                            && slot.shape == SlotShape::Closed
+                            && slot.gem.is_some()
+                        {
+                            return Err(Error::CustomError(
+                                "ERROR: A closed weapon gem slot still references an upgrade. Re-open it or unequip the upgrade before saving.",
+                            ));
+                        }
+                    }
+                }
+            }
+        }
+        Ok(())
     }
 
     pub fn get_slot_mut(
@@ -305,10 +360,11 @@ impl SaveData {
             .collect::<Result<_, _>>()?;
 
         let closed_shape: [u8; 4] = SlotShape::Closed.into();
+        let initial_header = if is_armor { 1u32 } else { 250u32 };
         let mut block = [0u8; 60];
         block[0..4].copy_from_slice(&first_part.to_le_bytes());
         block[4..8].copy_from_slice(&second_part.to_le_bytes());
-        block[8..12].copy_from_slice(&250u32.to_le_bytes());
+        block[8..12].copy_from_slice(&initial_header.to_le_bytes());
         block[16..20].copy_from_slice(&1u32.to_le_bytes());
         for slot in 0..5 {
             let start = 20 + slot * 8;
@@ -701,6 +757,14 @@ mod tests {
             ),
             added.first_part
         );
+        assert_eq!(
+            u32::from_le_bytes(
+                save.file.bytes[reserved_offset + 8..reserved_offset + 12]
+                    .try_into()
+                    .unwrap()
+            ),
+            250
+        );
 
         let mut parsed = parse_upgrades(&save.file);
         let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
@@ -827,9 +891,9 @@ mod tests {
         let mut save = SaveData::build("saves/testsave5", PathBuf::from("resources")).unwrap();
         let articles = save.inventory.articles.clone();
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
-        let article = articles_of_type.get(0).unwrap();
+        let article = articles_of_type.first().unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot1 = slots.get(0).unwrap();
+        let slot1 = slots.first().unwrap();
         let slot2 = save
             .get_slot_mut(Location::Inventory, ArticleType::RightHand, 0, 0)
             .unwrap();
@@ -840,18 +904,18 @@ mod tests {
 
         let articles = save.inventory.articles;
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
-        let article = articles_of_type.get(0).unwrap();
+        let article = articles_of_type.first().unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot1 = slots.get(0).unwrap();
+        let slot1 = slots.first().unwrap();
         assert_eq!(slot1.shape, SlotShape::Triangle);
 
         //Storage
         let mut save = SaveData::build("saves/testsave5", PathBuf::from("resources")).unwrap();
         let articles = save.storage.articles.clone();
         let articles_of_type = articles.get(&ArticleType::Armor).unwrap();
-        let article = articles_of_type.get(0).unwrap();
+        let article = articles_of_type.first().unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot1 = slots.get(0).unwrap();
+        let slot1 = slots.first().unwrap();
         let slot2 = save
             .get_slot_mut(Location::Storage, ArticleType::Armor, 0, 0)
             .unwrap();
@@ -862,9 +926,9 @@ mod tests {
 
         let articles = save.storage.articles.clone();
         let articles_of_type = articles.get(&ArticleType::Armor).unwrap();
-        let article = articles_of_type.get(0).unwrap();
+        let article = articles_of_type.first().unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot1 = slots.get(0).unwrap();
+        let slot1 = slots.first().unwrap();
         assert_eq!(slot1.shape, SlotShape::Waning);
 
         //Not found
@@ -885,7 +949,7 @@ mod tests {
         let mut save = SaveData::build("saves/testsave5", PathBuf::from("resources")).unwrap();
         let articles = save.inventory.articles.clone();
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
-        let article1 = articles_of_type.get(0).unwrap();
+        let article1 = articles_of_type.first().unwrap();
         let article2 = save
             .get_article_mut(Location::Inventory, ArticleType::RightHand, 0)
             .unwrap();
@@ -896,14 +960,14 @@ mod tests {
 
         let articles = save.inventory.articles.clone();
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
-        let article1 = articles_of_type.get(0).unwrap();
+        let article1 = articles_of_type.first().unwrap();
         assert_eq!(article1.id, 0);
 
         //Storage
         let mut save = SaveData::build("saves/testsave5", PathBuf::from("resources")).unwrap();
         let articles = save.storage.articles.clone();
         let articles_of_type = articles.get(&ArticleType::Armor).unwrap();
-        let article1 = articles_of_type.get(0).unwrap();
+        let article1 = articles_of_type.first().unwrap();
         let article2 = save
             .get_article_mut(Location::Storage, ArticleType::Armor, 0)
             .unwrap();
@@ -914,7 +978,7 @@ mod tests {
 
         let articles = save.storage.articles.clone();
         let articles_of_type = articles.get(&ArticleType::Armor).unwrap();
-        let article1 = articles_of_type.get(0).unwrap();
+        let article1 = articles_of_type.first().unwrap();
         assert_eq!(article1.id, 0);
 
         //Not found
@@ -932,9 +996,9 @@ mod tests {
         let mut save = SaveData::build("saves/testsave8", PathBuf::from("resources")).unwrap();
         let articles = save.inventory.articles.clone();
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
-        let article = articles_of_type.get(0).unwrap();
+        let article = articles_of_type.first().unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot = slots.get(0).unwrap();
+        let slot = slots.first().unwrap();
         let gem1 = slot.gem.as_ref().unwrap();
         let gem2 = save
             .get_equipped_upgrade_mut(Location::Inventory, ArticleType::RightHand, 0, 0)
@@ -946,9 +1010,9 @@ mod tests {
 
         let articles = save.inventory.articles;
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
-        let article = articles_of_type.get(0).unwrap();
+        let article = articles_of_type.first().unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot = slots.get(0).unwrap();
+        let slot = slots.first().unwrap();
         let gem1 = slot.gem.as_ref().unwrap();
         assert_eq!(gem1.id, 0);
 
@@ -958,7 +1022,7 @@ mod tests {
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
         let article = articles_of_type.get(17).unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot = slots.get(0).unwrap();
+        let slot = slots.first().unwrap();
         let gem1 = slot.gem.as_ref().unwrap();
         let gem2 = save
             .get_equipped_upgrade_mut(Location::Storage, ArticleType::RightHand, 17, 0)
@@ -972,7 +1036,7 @@ mod tests {
         let articles_of_type = articles.get(&ArticleType::RightHand).unwrap();
         let article = articles_of_type.get(17).unwrap();
         let slots = &article.slots.as_ref().unwrap();
-        let slot = slots.get(0).unwrap();
+        let slot = slots.first().unwrap();
         let gem1 = slot.gem.as_ref().unwrap();
         assert_eq!(gem1.id, 0);
 
@@ -994,7 +1058,7 @@ mod tests {
         let mut save = SaveData::build("saves/testsave5", PathBuf::from("resources")).unwrap();
         let upgrades = save.inventory.upgrades.clone();
         let upgrades_of_type = upgrades.get(&UpgradeType::Rune).unwrap();
-        let upgrade1 = upgrades_of_type.get(0).unwrap();
+        let upgrade1 = upgrades_of_type.first().unwrap();
         let upgrade2 = save
             .get_upgrade_mut(Location::Inventory, UpgradeType::Rune, 0)
             .unwrap();
@@ -1005,14 +1069,14 @@ mod tests {
 
         let upgrades = save.inventory.upgrades.clone();
         let upgrades_of_type = upgrades.get(&UpgradeType::Rune).unwrap();
-        let upgrade1 = upgrades_of_type.get(0).unwrap();
+        let upgrade1 = upgrades_of_type.first().unwrap();
         assert_eq!(upgrade1.id, 0);
 
         //Storage
         let mut save = SaveData::build("saves/testsave9", PathBuf::from("resources")).unwrap();
         let upgrades = save.storage.upgrades.clone();
         let upgrades_of_type = upgrades.get(&UpgradeType::Gem).unwrap();
-        let upgrade1 = upgrades_of_type.get(0).unwrap();
+        let upgrade1 = upgrades_of_type.first().unwrap();
         let upgrade2 = save
             .get_upgrade_mut(Location::Storage, UpgradeType::Gem, 0)
             .unwrap();
@@ -1023,7 +1087,7 @@ mod tests {
 
         let upgrades = save.storage.upgrades.clone();
         let upgrades_of_type = upgrades.get(&UpgradeType::Gem).unwrap();
-        let upgrade1 = upgrades_of_type.get(0).unwrap();
+        let upgrade1 = upgrades_of_type.first().unwrap();
         assert_eq!(upgrade1.id, 0);
 
         //Not found
@@ -1743,5 +1807,166 @@ mod complete_equipment_catalogue_tests {
                 article.info.item_name
             );
         }
+    }
+}
+
+#[cfg(test)]
+mod save_safety_validation_tests {
+    use crate::data_handling::{
+        enums::{ArticleType, SlotShape},
+        utils::test_utils::build_save_data,
+    };
+
+    #[test]
+    fn save_validation_rejects_empty_or_closed_inconsistent_slots() {
+        let mut empty_slot_save = build_save_data("testsave9");
+        let article = empty_slot_save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::RightHand)
+            .and_then(|articles| articles.first_mut())
+            .expect("test save must contain a right-hand weapon");
+        article.slots.as_mut().expect("weapon must contain slots")[0].gem = None;
+        assert!(empty_slot_save.validate_game_load_safety().is_err());
+
+        let mut closed_slot_save = build_save_data("testsave9");
+        let article = closed_slot_save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::RightHand)
+            .and_then(|articles| articles.first_mut())
+            .expect("test save must contain a right-hand weapon");
+        article.slots.as_mut().expect("weapon must contain slots")[0].shape = SlotShape::Closed;
+        assert!(closed_slot_save.validate_game_load_safety().is_err());
+    }
+}
+
+#[cfg(test)]
+mod direct_armor_header_regression_tests {
+    use super::*;
+    use crate::data_handling::utils::test_utils::build_save_data;
+
+    #[test]
+    fn direct_armor_header_matches_the_native_safe_default() {
+        let mut save = build_save_data("testsave9");
+        let native_armor = save
+            .inventory
+            .articles
+            .get(&ArticleType::Armor)
+            .and_then(|armors| {
+                armors.iter().find_map(|armor| {
+                    let offset = (save.file.offsets.equipped_gems.0
+                        ..save.file.offsets.username - 147)
+                        .find(|offset| {
+                            save.file.bytes[*offset..*offset + 4] == armor.first_part.to_le_bytes()
+                                && save.file.bytes[*offset + 4..*offset + 8]
+                                    == armor.second_part.to_le_bytes()
+                        })?;
+                    (u32::from_le_bytes(
+                        save.file.bytes[offset + 8..offset + 12].try_into().unwrap(),
+                    ) == 1)
+                        .then(|| armor.clone())
+                })
+            })
+            .expect("test save must contain an armor block with header value one");
+
+        let reserved_offset = (save.file.offsets.equipped_gems.1 + 8) & !7;
+        let reservation = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
+        for offset in (reserved_offset..reserved_offset + 64).step_by(reservation.len()) {
+            save.file.bytes[offset..offset + reservation.len()].copy_from_slice(&reservation);
+        }
+        save.add_direct_equipment(native_armor.id, true).unwrap();
+        assert_eq!(
+            u32::from_le_bytes(
+                save.file.bytes[reserved_offset + 8..reserved_offset + 12]
+                    .try_into()
+                    .unwrap()
+            ),
+            1
+        );
+    }
+}
+
+#[cfg(test)]
+mod load_regression_tests {
+    use super::*;
+    use crate::data_handling::offsets::Offsets;
+    use std::{
+        fs,
+        panic::{self, AssertUnwindSafe},
+        path::{Path, PathBuf},
+        process,
+    };
+
+    fn temporary_save_path(test_name: &str) -> PathBuf {
+        std::env::temp_dir().join(format!(
+            "bloodborne-save-editor-{test_name}-{}.bin",
+            process::id()
+        ))
+    }
+
+    fn assert_rejected_without_panic(path: &Path) {
+        let outcome = panic::catch_unwind(AssertUnwindSafe(|| {
+            SaveData::build(path.to_str().unwrap(), PathBuf::from("resources"))
+        }));
+        assert!(outcome.is_ok(), "loading an invalid save must not panic");
+        assert!(outcome.unwrap().is_err(), "invalid save must be rejected");
+        assert!(
+            !PathBuf::from(format!("{}.bak", path.display())).exists(),
+            "rejected saves must not create a backup"
+        );
+    }
+
+    fn cleanup(path: &Path) {
+        let _ = fs::remove_file(path);
+        let _ = fs::remove_file(format!("{}.bak", path.display()));
+    }
+
+    #[test]
+    fn truncated_save_is_rejected_without_panic_or_backup() {
+        let path = temporary_save_path("truncated-load");
+        cleanup(&path);
+        fs::write(&path, [0x00; 12]).unwrap();
+
+        assert_rejected_without_panic(&path);
+        cleanup(&path);
+    }
+
+    #[test]
+    fn missing_coordinate_marker_is_rejected_without_panic_or_backup() {
+        let mut bytes = fs::read("saves/testsave9").unwrap();
+        let offsets = Offsets::build(&bytes).unwrap();
+        // Coordinate discovery only searches after LCED. Clearing that suffix
+        // guarantees the required marker is unavailable while preserving every
+        // preceding parsed section of the valid fixture.
+        bytes[offsets.lced_offset..].fill(0);
+
+        let path = temporary_save_path("missing-coordinate-load");
+        cleanup(&path);
+        fs::write(&path, bytes).unwrap();
+
+        assert_rejected_without_panic(&path);
+        cleanup(&path);
+    }
+
+    #[test]
+    fn valid_save_loads_without_panic_and_creates_backup_after_validation() {
+        let path = temporary_save_path("valid-load");
+        cleanup(&path);
+        fs::copy("saves/testsave9", &path).unwrap();
+
+        let outcome = panic::catch_unwind(AssertUnwindSafe(|| {
+            SaveData::build(path.to_str().unwrap(), PathBuf::from("resources"))
+        }));
+        assert!(outcome.is_ok(), "valid save loading must not panic");
+        assert!(
+            outcome.unwrap().is_ok(),
+            "valid save must load successfully"
+        );
+        assert!(
+            PathBuf::from(format!("{}.bak", path.display())).exists(),
+            "accepted saves must retain the automatic backup"
+        );
+        cleanup(&path);
     }
 }
