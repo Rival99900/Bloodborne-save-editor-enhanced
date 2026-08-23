@@ -7,7 +7,7 @@
 
 **Bloodborne Save Editor Enhanced** expands the work of the original [Bloodborne Save Editor by Noxde](https://github.com/Noxde/Bloodborne-save-editor). This project was made with passion and respect for that foundation, with the aim of providing a cleaner interface, safer save workflows, more complete Gem and Rune editing, and practical quality-of-life improvements for the Bloodborne community.
 
-> **Credits.** Huge thanks and congratulations to [Noxde](https://github.com/Noxde) for the original project. This enhanced edition exists because of that valuable open-source work.
+> **Credits.** Huge thanks and congratulations to [Noxde](https://github.com/Noxde) for the original project. This enhanced edition exists because of that valuable open-source work and support him [donate Noxde](https://ko-fi.com/noxde).
 
 ## Download
 
