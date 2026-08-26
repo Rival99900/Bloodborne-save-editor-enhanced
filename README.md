@@ -3,7 +3,8 @@
 > A passion-driven modernisation of the original Bloodborne save editor, designed to make advanced save editing clearer, safer, and more comfortable to use.
 
 [![Release](https://img.shields.io/github/v/release/Rival99900/Bloodborne-save-editor-enhanced?display_name=tag&sort=semver&color=37B700)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases)
- [![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
+[![Build and signed release](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/actions/workflows/build.yml/badge.svg)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/actions/workflows/build.yml)
+[![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-2f6f9f)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![Ubuntu Linux x64](https://img.shields.io/badge/platform-Ubuntu%2FLinux%20x64-f28c28)](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases) [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-c8b364)](LICENSE)
 
 **Bloodborne Save Editor Enhanced** expands the work of the original [Bloodborne Save Editor by Noxde](https://github.com/Noxde/Bloodborne-save-editor). This project was made with passion and respect for that foundation, with the aim of providing a cleaner interface, safer save workflows, more complete Gem and Rune editing, and practical quality-of-life improvements for the Bloodborne community.
 
@@ -11,16 +12,16 @@
 
 ## Download
 
-Download the latest **Windows x64 installer** from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). Each public release contains only the `.exe` installer.
+Download the latest package from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). The stable distribution provides a **Windows x64 installer**, an **Ubuntu/Linux x64 AppImage**, signed updater metadata and a SHA-256 checksum manifest.
 
 ### Current stable release
 
 | Field | Details |
 | --- | --- |
-| **Name** | **Bloodborne Save Editor Enhanced v0.2.0** |
-| **Version** | `v0.2.0` |
-| **Status** | Stable release — still test on a copied, decrypted save and retain the automatic `.bak` backup. |
-| **Download** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.2.0/Bloodborne_Save_Editor_Enhanced_0.2.0_x64-setup.exe) |
+| **Name** | **Bloodborne Save Editor Enhanced v0.3.0** |
+| **Version** | `v0.3.0` |
+| **Status** | Stable release — test first with a copied, decrypted save and retain the automatic `.bak` backup. |
+| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne_Save_Editor_Enhanced_0.3.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne_Save_Editor_Enhanced_0.3.0_x64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/SHA256SUMS.txt) |
 
 | Step | What to do |
 | --- | --- |
@@ -48,7 +49,7 @@ Download the latest **Windows x64 installer** from the [Releases page](https://g
 | **Revision control** | A local change log, real backend-synchronised Undo/Redo, rollback on failed composite edits, and a summary since the last checkpoint. |
 | **Inventory tools** | Text/effect search, locally stored favorites, and responsive compact/comfortable density preferences. |
 | **Preset library** | Duplicate personal presets and exchange validated Gem/Rune Forge collections through explicit JSON import/export. |
-| **Languages** | 24 fully localised interface languages, including Danish, Finnish, Hungarian and Norwegian Bokmål. |
+| **Languages** | The supported game-language selector includes English, French, Italian, German, Spanish, Dutch, Polish, Russian, Danish, Norwegian Bokmål, Finnish, Swedish, Turkish and Portuguese (Portugal). |
 
 ## Gem Forge and Rune Forge
 
@@ -84,7 +85,11 @@ The editor creates a `.bak` backup as part of its normal save workflow. Confirma
 
 ## Automatic updates
 
-The Windows updater verifies downloaded packages against the application’s embedded public signing key before installation. Release assets remain simple: the GitHub release contains only the installer, while the signed update metadata is stored separately for the updater.
+The desktop application checks the release `latest.json` manifest from GitHub when it starts in the native Tauri window. When a newer version is available, it presents an update dialog, downloads the platform package, verifies its embedded Tauri signature with the public key packaged in the application, installs it and restarts.
+
+The release workflow generates and uploads the Windows NSIS installer, Ubuntu/Linux AppImage, their corresponding `.sig` files and a combined `latest.json` updater manifest. The manifest contains the **signature content**, not only a path to a signature file. This is required for Tauri v2 update verification. `SHA256SUMS.txt` is also published for manual integrity checks.
+
+> **Security rule:** Never put `TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` or `RELEASE_TOKEN` in the source tree, an issue, a release note or an application build. They are read only inside the GitHub Actions runner.
 
 ## Development
 
@@ -96,7 +101,7 @@ npm run build
 npm run tauri -- build
 ```
 
-To publish a signed Windows release, the repository workflow requires the following GitHub repository secrets:
+To publish a signed desktop release, the repository workflow requires the following GitHub repository secrets:
 
 | Secret | Purpose |
 | --- | --- |
@@ -104,7 +109,15 @@ To publish a signed Windows release, the repository workflow requires the follow
 | `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | The password associated with the signing key. |
 | `RELEASE_TOKEN` | A fine-grained personal token with repository Contents read/write access, used to publish releases under the repository owner account. |
 
-Never place private keys, passwords, or access tokens in source code, issues, release notes, or logs.
+### Release procedure
+
+1. Update the version in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` and `package.json` together.
+2. Validate locally with `npm run build`, `cargo test --all-targets`, `cargo fmt --check` and `cargo clippy --all-targets -- -D warnings`.
+3. Commit the versioned source, create the matching tag (for example `v0.3.1`) and push both the `main` commit and the tag.
+4. The **Publish signed desktop release** workflow creates or updates the release, signs the Windows and Ubuntu/Linux assets with the repository secrets, uploads `.sig` files and publishes the updater manifest.
+5. If a tag already exists, run the workflow manually from the Actions tab and enter that exact tag. This is the recovery route used to repair a release without changing the application version.
+
+Never place private keys, passwords, or access tokens in source code, issues, release notes or logs.
 
 ## Credits and license
 
