@@ -110,12 +110,17 @@ jobs:
           release="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}")"
           version="${RELEASE_TAG#v}"
 
-          windows_url="$(jq -r '.assets[] | select(.name | endswith("-setup.exe")) | .browser_download_url' <<<"$release" | head -n1)"
-          windows_sig_url="$(jq -r '.assets[] | select(.name | endswith(".exe.sig")) | .browser_download_url' <<<"$release" | head -n1)"
-          linux_url="$(jq -r '.assets[] | select(.name | endswith(".AppImage")) | .browser_download_url' <<<"$release" | head -n1)"
-          linux_sig_url="$(jq -r '.assets[] | select(.name | endswith(".AppImage.sig")) | .browser_download_url' <<<"$release" | head -n1)"
+          windows_sig_name="$(jq -r '.assets[] | select(.name | endswith(".exe.sig")) | .name' <<<"$release" | head -n1)"
+          linux_sig_name="$(jq -r '.assets[] | select(.name | endswith(".AppImage.sig")) | .name' <<<"$release" | head -n1)"
+          windows_name="${windows_sig_name%.sig}"
+          linux_name="${linux_sig_name%.sig}"
 
-          for required in "$windows_url" "$windows_sig_url" "$linux_url" "$linux_sig_url"; do
+          windows_url="$(jq -r --arg name "$windows_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
+          windows_sig_url="$(jq -r --arg name "$windows_sig_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
+          linux_url="$(jq -r --arg name "$linux_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
+          linux_sig_url="$(jq -r --arg name "$linux_sig_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
+
+          for required in "$windows_sig_name" "$linux_sig_name" "$windows_url" "$windows_sig_url" "$linux_url" "$linux_sig_url"; do
             test -n "$required" && test "$required" != "null"
           done
 
