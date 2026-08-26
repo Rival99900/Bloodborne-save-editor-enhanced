@@ -1,11 +1,15 @@
 {
-  "notes": "See the GitHub release for improvements and safe-save guidance.",
-  "pub_date": "2026-08-26T10:47:23.9356918Z",
   "version": "0.3.0",
+  "notes": "See the GitHub release for improvements and safe-save guidance.",
+  "pub_date": "2026-08-26T11:07:11Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelJucjlGODF0OUg1L2JscWFrbzNJRVlTdVB6dnFJNWg2cWdpT25ud3lpMWJBZmoxQmtJbkMrYWNrMDZMSjRrUDRNTi9TTXNxM1VDY1lnSFU1N0VjVndZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3NzQxMjQwCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjMuMF94NjQtc2V0dXAuZXhlCnQvVmUzaWt3TkZrQ3BoRmRjWGFubEgvNmNqN3BQcnA5R21TdUthM0tEbGt4OFdabXA1OGZITHNOcWcxaWFRWUhJN0E5emFGNXpHcWlIcmNWc1YrL0JRPT0K",
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne_Save_Editor_Enhanced_0.3.0_x64-setup.exe"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne.Save.Editor_0.3.0_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelNRUytRaHJJc1Q0WC9PRkhGTGNONVZ4NnVmN0pKM0g3RFB3bDB1Z3k1Z2tSQk5ydHBaSTJlWlVtcDk2a080QU5CR21kZm1BYUozS2xpNXFCNG9uakFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3NzQyMzU2CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjMuMF94NjQtc2V0dXAuZXhlCnh1VG9KVTQ3Q2M0UTZVWndFZkpDa2ZyS25kUVc5YldlM1pweVp1QjhpbVFTMlJkRWRjb3Vod1diTUw1bVl3bWRhczFJVGEzYmtRVUdmMHJhbEdadEFnPT0K"
+    },
+    "linux-x86_64": {
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne.Save.Editor_0.3.0_amd64.AppImage",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemZRU09tT1FHMUsyeGF1c21LVXpOR04vWDdPeHFZRGxPY1dyT0NHZ3d5anNpSlpqTWhSdmgyOVAwL0VyaWN4WTBCaU9TaDlSclJEb2NsRFJYbVJza1FBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3NzQyMzA5CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjMuMF9hbWQ2NC5BcHBJbWFnZQpOVExvTFIwNU0zMlRiYjBUL3l3MDVxOHBaVVlHZkZGRzFMWDB6OHEzTWs1ZjY4ZFRLZzkwUlEzcXJZUzJNUUtsRG5wVWxKbGxMZlFBN1Q5L3JIM0tCdz09Cg=="
     }
   }
 }
