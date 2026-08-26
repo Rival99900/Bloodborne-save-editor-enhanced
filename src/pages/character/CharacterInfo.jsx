@@ -1,20 +1,20 @@
 import Select from "../../components/Select";
+import { useLocalization } from "../../i18n/localization";
 
 function CharacterInfo({ editedStats, setEditedStats }) {
+  const { t } = useLocalization();
   const voice = [
-    // Normal voices
-    { label: "Young Voice", value: 0 },
-    { label: "Mature Voice", value: 1 },
-    { label: "Aged Voice", value: 2 },
-    // NPCs voices
+    { label: t("characterForm.voiceYoung"), value: 0 },
+    { label: t("characterForm.voiceMature"), value: 1 },
+    { label: t("characterForm.voiceAged"), value: 2 },
     { label: "Simon", value: 41 },
     { label: "Valtr", value: 40 },
     { label: "Brador", value: 42 },
     { label: "Annalise", value: 17 },
-    { label: "Imposter doctor", value: 24 },
-    { label: "Bigoted old man", value: 25 },
-    { label: "Lonely old woman", value: 26 },
-    { label: "Beggar", value: 27 },
+    { label: t("characterForm.voiceImposterDoctor"), value: 24 },
+    { label: t("characterForm.voiceBigotedOldMan"), value: 25 },
+    { label: t("characterForm.voiceLonelyOldWoman"), value: 26 },
+    { label: t("characterForm.voiceBeggar"), value: 27 },
     { label: "Arianna", value: 28 },
     { label: "Adella", value: 32 },
     { label: "Alfred", value: 34 },
@@ -22,19 +22,25 @@ function CharacterInfo({ editedStats, setEditedStats }) {
     { label: "Djura", value: 33 },
     { label: "Micolash", value: 21 },
   ];
-  const gender = ["Female", "Male"];
-  const origins = [
-    "Milquetoast",
-    "Lone Survivor",
-    "Troubled Childhood",
-    "Violent Past",
-    "Professional",
-    "Military Veteran",
-    "Noble Scion",
-    "Cruel Fate",
-    "Waste of Skin",
+  const gender = [
+    { label: t("characterForm.genderFemale"), value: 0 },
+    { label: t("characterForm.genderMale"), value: 1 },
   ];
-  const ng = ["NG0", "NG+1", "NG+2", "NG+3", "NG+4", "NG+5", "NG+6", "NG+7"];
+  const origins = [
+    "originMilquetoast",
+    "originLoneSurvivor",
+    "originTroubledChildhood",
+    "originViolentPast",
+    "originProfessional",
+    "originMilitaryVeteran",
+    "originNobleScion",
+    "originCruelFate",
+    "originWasteOfSkin",
+  ].map((key, value) => ({ label: t(`characterForm.${key}`), value }));
+  const ng = Array.from({ length: 8 }, (_, value) => ({
+    label: value === 0 ? "NG0" : `NG+${value}`,
+    value,
+  }));
 
   return (
     <div
@@ -45,25 +51,25 @@ function CharacterInfo({ editedStats, setEditedStats }) {
       }}
     >
       <Select
-        name={"Gender"}
+        name="Gender"
         options={gender}
         setEditedStats={setEditedStats}
         editedStats={editedStats}
       />
       <Select
-        name={"Origin"}
+        name="Origin"
         options={origins}
         setEditedStats={setEditedStats}
         editedStats={editedStats}
       />
       <Select
-        name={"Voice"}
+        name="Voice"
         options={voice}
         setEditedStats={setEditedStats}
         editedStats={editedStats}
       />
       <Select
-        name={"Ng"}
+        name="Ng"
         options={ng}
         setEditedStats={setEditedStats}
         editedStats={editedStats}

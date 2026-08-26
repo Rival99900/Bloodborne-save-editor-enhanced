@@ -29,24 +29,59 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
   const [effects, setEffects] = useState(Array(6).fill(null));
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasDirectUpgradeCapacity, setHasDirectUpgradeCapacity] = useState(null);
   const { setSave } = useContext(SaveContext);
   const { gemEffectCatalog, runeEffects } = useContext(ItemsContext);
   const { t } = useLocalization();
+  const destinationLabel = isStorage ? t("sidebar.storage") : t("sidebar.inventory");
 
   const isStandardItem = ["item", "key", "chalice"].includes(catalog);
   const isEquipment = ["weapon", "armor"].includes(catalog);
   const isUpgrade = ["gem", "rune"].includes(catalog);
+  const isDirectUpgradeUnavailable = isUpgrade && hasDirectUpgradeCapacity === false;
+  const upgradeShapeOptions = useMemo(
+    () => (catalog === "gem" ? GEM_SHAPES : RUNE_TYPES).map((entry) => ({
+      value: entry,
+      label: entry === "-" ? entry : t(`upgradeShape.${entry.toLowerCase()}`),
+    })),
+    [catalog, t],
+  );
   const effectOptions = useMemo(
     () => (catalog === "gem" ? gemEffectCatalog : runeEffects),
     [catalog, gemEffectCatalog, runeEffects],
   );
-  const availableCatalogs = isStorage
-    ? CATALOGS.filter((entry) => !["weapon", "armor"].includes(entry.value))
-    : CATALOGS;
+  // Equipment can now be inserted into a verified free storage slot as well
+  // as into the main inventory. The backend still rejects unsupported or full
+  // destinations before any byte is changed.
+  const availableCatalogs = CATALOGS;
 
   function dismiss() {
     setAddScreen(false);
   }
+
+  useEffect(() => {
+    let isCurrent = true;
+    if (!isUpgrade) {
+      setHasDirectUpgradeCapacity(null);
+      return () => {
+        isCurrent = false;
+      };
+    }
+
+    setHasDirectUpgradeCapacity(null);
+    invoke("get_direct_upgrade_capacity")
+      .then((available) => {
+        if (isCurrent) setHasDirectUpgradeCapacity(Boolean(available));
+      })
+      .catch((reason) => {
+        console.warn("Unable to check direct Gem/Rune capacity", reason);
+        if (isCurrent) setHasDirectUpgradeCapacity(null);
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [isUpgrade]);
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -97,6 +132,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           const result = await invoke("add_direct_equipment", {
             id: selected.id,
             isArmor: catalog === "armor",
+            isStorage,
           });
           return result.save;
         });
@@ -155,9 +191,9 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
         </button>
 
         <header className="inventory-dialog__header">
-          <span className="inventory-dialog__eyebrow">{t("inventory.title")}</span>
+          <span className="inventory-dialog__eyebrow">{destinationLabel}</span>
           <h2>{isUpgrade ? t("inventory.addDirectUpgrade") : isEquipment ? t("inventory.addDirectEquipment") : t("inventory.addItem")}</h2>
-          <p>{isUpgrade ? t("inventory.directUpgradeDescription") : isEquipment ? t("inventory.directEquipmentDescription") : t("inventory.addDescription")}</p>
+          <p>{isUpgrade ? t("inventory.directUpgradeDescription") : isEquipment ? t("inventory.addNotice") : t("inventory.addDescription")}</p>
         </header>
 
         <div className="inventory-dialog__controls">
@@ -192,7 +228,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
               <DarkSelect
                 className="inventory-dialog__select"
                 ariaLabel={catalog === "gem" ? t("inventory.gemShape") : t("inventory.runeType")}
-                options={(catalog === "gem" ? GEM_SHAPES : RUNE_TYPES).map((entry) => ({ value: entry, label: entry }))}
+                options={upgradeShapeOptions}
                 value={shape}
                 onChange={setShape}
               />
@@ -224,23 +260,23 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           ) : (
             <section className="inventory-dialog__standard-content">
               <p className="inventory-dialog__notice">
-                {isEquipment ? t("inventory.directEquipmentNotice") : t("inventory.addNotice")}
+                {t("inventory.addNotice")}
               </p>
               <SearchAllitems key={catalog} type={catalog} onChange={setSelected} />
             </section>
           )}
 
-          {error ? (
+          {isDirectUpgradeUnavailable || error ? (
             <p className="inventory-dialog__error" role="alert">
               <span aria-hidden="true">!</span>
-              {error}
+              {isDirectUpgradeUnavailable ? t("inventory.directUpgradeUnavailable") : error}
             </p>
           ) : null}
         </div>
 
         <footer className="inventory-dialog__actions">
           <button onClick={dismiss} id="cancelReplace">{t("inventory.cancel")}</button>
-          <button id="confirmReplace" onClick={handleConfirm} disabled={!canConfirm || isSubmitting}>
+          <button id="confirmReplace" onClick={handleConfirm} disabled={!canConfirm || isSubmitting || isDirectUpgradeUnavailable || isEquipment}>
             {isSubmitting ? t("forge.confirming") : isUpgrade ? t("inventory.addDirect") : isEquipment ? t("inventory.addEquipment") : t("inventory.addSelected")}
           </button>
         </footer>

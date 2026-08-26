@@ -98,6 +98,11 @@ function Inventory({ inv, isStorage }) {
 
   const selectedFavoriteKey = selected ? getItemKey(selected) : null;
   const isSelectedFavorite = selectedFavoriteKey ? favoriteKeys.includes(selectedFavoriteKey) : false;
+  const selectedType = getType(selected?.article_type);
+  const displayedQuantity = Number.isFinite(Number(quantity)) ? Number(quantity) : 0;
+  const displayedLevel = Number.isFinite(Number(level)) ? Number(level) : 0;
+  const canEditQuantity = selectedType === "item";
+  const canEditWeaponLevel = selectedType === "weapon";
 
   function toggleSelectedFavorite() {
     if (!selectedFavoriteKey) return;
@@ -148,7 +153,7 @@ function Inventory({ inv, isStorage }) {
         <FilterButtons selectedFilter={selectedFilter} />
         <div className="inventory-search" role="search">
           <label>
-            <span>{t("inventory.searchInventory")}</span>
+            <span>{t(isStorage ? "inventory.searchStorage" : "inventory.searchInventory")}</span>
             <input
               type="search"
               value={searchQuery}
@@ -178,15 +183,16 @@ function Inventory({ inv, isStorage }) {
       </div>
       {/* Right side buttons */}
       <div className="editButtons">
-        <span style={{ fontSize: "1.2rem" }}>{t("inventory.itemQuantity")}</span>
+        <span className="inventory-side-control__label">{t("inventory.itemQuantity")}</span>
         <div className="editQuantity">
-          <input
-            type="number"
-            value={quantity || 0}
-            max={isStorage ? 600 : 99}
-            min={0}
-            style={{ width: "120px" }}
-            disabled={getType(selected?.article_type) !== "item" ? true : false}
+          <div className="inventory-side-control__field">
+            <input
+              type="number"
+              value={displayedQuantity}
+              max={isStorage ? 600 : 99}
+              min={0}
+              className="inventory-side-control__input"
+              disabled={!canEditQuantity}
             onChange={(e) => {
               const { value } = e.target;
               if (value.length > 1 && value[0] === "0") {
@@ -209,9 +215,11 @@ function Inventory({ inv, isStorage }) {
                 setQuantity(parseInt(value));
               }
             }}
-          />
+            />
+            {!canEditQuantity ? <span className="inventory-side-control__display" aria-hidden="true">{displayedQuantity}</span> : null}
+          </div>
           <button
-            className="buttonBg"
+            className="buttonBg inventory-side-control__apply"
             onClick={async () => {
               const editedSave = await setSave(t("revision.quantityChanged"), () =>
                 invoke("edit_quantity", {
@@ -229,7 +237,7 @@ function Inventory({ inv, isStorage }) {
               await drawItem(ctx, selected.info, quantity, itemImage, items);
             }}
             disabled={
-              getType(selected?.article_type) === "item" && quantity > 0
+              canEditQuantity && quantity > 0
                 ? false
                 : true
             }
@@ -237,17 +245,16 @@ function Inventory({ inv, isStorage }) {
             {t("inventory.setValue")}
           </button>
         </div>
-        <span style={{ fontSize: "1.2rem" }}>{t("inventory.weaponLevel")}</span>
+        <span className="inventory-side-control__label">{t("inventory.weaponLevel")}</span>
         <div className="editQuantity">
-          <input
-            type="number"
-            value={level || 0}
-            max={10}
-            min={0}
-            style={{ width: "120px" }}
-            disabled={
-              getType(selected?.article_type) !== "weapon" ? true : false
-            }
+          <div className="inventory-side-control__field">
+            <input
+              type="number"
+              value={displayedLevel}
+              max={10}
+              min={0}
+              className="inventory-side-control__input"
+              disabled={!canEditWeaponLevel}
             onChange={(e) => {
               const { value } = e.target;
               if (value.length > 1 && value[0] === "0") {
@@ -260,9 +267,11 @@ function Inventory({ inv, isStorage }) {
                 setLevel(parseInt(value));
               }
             }}
-          />
+            />
+            {!canEditWeaponLevel ? <span className="inventory-side-control__display" aria-hidden="true">{displayedLevel}</span> : null}
+          </div>
           <button
-            className="buttonBg"
+            className="buttonBg inventory-side-control__apply"
             onClick={async () => {
               let updatedWeapon = null;
               const editedSave = await setSave(t("revision.weaponLevelChanged"), async () => {
@@ -280,7 +289,7 @@ function Inventory({ inv, isStorage }) {
               setSelected(updatedWeapon);
             }}
             disabled={
-              getType(selected?.article_type) === "weapon" && quantity > 0
+              canEditWeaponLevel && quantity > 0
                 ? false
                 : true
             }

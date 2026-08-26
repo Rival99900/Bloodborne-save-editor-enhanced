@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ImagesContext } from "../context/imagesContext";
 import { ItemsContext } from "../context/itemsContext";
 import { useLocalization } from "../i18n/localization";
+import { loadVignetteTranslations, localizeVignetteText } from "../i18n/vignetteTranslations";
 import {
   getGemPath as getSafeGemPath,
   getRunePath as getSafeRunePath,
@@ -13,11 +14,12 @@ import {
 // Image loading is asynchronous. A canvas can receive a newer save state before an
 // older gem/rune thumbnail finishes loading, so each draw gets a monotonic token.
 const canvasRenderTokens = new WeakMap();
+const VIGNETTE_TEXT_MAX_WIDTH = 680;
 
 function useDraw() {
   const { images } = useContext(ImagesContext);
   const { gemEffectCatalog = [], nativeGemEffectIds = new Set() } = useContext(ItemsContext);
-  const { t } = useLocalization();
+  const { t, language } = useLocalization();
 
   async function drawCanvas(ctx, item, isSmall = false, context = images) {
     if (!ctx?.canvas || !item) return;
@@ -32,6 +34,9 @@ function useDraw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (!isCurrentRender()) return;
 
+    const translations = await loadVignetteTranslations(language);
+    if (!isCurrentRender()) return;
+
     const { info } = item;
     if (isSmall) {
       return drawItem(
@@ -40,12 +45,13 @@ function useDraw() {
         "",
         images.backgrounds["item_small.png"],
         context,
+        translations,
         isCurrentRender,
       );
     }
 
     const itemBackground = images.backgrounds[getBackground(item)];
-    return drawArticle(ctx, item, itemBackground, context, isCurrentRender);
+    return drawArticle(ctx, item, itemBackground, context, translations, isCurrentRender);
   }
 
   function getBackground(item) {
@@ -66,7 +72,7 @@ function useDraw() {
     }
   }
 
-  async function drawArticle(ctx, article, img, imgContext, isCurrentRender = () => true) {
+  async function drawArticle(ctx, article, img, imgContext, translations, isCurrentRender = () => true) {
     const { x, y } = {
       x: 9,
       y: 6,
@@ -83,6 +89,13 @@ function useDraw() {
       nativeGemEffectIds.has(primaryEffectId);
     name = name ?? (article?.upgrade_type !== "Gem" ? info.name : ""); // Check for gems and runes
     note = note ?? info.note ?? "";
+    const displayInfo = {
+      ...info,
+      item_name: fitVignetteText(ctx, localizeVignetteText(translations, "name", name)),
+      item_desc: fitVignetteText(ctx, localizeVignetteText(translations, "description", note)),
+    };
+    name = displayInfo.item_name;
+    note = displayInfo.item_desc;
     if (!isCurrentRender()) return;
     ctx.drawImage(img, 0, 0);
 
@@ -122,9 +135,9 @@ function useDraw() {
 
     switch (type || article_type) {
       case "weapon":
-        return handleWeapon(ctx, info);
+        return handleWeapon(ctx, displayInfo);
       case "armor":
-        return handleArmor(ctx, info);
+        return handleArmor(ctx, displayInfo);
       default:
         break;
     }
@@ -172,7 +185,7 @@ function useDraw() {
     const finalName = `${imprint ? imprint + " " : ""}${name}${
       upgrade > 0 ? " +" + upgrade : ""
     }`;
-    ctx.fillText(finalName, 107, 28);
+    ctx.fillText(fitVignetteText(ctx, finalName), 107, 28);
 
     const margin = 100;
     // Draw numbers
@@ -282,14 +295,16 @@ function useDraw() {
     }
   }
 
-  async function drawItem(ctx, item, amount, img, context, isCurrentRender = () => true) {
+  async function drawItem(ctx, item, amount, img, context, translations, isCurrentRender = () => true) {
     const { x, y } = {
       x: 9,
       y: 6,
     };
 
     const size = 73;
-    const { item_name: name, item_img: image, item_desc: note } = item;
+    const { item_name: sourceName, item_img: image, item_desc: sourceNote } = item;
+    const name = fitVignetteText(ctx, localizeVignetteText(translations, "name", sourceName));
+    const note = fitVignetteText(ctx, localizeVignetteText(translations, "description", sourceNote));
 
     // const thumbnail = await loadImage(
     //   "/assets/itemImages/" + image || "empty.png"
@@ -319,6 +334,24 @@ function useDraw() {
     } else {
       ctx.fillText(amount, 75, 83);
     }
+  }
+
+  function fitVignetteText(ctx, value, maxWidth = VIGNETTE_TEXT_MAX_WIDTH) {
+    const singleLine = String(value ?? "").replace(/\s+/g, " ").trim();
+    if (!singleLine || ctx.measureText(singleLine).width <= maxWidth) return singleLine;
+
+    const ellipsis = "…";
+    let lower = 0;
+    let upper = singleLine.length;
+    while (lower < upper) {
+      const middle = Math.ceil((lower + upper) / 2);
+      if (ctx.measureText(`${singleLine.slice(0, middle).trimEnd()}${ellipsis}`).width <= maxWidth) {
+        lower = middle;
+      } else {
+        upper = middle - 1;
+      }
+    }
+    return `${singleLine.slice(0, lower).trimEnd()}${ellipsis}`;
   }
 
   function loadImage(url) {

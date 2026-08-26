@@ -24,15 +24,35 @@ function IszGlitch() {
 
   async function fixIsz() {
     try {
+      let fixResult = null;
       const updatedSave = await setSave(t("revision.characterUpdated"), async () => {
         const result = await invoke("fix_isz");
+        fixResult = result;
         return result.changed ? result.save : null;
       });
       await refreshIsz();
-      if (updatedSave) setNotice({ tone: "success", title: t("characterForm.iszFixed") });
+      if (updatedSave) {
+        setNotice({
+          tone: "success",
+          title: t("characterForm.iszFixed"),
+          description: t("characterForm.iszFixedDescription"),
+        });
+        return;
+      }
+      if (fixResult && !fixResult.changed) {
+        setNotice({
+          tone: "success",
+          title: t("characterForm.iszAlreadyFixed"),
+          description: t("characterForm.iszAlreadyFixedDescription"),
+        });
+      }
     } catch (error) {
       console.error("Unable to fix Isz status.", error);
-      setNotice({ tone: "error", title: t("characterForm.iszFixFailed") });
+      setNotice({
+        tone: "error",
+        title: t("characterForm.iszFixFailed"),
+        description: t("characterForm.iszFixFailedDescription"),
+      });
     }
   }
 
@@ -60,6 +80,7 @@ function IszGlitch() {
         <StatusDialog
           tone={notice.tone}
           title={notice.title}
+          description={notice.description}
           closeLabel={t("saveFlow.close")}
           onClose={() => setNotice(null)}
         />

@@ -180,6 +180,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             set_username,
             get_version,
             add_item,
+            get_direct_upgrade_capacity,
             add_direct_upgrade,
             add_direct_equipment,
             edit_slot,
@@ -805,6 +806,20 @@ fn get_version() -> String {
 }
 
 #[tauri::command]
+fn get_direct_upgrade_capacity(state_save: tauri::State<MutexSave>) -> Result<bool, String> {
+    let save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "The save data is temporarily unavailable.".to_string())?;
+    let save = save_option
+        .as_ref()
+        .ok_or_else(|| "Open a decrypted save before checking Gem/Rune capacity.".to_string())?;
+
+    Ok(save.has_safe_reusable_upgrade_record())
+}
+
+#[tauri::command]
 fn add_direct_upgrade(
     upgrade_type: UpgradeType,
     shape: String,
@@ -837,26 +852,18 @@ fn add_direct_upgrade(
 
 #[tauri::command]
 fn add_direct_equipment(
-    id: u32,
-    is_armor: bool,
-    state_save: tauri::State<MutexSave>,
+    _id: u32,
+    _is_armor: bool,
+    _is_storage: bool,
+    _state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save
-        .inner()
-        .data
-        .lock()
-        .map_err(|_| "The save data is temporarily unavailable.".to_string())?;
-    let save = save_option
-        .as_mut()
-        .ok_or_else(|| "Open a decrypted save before adding equipment.".to_string())?;
-    let article = save
-        .add_direct_equipment(id, is_armor)
-        .map_err(|error| error.to_string())?;
-
-    Ok(json!({
-        "save": serde_json::to_value(&save).map_err(|error| error.to_string())?,
-        "article": article,
-    }))
+    // The supplied PS4 klogs reproduce SIGBUS/general-protection faults after
+    // every tested direct weapon/armor injection, for both Inventory and
+    // Storage. The parser can prove the local 60-byte layout, but it cannot
+    // prove the game-owned metadata required for a new equipment record.
+    // Refuse before mutating memory or writing a save rather than exposing an
+    // operation known to create a crash candidate.
+    Err("DIRECT_EQUIPMENT_QUARANTINED".to_string())
 }
 
 #[tauri::command]

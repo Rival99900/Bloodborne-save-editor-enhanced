@@ -981,6 +981,52 @@
   background-image: url("/assets/runes/rune_effects_bg.png");
 }
 
+.upgrade-editor__localized-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: #b8b7ad;
+  font-family: "Reim", Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.upgrade-editor__localized-label {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: 1.6rem;
+  padding: 0.05rem 0.15rem;
+  background: rgba(20, 20, 21, 0.92);
+  box-shadow: 0 0 0.28rem 0.16rem rgba(20, 20, 21, 0.92);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upgrade-editor__localized-label--primary {
+  top: 1.45rem;
+  left: 3.3rem;
+  width: 9.75rem;
+}
+
+.upgrade-editor__localized-label--secondary {
+  top: 3.95rem;
+  left: 3.3rem;
+  width: 9.75rem;
+}
+
+.upgrade-editor__localized-label--effects {
+  top: 9.35rem;
+  left: 1.05rem;
+  width: 21.25rem;
+}
+
+.upgrade-editor__localized-labels--rune .upgrade-editor__localized-label--effects {
+  top: 9.35rem;
+}
+
 .upgrade-editor__info {
   position: absolute;
   inset: 0;
@@ -2146,7 +2192,7 @@
   }
 }
 
-/* Local v0.2.0: resilient localisation layout and separated standard Add catalogue. */
+/* Local v0.3.0: resilient localisation layout and separated standard Add catalogue. */
 .editButtons {
   min-width: 0;
   padding: 0.7rem 0.7rem 1.15rem;
@@ -3075,5 +3121,467 @@
   .inventory-dialog__card--add .catalog-picker__results,
   .inventory-dialog__standard-content .catalog-picker__results {
     max-height: min(20rem, calc(100vh - 20rem));
+  }
+}
+
+/* v0.3.0: multilingual overflow guards for the application bar, Forge cards and inventory side controls. */
+.nav {
+  grid-template-columns: minmax(12rem, 0.75fr) minmax(14rem, 1fr) minmax(34rem, auto);
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+}
+
+.save-summary {
+  width: 100%;
+  min-width: 0;
+  justify-self: stretch;
+}
+
+.save-summary > div,
+.nav-actions,
+.nav-actions > *,
+.language-picker__trigger > span {
+  min-width: 0;
+}
+
+.summary-value {
+  max-width: 100%;
+}
+
+.nav-actions {
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+}
+
+.language-picker__trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.control-button {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  white-space: normal;
+}
+
+.inventory-side-control__label {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: #f1e7d3;
+  font-size: clamp(0.88rem, 1.1vw, 1.08rem);
+  line-height: 1.18;
+}
+
+.editButtons .editQuantity {
+  grid-template-columns: minmax(0, 1fr) minmax(5rem, 6.5rem);
+  gap: 0.45rem;
+}
+
+.inventory-side-control__input {
+  width: 100%;
+  min-width: 0;
+}
+
+.editButtons .editQuantity .inventory-side-control__apply {
+  min-height: 3.05rem;
+  padding-inline: 0.45rem;
+  font-size: clamp(0.68rem, 0.9vw, 0.82rem);
+  line-height: 1.1;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.gem-forge__modes {
+  flex-wrap: wrap;
+}
+
+.gem-forge__modes button {
+  min-width: 0;
+  flex: 1 1 8.75rem;
+  padding-inline: 0.7rem;
+  font-size: 0.78rem !important;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-wrap: balance;
+  white-space: normal;
+}
+
+.gem-forge__card h3,
+.gem-forge__card p,
+.gem-forge__card small {
+  overflow-wrap: anywhere;
+}
+
+.gem-forge__card-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.gem-forge__card-actions button {
+  min-width: 0;
+  min-height: 3.05rem;
+  padding: 0.45rem 0.38rem;
+  font-size: 0.68rem !important;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-wrap: balance;
+  white-space: normal;
+}
+
+.gem-forge__card-actions .gem-forge__delete {
+  grid-column: 1 / -1;
+}
+
+.gem-forge__library-actions button {
+  min-height: 2.6rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-wrap: balance;
+  white-space: normal;
+}
+
+@media (max-width: 78rem) {
+  .nav {
+    grid-template-columns: minmax(11rem, 0.75fr) minmax(0, 1fr);
+  }
+
+  .nav-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 44rem) {
+  .nav-actions {
+    justify-content: stretch;
+  }
+
+  .nav-actions > .control-button,
+  .nav-actions > .language-picker {
+    flex: 1 1 9rem;
+  }
+
+  .gem-forge__card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .gem-forge__card-actions .gem-forge__delete {
+    grid-column: auto;
+  }
+}
+
+.brand-version {
+  display: inline-block;
+  margin-left: 0.26rem;
+  color: #c8ad6c;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+
+/* v0.3.0 final desktop balance: preserve complete localized controls without
+   creating a second header row or squeezing the Inventory side controls. */
+.dark-select__menu,
+.language-picker__menu {
+  box-sizing: border-box;
+  max-width: calc(100vw - 1.25rem);
+  overflow-x: hidden;
+}
+
+@media (min-width: 78.0625rem) {
+  .nav {
+    grid-template-columns: minmax(12.5rem, 0.72fr) minmax(14rem, 1fr) minmax(43.5rem, max-content);
+    column-gap: clamp(0.8rem, 1.35vw, 1.45rem);
+  }
+
+  .nav-actions {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: clamp(0.42rem, 0.65vw, 0.72rem);
+  }
+
+  .language-picker {
+    flex: 0 0 clamp(11rem, 11.5vw, 12.25rem);
+    min-width: clamp(11rem, 11.5vw, 12.25rem);
+  }
+
+  .editor-shell {
+    grid-template-columns: 14.5rem minmax(0, 50rem) minmax(18.25rem, 1fr);
+  }
+
+  .editButtons {
+    min-width: 18.25rem;
+  }
+
+  .editButtons .editQuantity {
+    width: min(100%, 24rem);
+    grid-template-columns: minmax(0, 1fr) minmax(6.75rem, 7.75rem);
+  }
+
+  .editButtons .editQuantity .inventory-side-control__apply {
+    min-height: 3.45rem;
+    overflow: clip;
+    white-space: normal;
+    font-size: clamp(0.78rem, 0.9vw, 0.98rem);
+    text-wrap: balance;
+  }
+}
+
+@media (max-width: 78rem) {
+  .language-picker {
+    flex-basis: clamp(10.5rem, 26vw, 12rem);
+    min-width: clamp(10.5rem, 26vw, 12rem);
+  }
+}
+
+@media (max-width: 44rem) {
+  .language-picker {
+    min-width: 0;
+  }
+}
+
+
+@media (min-width: 78.0625rem) {
+  .nav-actions > .control-button {
+    flex: 0 0 auto;
+    overflow: clip;
+    text-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .nav-actions > .control-button--density {
+    min-width: 7.2rem;
+  }
+
+  .nav-actions > .control-button--quiet {
+    min-width: 8.9rem;
+  }
+
+  .nav-actions > .control-button--primary {
+    min-width: 12.9rem;
+  }
+
+  .nav-history {
+    flex: 0 0 auto;
+  }
+}
+
+
+/* v0.3.0 final collision guards for loaded-save names and side counters. */
+.editButtons .editQuantity input,
+.editButtons .editQuantity input:disabled,
+.inventory-side-control__input,
+.inventory-side-control__input:disabled {
+  color: #f6f0e4;
+  -webkit-text-fill-color: #f6f0e4;
+  opacity: 1;
+  text-align: left;
+}
+
+.editButtons .editQuantity {
+  grid-template-columns: minmax(5.5rem, 1fr) minmax(6.5rem, 7.5rem);
+}
+
+@media (min-width: 78.0625rem) {
+  .nav {
+    grid-template-columns: minmax(15rem, 0.78fr) minmax(18rem, 1fr) minmax(43.5rem, max-content);
+  }
+
+  .save-summary {
+    min-width: 18rem;
+    padding-right: 0.65rem;
+  }
+
+  .editButtons .editQuantity {
+    grid-template-columns: minmax(7.5rem, 1fr) minmax(6.75rem, 7.75rem);
+  }
+}
+
+
+/* Teleport destinations retain their canonical map data while presenting a readable
+   landmark → area → node hierarchy inside the shared dark selector. */
+.teleport-select .dark-select__menu {
+  width: min(28rem, calc(100vw - 1.25rem)) !important;
+}
+
+.teleport-select .dark-select__option {
+  min-height: 3.7rem;
+  padding: 0.52rem 0.62rem;
+}
+
+.teleport-option {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.08rem 0.65rem;
+  align-items: center;
+}
+
+.teleport-option__title,
+.teleport-option__area,
+.teleport-option__node {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.teleport-option__title {
+  grid-column: 1 / 2;
+  color: #f4e8cc;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+}
+
+.teleport-option__area {
+  grid-column: 1 / 2;
+  color: #d6b867;
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.teleport-option__node {
+  grid-column: 1 / 2;
+  color: #d8d1c2;
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.teleport-option > .dark-select__selected {
+  grid-column: 2;
+  grid-row: 1 / -1;
+}
+
+@media (max-width: 36rem) {
+  .teleport-select .dark-select__menu {
+    width: calc(100vw - 1.25rem) !important;
+  }
+}
+
+
+/* v0.3.0 clean-toolbar pass: Comfortable is the only density.  The smaller
+   action set restores the uncluttered v0.2-style header without overlapping
+   a loaded save name and the language selector. */
+@media (min-width: 78.0625rem) {
+  .nav {
+    grid-template-columns: minmax(13.5rem, 0.72fr) minmax(14rem, 0.95fr) minmax(0, auto);
+    gap: clamp(0.7rem, 1vw, 1.1rem);
+  }
+
+  .save-summary {
+    min-width: 0;
+    padding-right: 0.25rem;
+  }
+
+  .nav-actions {
+    min-width: 0;
+    gap: clamp(0.42rem, 0.65vw, 0.7rem);
+  }
+
+  .language-picker {
+    flex-basis: clamp(11rem, 12vw, 12.5rem);
+    min-width: clamp(11rem, 12vw, 12.5rem);
+  }
+
+  .nav-history .control-button--history {
+    min-width: 7.25rem;
+  }
+}
+
+/* A disabled Chalice quantity is still a legitimate numeric value. */
+.inventory-side-control__input[type="number"] {
+  caret-color: #f6f0e4;
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* Keep the numerical baseline visible even when a control is intentionally
+   disabled for the selected equipment family. */
+.inventory-side-control__field {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 3.2rem;
+}
+
+.inventory-side-control__field > .inventory-side-control__input {
+  grid-area: 1 / 1;
+  height: 100%;
+}
+
+.inventory-side-control__display {
+  grid-area: 1 / 1;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-inline: clamp(0.7rem, 0.9vw, 1rem);
+  color: #f6f0e4;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.9rem, 1.25vw, 1.05rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  pointer-events: none;
+}
+
+
+/* Reference-layout restoration: preserve the original v0.2.0 desktop geometry
+   for Inventory/Storage controls. Later localisation overrides must not shrink
+   the black numeric fields or inflate the action column. */
+@media (min-width: 761px) {
+  .editor-shell {
+    grid-template-columns: 12.5rem minmax(0, 49.7rem) minmax(12rem, 1fr);
+  }
+
+  .editButtons {
+    min-width: 0;
+  }
+
+  .editButtons .editQuantity {
+    width: min(100%, 15.25rem);
+    grid-template-columns: minmax(0, 1fr) minmax(6.75rem, 8.75rem);
+    gap: 0.5rem;
+  }
+
+  .editButtons .editQuantity .inventory-side-control__apply {
+    min-height: 3.25rem;
+    padding-inline: 0.65rem;
+    overflow: visible;
+    font-size: clamp(0.78rem, 1.05vw, 1rem);
+  }
+
+  .inventory-side-control__field {
+    min-height: 3.2rem;
+  }
+}
+
+
+/* The explicit disabled-value layer owns the visible glyph. Hide the native
+   disabled input glyph underneath it so a zero is never rendered twice. */
+.inventory-side-control__field > .inventory-side-control__input:disabled {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+
+/* Desktop reference alignment: the loading veil must start exactly after the
+   same sidebar track as the editor grid. This prevents a narrow, shifted slice
+   of Inventory from remaining visible while another save is loading. */
+@media (min-width: 761px) {
+  .editor-shell {
+    grid-template-columns: 14.5rem minmax(0, 50rem) minmax(12rem, 1fr);
+  }
+
+  .operation-state {
+    inset-left: 14.5rem;
   }
 }

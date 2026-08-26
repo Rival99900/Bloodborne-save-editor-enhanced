@@ -18,15 +18,15 @@ import { useLocalization } from "../i18n/localization";
 const NO_EFFECT_ID = 4294967295;
 const EFFECT_SLOT_COUNT = 6;
 const GEM_SHAPE_OPTIONS = [
-  { label: "Radial", value: 1 },
-  { label: "Triangle", value: 2 },
-  { label: "Waning", value: 4 },
-  { label: "Circle", value: 8 },
-  { label: "Droplet", value: 64 },
+  { sourceLabel: "Radial", translationKey: "upgradeShape.radial", value: 1 },
+  { sourceLabel: "Triangle", translationKey: "upgradeShape.triangle", value: 2 },
+  { sourceLabel: "Waning", translationKey: "upgradeShape.waning", value: 4 },
+  { sourceLabel: "Circle", translationKey: "upgradeShape.circle", value: 8 },
+  { sourceLabel: "Droplet", translationKey: "upgradeShape.droplet", value: 64 },
 ];
 const RUNE_TYPE_OPTIONS = [
-  { label: "-", value: 1 },
-  { label: "Oath", value: 2 },
+  { sourceLabel: "-", value: 1 },
+  { sourceLabel: "Oath", translationKey: "upgradeShape.oath", value: 2 },
 ];
 
 function normalizeUpgradeShape(shape, upgradeType) {
@@ -34,10 +34,10 @@ function normalizeUpgradeShape(shape, upgradeType) {
   const value = String(shape ?? "").trim();
   const matchingOption = options.find(
     (option) =>
-      option.label.toLowerCase() === value.toLowerCase() || String(option.value) === value,
+      option.sourceLabel.toLowerCase() === value.toLowerCase() || String(option.value) === value,
   );
 
-  return matchingOption?.label ?? options[0].label;
+  return matchingOption?.sourceLabel ?? options[0].sourceLabel;
 }
 
 function EditUpgrade({
@@ -51,9 +51,21 @@ function EditUpgrade({
   slot,
 }) {
   const { t } = useLocalization();
+  const gemShapeOptions = useMemo(
+    () => GEM_SHAPE_OPTIONS.map((option) => ({ ...option, label: t(option.translationKey) })),
+    [t],
+  );
+  const runeTypeOptions = useMemo(
+    () => RUNE_TYPE_OPTIONS.map((option) => ({
+      ...option,
+      label: option.translationKey ? t(option.translationKey) : option.sourceLabel,
+    })),
+    [t],
+  );
   const {
     gemEffectCatalog,
     nativeGemEffectIds,
+    runeEffects,
     runePresets,
     userForgePresets,
     saveUserForgePreset,
@@ -107,18 +119,28 @@ function EditUpgrade({
     setPresetStatus("");
   }, [selected.id, selected.index, upgrade_type]);
 
+  const runeEffectsById = useMemo(
+    () => new Map(runeEffects.map((effect) => [Number(effect.value), effect])),
+    [runeEffects],
+  );
   const runeForgePresets = useMemo(
     () =>
-      runePresets.map((preset, index) => ({
-        id: `rune-forge-${index}`,
-        category: "Rune",
-        name: preset.label,
-        description: preset.info?.note || t("forge.runePresetDescription"),
-        effectIds: preset.effects,
-        info: preset.info,
-        shape: preset.shape,
-      })),
-    [runePresets, t],
+      runePresets.map((preset, index) => {
+        const primaryEffectId = Number(
+          preset.effects?.find(([effectId]) => Number(effectId) !== NO_EFFECT_ID)?.[0],
+        );
+        const localizedRune = runeEffectsById.get(primaryEffectId);
+        return {
+          id: `rune-forge-${index}`,
+          category: "Rune",
+          name: localizedRune?.name || preset.label,
+          description: localizedRune?.note || preset.info?.note || t("forge.runePresetDescription"),
+          effectIds: preset.effects,
+          info: preset.info,
+          shape: preset.shape,
+        };
+      }),
+    [runeEffectsById, runePresets, t],
   );
 
   // The primary effect can be a Caryll Rune id sitting in a Blood Gem slot (see the
@@ -217,7 +239,8 @@ function EditUpgrade({
     const normalizedEffects = Array.from({ length: EFFECT_SLOT_COUNT }, (_, index) => {
       const requestedId = Number(presetEffects[index]?.[0]);
       const entry = gemEffectCatalogById.get(requestedId);
-      return entry ? [Number(entry.value), entry.label] : [NO_EFFECT_ID, t("forge.noEffect")];
+              return entry ? [Number(entry.value), entry.sourceLabel ?? entry.label] : [NO_EFFECT_ID, "No Effect"];
+
     });
     const primary = normalizedEffects[0];
     const primaryEffect = gemEffectCatalogById.get(Number(primary[0]));
@@ -390,6 +413,20 @@ function EditUpgrade({
         <div
           className={`upgrade-editor__effects-panel upgrade-editor__effects-panel--${upgrade_type.toLowerCase()}`}
         >
+          <div className={`upgrade-editor__localized-labels upgrade-editor__localized-labels--${upgrade_type.toLowerCase()}`} aria-hidden="true">
+            {upgrade_type === "Gem" ? (
+              <>
+                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--primary">{t("vignette.rating")}</span>
+                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--secondary">{t("vignette.shape")}</span>
+                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--effects">{t("vignette.gemEffects")}</span>
+              </>
+            ) : (
+              <>
+                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--primary">{t("vignette.type")}</span>
+                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--effects">{t("vignette.runeEffects")}</span>
+              </>
+            )}
+          </div>
           <div className="upgrade-editor__info">
             {upgrade_type === "Gem" ? (
               <>
@@ -412,10 +449,9 @@ function EditUpgrade({
                   }}
                   selected={shape}
                   readOnly={true}
-                  options={GEM_SHAPE_OPTIONS}
+                  options={gemShapeOptions}
                   onChange={(event) => {
-                    const { label } = event;
-                    setEdited((previous) => ({ ...previous, shape: label }));
+                    setEdited((previous) => ({ ...previous, shape: event.sourceLabel }));
                   }}
                 />
               </>
@@ -430,10 +466,9 @@ function EditUpgrade({
                 }}
                 selected={shape}
                 readOnly={true}
-                options={RUNE_TYPE_OPTIONS}
+                options={runeTypeOptions}
                 onChange={(event) => {
-                  const { label } = event;
-                  setEdited((previous) => ({ ...previous, shape: label }));
+                  setEdited((previous) => ({ ...previous, shape: event.sourceLabel }));
                 }}
               />
             )}
@@ -444,17 +479,18 @@ function EditUpgrade({
                 <SelectSearch
                   defaultValue={t("forge.noEffect")}
                   onChange={(event) => {
-                    const { name: effectOwnerName, level: effectLevel, rating: effectRating, value, label, note } = event;
+                    const { name: effectOwnerName, level: effectLevel, rating: effectRating, value, label, sourceLabel, note } = event;
+                    const canonicalLabel = sourceLabel ?? label;
                     setEdited((previous) => ({
                       ...previous,
                       effects: previous.effects.map((currentEffect, effectIndex) =>
-                        effectIndex === index ? [Number(value), label] : currentEffect,
+                        effectIndex === index ? [Number(value), canonicalLabel] : currentEffect,
                       ),
                       info:
                         index === 0
                           ? {
                               ...previous.info,
-                              effect: label,
+                              effect: canonicalLabel,
                               note,
                               name: effectOwnerName,
                               level: effectLevel,

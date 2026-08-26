@@ -49,7 +49,10 @@ const locations = [
   ["Hunter's Nightmare Headstone", "Coast", -695.2, 1577.27, -943.2, [36, 0]],
 ].map(([group, name, x, y, z, mapId], index) => ({
   value: String(index),
-  label: group === name ? name : `${group} · ${name}`,
+  label: name,
+  group,
+  area: group === name ? group : group.replace(/ Headstone$/, ""),
+  node: group === name ? "" : name,
   location: { x, y, z, mapId },
 }));
 
@@ -88,6 +91,15 @@ function Teleport({ setSave, setEditedCoordinates }) {
         options={locations}
         value={selectedLocation}
         placeholder={t("characterForm.selectLocation")}
+        renderValue={(option) => option.node || option.area}
+        renderOption={(option, isSelected) => (
+          <span className="teleport-option">
+            <span className="teleport-option__title">{option.group}</span>
+            <span className="teleport-option__area">{option.area}</span>
+            {option.node ? <span className="teleport-option__node">{option.node}</span> : null}
+            {isSelected ? <span className="dark-select__selected" aria-hidden="true">✓</span> : null}
+          </span>
+        )}
         onChange={handleChange}
       />
     </div>

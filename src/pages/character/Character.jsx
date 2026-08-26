@@ -1,5 +1,5 @@
 import "./character.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SaveContext } from "../../context/context";
 import Stat from "../../components/Stat";
 import StatusDialog from "../../components/StatusDialog";
@@ -22,7 +22,7 @@ function Character() {
   const [editedStats, setEditedStats] = useState(() => cloneStats(save.stats));
   const [editedPlaytime, setEditedPlaytime] = useState(save.playtime);
   const [editedCoordinates, setEditedCoordinates] = useState(() => ({ ...save.position.coordinates }));
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [notice, setNotice] = useState(null);
   const [resetEpoch, setResetEpoch] = useState(0);
   const { images } = useContext(ImagesContext);
   const { t } = useLocalization();
@@ -32,13 +32,24 @@ function Character() {
     setEditedPlaytime(nextSave.playtime);
     setEditedCoordinates({ ...nextSave.position.coordinates });
     setUsername(nextSave.username.string);
-    setShowSuccess(false);
     setResetEpoch((current) => current + 1);
   }
 
   function resetCharacter() {
-    restoreCharacterDraft();
+    restoreCharacterDraft(save);
+    setNotice({
+      tone: "success",
+      title: t("actions.resetCompleted"),
+      description: t("characterForm.resetDescription"),
+    });
   }
+
+  // Undo/Redo and edits confirmed on another page replace the active save
+  // snapshot. Update every local Character draft from that snapshot without
+  // creating a new mutation or revision entry.
+  useEffect(() => {
+    restoreCharacterDraft(save);
+  }, [save]);
 
   async function confirmCharacter() {
     try {
@@ -60,7 +71,7 @@ function Character() {
       // The confirmation dialog remains available for an unchanged form, but it
       // must not mark the save as dirty or add a no-op entry to Undo/Redo.
       if (!changedStats.length && !usernameChanged && !playtimeChanged && !coordinatesChanged) {
-        setShowSuccess(true);
+        setNotice({ tone: "success", title: t("actions.changesConfirmed") });
         return;
       }
 
@@ -103,7 +114,7 @@ function Character() {
         setEditedPlaytime(updatedSave.playtime);
         setEditedCoordinates({ ...updatedSave.position.coordinates });
         setUsername(updatedSave.username.string);
-        setShowSuccess(true);
+        setNotice({ tone: "success", title: t("actions.changesConfirmed") });
       }
     } catch (error) {
       console.error("Unable to update character data.", error);
@@ -165,11 +176,11 @@ function Character() {
           <Stat editedStats={editedStats} setEditedStats={setEditedStats} stat={editedStats.find((stat) => stat.name === "Insight")} width="100%" />
         </div>
         <div id="characterData">
-          <CharacterInfo editedStats={editedStats} setEditedStats={setEditedStats} />
+          <CharacterInfo key={`character-info-${resetEpoch}`} editedStats={editedStats} setEditedStats={setEditedStats} />
           <Appearance />
           <IszGlitch />
-          <Playtime ms={editedPlaytime} setMs={setEditedPlaytime} />
-          <Coordinates coordinates={editedCoordinates} setCoordinates={setEditedCoordinates} />
+          <Playtime key={`playtime-${resetEpoch}`} ms={editedPlaytime} setMs={setEditedPlaytime} />
+          <Coordinates key={`coordinates-${resetEpoch}`} coordinates={editedCoordinates} setCoordinates={setEditedCoordinates} />
           <Teleport setSave={setSave} setEditedCoordinates={setEditedCoordinates} />
         </div>
       </div>
@@ -181,11 +192,13 @@ function Character() {
           {t("actions.confirm")}
         </button>
       </div>
-      {showSuccess ? (
+      {notice ? (
         <StatusDialog
-          title={t("actions.changesConfirmed")}
+          tone={notice.tone}
+          title={notice.title}
+          description={notice.description}
           closeLabel={t("saveFlow.close")}
-          onClose={() => setShowSuccess(false)}
+          onClose={() => setNotice(null)}
         />
       ) : null}
     </div>

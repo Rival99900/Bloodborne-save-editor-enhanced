@@ -161,7 +161,10 @@ function GemPresetPanel({
     [gemEffects],
   );
   const effectByLabel = useMemo(
-    () => new Map(gemEffects.map((effect) => [normalizeEffectLabel(effect.label), effect])),
+    () => new Map(gemEffects.flatMap((effect) => [
+      [normalizeEffectLabel(effect.label), effect],
+      [normalizeEffectLabel(effect.sourceLabel), effect],
+    ])),
     [gemEffects],
   );
   const categories = [
@@ -207,15 +210,15 @@ function GemPresetPanel({
         // A personal preset may come from a previous editor version. Its old ID is
         // never written back unless it is still in the embedded gem catalogue.
         return resolved
-          ? [Number(resolved.value), resolved.label]
-          : [NO_EFFECT_ID, t("forge.noEffect")];
+          ? [Number(resolved.value), resolved.sourceLabel ?? resolved.label]
+          : [NO_EFFECT_ID, "No Effect"];
       });
   }
 
   function formatEffects(effectIds) {
     return resolveEffects(effectIds)
       .filter(([id]) => id !== NO_EFFECT_ID)
-      .map(([, label]) => label)
+      .map(([id, label]) => effectById.get(Number(id))?.label ?? label)
       .join(" · ");
   }
 

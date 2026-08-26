@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SaveContext } from "../../context/context";
 import Stat from "../../components/Stat";
 import StatusDialog from "../../components/StatusDialog";
@@ -12,20 +12,31 @@ const EDITABLE_STAT_NAMES = new Set(["Echoes", "Insight", "Voice", "Gender", "Ng
 function Stats() {
   const { save, setSave } = useContext(SaveContext);
   const [editedStats, setEditedStats] = useState(() => cloneStats(save.stats));
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [notice, setNotice] = useState(null);
   const [resetEpoch, setResetEpoch] = useState(0);
   const { images } = useContext(ImagesContext);
   const { t } = useLocalization();
 
   function restoreStatsDraft(nextSave = save) {
     setEditedStats(cloneStats(nextSave.stats));
-    setShowSuccess(false);
     setResetEpoch((current) => current + 1);
   }
 
   function resetStats() {
-    restoreStatsDraft();
+    restoreStatsDraft(save);
+    setNotice({
+      tone: "success",
+      title: t("actions.resetCompleted"),
+      description: t("stats.resetDescription"),
+    });
   }
+
+  // A save can change after Undo/Redo or after another page confirms a
+  // mutation. Keep the local draft aligned with that active snapshot without
+  // recording an additional change.
+  useEffect(() => {
+    restoreStatsDraft(save);
+  }, [save]);
 
   async function confirmStats() {
     try {
@@ -38,7 +49,7 @@ function Stats() {
       // Confirming an untouched draft is harmless, but it must not create an
       // undo entry or mark the active save as dirty.
       if (changedStats.length === 0) {
-        setShowSuccess(true);
+        setNotice({ tone: "success", title: t("actions.changesConfirmed") });
         return;
       }
 
@@ -55,7 +66,7 @@ function Stats() {
       });
       if (updatedSave) {
         setEditedStats(cloneStats(updatedSave.stats));
-        setShowSuccess(true);
+        setNotice({ tone: "success", title: t("actions.changesConfirmed") });
       }
     } catch (error) {
       console.error("Unable to update statistics.", error);
@@ -86,7 +97,7 @@ function Stats() {
           <Stat
             editedStats={editedStats}
             setEditedStats={setEditedStats}
-            key={stat.name}
+            key={`${resetEpoch}-${stat.name}`}
             stat={stat}
           />
         ))}
@@ -98,11 +109,13 @@ function Stats() {
           {t("actions.confirm")}
         </button>
       </div>
-      {showSuccess ? (
+      {notice ? (
         <StatusDialog
-          title={t("actions.changesConfirmed")}
+          tone={notice.tone}
+          title={notice.title}
+          description={notice.description}
           closeLabel={t("saveFlow.close")}
-          onClose={() => setShowSuccess(false)}
+          onClose={() => setNotice(null)}
         />
       ) : null}
     </div>

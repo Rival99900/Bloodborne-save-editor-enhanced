@@ -448,7 +448,6 @@ mod tests {
     }
 
     #[test]
-    #[ignore] //cargo test -- --include-ignored
     fn test_parse_upgrades_runtime() {
         //TESTSAVE 0
         let handle0 = thread::spawn(|| {

@@ -1,0 +1,32 @@
+// Generated display translations. English effect strings and IDs remain canonical for save operations.
+const translationLoaders = {
+  fr: () => import("./effectTranslations/fr.json"),
+  it: () => import("./effectTranslations/it.json"),
+  de: () => import("./effectTranslations/de.json"),
+  es: () => import("./effectTranslations/es.json"),
+  nl: () => import("./effectTranslations/nl.json"),
+  pl: () => import("./effectTranslations/pl.json"),
+  ru: () => import("./effectTranslations/ru.json"),
+  da: () => import("./effectTranslations/da.json"),
+  nb: () => import("./effectTranslations/nb.json"),
+  fi: () => import("./effectTranslations/fi.json"),
+  sv: () => import("./effectTranslations/sv.json"),
+  tr: () => import("./effectTranslations/tr.json"),
+  "pt-PT": () => import("./effectTranslations/pt-PT.json"),
+};
+
+const cache = new Map();
+
+export async function loadEffectTranslations(language) {
+  const loader = translationLoaders[language];
+  if (!loader) return undefined;
+  if (!cache.has(language)) {
+    cache.set(language, loader().then((module) => module.default?.effects ?? {}).catch(() => undefined));
+  }
+  return cache.get(language);
+}
+
+export function localizeEffectText(translations, sourceText) {
+  if (!sourceText || !translations) return sourceText;
+  return translations[sourceText] ?? sourceText;
+}

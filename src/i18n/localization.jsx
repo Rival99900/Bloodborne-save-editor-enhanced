@@ -1,32 +1,23 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import officialUiOverrides from "./officialUiOverrides.json";
 
 const LANGUAGE_STORAGE_KEY = "bloodborne-save-editor.language.v1";
 
 export const SUPPORTED_LANGUAGES = [
   { code: "en", label: "English" },
   { code: "fr", label: "Français" },
-  { code: "es", label: "Español" },
-  { code: "pt-PT", label: "Português (Portugal)" },
-  { code: "pt-BR", label: "Português (Brasil)" },
-  { code: "ru", label: "Русский" },
-  { code: "de", label: "Deutsch" },
   { code: "it", label: "Italiano" },
+  { code: "de", label: "Deutsch" },
+  { code: "es", label: "Español (España)" },
   { code: "nl", label: "Nederlands" },
   { code: "pl", label: "Polski" },
-  { code: "tr", label: "Türkçe" },
-  { code: "uk", label: "Українська" },
-  { code: "ja", label: "日本語" },
-  { code: "ko", label: "한국어" },
-  { code: "zh-CN", label: "简体中文" },
-  { code: "sv", label: "Svenska" },
-  { code: "cs", label: "Čeština" },
-  { code: "ro", label: "Română" },
-  { code: "el", label: "Ελληνικά" },
-  { code: "id", label: "Bahasa Indonesia" },
+  { code: "ru", label: "Русский" },
   { code: "da", label: "Dansk" },
-  { code: "fi", label: "Suomi" },
-  { code: "hu", label: "Magyar" },
   { code: "nb", label: "Norsk bokmål" },
+  { code: "fi", label: "Suomi" },
+  { code: "sv", label: "Svenska" },
+  { code: "tr", label: "Türkçe" },
+  { code: "pt-PT", label: "Português (Portugal)" },
 ];
 
 const en = {
@@ -244,6 +235,7 @@ const en = {
     reset: "Reset",
     confirm: "Confirm",
     changesConfirmed: "Changes confirmed",
+    resetCompleted: "Reset complete",
     back: "Back",
     change: "Change",
     edit: "Edit",
@@ -264,7 +256,48 @@ const en = {
     iszStatus: "Isz status:",
     fixIsz: "Fix Isz",
     iszFixed: "Isz status was updated.",
+    iszFixedDescription: "The Isz status was corrected in memory. Select Save changes to write it to the file.",
+    iszAlreadyFixed: "Isz status already corrected",
+    iszAlreadyFixedDescription: "The Isz status was already corrected. No saved data was changed.",
     iszFixFailed: "Isz status could not be updated.",
+    iszFixFailedDescription: "The operation failed. No Isz change was recorded.",
+    resetDescription: "Your character draft has been restored to the values in the active save. No saved data was changed.",
+    genderFemale: "Female",
+    genderMale: "Male",
+    voiceYoung: "Young Voice",
+    voiceMature: "Mature Voice",
+    voiceAged: "Aged Voice",
+    voiceImposterDoctor: "Imposter doctor",
+    voiceBigotedOldMan: "Bigoted old man",
+    voiceLonelyOldWoman: "Lonely old woman",
+    voiceBeggar: "Beggar",
+    originMilquetoast: "Milquetoast",
+    originLoneSurvivor: "Lone Survivor",
+    originTroubledChildhood: "Troubled Childhood",
+    originViolentPast: "Violent Past",
+    originProfessional: "Professional",
+    originMilitaryVeteran: "Military Veteran",
+    originNobleScion: "Noble Scion",
+    originCruelFate: "Cruel Fate",
+    originWasteOfSkin: "Waste of Skin",
+  },
+  stats: {
+    resetDescription: "Your statistics draft has been restored to the values in the active save. No saved data was changed.",
+  },
+  upgradeShape: {
+    radial: "Radial",
+    triangle: "Triangle",
+    waning: "Waning",
+    circle: "Circle",
+    droplet: "Droplet",
+    oath: "Oath",
+  },
+  vignette: {
+    rating: "Rating",
+    shape: "Shape",
+    gemEffects: "Blood Gem Effects",
+    type: "Type",
+    runeEffects: "Caryll Rune Effects",
   },
   bosses: {
     alive: "Alive",
@@ -321,6 +354,7 @@ const en = {
     edit: "Edit",
     gems: "Gems",
     searchInventory: "Search inventory",
+    searchStorage: "Search storage",
     searchPlaceholder: "Name, type, effect…",
     clearSearch: "Clear",
     favoritesOnly: "Favorites only",
@@ -563,6 +597,11 @@ const resources = {
       setValue: "Définir",
       edit: "Modifier",
       gems: "Gemmes",
+      searchInventory: "Rechercher dans l’inventaire",
+      searchStorage: "Rechercher dans le stockage",
+      searchPlaceholder: "Nom, type, effet…",
+      clearSearch: "Effacer",
+      favoritesOnly: "Favoris uniquement",
     },
   },
   es: {
@@ -21559,6 +21598,14 @@ Object.entries(finalI18nAuditOverrides).forEach(([language, translations]) => {
   });
   resources[language] = translatedResource;
 });
+Object.entries(officialUiOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => {
+    applyTranslationPath(translatedResource, key, value);
+  });
+  resources[language] = translatedResource;
+});
+
 Object.keys(resources).forEach((language) => {
   const flags = flagOverrides[language] ?? {};
   resources[language] = {

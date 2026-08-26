@@ -282,6 +282,29 @@ mod tests {
     }
 
     #[test]
+    fn test_fix_isz_reports_partial_full_and_no_change() {
+        let mut file_data = FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
+        let offset = USERNAME_TO_ISZ_GLITCH + file_data.offsets.username;
+
+        file_data.bytes[offset] = 0xFF;
+        file_data.bytes[offset + 1] = 0x20;
+        assert_eq!(file_data.fix_isz(), "Partial Isz glitch fix applied");
+        assert_eq!(file_data.get_isz(), [0xFF, 0x30]);
+
+        file_data.bytes[offset] = 0xFF;
+        file_data.bytes[offset + 1] = 0xC0;
+        assert_eq!(file_data.fix_isz(), "Full Isz glitch fix applied");
+        assert_eq!(file_data.get_isz(), [0xFF, 0xFF]);
+
+        let before = file_data.get_isz();
+        assert_eq!(
+            file_data.fix_isz(),
+            "No Isz glitch, no changes have been made"
+        );
+        assert_eq!(file_data.get_isz(), before);
+    }
+
+    #[test]
     fn test_find_inv_empty_slot() {
         let file_data = FileData::build("saves/testsave4", PathBuf::from("resources")).unwrap();
         assert_eq!(

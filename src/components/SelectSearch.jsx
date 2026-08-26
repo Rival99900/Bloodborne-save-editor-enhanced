@@ -20,6 +20,7 @@ function getSelectedLabel(options, selected) {
   const matchingOption = options.find(
     (option) =>
       String(option.label ?? "").trim().toLowerCase() === normalizedValue ||
+      String(option.sourceLabel ?? "").trim().toLowerCase() === normalizedValue ||
       String(option.value ?? "").trim() === value.trim(),
   );
 
@@ -107,9 +108,15 @@ function SelectSearch({
     }
   }, [search, isOpen, selected, defaultValue, onChange, t]);
 
-  const filteredOptions = options.filter((x) =>
-    !readOnly ? x.label.toLowerCase().includes(search.toLowerCase()) : true,
-  );
+  const filteredOptions = options.filter((option) => {
+    if (readOnly) return true;
+    const query = search.trim().toLocaleLowerCase();
+    if (!query) return true;
+    const searchable = [option.label, option.sourceLabel, ...(option.searchTerms ?? [])]
+      .filter(Boolean)
+      .map((value) => String(value).toLocaleLowerCase());
+    return searchable.some((value) => value.includes(query));
+  });
 
   function Row({ index, style: rowStyle }) {
     return (

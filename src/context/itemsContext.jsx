@@ -1,5 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { useLocalization } from "../i18n/localization";
+import { loadEffectTranslations, localizeEffectText } from "../i18n/effectTranslations";
+import { loadVignetteTranslations, localizeVignetteText } from "../i18n/vignetteTranslations";
 
 export const ItemsContext = createContext();
 
@@ -1490,6 +1493,48 @@ export const ItemsProvider = ({ children }) => {
   });
 
   const [userForgePresets, setUserForgePresets] = useState(loadPersonalForgePresets);
+  const [effectSources, setEffectSources] = useState({ gemEffects: [], runeEffects: [] });
+  const { language } = useLocalization();
+
+  useEffect(() => {
+    if (!effectSources.gemEffects.length && !effectSources.runeEffects.length) return undefined;
+    let active = true;
+
+    void loadEffectTranslations(language).then((translations) => {
+      if (!active) return;
+      const localize = (effect) => ({
+        ...effect,
+        label: localizeEffectText(translations, effect.sourceLabel),
+        name: localizeEffectText(translations, effect.name),
+        note: localizeEffectText(translations, effect.note),
+        searchTerms: [...new Set([
+          effect.sourceLabel,
+          localizeEffectText(translations, effect.sourceLabel),
+          effect.name,
+          localizeEffectText(translations, effect.name),
+          effect.note,
+          localizeEffectText(translations, effect.note),
+        ].filter((term) => typeof term === "string" && term.trim()))],
+      });
+      const gemEffects = effectSources.gemEffects.map(localize);
+      const runeEffects = effectSources.runeEffects.map(localize);
+      const nativeGemEffectIds = new Set(gemEffects.map((effect) => Number(effect.value)));
+      const gemEffectCatalog = gemEffects.concat(
+        runeEffects.filter((effect) => !nativeGemEffectIds.has(Number(effect.value))),
+      );
+      setItems((previous) => ({
+        ...previous,
+        gemEffects,
+        runeEffects,
+        gemEffectCatalog,
+        nativeGemEffectIds,
+      }));
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [effectSources, language]);
 
   function saveUserForgePreset(preset) {
     const normalized = normalizePersonalForgePreset(preset);
@@ -1571,17 +1616,33 @@ export const ItemsProvider = ({ children }) => {
       const armors = await invoke("return_armors");
       const gemEffects = await invoke("return_gem_effects");
       const runeEffects = await invoke("return_rune_effects");
+      const vignetteTranslations = await loadVignetteTranslations(language);
+      const localizeCatalogInfo = (sourceName, sourceDescription) => {
+        const itemName = localizeVignetteText(vignetteTranslations, "name", sourceName);
+        const itemDescription = localizeVignetteText(vignetteTranslations, "description", sourceDescription);
+        return {
+          itemName,
+          itemDescription,
+          searchTerms: [...new Set([sourceName, itemName, sourceDescription, itemDescription]
+            .filter((term) => typeof term === "string" && term.trim()))],
+        };
+      };
 
       const transformedWeapons = Object.keys(weapons)
         .map((x) => {
           return Object.keys(weapons[x]).map((y) => {
+            const sourceName = weapons[x][y]["item_name"];
+            const sourceDescription = weapons[x][y]["item_desc"];
+            const localized = localizeCatalogInfo(sourceName, sourceDescription);
             return {
               id: parseInt(y),
               article_type: `${x.at(0).toUpperCase() + x.slice(1)}`,
+              sourceLabel: sourceName,
+              searchTerms: localized.searchTerms,
               info: {
-                item_name: weapons[x][y]["item_name"],
+                item_name: localized.itemName,
                 item_img: weapons[x][y]["item_img"],
-                item_desc: weapons[x][y]["item_desc"],
+                item_desc: localized.itemDescription,
                 extra_info: {
                   damage: weapons[x][y]["damage"],
                 },
@@ -1594,13 +1655,18 @@ export const ItemsProvider = ({ children }) => {
       const transformedItems = Object.keys(items)
         .map((x) => {
           return Object.keys(items[x]).map((y) => {
+            const sourceName = items[x][y]["item_name"];
+            const sourceDescription = items[x][y]["item_desc"];
+            const localized = localizeCatalogInfo(sourceName, sourceDescription);
             let item = {
               id: parseInt(y),
               article_type: `${x.at(0).toUpperCase() + x.slice(1)}`,
+              sourceLabel: sourceName,
+              searchTerms: localized.searchTerms,
               info: {
-                item_name: items[x][y]["item_name"],
+                item_name: localized.itemName,
                 item_img: items[x][y]["item_img"],
-                item_desc: items[x][y]["item_desc"],
+                item_desc: localized.itemDescription,
               },
             };
 
@@ -1616,13 +1682,18 @@ export const ItemsProvider = ({ children }) => {
 
       const transformedArmors = Object.keys(armors)
         .map((x) => {
+          const sourceName = armors[x]["item_name"];
+          const sourceDescription = armors[x]["item_desc"];
+          const localized = localizeCatalogInfo(sourceName, sourceDescription);
           return {
             id: parseInt(x),
             article_type: "Armor",
+            sourceLabel: sourceName,
+            searchTerms: localized.searchTerms,
             info: {
-              item_name: armors[x]["item_name"],
+              item_name: localized.itemName,
               item_img: armors[x]["item_img"],
-              item_desc: armors[x]["item_desc"],
+              item_desc: localized.itemDescription,
               extra_info: {
                 physicalDefense: armors[x]["physicalDefense"],
                 elementalDefense: armors[x]["elementalDefense"],
@@ -1638,7 +1709,9 @@ export const ItemsProvider = ({ children }) => {
       const transformedGemEffects = Object.keys(gemEffects)
         .filter((x) => x !== "4294967295")
         .map((x, i) => ({
+          sourceLabel: gemEffects[x]?.effect,
           label: gemEffects[x]?.effect,
+          searchTerms: [gemEffects[x]?.effect],
           rating: gemEffects[x]?.rating,
           level: gemEffects[x]?.level,
           name: gemEffects[x]?.name,
@@ -1649,7 +1722,9 @@ export const ItemsProvider = ({ children }) => {
       const transformedRuneEffects = Object.keys(runeEffects)
         .filter((x) => x !== "4294967295")
         .map((x, i) => ({
+          sourceLabel: runeEffects[x]?.effect,
           label: runeEffects[x]?.effect,
+          searchTerms: [runeEffects[x]?.effect],
           rating: runeEffects[x]?.rating,
           level: runeEffects[x]?.level,
           name: runeEffects[x]?.name,
@@ -1667,6 +1742,10 @@ export const ItemsProvider = ({ children }) => {
         transformedRuneEffects.filter((effect) => !nativeGemEffectIds.has(Number(effect.value))),
       );
 
+      setEffectSources({
+        gemEffects: transformedGemEffects,
+        runeEffects: transformedRuneEffects,
+      });
       setItems((prev) => ({
         ...prev,
         weapons: transformedWeapons,
@@ -1680,8 +1759,8 @@ export const ItemsProvider = ({ children }) => {
       }));
     };
 
-    fetchData();
-  }, []);
+    void fetchData();
+  }, [language]);
 
   return (
     <ItemsContext.Provider

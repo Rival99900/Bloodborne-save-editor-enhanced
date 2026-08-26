@@ -91,9 +91,40 @@ impl SaveData {
     /// pre-save validation and never mutates a loaded legacy save while the user
     /// is inspecting or repairing it.
     pub fn validate_game_load_safety(&self) -> Result<(), Error> {
-        for inventory in [&self.inventory, &self.storage] {
+        const EQUIPMENT_BLOCK_SIZE: usize = 60;
+        let slot_limit = self.file.offsets.username.saturating_sub(147);
+        let has_matching_equipment_block = |first_part: u32, second_part: u32| {
+            (self.file.offsets.equipped_gems.0..=slot_limit.saturating_sub(EQUIPMENT_BLOCK_SIZE))
+                .any(|offset| {
+                    self.file.bytes[offset..offset + 4] == first_part.to_le_bytes()
+                        && self.file.bytes[offset + 4..offset + 8] == second_part.to_le_bytes()
+                        && self.file.bytes[offset + 16..offset + 20] == [1, 0, 0, 0]
+                })
+        };
+        for (inventory, is_storage) in [(&self.inventory, false), (&self.storage, true)] {
             for articles in inventory.articles.values() {
                 for article in articles {
+                    if matches!(article.type_family, TypeFamily::Weapon | TypeFamily::Armor) {
+                        let record_offset = self
+                            .file
+                            .find_article_offset(article.number, article.id, article.type_family, is_storage)
+                            .ok_or(Error::CustomError(
+                                "ERROR: Equipment is missing its destination inventory record. Undo the addition or reopen an unmodified save before saving.",
+                            ))?;
+                        if self.file.bytes[record_offset + 4..record_offset + 8]
+                            != article.first_part.to_le_bytes()
+                            || self.file.bytes[record_offset + 8..record_offset + 12]
+                                != article.second_part.to_le_bytes()
+                            || !has_matching_equipment_block(
+                                article.first_part,
+                                article.second_part,
+                            )
+                        {
+                            return Err(Error::CustomError(
+                                "ERROR: Equipment reference validation failed. The save was not written; undo the addition or reopen an unmodified save.",
+                            ));
+                        }
+                    }
                     let Some(slots) = &article.slots else {
                         continue;
                     };
@@ -193,15 +224,34 @@ impl SaveData {
     }
 
     /// Experimental direct allocation for weapons and armor. The operation
-    /// consumes only a fixed inventory slot and a verified 60-byte garbage
+    /// consumes only a fixed destination slot and a verified 60-byte garbage
     /// reservation in the equipment-slot area; it never shifts save data.
+    #[cfg_attr(not(test), allow(dead_code))]
     pub fn add_direct_equipment(&mut self, id: u32, is_armor: bool) -> Result<Article, Error> {
-        let empty_slot =
-            self.file
-                .find_inv_empty_slot(Location::Inventory)
-                .ok_or(Error::CustomError(
-                    "ERROR: No free inventory slot is available.",
-                ))?;
+        self.add_direct_equipment_at(id, is_armor, Location::Inventory)
+    }
+
+    /// Adds an equipment record to a specific supported destination. Callers
+    /// must provide an explicit location so storage cannot silently fall back
+    /// to the main inventory.
+    #[cfg_attr(not(test), allow(dead_code))]
+    pub fn add_direct_equipment_at(
+        &mut self,
+        id: u32,
+        is_armor: bool,
+        location: Location,
+    ) -> Result<Article, Error> {
+        let empty_slot = self
+            .file
+            .find_inv_empty_slot(location)
+            .ok_or(match location {
+                Location::Inventory => {
+                    Error::CustomError("ERROR: No free inventory slot is available.")
+                }
+                Location::Storage => {
+                    Error::CustomError("ERROR: No free storage slot is available.")
+                }
+            })?;
 
         let (info, article_type) = if is_armor {
             super::inventory::get_info_armor(id, &self.file.resources_path)?
@@ -217,14 +267,27 @@ impl SaveData {
             ));
         }
 
+        // Native records occupy exactly 60 bytes and are packed contiguously.
+        // A 64-byte stride leaves four `FF` bytes between records; the supplied
+        // PS4 crash saves prove that this malformed gap causes the game to fault
+        // while loading multiple direct additions.
         const EQUIPMENT_BLOCK_SIZE: usize = 60;
-        const EQUIPMENT_RESERVATION_SIZE: usize = 64;
         const EQUIPMENT_PREFIX_MASK: u32 = 0xFF80_0000;
         const EQUIPMENT_SUFFIX_MASK: u32 = 0x007F_FFFF;
         const WEAPON_PREFIX: u32 = 0x8080_0000;
         const ARMOR_PREFIX: u32 = 0x9080_0000;
 
-        let reserved_block = [0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF];
+        let is_reservation_byte = |offset: usize| {
+            // The untouched garbage reservation alternates four zero bytes and
+            // four `FF` bytes on eight-byte boundaries. A valid next record can
+            // begin on either half of that pattern because native records are 60
+            // bytes long, not 64-byte aligned.
+            if offset % 8 < 4 {
+                0x00
+            } else {
+                0xFF
+            }
+        };
         let slot_limit = self.file.offsets.username.saturating_sub(147);
         let referenced_pairs: HashSet<(u32, u32)> = [
             self.file.offsets.inventory,
@@ -271,23 +334,16 @@ impl SaveData {
                 .ok_or(Error::CustomError(
                     "ERROR: Equipment-slot boundary overflow.",
                 ))?;
-        let reservation_offset = after_last_block
-            .checked_add(7)
-            .map(|offset| offset & !7)
-            .ok_or(Error::CustomError(
-                "ERROR: Equipment-slot reservation alignment overflow.",
-            ))?;
-        let reservation_end = reservation_offset
-            .checked_add(EQUIPMENT_RESERVATION_SIZE)
-            .ok_or(Error::CustomError(
-                "ERROR: Equipment-slot reservation overflow.",
-            ))?;
+        let reservation_offset = after_last_block;
+        let reservation_end =
+            reservation_offset
+                .checked_add(EQUIPMENT_BLOCK_SIZE)
+                .ok_or(Error::CustomError(
+                    "ERROR: Equipment-slot reservation overflow.",
+                ))?;
         if reservation_end > slot_limit
-            || !(0..(EQUIPMENT_RESERVATION_SIZE / reserved_block.len())).all(|block| {
-                self.file.bytes[reservation_offset + block * reserved_block.len()
-                    ..reservation_offset + (block + 1) * reserved_block.len()]
-                    == reserved_block
-            })
+            || !(reservation_offset..reservation_end)
+                .all(|offset| self.file.bytes[offset] == is_reservation_byte(offset))
         {
             return Err(Error::CustomError(
                 "ERROR: No explicit reserved equipment-slot block is available in this save.",
@@ -345,10 +401,16 @@ impl SaveData {
         }
 
         let username = self.file.offsets.username;
-        let counter_offsets = [
-            username + super::constants::USERNAME_TO_FIRST_INVENTORY_COUNTER,
-            username + super::constants::USERNAME_TO_SECOND_INVENTORY_COUNTER,
-        ];
+        let counter_offsets = match location {
+            Location::Inventory => [
+                username + super::constants::USERNAME_TO_FIRST_INVENTORY_COUNTER,
+                username + super::constants::USERNAME_TO_SECOND_INVENTORY_COUNTER,
+            ],
+            Location::Storage => [
+                username + super::constants::USERNAME_TO_FIRST_STORAGE_COUNTER,
+                username + super::constants::USERNAME_TO_SECOND_STORAGE_COUNTER,
+            ],
+        };
         let next_counters: Vec<[u8; 4]> = counter_offsets
             .iter()
             .map(|offset| {
@@ -359,8 +421,42 @@ impl SaveData {
             })
             .collect::<Result<_, _>>()?;
 
+        // Armor records require the native safe header value one. Weapon
+        // records retain the header of a parsed native weapon of the same hand
+        // category, avoiding a fabricated durability/state value.
+        let initial_header = if is_armor {
+            1u32
+        } else {
+            self.inventory
+                .articles
+                .values()
+                .chain(self.storage.articles.values())
+                .flat_map(|articles| articles.iter())
+                .filter(|article| article.article_type == article_type)
+                .find_map(|article| {
+                    (self.file.offsets.equipped_gems.0
+                        ..=slot_limit.saturating_sub(EQUIPMENT_BLOCK_SIZE))
+                        .find(|offset| {
+                            is_valid_slot_block(*offset)
+                                && self.file.bytes[*offset..*offset + 4]
+                                    == article.first_part.to_le_bytes()
+                                && self.file.bytes[*offset + 4..*offset + 8]
+                                    == article.second_part.to_le_bytes()
+                        })
+                        .map(|offset| {
+                            u32::from_le_bytes(
+                                self.file.bytes[offset + 8..offset + 12]
+                                    .try_into()
+                                    .expect("validated equipment header must contain four bytes"),
+                            )
+                        })
+                })
+                .ok_or(Error::CustomError(
+                    "ERROR: No parsed native weapon template is available for this hand category.",
+                ))?
+        };
+
         let closed_shape: [u8; 4] = SlotShape::Closed.into();
-        let initial_header = if is_armor { 1u32 } else { 250u32 };
         let mut block = [0u8; 60];
         block[0..4].copy_from_slice(&first_part.to_le_bytes());
         block[4..8].copy_from_slice(&second_part.to_le_bytes());
@@ -388,7 +484,11 @@ impl SaveData {
                 index,
             })
             .collect();
-        let articles = self.inventory.articles.entry(article_type).or_default();
+        let target_inventory = match location {
+            Location::Inventory => &mut self.inventory,
+            Location::Storage => &mut self.storage,
+        };
+        let articles = target_inventory.articles.entry(article_type).or_default();
         let article = Article {
             number: self.file.bytes[empty_slot - 4],
             id,
@@ -403,6 +503,72 @@ impl SaveData {
         };
         articles.push(article.clone());
         Ok(article)
+    }
+
+    /// Collects all upgrade identifiers referenced by parsed inventory data and
+    /// by raw equipment slots. A record in this set must never be reclaimed.
+    fn referenced_upgrade_ids(&self) -> HashSet<u32> {
+        let raw_slot_upgrade_ids: HashSet<u32> = (self.file.offsets.upgrades.1.saturating_sub(16)
+            ..self.file.offsets.username.saturating_sub(163))
+            .flat_map(|offset| {
+                let block_id =
+                    u64::from_le_bytes(self.file.bytes[offset..offset + 8].try_into().unwrap());
+                if block_id == 0 {
+                    return Vec::new();
+                }
+                let mut ids = Vec::new();
+                for slot in 0..5 {
+                    let start = offset + 20 + slot * 8;
+                    let shape: [u8; 4] = self.file.bytes[start..start + 4].try_into().unwrap();
+                    match SlotShape::try_from(&shape) {
+                        Ok(SlotShape::Closed) => {}
+                        Ok(_) => ids.push(u32::from_le_bytes(
+                            self.file.bytes[start + 4..start + 8].try_into().unwrap(),
+                        )),
+                        Err(_) => return Vec::new(),
+                    }
+                }
+                ids
+            })
+            .collect();
+
+        self.inventory
+            .upgrades
+            .values()
+            .chain(self.storage.upgrades.values())
+            .flat_map(|entries| entries.iter().map(|upgrade| upgrade.id))
+            .chain(raw_slot_upgrade_ids)
+            .chain(
+                self.inventory
+                    .articles
+                    .values()
+                    .chain(self.storage.articles.values())
+                    .flat_map(|entries| entries.iter())
+                    .filter_map(|article| article.slots.as_ref())
+                    .flat_map(|slots| slots.iter())
+                    .filter_map(|slot| slot.gem.as_ref().map(|upgrade| upgrade.id)),
+            )
+            .collect()
+    }
+
+    /// Finds an already-parsed record not referenced from either destination
+    /// nor by an equipped slot. This check deliberately does not expand the
+    /// fixed upgrade section or write into the following character data.
+    fn find_safe_unreferenced_upgrade_offset(&self) -> Option<usize> {
+        let referenced_ids = self.referenced_upgrade_ids();
+        (self.file.offsets.upgrades.0..self.file.offsets.upgrades.1)
+            .step_by(40)
+            .find(|offset| {
+                let id =
+                    u32::from_le_bytes(self.file.bytes[*offset..*offset + 4].try_into().unwrap());
+                !referenced_ids.contains(&id)
+            })
+    }
+
+    /// Reports whether this save has a verified reusable Gem/Rune record.
+    /// A false result is a capacity condition, not a recoverable write error.
+    pub fn has_safe_reusable_upgrade_record(&self) -> bool {
+        self.find_safe_unreferenced_upgrade_offset().is_some()
     }
 
     /// Experimental direct allocation. A new upgrade is materialized only by
@@ -477,56 +643,7 @@ impl SaveData {
             "ERROR: A direct gem or rune requires a validated primary effect.",
         ))?;
 
-        let raw_slot_upgrade_ids: HashSet<u32> = (self.file.offsets.upgrades.1.saturating_sub(16)
-            ..self.file.offsets.username.saturating_sub(163))
-            .flat_map(|offset| {
-                let block_id =
-                    u64::from_le_bytes(self.file.bytes[offset..offset + 8].try_into().unwrap());
-                if block_id == 0 {
-                    return Vec::new();
-                }
-                let mut ids = Vec::new();
-                for slot in 0..5 {
-                    let start = offset + 20 + slot * 8;
-                    let shape: [u8; 4] = self.file.bytes[start..start + 4].try_into().unwrap();
-                    match SlotShape::try_from(&shape) {
-                        Ok(SlotShape::Closed) => {}
-                        Ok(_) => ids.push(u32::from_le_bytes(
-                            self.file.bytes[start + 4..start + 8].try_into().unwrap(),
-                        )),
-                        Err(_) => return Vec::new(),
-                    }
-                }
-                ids
-            })
-            .collect();
-        let referenced_ids: HashSet<u32> = self
-            .inventory
-            .upgrades
-            .values()
-            .chain(self.storage.upgrades.values())
-            .flat_map(|entries| entries.iter().map(|upgrade| upgrade.id))
-            .chain(raw_slot_upgrade_ids)
-            .chain(
-                self.inventory
-                    .articles
-                    .values()
-                    .chain(self.storage.articles.values())
-                    .flat_map(|entries| entries.iter())
-                    .filter_map(|article| article.slots.as_ref())
-                    .flat_map(|slots| slots.iter())
-                    .filter_map(|slot| slot.gem.as_ref().map(|upgrade| upgrade.id)),
-            )
-            .collect();
-        let mut available_offset = None;
-        for offset in (self.file.offsets.upgrades.0..self.file.offsets.upgrades.1).step_by(40) {
-            let id = u32::from_le_bytes(self.file.bytes[offset..offset + 4].try_into().unwrap());
-            if !referenced_ids.contains(&id) {
-                available_offset = Some(offset);
-                break;
-            }
-        }
-        let offset = available_offset.ok_or(Error::CustomError(
+        let offset = self.find_safe_unreferenced_upgrade_offset().ok_or(Error::CustomError(
             "ERROR: No safe unreferenced gem or rune record is available. Create a slot in-game or use the [CUT] workflow.",
         ))?;
 
@@ -650,13 +767,12 @@ mod tests {
     };
 
     fn reserve_equipment_blocks(save: &mut SaveData, count: usize) -> usize {
-        const RESERVATION: [u8; 8] = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
-        const RESERVATION_SIZE: usize = 64;
-        let start = (save.file.offsets.equipped_gems.1 + 8) & !7;
+        const RESERVATION_SIZE: usize = 60;
+        let start = save.file.offsets.equipped_gems.1 + 1;
         let end = start + count * RESERVATION_SIZE;
         assert!(end <= save.file.offsets.username - 147);
-        for offset in (start..end).step_by(RESERVATION.len()) {
-            save.file.bytes[offset..offset + RESERVATION.len()].copy_from_slice(&RESERVATION);
+        for offset in start..end {
+            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
         }
         start
     }
@@ -673,6 +789,11 @@ mod tests {
             .expect("test save must contain a free rune");
         let initial_file = save.file.clone();
 
+        assert!(
+            !save.has_safe_reusable_upgrade_record(),
+            "a fully referenced pool must be reported as unavailable"
+        );
+
         assert!(save
             .add_direct_upgrade(
                 UpgradeType::Rune,
@@ -688,6 +809,10 @@ mod tests {
         for (index, rune) in runes.iter_mut().enumerate() {
             rune.index = index;
         }
+        assert!(
+            save.has_safe_reusable_upgrade_record(),
+            "removing the inventory reference must expose the reusable record"
+        );
 
         let added = save
             .add_direct_upgrade(
@@ -715,6 +840,90 @@ mod tests {
             .upgrades
             .get(&UpgradeType::Rune)
             .is_some_and(|runes| runes.iter().any(|rune| rune.id == added.id)));
+    }
+
+    #[test]
+    fn direct_gem_and_rune_storage_additions_rebuild_from_storage() {
+        let mut save = build_save_data("testsave9");
+        let original_file = save.file.clone();
+
+        assert!(save
+            .add_direct_upgrade(
+                UpgradeType::Gem,
+                "Radial".to_string(),
+                Vec::new(),
+                Location::Storage,
+            )
+            .is_err());
+        assert_eq!(save.file, original_file);
+
+        let orphaned_gem = save
+            .storage
+            .upgrades
+            .get_mut(&UpgradeType::Gem)
+            .and_then(|gems| (!gems.is_empty()).then(|| gems.remove(0)))
+            .expect("test save must contain an unreferenced storage gem");
+        if let Some(gems) = save.storage.upgrades.get_mut(&UpgradeType::Gem) {
+            for (index, gem) in gems.iter_mut().enumerate() {
+                gem.index = index;
+            }
+        }
+
+        let added_gem = save
+            .add_direct_upgrade(
+                UpgradeType::Gem,
+                "Radial".to_string(),
+                vec![13_101],
+                Location::Storage,
+            )
+            .expect("an orphaned storage gem record must be reusable");
+        assert_eq!(added_gem.id, orphaned_gem.id);
+        assert_eq!(added_gem.upgrade_type, UpgradeType::Gem);
+        assert_eq!(added_gem.shape, "Radial");
+        assert_eq!(added_gem.effects[0].0, 13_101);
+
+        let orphaned_rune = save
+            .inventory
+            .upgrades
+            .get_mut(&UpgradeType::Rune)
+            .and_then(|runes| (!runes.is_empty()).then(|| runes.remove(0)))
+            .expect("test save must contain an unreferenced rune");
+        if let Some(runes) = save.inventory.upgrades.get_mut(&UpgradeType::Rune) {
+            for (index, rune) in runes.iter_mut().enumerate() {
+                rune.index = index;
+            }
+        }
+
+        let added_rune = save
+            .add_direct_upgrade(
+                UpgradeType::Rune,
+                "-".to_string(),
+                vec![1_100_000],
+                Location::Storage,
+            )
+            .expect("an orphaned rune record must be reusable in storage");
+        assert_eq!(added_rune.id, orphaned_rune.id);
+        assert_eq!(added_rune.upgrade_type, UpgradeType::Rune);
+        assert_eq!(added_rune.shape, "-");
+        assert_eq!(added_rune.effects[0].0, 1_100_000);
+
+        let mut parsed = parse_upgrades(&save.file);
+        let mut slots = parse_equipped_gems(&mut save.file, &mut parsed);
+        let rebuilt_storage = Inventory::build(
+            &save.file,
+            save.file.offsets.storage,
+            (0, 0),
+            &mut parsed,
+            &mut slots,
+        );
+        assert!(rebuilt_storage
+            .upgrades
+            .get(&UpgradeType::Gem)
+            .is_some_and(|gems| gems.iter().any(|gem| gem.id == added_gem.id)));
+        assert!(rebuilt_storage
+            .upgrades
+            .get(&UpgradeType::Rune)
+            .is_some_and(|runes| runes.iter().any(|rune| rune.id == added_rune.id)));
     }
 
     #[test]
@@ -1100,7 +1309,6 @@ mod tests {
     }
 
     #[test]
-    #[ignore] //cargo test -- --include-ignored
     fn test_save_data_get_muts_runtime() {
         let mut save = SaveData::build("saves/testsave5", PathBuf::from("resources")).unwrap();
 
@@ -1338,27 +1546,34 @@ mod tests {
 
 #[cfg(test)]
 mod direct_equipment_safety_regression_tests {
-    use std::collections::HashSet;
+    use std::{
+        collections::HashSet,
+        fs,
+        path::PathBuf,
+        time::{SystemTime, UNIX_EPOCH},
+    };
 
     use super::*;
     use crate::data_handling::{
-        constants::{USERNAME_TO_FIRST_INVENTORY_COUNTER, USERNAME_TO_SECOND_INVENTORY_COUNTER},
+        constants::{
+            USERNAME_TO_FIRST_INVENTORY_COUNTER, USERNAME_TO_FIRST_STORAGE_COUNTER,
+            USERNAME_TO_SECOND_INVENTORY_COUNTER, USERNAME_TO_SECOND_STORAGE_COUNTER,
+        },
         utils::test_utils::build_save_data,
     };
 
-    const RESERVATION: [u8; 8] = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
-    const RESERVATION_SIZE: usize = 64;
+    const RESERVATION_SIZE: usize = 60;
     const EQUIPMENT_PREFIX_MASK: u32 = 0xFF80_0000;
     const EQUIPMENT_SUFFIX_MASK: u32 = 0x007F_FFFF;
     const WEAPON_PREFIX: u32 = 0x8080_0000;
     const ARMOR_PREFIX: u32 = 0x9080_0000;
 
     fn reserve_equipment_blocks(save: &mut SaveData, count: usize) -> usize {
-        let start = (save.file.offsets.equipped_gems.1 + 8) & !7;
+        let start = save.file.offsets.equipped_gems.1 + 1;
         let end = start + count * RESERVATION_SIZE;
         assert!(end <= save.file.offsets.username - 147);
-        for offset in (start..end).step_by(RESERVATION.len()) {
-            save.file.bytes[offset..offset + RESERVATION.len()].copy_from_slice(&RESERVATION);
+        for offset in start..end {
+            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
         }
         start
     }
@@ -1426,6 +1641,27 @@ mod direct_equipment_safety_regression_tests {
             &mut upgrades,
             &mut slots,
         )
+    }
+
+    fn rebuild_storage(save: &SaveData) -> Inventory {
+        let mut file = save.file.clone();
+        let mut upgrades = parse_upgrades(&file);
+        let mut slots = parse_equipped_gems(&mut file, &mut upgrades);
+        Inventory::build(
+            &file,
+            file.offsets.storage,
+            (0, 0),
+            &mut upgrades,
+            &mut slots,
+        )
+    }
+
+    fn temporary_save_path(name: &str) -> PathBuf {
+        let nonce = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("system time must be after the Unix epoch")
+            .as_nanos();
+        std::env::temp_dir().join(format!("bloodborne-save-editor-{name}-{nonce}.bin"))
     }
 
     #[test]
@@ -1615,6 +1851,288 @@ mod direct_equipment_safety_regression_tests {
                 .any(|armor| armor.first_part == article.first_part && armor.id == article.id));
         }
     }
+
+    #[test]
+    fn storage_equipment_uses_storage_counters_and_survives_full_reload() {
+        let mut save = build_save_data("testsave9");
+        let reserved_offset = reserve_equipment_blocks(&mut save, 2);
+        let username = save.file.offsets.username;
+        let inventory_counters_before = [
+            u32::from_le_bytes(
+                save.file.bytes[username + USERNAME_TO_FIRST_INVENTORY_COUNTER
+                    ..username + USERNAME_TO_FIRST_INVENTORY_COUNTER + 4]
+                    .try_into()
+                    .unwrap(),
+            ),
+            u32::from_le_bytes(
+                save.file.bytes[username + USERNAME_TO_SECOND_INVENTORY_COUNTER
+                    ..username + USERNAME_TO_SECOND_INVENTORY_COUNTER + 4]
+                    .try_into()
+                    .unwrap(),
+            ),
+        ];
+        let storage_counters_before = [
+            u32::from_le_bytes(
+                save.file.bytes[username + USERNAME_TO_FIRST_STORAGE_COUNTER
+                    ..username + USERNAME_TO_FIRST_STORAGE_COUNTER + 4]
+                    .try_into()
+                    .unwrap(),
+            ),
+            u32::from_le_bytes(
+                save.file.bytes[username + USERNAME_TO_SECOND_STORAGE_COUNTER
+                    ..username + USERNAME_TO_SECOND_STORAGE_COUNTER + 4]
+                    .try_into()
+                    .unwrap(),
+            ),
+        ];
+
+        let chikage = save
+            .add_direct_equipment_at(2_020_000, false, Location::Storage)
+            .expect("Lost Chikage must be added to storage");
+        let armor = save
+            .add_direct_equipment_at(10_000, true, Location::Storage)
+            .expect("armor must be added to storage");
+
+        assert_eq!(
+            find_equipment_block(&save, chikage.first_part, chikage.second_part),
+            reserved_offset
+        );
+        assert_eq!(
+            find_equipment_block(&save, armor.first_part, armor.second_part),
+            reserved_offset + RESERVATION_SIZE
+        );
+        assert_eq!(
+            armor.first_part & EQUIPMENT_SUFFIX_MASK,
+            (chikage.first_part & EQUIPMENT_SUFFIX_MASK) + 1
+        );
+        assert_eq!(
+            [
+                u32::from_le_bytes(
+                    save.file.bytes[username + USERNAME_TO_FIRST_INVENTORY_COUNTER
+                        ..username + USERNAME_TO_FIRST_INVENTORY_COUNTER + 4]
+                        .try_into()
+                        .unwrap(),
+                ),
+                u32::from_le_bytes(
+                    save.file.bytes[username + USERNAME_TO_SECOND_INVENTORY_COUNTER
+                        ..username + USERNAME_TO_SECOND_INVENTORY_COUNTER + 4]
+                        .try_into()
+                        .unwrap(),
+                ),
+            ],
+            inventory_counters_before
+        );
+        assert_eq!(
+            [
+                u32::from_le_bytes(
+                    save.file.bytes[username + USERNAME_TO_FIRST_STORAGE_COUNTER
+                        ..username + USERNAME_TO_FIRST_STORAGE_COUNTER + 4]
+                        .try_into()
+                        .unwrap(),
+                ),
+                u32::from_le_bytes(
+                    save.file.bytes[username + USERNAME_TO_SECOND_STORAGE_COUNTER
+                        ..username + USERNAME_TO_SECOND_STORAGE_COUNTER + 4]
+                        .try_into()
+                        .unwrap(),
+                ),
+            ],
+            [
+                storage_counters_before[0] + 2,
+                storage_counters_before[1] + 2
+            ]
+        );
+
+        let rebuilt_storage = rebuild_storage(&save);
+        assert!(rebuilt_storage
+            .articles
+            .get(&ArticleType::RightHand)
+            .is_some_and(|articles| articles
+                .iter()
+                .any(|article| article.first_part == chikage.first_part)));
+        assert!(rebuilt_storage
+            .articles
+            .get(&ArticleType::Armor)
+            .is_some_and(|articles| articles
+                .iter()
+                .any(|article| article.first_part == armor.first_part)));
+        assert!(save.inventory.articles.values().all(|articles| articles
+            .iter()
+            .all(|article| article.first_part != chikage.first_part
+                && article.first_part != armor.first_part)));
+
+        let path = temporary_save_path("storage-equipment-reload");
+        save.file
+            .save(path.to_str().expect("temporary path must be UTF-8"))
+            .expect("temporary save write must succeed");
+        let reopened = SaveData::build(
+            path.to_str().expect("temporary path must be UTF-8"),
+            PathBuf::from("resources"),
+        )
+        .expect("the save with storage equipment must reload cleanly");
+        assert!(reopened
+            .storage
+            .articles
+            .get(&ArticleType::RightHand)
+            .is_some_and(|articles| articles
+                .iter()
+                .any(|article| article.first_part == chikage.first_part)));
+        assert!(reopened
+            .storage
+            .articles
+            .get(&ArticleType::Armor)
+            .is_some_and(|articles| articles
+                .iter()
+                .any(|article| article.first_part == armor.first_part)));
+
+        fs::remove_file(&path).expect("temporary save cleanup must succeed");
+        fs::remove_file(format!("{}.bak", path.display()))
+            .expect("temporary backup cleanup must succeed");
+    }
+
+    #[test]
+    fn mixed_weapon_and_armor_batch_is_contiguous_and_reloadable_in_each_destination() {
+        for location in [Location::Inventory, Location::Storage] {
+            let mut save = build_save_data("testsave9");
+            let right_hand_id = save
+                .inventory
+                .articles
+                .get(&ArticleType::RightHand)
+                .and_then(|articles| articles.first())
+                .expect("fixture must contain a right-hand weapon")
+                .id;
+            let left_hand_id = save
+                .inventory
+                .articles
+                .get(&ArticleType::LeftHand)
+                .and_then(|articles| articles.first())
+                .expect("fixture must contain a left-hand weapon")
+                .id;
+            let armor_ids = save
+                .inventory
+                .articles
+                .get(&ArticleType::Armor)
+                .expect("fixture must contain armor")
+                .iter()
+                .take(4)
+                .map(|article| article.id)
+                .collect::<Vec<_>>();
+            assert_eq!(
+                armor_ids.len(),
+                4,
+                "fixture must contain four armor records"
+            );
+
+            let reservation_offset = reserve_equipment_blocks(&mut save, 6);
+            let mut added = Vec::with_capacity(6);
+            added.push(
+                save.add_direct_equipment_at(right_hand_id, false, location)
+                    .expect("right-hand addition must be safe"),
+            );
+            added.push(
+                save.add_direct_equipment_at(left_hand_id, false, location)
+                    .expect("left-hand addition must be safe"),
+            );
+            for armor_id in armor_ids {
+                added.push(
+                    save.add_direct_equipment_at(armor_id, true, location)
+                        .expect("armor addition must be safe"),
+                );
+            }
+
+            for (index, article) in added.iter().enumerate() {
+                assert_eq!(
+                    find_equipment_block(&save, article.first_part, article.second_part),
+                    reservation_offset + index * RESERVATION_SIZE,
+                    "new equipment blocks must remain exactly contiguous",
+                );
+            }
+            save.validate_game_load_safety()
+                .expect("mixed direct equipment batch must remain structurally safe");
+
+            let path = temporary_save_path(match location {
+                Location::Inventory => "mixed-inventory-equipment",
+                Location::Storage => "mixed-storage-equipment",
+            });
+            save.file
+                .save(path.to_str().expect("temporary path must be UTF-8"))
+                .expect("temporary save write must succeed");
+            let reopened = SaveData::build(
+                path.to_str().expect("temporary path must be UTF-8"),
+                PathBuf::from("resources"),
+            )
+            .expect("mixed direct equipment save must reload cleanly");
+            let destination = match location {
+                Location::Inventory => &reopened.inventory,
+                Location::Storage => &reopened.storage,
+            };
+            for article in &added {
+                assert!(
+                    destination
+                        .articles
+                        .get(&article.article_type)
+                        .is_some_and(|articles| articles.iter().any(|candidate| {
+                            candidate.first_part == article.first_part
+                                && candidate.second_part == article.second_part
+                                && candidate.id == article.id
+                        })),
+                    "reloaded destination must retain each direct addition",
+                );
+            }
+            fs::remove_file(&path).expect("temporary save cleanup must succeed");
+            fs::remove_file(format!("{}.bak", path.display()))
+                .expect("temporary backup cleanup must succeed");
+        }
+    }
+
+    #[test]
+    fn equipment_destination_reference_mismatch_is_rejected_before_save() {
+        for location in [Location::Inventory, Location::Storage] {
+            let mut save = build_save_data("testsave9");
+            reserve_equipment_blocks(&mut save, 1);
+            let article = save
+                .add_direct_equipment_at(2_020_000, false, location)
+                .expect("direct equipment fixture setup must succeed");
+            let record_offset = save
+                .file
+                .find_article_offset(
+                    article.number,
+                    article.id,
+                    TypeFamily::Weapon,
+                    matches!(location, Location::Storage),
+                )
+                .expect("new article must have a destination record");
+            save.file.bytes[record_offset + 4..record_offset + 8]
+                .copy_from_slice(&0u32.to_le_bytes());
+
+            let error = save
+                .validate_game_load_safety()
+                .expect_err("mismatched raw destination record must block save");
+            assert!(error
+                .to_string()
+                .contains("Equipment reference validation failed"));
+        }
+    }
+
+    #[test]
+    fn storage_equipment_without_reservation_is_atomic() {
+        let mut save = build_save_data("testsave9");
+        let bytes_before = save.file.bytes.clone();
+        let offsets_before = save.file.offsets.clone();
+        let storage_before = serde_json::to_value(&save.storage)
+            .expect("storage model must be serializable before rejection");
+
+        let result = save.add_direct_equipment_at(2_020_000, false, Location::Storage);
+
+        assert!(result.is_err());
+        assert_eq!(save.file.bytes, bytes_before);
+        assert_eq!(save.file.offsets, offsets_before);
+        assert_eq!(
+            serde_json::to_value(&save.storage)
+                .expect("storage model must remain serializable after rejection"),
+            storage_before
+        );
+    }
 }
 
 #[cfg(test)]
@@ -1628,8 +2146,7 @@ mod complete_equipment_catalogue_tests {
     };
     use serde_json::Value;
 
-    const RESERVATION: [u8; 8] = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
-    const RESERVATION_SIZE: usize = 64;
+    const RESERVATION_SIZE: usize = 60;
 
     #[derive(Debug)]
     struct CatalogueEntry {
@@ -1640,14 +2157,14 @@ mod complete_equipment_catalogue_tests {
     }
 
     fn reserve_equipment_blocks(save: &mut SaveData, count: usize) -> usize {
-        let start = (save.file.offsets.equipped_gems.1 + 8) & !7;
+        let start = save.file.offsets.equipped_gems.1 + 1;
         let end = start + count * RESERVATION_SIZE;
         assert!(
             end <= save.file.offsets.username - 147,
             "the fixture must have enough explicit safe reservation space"
         );
-        for offset in (start..end).step_by(RESERVATION.len()) {
-            save.file.bytes[offset..offset + RESERVATION.len()].copy_from_slice(&RESERVATION);
+        for offset in start..end {
+            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
         }
         start
     }
@@ -1870,10 +2387,9 @@ mod direct_armor_header_regression_tests {
             })
             .expect("test save must contain an armor block with header value one");
 
-        let reserved_offset = (save.file.offsets.equipped_gems.1 + 8) & !7;
-        let reservation = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF];
-        for offset in (reserved_offset..reserved_offset + 64).step_by(reservation.len()) {
-            save.file.bytes[offset..offset + reservation.len()].copy_from_slice(&reservation);
+        let reserved_offset = save.file.offsets.equipped_gems.1 + 1;
+        for offset in reserved_offset..reserved_offset + 60 {
+            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
         }
         save.add_direct_equipment(native_armor.id, true).unwrap();
         assert_eq!(

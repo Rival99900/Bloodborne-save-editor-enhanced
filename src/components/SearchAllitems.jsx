@@ -21,10 +21,16 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
 
   useEffect(() => {
     setHoverIndex(null);
-    const normalizedSearch = search.trim().toLowerCase();
+    const normalizedSearch = search.trim().toLocaleLowerCase();
+    const includesSearch = (value) => String(value ?? "").toLocaleLowerCase().includes(normalizedSearch);
     setReplacements(
       normalizedSearch
-        ? back.filter((item) => item.info.item_name.toLowerCase().includes(normalizedSearch))
+        ? back.filter((item) => (
+            includesSearch(item.info?.item_name)
+            || includesSearch(item.info?.item_desc)
+            || includesSearch(item.sourceLabel)
+            || (item.searchTerms ?? []).some(includesSearch)
+          ))
         : back,
     );
   }, [back, search]);

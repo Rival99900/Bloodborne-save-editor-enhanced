@@ -9,6 +9,8 @@ function DarkSelect({
   className = "",
   placeholder = "",
   disabled = false,
+  renderValue,
+  renderOption,
 }) {
   const normalizedOptions = useMemo(
     () => options.map((option, index) => (
@@ -105,7 +107,7 @@ function DarkSelect({
         onKeyDown={handleTriggerKeyDown}
       >
         <span className={selectedOption ? "" : "dark-select__placeholder"}>
-          {selectedOption?.label ?? placeholder}
+          {selectedOption ? (renderValue?.(selectedOption) ?? selectedOption.label) : placeholder}
         </span>
         <span className="dark-select__chevron" aria-hidden="true" />
       </button>
@@ -148,8 +150,12 @@ function DarkSelect({
                   }
                 }}
               >
-                <span>{option.label}</span>
-                {String(option.value) === String(value) ? <span className="dark-select__selected" aria-hidden="true">✓</span> : null}
+                {renderOption?.(option, String(option.value) === String(value)) ?? (
+                  <>
+                    <span>{option.label}</span>
+                    {String(option.value) === String(value) ? <span className="dark-select__selected" aria-hidden="true">✓</span> : null}
+                  </>
+                )}
               </button>
             ))}
           </div>

@@ -5,16 +5,10 @@ function Nav({
   save,
   name,
   statusKey,
-  canUndo,
-  canRedo,
   revisionCount,
   onOpenSave,
   onSaveChanges,
-  onUndo,
-  onRedo,
   onShowRevisions,
-  density,
-  onToggleDensity,
 }) {
   const { t } = useLocalization();
 
@@ -24,7 +18,7 @@ function Nav({
         <img className="brand-mark" src="/assets/icon.png" alt="" />
         <div>
           <p className="brand-eyebrow">Bloodborne</p>
-          <p className="brand-title">Save Editor</p>
+          <p className="brand-title">Save Editor <span className="brand-version">v0.3.0</span></p>
         </div>
       </div>
 
@@ -39,17 +33,8 @@ function Nav({
 
       <div className="nav-actions">
         <LanguagePicker />
-        <button className="control-button control-button--density" type="button" onClick={onToggleDensity}>
-          {density === "compact" ? t("preferences.comfortable") : t("preferences.compact")}
-        </button>
         {save ? (
           <div className="nav-history" aria-label={t("revision.controls")}>
-            <button className="control-button control-button--history" type="button" onClick={onUndo} disabled={!canUndo}>
-              {t("revision.undo")}
-            </button>
-            <button className="control-button control-button--history" type="button" onClick={onRedo} disabled={!canRedo}>
-              {t("revision.redo")}
-            </button>
             <button className="control-button control-button--history" type="button" onClick={onShowRevisions}>
               {t("revision.changes", { count: revisionCount })}
             </button>

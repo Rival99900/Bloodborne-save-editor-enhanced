@@ -60,16 +60,6 @@ function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirm
 }
 
 const MAX_REVISIONS = 100;
-const DENSITY_STORAGE_KEY = "bloodborne-save-editor.interface-density.v1";
-
-function readDensityPreference() {
-  try {
-    return globalThis.localStorage?.getItem(DENSITY_STORAGE_KEY) === "compact" ? "compact" : "comfortable";
-  } catch {
-    return "comfortable";
-  }
-}
-
 function cloneSave(value) {
   return value == null ? value : JSON.parse(JSON.stringify(value));
 }
@@ -115,7 +105,6 @@ function App() {
   const [revisionState, setRevisionState] = useState({ past: [], future: [] });
   const [revisionPanelOpen, setRevisionPanelOpen] = useState(false);
   const [revisionEpoch, setRevisionEpoch] = useState(0);
-  const [density, setDensity] = useState(readDensityPreference);
   const dirtyRef = useRef(false);
   const forceCloseRef = useRef(false);
   const closeAfterSaveRef = useRef(false);
@@ -359,14 +348,6 @@ function App() {
   }, [saveChanges]);
 
   useEffect(() => {
-    try {
-      globalThis.localStorage?.setItem(DENSITY_STORAGE_KEY, density);
-    } catch {
-      // This presentation preference is optional and never affects save editing.
-    }
-  }, [density]);
-
-  useEffect(() => {
     const preventContextMenu = (event) => event.preventDefault();
     document.addEventListener("contextmenu", preventContextMenu);
     return () => document.removeEventListener("contextmenu", preventContextMenu);
@@ -478,7 +459,7 @@ function App() {
   }, [closeApplication]);
 
   return (
-    <div className={`App App--${density}`}>
+    <div className="App App--comfortable">
       <UpdateModal />
       {openSaveDialog === "discard" ? (
         <SaveFlowDialog
@@ -572,16 +553,10 @@ function App() {
           save={save}
           name={saveName}
           statusKey={saveStatusKey}
-          canUndo={revisionState.past.length > 0}
-          canRedo={revisionState.future.length > 0}
           revisionCount={revisionState.past.length}
           onOpenSave={openSave}
           onSaveChanges={saveChanges}
-          onUndo={undoRevision}
-          onRedo={redoRevision}
           onShowRevisions={() => setRevisionPanelOpen(true)}
-          density={density}
-          onToggleDensity={() => setDensity((current) => current === "compact" ? "comfortable" : "compact")}
         />
         <ImagesProvider>
           <Main key={`save-revision-${revisionEpoch}`} save={save} setSave={commitEditorMutation} loading={loading} />
