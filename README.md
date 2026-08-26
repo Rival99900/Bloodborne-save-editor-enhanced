@@ -85,7 +85,7 @@ The editor creates a `.bak` backup as part of its normal save workflow. Confirma
 
 ## Automatic updates
 
-The desktop application checks the release `latest.json` manifest from GitHub when it starts in the native Tauri window. When a newer version is available, it presents an update dialog, downloads the platform package, verifies its embedded Tauri signature with the public key packaged in the application, installs it and restarts.
+The desktop application checks the signed `latest.json` manifest maintained in the repository’s `main` branch when it starts in the native Tauri window. The same manifest is also uploaded to every release for download and audit. When a newer version is available, the application presents an update dialog, downloads the platform package, verifies its embedded Tauri signature with the public key packaged in the application, installs it and restarts.
 
 The release workflow generates and uploads the Windows NSIS installer, Ubuntu/Linux AppImage, their corresponding `.sig` files and a combined `latest.json` updater manifest. The manifest contains the **signature content**, not only a path to a signature file. This is required for Tauri v2 update verification. `SHA256SUMS.txt` is also published for manual integrity checks.
 
