@@ -112,7 +112,14 @@ function getUnique(primaryEffect, shape, source) {
   return undefined;
 }
 
-function getGemPath(effects = [], shape, level, unique, runeOriginPrimaryEffect) {
+function getGemPath(
+  effects = [],
+  shape,
+  level,
+  unique,
+  runeOriginPrimaryEffect,
+  canonicalPrimaryEffect,
+) {
   if (unique) return `/assets/gems/unique/${unique.image}.png`;
 
   // A gem slot can end up holding an effect id that only exists in the Caryll Rune
@@ -121,13 +128,15 @@ function getGemPath(effects = [], shape, level, unique, runeOriginPrimaryEffect)
   // corresponds to instead of guessing a color from unmatched text.
   if (runeOriginPrimaryEffect) {
     return getRunePath(
-      runeOriginPrimaryEffect.name,
+      runeOriginPrimaryEffect.sourceName ?? runeOriginPrimaryEffect.name,
       undefined,
       runeOriginPrimaryEffect.rating,
     );
   }
 
-  const color = getGemColor(effects[0]?.[1]) ?? "red";
+  // Colors are resolved from the immutable source label whenever available.
+  // A translated label must never change which artwork is selected.
+  const color = getGemColor(canonicalPrimaryEffect ?? effects[0]?.[1]) ?? "red";
   const cursed = isCursed(effects);
   return `/assets/gems/${normalizeGemShape(shape)}/${GEM_COLORS.has(color) ? color : "red"}/${
     cursed ? "cursed_" : ""

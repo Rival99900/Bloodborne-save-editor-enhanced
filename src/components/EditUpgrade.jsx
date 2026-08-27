@@ -143,13 +143,18 @@ function EditUpgrade({
     [runeEffectsById, runePresets, t],
   );
 
-  // The primary effect can be a Caryll Rune id sitting in a Blood Gem slot (see the
-  // catalog merge above). When that's the case there is no honest gem color for it,
-  // so the preview should show the rune it actually corresponds to.
-  const primaryEffectEntry =
-    upgrade_type === "Gem" ? gemEffectCatalogById.get(Number(effects[0]?.[0])) : undefined;
+  // Artwork is resolved from the canonical effect id, never its translated label.
+  // This keeps previews stable when switching language and supports both legitimate
+  // cross-origin cases: Rune effects in Gem slots and Gem effects in Rune slots.
+  const primaryEffectEntry = gemEffectCatalogById.get(Number(effects[0]?.[0]));
   const primaryIsRuneOrigin =
-    Boolean(primaryEffectEntry) && !nativeGemEffectIds.has(Number(effects[0]?.[0]));
+    upgrade_type === "Gem" &&
+    Boolean(primaryEffectEntry) &&
+    !nativeGemEffectIds.has(Number(effects[0]?.[0]));
+  const primaryIsGemOrigin =
+    upgrade_type === "Rune" &&
+    Boolean(primaryEffectEntry) &&
+    nativeGemEffectIds.has(Number(effects[0]?.[0]));
 
   async function handleConfirm() {
     if (confirmInFlightRef.current) return;
@@ -352,8 +357,18 @@ function EditUpgrade({
                         level,
                         getUnique(effects[0][0], shape, source),
                         primaryIsRuneOrigin ? primaryEffectEntry : undefined,
+                        primaryEffectEntry?.sourceLabel,
                       )
-                    : getRunePath(name, shape, rating)
+                    : primaryIsGemOrigin
+                      ? getGemPath(
+                          effects,
+                          "Radial",
+                          rating,
+                          undefined,
+                          undefined,
+                          primaryEffectEntry?.sourceLabel,
+                        )
+                      : getRunePath(name, shape, rating)
                 }
                 alt=""
                 onError={(event) => {
@@ -362,7 +377,9 @@ function EditUpgrade({
                       ? primaryIsRuneOrigin
                         ? getRuneFallbackPath()
                         : getGemFallbackPath()
-                      : getRuneFallbackPath(shape);
+                      : primaryIsGemOrigin
+                        ? getGemFallbackPath()
+                        : getRuneFallbackPath(shape);
                   if (!event.currentTarget.src.endsWith(fallback)) {
                     event.currentTarget.src = fallback;
                   }

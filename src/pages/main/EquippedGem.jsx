@@ -44,7 +44,14 @@ function EquippedGem({
         const runeOriginPrimaryEffect =
           primaryEffect && !nativeGemEffectIds.has(primaryEffectId) ? primaryEffect : undefined;
         const unique = getUnique(primaryEffectId, shape, source);
-        const path = getGemPath(effects, shape, level, unique, runeOriginPrimaryEffect);
+        const path = getGemPath(
+          effects,
+          shape,
+          level,
+          unique,
+          runeOriginPrimaryEffect,
+          primaryEffect?.sourceLabel,
+        );
 
         loadImage(path)
           .then((img) => {

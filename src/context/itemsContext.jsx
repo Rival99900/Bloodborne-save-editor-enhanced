@@ -1502,11 +1502,15 @@ export const ItemsProvider = ({ children }) => {
 
     void loadEffectTranslations(language).then((translations) => {
       if (!active) return;
-      const localize = (effect) => ({
-        ...effect,
-        label: localizeEffectText(translations, effect.sourceLabel),
-        name: localizeEffectText(translations, effect.name),
-        note: localizeEffectText(translations, effect.note),
+          const localize = (effect) => ({
+            ...effect,
+            // Keep immutable English source fields for non-text decisions such as
+            // gem/rune artwork. Localized labels must never influence an icon.
+            sourceName: effect.sourceName ?? effect.name,
+            sourceNote: effect.sourceNote ?? effect.note,
+            label: localizeEffectText(translations, effect.sourceLabel),
+            name: localizeEffectText(translations, effect.name),
+            note: localizeEffectText(translations, effect.note),
         searchTerms: [...new Set([
           effect.sourceLabel,
           localizeEffectText(translations, effect.sourceLabel),
@@ -1716,6 +1720,8 @@ export const ItemsProvider = ({ children }) => {
           level: gemEffects[x]?.level,
           name: gemEffects[x]?.name,
           note: gemEffects[x]?.note,
+          sourceName: gemEffects[x]?.name,
+          sourceNote: gemEffects[x]?.note,
           value: x,
         }));
 
@@ -1729,6 +1735,8 @@ export const ItemsProvider = ({ children }) => {
           level: runeEffects[x]?.level,
           name: runeEffects[x]?.name,
           note: runeEffects[x]?.note,
+          sourceName: runeEffects[x]?.name,
+          sourceNote: runeEffects[x]?.note,
           value: x,
         }));
 

@@ -242,7 +242,14 @@ function useDraw() {
       const finalName = cursed && !uniqueGem
         ? `${t("vignette.cursedPrefix")} ${localizeVignetteText(translations, "name", name)}`
         : localizeVignetteText(translations, "name", sourceGemName);
-      const path = getGemPath(effects, shape, level, uniqueGem, runeOriginPrimaryEffect);
+      const path = getGemPath(
+        effects,
+        shape,
+        level,
+        uniqueGem,
+        runeOriginPrimaryEffect,
+        primaryEffect?.sourceLabel,
+      );
       const thumbnail = await loadImage(path).catch(() =>
         runeOriginPrimaryEffect ? loadImage(getRuneFallbackPath()).catch(() => undefined) : undefined,
       );
@@ -273,14 +280,33 @@ function useDraw() {
       ctx.fillText(localizeGemShape(shape), margin * 2 + 27, 77);
     } else {
       const {
+        effects,
         info: { name, rating },
         shape,
       } = upgrade;
-
-      const path = getRunePath(name, shape, rating);
+      const primaryEffectId = Number(effects?.[0]?.[0]);
+      const primaryEffect = gemEffectCatalog.find(
+        (effect) => Number(effect.value) === primaryEffectId,
+      );
+      // A Rune can legitimately carry a native Blood Gem effect. Its artwork must
+      // reflect that canonical effect, just as a Gem with a Rune effect uses Rune art.
+      const gemOriginPrimaryEffect =
+        primaryEffect && nativeGemEffectIds.has(primaryEffectId) ? primaryEffect : undefined;
+      const path = gemOriginPrimaryEffect
+        ? getGemPath(
+            effects,
+            "Radial",
+            rating,
+            undefined,
+            undefined,
+            gemOriginPrimaryEffect.sourceLabel,
+          )
+        : getRunePath(name, shape, rating);
 
       const thumbnail = await loadImage(path).catch(() =>
-        loadImage(getRuneFallbackPath(shape)).catch(() => undefined),
+        gemOriginPrimaryEffect
+          ? loadImage(getGemFallbackPath()).catch(() => undefined)
+          : loadImage(getRuneFallbackPath(shape)).catch(() => undefined),
       );
 
       if (!isCurrentRender()) return;
