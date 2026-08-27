@@ -37,5 +37,40 @@ function normalizeDisplayText(value) {
 export function localizeVignetteText(translations, kind, sourceText) {
   if (!sourceText || !translations) return normalizeDisplayText(sourceText);
   const bucket = kind === "name" ? "names" : "descriptions";
-  return normalizeDisplayText(translations[bucket]?.[sourceText] ?? sourceText);
+  const values = translations[bucket] ?? {};
+  const direct = values[sourceText];
+
+  // Runtime rune cards use names such as "Moon", whereas the same official
+  // wording is already present in the catalogue as "[CUT] Moon". Reusing the
+  // display value keeps the internal English key intact and avoids duplicating
+  // translations across two representations of the same rune name.
+  const cutAlias =
+    kind === "name" && !direct && !String(sourceText).startsWith("[CUT] ")
+      ? values[`[CUT] ${sourceText}`]?.replace(/^\[CUT\]\s*/u, "")
+      : undefined;
+
+  const resolved = direct ?? cutAlias ?? sourceText;
+
+  // Source notes quote rune names (for example, "Moon"). Once a note has
+  // been translated, substitute those quoted/runtime names with their display
+  // equivalents as well. This remains strictly a presentation-layer step.
+  if (kind === "description" && direct) {
+    const localizedRuneNames = Object.entries(translations.names ?? {})
+      .filter(([source, target]) =>
+        source &&
+        target &&
+        !source.startsWith("[CUT] ") &&
+        source.length > 2 &&
+        source !== target,
+      )
+      .sort(([left], [right]) => right.length - left.length);
+    return normalizeDisplayText(
+      localizedRuneNames.reduce(
+        (value, [source, target]) => value.replaceAll(source, target),
+        resolved,
+      ),
+    );
+  }
+
+  return normalizeDisplayText(resolved);
 }

@@ -113,7 +113,7 @@ function useDraw() {
     ctx.fillStyle = "#ab9e87";
 
     if (article?.upgrade_type) {
-      await handleUpgrades(ctx, article, { x, y, size }, isCurrentRender);
+      await handleUpgrades(ctx, article, { x, y, size }, translations, isCurrentRender);
       // Gem cards already render their own name, rating and shape in handleUpgrades.
       // Returning here prevents the generic item text from being drawn a second time
       // over a Rune-origin thumbnail.
@@ -135,7 +135,7 @@ function useDraw() {
 
     switch (type || article_type) {
       case "weapon":
-        return handleWeapon(ctx, displayInfo);
+        return handleWeapon(ctx, displayInfo, translations);
       case "armor":
         return handleArmor(ctx, displayInfo);
       default:
@@ -176,13 +176,16 @@ function useDraw() {
     ctx.fillText(area, margin * 2 + 27, 77);
   }
 
-  function handleWeapon(ctx, weapon) {
+  function handleWeapon(ctx, weapon, translations) {
     const {
       item_name: name,
       extra_info: { damage, upgrade_level: upgrade, imprint },
     } = weapon;
     const { physical, blood, arcane, fire, bolt } = damage;
-    const finalName = `${imprint ? imprint + " " : ""}${name}${
+    const localizedImprint = imprint
+      ? localizeVignetteText(translations, "name", imprint)
+      : "";
+    const finalName = `${localizedImprint ? localizedImprint + " " : ""}${name}${
       upgrade > 0 ? " +" + upgrade : ""
     }`;
     ctx.fillText(fitVignetteText(ctx, finalName), 107, 28);
@@ -218,7 +221,7 @@ function useDraw() {
     ctx.fillText(bolt, margin * 7 + 37, 77);
   }
 
-  async function handleUpgrades(ctx, upgrade, { x, y, size }, isCurrentRender = () => true) {
+  async function handleUpgrades(ctx, upgrade, { x, y, size }, translations, isCurrentRender = () => true) {
     if (upgrade.upgrade_type === "Gem") {
       const {
         effects,
@@ -235,7 +238,10 @@ function useDraw() {
       );
       const runeOriginPrimaryEffect =
         primaryEffect && !nativeGemEffectIds.has(primaryEffectId) ? primaryEffect : undefined;
-      const finalName = makeGemName(name, uniqueGem, cursed, source);
+      const sourceGemName = makeGemName(name, uniqueGem, cursed, source);
+      const finalName = cursed && !uniqueGem
+        ? `${t("vignette.cursedPrefix")} ${localizeVignetteText(translations, "name", name)}`
+        : localizeVignetteText(translations, "name", sourceGemName);
       const path = getGemPath(effects, shape, level, uniqueGem, runeOriginPrimaryEffect);
       const thumbnail = await loadImage(path).catch(() =>
         runeOriginPrimaryEffect ? loadImage(getRuneFallbackPath()).catch(() => undefined) : undefined,
@@ -264,7 +270,7 @@ function useDraw() {
       // Draw numbers
       ctx.fillStyle = "#b8b7ad";
       ctx.fillText(rating, 135, 77);
-      ctx.fillText(shape, margin * 2 + 27, 77);
+      ctx.fillText(localizeGemShape(shape), margin * 2 + 27, 77);
     } else {
       const {
         info: { name, rating },
@@ -281,6 +287,20 @@ function useDraw() {
       if (thumbnail !== undefined)
         ctx.drawImage(thumbnail, x, 4.8, x + size, 4.8 + size + 2);
     }
+  }
+
+  function localizeGemShape(shape) {
+    const normalized = String(shape ?? "").trim().toLowerCase();
+    const keyByShape = {
+      radial: "upgradeShape.radial",
+      triangle: "upgradeShape.triangle",
+      waning: "upgradeShape.waning",
+      circle: "upgradeShape.circle",
+      droplet: "upgradeShape.droplet",
+      oath: "upgradeShape.oath",
+    };
+    const translationKey = keyByShape[normalized];
+    return translationKey ? t(translationKey) : String(shape ?? "");
   }
 
   function makeGemName(name, uniqueGem, cursed, source) {

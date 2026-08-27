@@ -26,7 +26,15 @@ export async function loadEffectTranslations(language) {
   return cache.get(language);
 }
 
+// Translation data occasionally contains a duplicated or contradictory sign such as
+// `++18.8%` or `+-10`. This is presentation-only normalization: canonical effect
+// IDs and the source strings persisted in a save are never changed.
+export function normalizeEffectDisplaySigns(text) {
+  if (typeof text !== "string") return text;
+  return text.replace(/[+-]\s*[+-](?=\s*(?:\d|[.,]\d))/g, (match) => match.trim().at(-1));
+}
+
 export function localizeEffectText(translations, sourceText) {
-  if (!sourceText || !translations) return sourceText;
-  return translations[sourceText] ?? sourceText;
+  if (!sourceText || !translations) return normalizeEffectDisplaySigns(sourceText);
+  return normalizeEffectDisplaySigns(translations[sourceText] ?? sourceText);
 }

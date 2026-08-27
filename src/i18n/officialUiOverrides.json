@@ -36,7 +36,8 @@
     "vignette.rating": "Bedømmelse",
     "vignette.runeEffects": "Caryll-runeeffekter",
     "vignette.shape": "Form",
-    "vignette.type": "Type"
+    "vignette.type": "Type",
+    "vignette.cursedPrefix": "Forbandet"
   },
   "de": {
     "actions.resetCompleted": "Zurücksetzen abgeschlossen",
@@ -75,7 +76,8 @@
     "vignette.rating": "Bewertung",
     "vignette.runeEffects": "Caryll-Rune-Effekte",
     "vignette.shape": "Form",
-    "vignette.type": "Typ"
+    "vignette.type": "Typ",
+    "vignette.cursedPrefix": "Verfluchter"
   },
   "es": {
     "actions.resetCompleted": "Reinicio completado",
@@ -114,7 +116,8 @@
     "vignette.rating": "Valoración",
     "vignette.runeEffects": "Efectos de Caryll Rune",
     "vignette.shape": "Forma",
-    "vignette.type": "Tipo"
+    "vignette.type": "Tipo",
+    "vignette.cursedPrefix": "Maldita"
   },
   "fi": {
     "actions.resetCompleted": "Nollaus suoritettu",
@@ -153,7 +156,8 @@
     "vignette.rating": "Luokitus",
     "vignette.runeEffects": "Caryll-riimujen vaikutukset",
     "vignette.shape": "Muoto",
-    "vignette.type": "Tyyppi"
+    "vignette.type": "Tyyppi",
+    "vignette.cursedPrefix": "Kirottu"
   },
   "fr": {
     "actions.resetCompleted": "Réinitialisation terminée",
@@ -192,7 +196,8 @@
     "vignette.rating": "Note",
     "vignette.runeEffects": "Effets (Caryll Rune)",
     "vignette.shape": "Forme",
-    "vignette.type": "Type"
+    "vignette.type": "Type",
+    "vignette.cursedPrefix": "Maudite"
   },
   "it": {
     "actions.resetCompleted": "Ripristino completato",
@@ -231,7 +236,8 @@
     "vignette.rating": "Valutazione",
     "vignette.runeEffects": "Effetti rune di Caryll",
     "vignette.shape": "Forma",
-    "vignette.type": "Tipo"
+    "vignette.type": "Tipo",
+    "vignette.cursedPrefix": "Maledetta"
   },
   "nb": {
     "actions.resetCompleted": "Tilbakestilt",
@@ -270,7 +276,8 @@
     "vignette.rating": "Vurdering",
     "vignette.runeEffects": "Caryll runeeffekter",
     "vignette.shape": "Form",
-    "vignette.type": "Type"
+    "vignette.type": "Type",
+    "vignette.cursedPrefix": "Forbannet"
   },
   "nl": {
     "actions.resetCompleted": "Reset voltooid",
@@ -309,7 +316,8 @@
     "vignette.rating": "Beoordeling",
     "vignette.runeEffects": "Caryll Rune-effecten",
     "vignette.shape": "Vorm",
-    "vignette.type": "Soort"
+    "vignette.type": "Soort",
+    "vignette.cursedPrefix": "Vervloekte"
   },
   "pl": {
     "actions.resetCompleted": "Reset zakończony",
@@ -348,7 +356,8 @@
     "vignette.rating": "Ocena",
     "vignette.runeEffects": "Efekty run Caryll",
     "vignette.shape": "Kształt",
-    "vignette.type": "Typ"
+    "vignette.type": "Typ",
+    "vignette.cursedPrefix": "Przeklęty"
   },
   "pt-PT": {
     "actions.resetCompleted": "Reinício concluído",
@@ -387,7 +396,8 @@
     "vignette.rating": "Classificação",
     "vignette.runeEffects": "Efeitos de Caryll Rune",
     "vignette.shape": "Forma",
-    "vignette.type": "Tipo"
+    "vignette.type": "Tipo",
+    "vignette.cursedPrefix": "Amaldiçoada"
   },
   "ru": {
     "actions.resetCompleted": "Сброс выполнен",
@@ -426,7 +436,8 @@
     "vignette.rating": "Рейтинг",
     "vignette.runeEffects": "Эффекты рун Caryll",
     "vignette.shape": "Форма",
-    "vignette.type": "Тип"
+    "vignette.type": "Тип",
+    "vignette.cursedPrefix": "Проклятый"
   },
   "sv": {
     "actions.resetCompleted": "Återställning slutförd",
@@ -465,7 +476,8 @@
     "vignette.rating": "Betyg",
     "vignette.runeEffects": "Caryll-runeeffekter",
     "vignette.shape": "Form",
-    "vignette.type": "Typ"
+    "vignette.type": "Typ",
+    "vignette.cursedPrefix": "Förbannad"
   },
   "tr": {
     "actions.resetCompleted": "Sıfırlama tamamlandı",
@@ -504,6 +516,7 @@
     "vignette.rating": "Puan",
     "vignette.runeEffects": "Caryll Rune Etkileri",
     "vignette.shape": "Şekil",
-    "vignette.type": "Tür"
+    "vignette.type": "Tür",
+    "vignette.cursedPrefix": "Lanetli"
   }
 }
