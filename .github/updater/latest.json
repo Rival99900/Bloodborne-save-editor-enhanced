@@ -1,15 +1,15 @@
 {
   "version": "0.3.0",
   "notes": "See the GitHub release for improvements and safe-save guidance.",
-  "pub_date": "2026-08-27T19:00:59Z",
+  "pub_date": "2026-08-27T20:35:14Z",
   "platforms": {
     "windows-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne_Save_Editor_Enhanced_0.3.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemFWTlZjOGQwQjJsbDUxSkZpbUJXYjNhZ2YrRmhBSGJRTDhheWIzU1JqbnNqSDFRNlRJSmJnNE9ENndhVFZwcmROOVZtcVE4TXdEcm4zUEhlSHpmT0FFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3ODU3MjQxCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjMuMF94NjQtc2V0dXAuZXhlCldKeGVNM2Fpa3U3ZTIrS21iMkdBL3Y1eURSOXpMMkNpU0ZiTjNFS0pJc21QUzJzVlVPVjVEYkdLRm4xejhKaXlsR2hUaGxuV2tQUG5KWlI3eFpXSEFBPT0K"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemM3ZEZ2dFU3WDJjQmM5OGlCd24zNHFCZDk4RSsxTDRBRDRxM05OZ1Y1ZDZCbkdHaml1K2RUdlZEWEUrK1J6RFNNeTNpUlJTcHlaemtrbDJmdHc2UHdjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3ODYyODc3CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjMuMF94NjQtc2V0dXAuZXhlCmk1TkgzWTJIWDFTK0xhMkN4cjl2dzAzN0hwMUgxSjExclZjTDNKb2N6cGx4ZlN5aHgyZE1GVitOd21xUHNFMjFOQmpkMlc3Vk5tS0pnVTRjMmJiYUN3PT0K"
     },
     "linux-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne_Save_Editor_Enhanced_0.3.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelhyM000a3ViMVU1QjYzWld5STBrK0YrVkNsbHhwZE1NRWlLa2d6R2QyT2Z2ekU0RUd5Qml3TGVWTCtUTW40TUt1cWNOekl3b3dvYkpEekhZSUlCTUFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3ODU3MjI4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjMuMF9hbWQ2NC5BcHBJbWFnZQphSW1pRmcrK3VsQXpxcnpKaktJam9WSWhKYndrZVFiS1hUbXhwZFlwQ1dDOEZza0pOUzk0WGdBazVrNDJnblpycjBZU3Mvc1d1Q050UFlIRWlDekJEUT09Cg=="
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelUzTTF4Q0J5bkl6YW5MUlRrT0J0cnFjWHBlV2VqY0lJdjFPL2k4M0hoMVQ2VGYxaGZiVGlvRE50RmFVdnBEc1p1V2ZaYi9mZ1hCOEVnRExOVGZqTGdVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3ODYyODg5CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjMuMF9hbWQ2NC5BcHBJbWFnZQpJTnBtTUtyeVNaaUVrc2pkOHN0Q0NxWlY2RklCdTgzcEdzejV5dWhmNHljaTZTKzUyb2Y3WUEvMWFTR1RlZkhCOVZFVE9NcXNyZDM1UTdwZWgwRDdDZz09Cg=="
     }
   }
 }
