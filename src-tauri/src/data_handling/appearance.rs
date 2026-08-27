@@ -33,7 +33,7 @@ pub fn import(file_data: &mut FileData, path: &str) -> Result<(), Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::data_handling::constants::APPEARANCE_BYTES_AMOUNT;
+    use crate::data_handling::{constants::APPEARANCE_BYTES_AMOUNT, stats};
     use std::{env, fs, path::PathBuf, process};
 
     fn temporary_export_path(label: &str) -> PathBuf {
@@ -66,6 +66,34 @@ mod tests {
             let path = temporary_export_path(&format!("export-{index}"));
             export(&file_data, path.to_str().unwrap()).unwrap();
             assert_export_matches(&file_data, &path);
+            let _ = fs::remove_file(path);
+        }
+    }
+
+    #[test]
+    fn import_preserves_all_character_statistics() {
+        for (index, (target_save, source_save)) in [
+            ("saves/testsave0", "saves/testsave3"),
+            ("saves/testsave1", "saves/testsave2"),
+            ("saves/testsave2", "saves/testsave1"),
+            ("saves/testsave3", "saves/testsave0"),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let source_data = FileData::build(source_save, PathBuf::from("resources")).unwrap();
+            let mut target_data = FileData::build(target_save, PathBuf::from("resources")).unwrap();
+            let stats_before = stats::new(&target_data).unwrap();
+            let path = temporary_export_path(&format!("statistics-{index}"));
+
+            export(&source_data, path.to_str().unwrap()).unwrap();
+            import(&mut target_data, path.to_str().unwrap()).unwrap();
+
+            assert_eq!(
+                stats::new(&target_data).unwrap(),
+                stats_before,
+                "face import must never change Health, Stamina, or any character statistic"
+            );
             let _ = fs::remove_file(path);
         }
     }

@@ -143,6 +143,25 @@ function EditUpgrade({
     [runeEffectsById, runePresets, t],
   );
 
+  // Reuse the translated Rune Forge names in the editor selector. The option
+  // keeps the original preset data (including its canonical `info`) so applying
+  // it never writes a localized label into the save model.
+  const runeEditorPresetOptions = useMemo(
+    () =>
+      runePresets.map((preset, index) => {
+        const forgePreset = runeForgePresets[index];
+        const localizedName = forgePreset?.name || preset.info?.name || preset.label;
+        const tier = Number(preset.info?.rating ?? 0) + 1;
+        return {
+          ...preset,
+          label: `${localizedName} (${tier})`,
+          sourceLabel: preset.label,
+          searchTerms: [preset.label, preset.info?.name, localizedName].filter(Boolean),
+        };
+      }),
+    [runeForgePresets, runePresets],
+  );
+
   // Artwork is resolved from the canonical effect id, never its translated label.
   // This keeps previews stable when switching language and supports both legitimate
   // cross-origin cases: Rune effects in Gem slots and Gem effects in Rune slots.
@@ -545,7 +564,7 @@ function EditUpgrade({
                 }}
                 selected=""
                 resetToPlaceholder
-                options={runePresets}
+                options={runeEditorPresetOptions}
               />
             ) : null}
           </div>

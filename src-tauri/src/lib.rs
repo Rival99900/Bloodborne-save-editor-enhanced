@@ -11,6 +11,7 @@ use data_handling::{
     enums::{ArticleType, Error as SaveError, Location, SlotShape, UpgradeType},
     position::Pos,
     save::SaveData,
+    stats,
     upgrades::Upgrade,
 };
 use serde_json::{json, Value};
@@ -781,8 +782,38 @@ fn import_appearance(path: &str, state_save: tauri::State<MutexSave>) -> Result<
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before importing appearance data.".to_string())?;
 
+    // Face data must be isolated from character statistics. Preserve the raw file
+    // transactionally and verify the derived numeric values before accepting it.
+    // This prevents a malformed or incompatible face payload from baking a Caryll
+    // Rune's HP/Stamina bonus into the base character values.
+    let original_file = save.file.clone();
+    let stats_before = stats::new(&save.file).map_err(|_| {
+        "Unable to verify character statistics before importing face data.".to_string()
+    })?;
+
     appearance::import(&mut save.file, path)
         .map_err(|_| "The imported file is not a face".to_string())?;
+
+    let stats_after = match stats::new(&save.file) {
+        Ok(stats) => stats,
+        Err(_) => {
+            save.file = original_file;
+            return Err(
+                "Face import was cancelled because character statistics could not be verified."
+                    .to_string(),
+            );
+        }
+    };
+    if stats_after != stats_before {
+        save.file = original_file;
+        return Err(
+            "Face import was cancelled because it would change Max HP, Stamina, or another character statistic."
+                .to_string(),
+        );
+    }
+
+    // Keep the serialized snapshot synchronized with the bytes just verified.
+    save.stats = stats_after;
     serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
