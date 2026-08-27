@@ -177,7 +177,7 @@ function Character() {
         </div>
         <div id="characterData">
           <CharacterInfo key={`character-info-${resetEpoch}`} editedStats={editedStats} setEditedStats={setEditedStats} />
-          <Appearance />
+          <Appearance onNotice={setNotice} />
           <IszGlitch />
           <Playtime key={`playtime-${resetEpoch}`} ms={editedPlaytime} setMs={setEditedPlaytime} />
           <Coordinates key={`coordinates-${resetEpoch}`} coordinates={editedCoordinates} setCoordinates={setEditedCoordinates} />

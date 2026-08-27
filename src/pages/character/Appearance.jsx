@@ -5,20 +5,27 @@ import StatusDialog from "../../components/StatusDialog";
 import { useLocalization } from "../../i18n/localization";
 import { SaveContext } from "../../context/context";
 
-function Appearance() {
+function Appearance({ onNotice }) {
   const { t } = useLocalization();
   const { setSave } = useContext(SaveContext);
   const [notice, setNotice] = useState(null);
+  const showNotice = (nextNotice) => {
+    if (typeof onNotice === "function") {
+      onNotice(nextNotice);
+      return;
+    }
+    setNotice(nextNotice);
+  };
 
   async function exportFace() {
     try {
       const path = await dialog.save({ title: t("characterForm.saveFaceFile") });
       if (!path) return;
       await invoke("export_appearance", { path });
-      setNotice({ tone: "success", title: t("characterForm.faceExported") });
+      showNotice({ tone: "success", title: t("characterForm.faceExported") });
     } catch (error) {
       console.error("Unable to export face data.", error);
-      setNotice({ tone: "error", title: t("characterForm.faceActionFailed") });
+      showNotice({ tone: "error", title: t("characterForm.faceActionFailed") });
     }
   }
 
@@ -30,10 +37,10 @@ function Appearance() {
         invoke("import_appearance", { path }),
       );
       if (!updatedSave) return;
-      setNotice({ tone: "success", title: t("characterForm.faceImported") });
+      showNotice({ tone: "success", title: t("characterForm.faceImported") });
     } catch (error) {
       console.error("Unable to import face data.", error);
-      setNotice({ tone: "error", title: t("characterForm.faceActionFailed") });
+      showNotice({ tone: "error", title: t("characterForm.faceActionFailed") });
     }
   }
 
@@ -62,7 +69,7 @@ function Appearance() {
       >
         {t("characterForm.importFace")}
       </button>
-      {notice ? (
+      {!onNotice && notice ? (
         <StatusDialog
           tone={notice.tone}
           title={notice.title}

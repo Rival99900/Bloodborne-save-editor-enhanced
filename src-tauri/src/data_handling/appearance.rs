@@ -99,6 +99,39 @@ mod tests {
     }
 
     #[test]
+    fn repository_face_examples_are_valid_and_preserve_statistics() {
+        let examples = [
+            "alfredFace",
+            "eustaceFace",
+            "iosefkaFace",
+            "samuelFace",
+            "sample-hunter-a.face",
+            "sample-hunter-b.face",
+            "sample-hunter-c.face",
+            "sample-hunter-d.face",
+        ];
+
+        for name in examples {
+            let path = PathBuf::from("../exampleFaces").join(name);
+            assert_eq!(
+                fs::metadata(&path).unwrap().len() as usize,
+                APPEARANCE_BYTES_AMOUNT,
+                "{name} must contain exactly one appearance block"
+            );
+
+            let mut target_data =
+                FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
+            let stats_before = stats::new(&target_data).unwrap();
+            import(&mut target_data, path.to_str().unwrap()).unwrap();
+            assert_eq!(
+                stats::new(&target_data).unwrap(),
+                stats_before,
+                "{name} must not change Health, Stamina, or any character statistic"
+            );
+        }
+    }
+
+    #[test]
     fn test_import() {
         for (index, (target_save, source_save)) in [
             ("saves/testsave0", "saves/testsave3"),
