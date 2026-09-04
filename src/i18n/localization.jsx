@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import officialUiOverrides from "./officialUiOverrides.json";
+import { v040Translations } from "./v040Translations";
 
 const LANGUAGE_STORAGE_KEY = "bloodborne-save-editor.language.v1";
 
@@ -91,6 +92,11 @@ const en = {
   saveFlow: {
     unsavedStatus: "Unsaved changes",
     loadedStatus: "Save loaded. A backup was created before editing.",
+    compatibilityRepairedStatus: "Save loaded after repairing CRLF binary expansion.",
+    compatibilityEyebrow: "Apollo compatibility repair",
+    compatibilityTitle: "Binary alignment repaired",
+    compatibilityDescription: "The selected file had been expanded by a text-mode LF-to-CRLF conversion. The editor repaired its in-memory copy; the automatic .bak still preserves the exact original file.",
+    continue: "Continue",
     savedStatus: "Changes saved.",
     discardOpenTitle: "Discard unsaved changes?",
     discardOpenDescription: "You have unsaved changes. Opening another save will discard the current edits.",
@@ -130,10 +136,20 @@ const en = {
     characterDescription: "Identity and position",
     bosses: "Bosses",
     bossesDescription: "Progress state",
+    npcs: "NPCs",
+    npcsDescription: "Restoration research",
     flags: "Flags",
     flagsDescription: "Advanced settings",
     backupTitle: "Backup-first workflow",
     backupDescription: "Opening a save creates a .bak copy before edits are made.",
+  },
+  capacity: {
+    title: "Free slots",
+    inventory: "Inventory",
+    storage: "Storage",
+    gems: "Gems",
+    runes: "Runes",
+    sharedPool: "Gem and rune values share the same safe record pool.",
   },
   flags: {
     eyebrow: "Advanced save settings",
@@ -302,6 +318,57 @@ const en = {
   bosses: {
     alive: "Alive",
     dead: "Dead",
+    timelineEyebrow: "Hunt progression",
+    timelineTitle: "Boss timeline",
+    progress: "{{defeated}} / {{total}} defeated",
+    required: "Main path",
+    optional: "Optional",
+    dlc: "DLC",
+    phases: {
+      centralYharnam: "Central Yharnam",
+      cathedralWard: "Cathedral Ward and Hemwick",
+      forbiddenWoods: "Forbidden Woods and Byrgenwerth",
+      optionalBranches: "Optional branches",
+      bloodMoon: "The Blood Moon",
+      finale: "Hunter's Dream finale",
+      huntersNightmare: "The Hunter's Nightmare",
+    },
+  },
+  bossNames: {
+    clericBeast: "Cleric Beast", fatherGascoigne: "Father Gascoigne", vicarAmelia: "Vicar Amelia",
+    celestialEmissary: "Celestial Emissary", ebrietas: "Ebrietas, Daughter of the Cosmos",
+    bloodStarvedBeast: "Blood-starved Beast", shadowOfYharnam: "Shadow of Yharnam",
+    rom: "Rom, the Vacuous Spider", witchOfHemwick: "The Witch of Hemwick", oneReborn: "The One Reborn",
+    martyrLogarius: "Martyr Logarius", darkbeastPaarl: "Darkbeast Paarl", amygdala: "Amygdala",
+    mergosWetNurse: "Mergo's Wet Nurse", micolash: "Micolash, Host of the Nightmare",
+    gehrman: "Gehrman, the First Hunter", moonPresence: "Moon Presence", ludwig: "Ludwig, the Accursed",
+    livingFailures: "Living Failures", ladyMaria: "Lady Maria of the Astral Clocktower",
+    orphanOfKos: "Orphan of Kos", laurence: "Laurence, the First Vicar",
+  },
+  npcNames: {
+    plainDoll: "The Plain Doll", eileen: "Eileen the Crow", alfred: "Alfred", djura: "Djura",
+    arianna: "Arianna", adella: "Adella", chapelDweller: "Chapel Dweller", iosefka: "Iosefka",
+    gilbert: "Gilbert", patches: "Patches the Spider", valtr: "Valtr", simon: "Simon the Harrowed",
+  },
+  npcs: {
+    eyebrow: "Progression workspace",
+    title: "NPC restoration",
+    lead: "NPC quests can depend on several linked flags. Controls remain locked until each byte pattern has been verified against paired saves.",
+    automaticNote: "Returns automatically after reloading the Hunter's Dream.",
+    unverifiedNote: "Alive/dead flags still require save-pair validation.",
+    unverified: "Unverified",
+    labEyebrow: "Read-only research tool",
+    labTitle: "Compare two NPC snapshots",
+    labLead: "Use two decrypted saves of the same character taken immediately before and after a single NPC state change. The comparison never edits either file.",
+    beforeReference: "NPC alive — reference save",
+    afterReference: "NPC dead — comparison save",
+    chooseSave: "Choose a decrypted save",
+    compare: "Compare progression flags",
+    comparing: "Comparing…",
+    compareFailed: "The save comparison failed.",
+    noDifference: "No progression flag difference was found.",
+    candidateCount: "{{count}} candidate flag differences found.",
+    candidates: "Candidate NPC flags",
   },
   inventory: {
     title: "Inventory",
@@ -21599,6 +21666,13 @@ Object.entries(finalI18nAuditOverrides).forEach(([language, translations]) => {
   resources[language] = translatedResource;
 });
 Object.entries(officialUiOverrides).forEach(([language, translations]) => {
+  const translatedResource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => {
+    applyTranslationPath(translatedResource, key, value);
+  });
+  resources[language] = translatedResource;
+});
+Object.entries(v040Translations).forEach(([language, translations]) => {
   const translatedResource = { ...(resources[language] ?? {}) };
   Object.entries(translations).forEach(([key, value]) => {
     applyTranslationPath(translatedResource, key, value);

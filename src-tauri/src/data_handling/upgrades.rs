@@ -297,7 +297,22 @@ pub fn parse_upgrades(file_data: &FileData) -> HashMap<u32, (Upgrade, UpgradeTyp
 
             let effect_info: UpgradeInfo = match serde_json::from_value(json_effect.clone()) {
                 Ok(inf) => inf,
-                Err(_) => continue,
+                Err(_) => {
+                    let unknown_label = format!("Unknown effect ({:#010X})", effects_ids[e]);
+                    effects.push((effects_ids[e], unknown_label.clone()));
+                    if e == 0 {
+                        info = UpgradeInfo {
+                            name: String::from("Unknown upgrade"),
+                            effect: unknown_label,
+                            rating: 0,
+                            level: 0,
+                            note: String::from(
+                                "This effect is not present in the bundled catalogue and was preserved unchanged.",
+                            ),
+                        };
+                    }
+                    continue;
+                }
             };
             effects.push((effects_ids[e], effect_info.effect.clone()));
             if e == 0 {
@@ -445,6 +460,24 @@ mod tests {
         assert_eq!(info.rating, 4);
         assert_eq!(info.level, 1);
         assert_eq!(info.note, String::from(""));
+    }
+
+    #[test]
+    fn unknown_effect_keeps_its_original_slot() {
+        let mut file_data =
+            FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
+        let upgrade_offset = file_data.offsets.upgrades.0;
+        let unknown_effect = 0xDEAD_BEEF_u32;
+        file_data.bytes[upgrade_offset + 20..upgrade_offset + 24]
+            .copy_from_slice(&unknown_effect.to_le_bytes());
+
+        let upgrades = parse_upgrades(&file_data);
+        let gem = &upgrades.get(&3229614145).unwrap().0;
+
+        assert_eq!(gem.effects.len(), 6);
+        assert_eq!(gem.effects[1].0, unknown_effect);
+        assert!(gem.effects[1].1.contains("Unknown effect"));
+        assert_eq!(gem.effects[2].0, 0x440c);
     }
 
     #[test]

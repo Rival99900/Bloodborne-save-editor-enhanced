@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useLocalization } from "../../i18n/localization";
 import DarkSelect from "../../components/DarkSelect";
+import { isBossDefeated } from "./bossProgression";
 
-function Boss({ boss, onChange }) {
+function Boss({ boss, localizedName, optional, dlc, onChange }) {
   const { t } = useLocalization();
-  const { name, flags } = boss;
-  const defeatedFlag = flags[0];
-  const isDefeated = (defeatedFlag.dead_value & defeatedFlag.current_value & 0xff) !== 0;
+  const { flags } = boss;
+  const isDefeated = isBossDefeated(boss);
   const options = useMemo(
     () => [
       { label: t("bosses.alive"), value: "alive" },
@@ -25,23 +25,22 @@ function Boss({ boss, onChange }) {
   }
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-between",
-        borderBottom: "1px solid #6b5f49",
-      }}
-    >
-      <span>{name}:</span>
+    <article className={`boss-row ${isDefeated ? "boss-row--defeated" : ""}`}>
+      <div className="boss-row__identity">
+        <span>{localizedName}</span>
+        <div className="boss-row__badges">
+          {dlc ? <small>{t("bosses.dlc")}</small> : null}
+          {optional ? <small>{t("bosses.optional")}</small> : <small>{t("bosses.required")}</small>}
+        </div>
+      </div>
       <DarkSelect
         className="boss-status-select"
-        ariaLabel={`${name} ${t("bosses.alive")} / ${t("bosses.dead")}`}
+        ariaLabel={`${localizedName} ${t("bosses.alive")} / ${t("bosses.dead")}`}
         options={options}
         value={isDefeated ? "dead" : "alive"}
         onChange={handleChange}
       />
-    </div>
+    </article>
   );
 }
 

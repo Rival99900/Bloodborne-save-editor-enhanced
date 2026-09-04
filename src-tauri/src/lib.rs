@@ -1,22 +1,74 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{error::Error, sync::Mutex};
+use std::{error::Error, path::PathBuf, sync::Mutex};
 mod data_handling;
 
 use data_handling::{
     appearance,
-    article::Article,
     bosses,
+    constants::USERNAME_TO_AOB,
     enums::{ArticleType, Error as SaveError, Location, SlotShape, UpgradeType},
+    inventory::Inventory,
     position::Pos,
     save::SaveData,
     stats,
     upgrades::Upgrade,
 };
+use serde::de::DeserializeOwned;
+use serde::Serialize;
 use serde_json::{json, Value};
 use tauri::{path::BaseDirectory, Manager};
 const MAX_REVISION_HISTORY: usize = 100;
+const NPC_FLAG_COMPARISON_LENGTH: usize = 30_000;
+const MAX_NPC_FLAG_DIFFERENCES: usize = 1_024;
+
+#[derive(Serialize, Debug, PartialEq)]
+struct FlagDifference {
+    rel_offset: usize,
+    before_value: u8,
+    after_value: u8,
+}
+
+#[derive(Serialize)]
+struct CapacitySummary {
+    inventory_free: usize,
+    storage_free: usize,
+    gems_free: usize,
+    runes_free: usize,
+    shared_upgrade_pool: bool,
+}
+
+fn compare_flag_bytes(before: &[u8], after: &[u8]) -> Result<Vec<FlagDifference>, String> {
+    if before.len() < NPC_FLAG_COMPARISON_LENGTH || after.len() < NPC_FLAG_COMPARISON_LENGTH {
+        return Err(
+            "One of the saves does not contain the complete progression flag region."
+                .to_string(),
+        );
+    }
+
+    let differences: Vec<_> = before[..NPC_FLAG_COMPARISON_LENGTH]
+        .iter()
+        .zip(&after[..NPC_FLAG_COMPARISON_LENGTH])
+        .enumerate()
+        .filter_map(|(rel_offset, (&before_value, &after_value))| {
+            (before_value != after_value).then_some(FlagDifference {
+                rel_offset,
+                before_value,
+                after_value,
+            })
+        })
+        .collect();
+
+    if differences.len() > MAX_NPC_FLAG_DIFFERENCES {
+        return Err(
+            "The saves differ too much for safe NPC research. Compare two snapshots of the same character taken immediately before and after the NPC state change."
+                .to_string(),
+        );
+    }
+
+    Ok(differences)
+}
 
 #[derive(Default)]
 struct SaveHistory {
@@ -33,6 +85,43 @@ fn format_load_error(error: SaveError) -> String {
     format!(
         "Unable to load the selected save: {error} Verify that it is a complete decrypted Bloodborne character save."
     )
+}
+
+fn request_field<T: DeserializeOwned>(value: &Value, key: &str) -> Result<T, String> {
+    let field = value
+        .get(key)
+        .ok_or_else(|| format!("The edit request is missing '{key}'."))?;
+    serde_json::from_value(field.clone())
+        .map_err(|_| format!("The edit request contains an invalid '{key}'."))
+}
+
+fn selected_upgrade_mut<'a>(
+    inventory: &'a mut Inventory,
+    info: &Value,
+) -> Result<&'a mut Upgrade, String> {
+    if let Some(equipped) = info.get("equipped").filter(|value| !value.is_null()) {
+        let article_type: ArticleType = request_field(equipped, "articleType")?;
+        let article_index: usize = request_field(equipped, "articleIndex")?;
+        let slot_index: usize = request_field(equipped, "slotIndex")?;
+
+        inventory
+            .articles
+            .get_mut(&article_type)
+            .and_then(|articles| articles.get_mut(article_index))
+            .and_then(|article| article.slots.as_mut())
+            .and_then(|slots| slots.get_mut(slot_index))
+            .and_then(|slot| slot.gem.as_mut())
+            .ok_or_else(|| "The selected equipped gem could not be found.".to_string())
+    } else {
+        let upgrade_type: UpgradeType = request_field(info, "upgradeType")?;
+        let upgrade_index: usize = request_field(info, "upgradeIndex")?;
+
+        inventory
+            .upgrades
+            .get_mut(&upgrade_type)
+            .and_then(|upgrades| upgrades.get_mut(upgrade_index))
+            .ok_or_else(|| "The selected gem or rune could not be found.".to_string())
+    }
 }
 
 fn begin_revision(state_save: &MutexSave) -> Result<(), String> {
@@ -182,6 +271,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             get_version,
             add_item,
             get_direct_upgrade_capacity,
+            get_capacity_summary,
             add_direct_upgrade,
             add_direct_equipment,
             edit_slot,
@@ -197,11 +287,59 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             start_revision,
             discard_revision,
             undo_revision,
-            redo_revision
+            redo_revision,
+            compare_npc_flag_regions
         ])
         .run(tauri::generate_context!())?;
 
     Ok(())
+}
+
+#[tauri::command]
+fn compare_npc_flag_regions(
+    before_path: String,
+    after_path: String,
+) -> Result<Vec<FlagDifference>, String> {
+    let before = data_handling::file::FileData::build(&before_path, PathBuf::new())
+        .map_err(format_load_error)?;
+    let after = data_handling::file::FileData::build(&after_path, PathBuf::new())
+        .map_err(format_load_error)?;
+
+    let before_name = before
+        .bytes
+        .get(before.offsets.username..before.offsets.username.saturating_add(34))
+        .ok_or_else(|| "The first save has an invalid character identity field.".to_string())?;
+    let after_name = after
+        .bytes
+        .get(after.offsets.username..after.offsets.username.saturating_add(34))
+        .ok_or_else(|| "The second save has an invalid character identity field.".to_string())?;
+    if before_name != after_name {
+        return Err(
+            "The selected saves do not belong to the same named character. NPC research requires two snapshots of one character."
+                .to_string(),
+        );
+    }
+
+    let before_start = before
+        .offsets
+        .username
+        .checked_add(USERNAME_TO_AOB)
+        .ok_or_else(|| "The first save has an invalid progression flag offset.".to_string())?;
+    let after_start = after
+        .offsets
+        .username
+        .checked_add(USERNAME_TO_AOB)
+        .ok_or_else(|| "The second save has an invalid progression flag offset.".to_string())?;
+    let before_region = before
+        .bytes
+        .get(before_start..)
+        .ok_or_else(|| "The first save has no readable progression flag region.".to_string())?;
+    let after_region = after
+        .bytes
+        .get(after_start..)
+        .ok_or_else(|| "The second save has no readable progression flag region.".to_string())?;
+
+    compare_flag_bytes(before_region, after_region)
 }
 
 #[tauri::command]
@@ -210,12 +348,18 @@ fn set_flag(
     new_value: u8,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before applying a flag.".to_string())?;
 
-    save.file.set_flag(offset, new_value);
+    save.file
+        .set_flag(offset, new_value)
+        .map_err(|error| error.to_string())?;
     save.bosses = bosses::new(&save.file).map_err(|error| error.to_string())?;
     serde_json::to_value(&save).map_err(|error| error.to_string())
 }
@@ -226,22 +370,34 @@ fn apply_mask(
     mask: u8,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before applying a flag.".to_string())?;
 
-    save.file.apply_mask(offset, mask);
+    save.file
+        .apply_mask(offset, mask)
+        .map_err(|error| error.to_string())?;
     save.bosses = bosses::new(&save.file).map_err(|error| error.to_string())?;
     serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
-fn get_isz(state_save: tauri::State<MutexSave>) -> [u8; 2] {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+fn get_isz(state_save: tauri::State<MutexSave>) -> Result<[u8; 2], String> {
+    let save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_ref()
+        .ok_or_else(|| "Open a decrypted save before reading the Isz state.".to_string())?;
 
-    save.file.get_isz()
+    Ok(save.file.get_isz())
 }
 
 #[tauri::command]
@@ -336,8 +492,14 @@ fn edit_quantity(
     is_storage: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before editing an item.".to_string())?;
 
     if !is_storage {
         match save
@@ -438,49 +600,48 @@ fn transform_item(
     is_storage: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
-
-    let category = {
-        if !is_storage {
-            save.inventory.articles.get_mut(&article_type).unwrap()
-        } else {
-            save.storage.articles.get_mut(&article_type).unwrap()
-        }
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before replacing an item.".to_string())?;
+    let (file, articles) = if is_storage {
+        (&mut save.file, &mut save.storage.articles)
+    } else {
+        (&mut save.file, &mut save.inventory.articles)
     };
-    let item = category
-        .iter_mut()
-        .find(|x| x.id == id && x.index == index)
-        .unwrap();
 
-    let old_type = item.article_type;
+    let (old_type, new_type, mut moved_item) = {
+        let category = articles
+            .get_mut(&article_type)
+            .ok_or_else(|| "The selected item category could not be found.".to_string())?;
+        let item = category
+            .iter_mut()
+            .find(|item| item.id == id && item.index == index)
+            .ok_or_else(|| "The selected item could not be found.".to_string())?;
+        let old_type = item.article_type;
+        item.transform(file, new_id, is_storage)
+            .map_err(|error| error.to_string())?;
+        (old_type, item.article_type, item.clone())
+    };
 
-    match item.transform(&mut save.file, new_id, is_storage) {
-        Ok(_) => {
-            // Check if the article type has changed
-            if item.article_type != old_type {
-                let moved_item = item.clone();
-
-                // Remove the item from the old category
-                if let Some(old_category) = save.inventory.articles.get_mut(&old_type) {
-                    old_category.retain(|x| x.index != index);
-                }
-
-                // Find or create the new category using item.article_type
-                let new_category = save
-                    .inventory
-                    .articles
-                    .entry(moved_item.article_type)
-                    .or_default();
-
-                // Add the item to the new category
-                new_category.push(moved_item);
+    if new_type != old_type {
+        if let Some(old_category) = articles.get_mut(&old_type) {
+            old_category.retain(|item| item.index != index);
+            for (new_index, item) in old_category.iter_mut().enumerate() {
+                item.index = new_index;
             }
-
-            Ok(serde_json::to_value(&save).map_err(|x| x.to_string())?)
         }
-        Err(e) => Err(e.to_string()),
+
+        let new_category = articles.entry(new_type).or_default();
+        moved_item.index = new_category.len();
+        new_category.push(moved_item);
     }
+
+    serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -490,7 +651,11 @@ fn transform_upgrade(
     is_storage: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before transforming an upgrade.".to_string())?;
@@ -518,7 +683,11 @@ fn edit_stat(
     value: u32,
     state_save: tauri::State<MutexSave>,
 ) -> Result<(), String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before editing statistics.".to_string())?;
@@ -539,15 +708,18 @@ fn edit_effect(
     info: Value,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save: &mut SaveData = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before editing effects.".to_string())?;
     let effect_catalog: Value = serde_json::from_str(include_str!("../resources/upgrades.json"))
         .map_err(|_| "Unable to read the embedded effect catalog.".to_string())?;
     let effect_id = new_effect_id.to_string();
-    let is_gem: bool = serde_json::from_value(info["isGem"].clone())
-        .map_err(|_| "The upgrade type is missing from this edit request.".to_string())?;
+    let is_gem: bool = request_field(&info, "isGem")?;
     let catalog_name = if is_gem { "gemEffects" } else { "runeEffects" };
     let fallback_catalog_name = if is_gem { "runeEffects" } else { "gemEffects" };
     // Existing saves can legitimately contain an effect from the other catalogue.
@@ -566,47 +738,18 @@ fn edit_effect(
         ));
     }
 
-    let upgrade: Option<*mut Upgrade>;
-
-    let location: Location = {
-        let is_storage: bool = serde_json::from_value(info["isStorage"].clone()).unwrap();
-
-        if is_storage {
-            Location::Storage
-        } else {
-            Location::Inventory
-        }
-    };
-
-    if let Some(equipped) = info.get("equipped") {
-        let article_type: ArticleType =
-            serde_json::from_value(equipped["articleType"].clone()).unwrap();
-        let article_index: usize =
-            serde_json::from_value(equipped["articleIndex"].clone()).unwrap();
-        let slot_index: usize = serde_json::from_value(equipped["slotIndex"].clone()).unwrap();
-
-        upgrade = save
-            .get_equipped_upgrade_mut(location, article_type, article_index, slot_index)
-            .map(|u| u as *mut _);
+    let is_storage: bool = request_field(&info, "isStorage")?;
+    let (file, inventory) = if is_storage {
+        (&mut save.file, &mut save.storage)
     } else {
-        let upgrade_type: UpgradeType =
-            serde_json::from_value(info["upgradeType"].clone()).unwrap();
-        let upgrade_index: usize = serde_json::from_value(info["upgradeIndex"].clone()).unwrap();
+        (&mut save.file, &mut save.inventory)
+    };
+    let upgrade = selected_upgrade_mut(inventory, &info)?;
+    upgrade
+        .change_effect(file, new_effect_id, index)
+        .map_err(|error| error.to_string())?;
 
-        upgrade = save
-            .get_upgrade_mut(location, upgrade_type, upgrade_index)
-            .map(|u| u as *mut _);
-    }
-
-    let upgrade =
-        upgrade.ok_or_else(|| "The selected gem or rune could not be found.".to_string())?;
-
-    unsafe {
-        match (*upgrade).change_effect(&mut save.file, new_effect_id, index) {
-            Ok(_) => Ok(serde_json::to_value(&save).map_err(|x| x.to_string())?),
-            Err(_) => Err("Failed to edit the upgrade's effect".to_string()),
-        }
-    }
+    serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -615,46 +758,26 @@ fn edit_shape(
     info: Value,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save: &mut SaveData = save_option.as_mut().unwrap();
-    let upgrade: Option<*mut Upgrade>;
-
-    let location: Location = {
-        let is_storage: bool = serde_json::from_value(info["isStorage"].clone()).unwrap();
-
-        if is_storage {
-            Location::Storage
-        } else {
-            Location::Inventory
-        }
-    };
-
-    if let Some(equipped) = info.get("equipped") {
-        let article_type: ArticleType =
-            serde_json::from_value(equipped["articleType"].clone()).unwrap();
-        let article_index: usize =
-            serde_json::from_value(equipped["articleIndex"].clone()).unwrap();
-        let slot_index: usize = serde_json::from_value(equipped["slotIndex"].clone()).unwrap();
-
-        upgrade = save
-            .get_equipped_upgrade_mut(location, article_type, article_index, slot_index)
-            .map(|u| u as *mut _);
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before editing an upgrade shape.".to_string())?;
+    let is_storage: bool = request_field(&info, "isStorage")?;
+    let (file, inventory) = if is_storage {
+        (&mut save.file, &mut save.storage)
     } else {
-        let upgrade_type: UpgradeType =
-            serde_json::from_value(info["upgradeType"].clone()).unwrap();
-        let upgrade_index: usize = serde_json::from_value(info["upgradeIndex"].clone()).unwrap();
+        (&mut save.file, &mut save.inventory)
+    };
+    let upgrade = selected_upgrade_mut(inventory, &info)?;
+    upgrade
+        .change_shape(file, new_shape)
+        .map_err(|error| error.to_string())?;
 
-        upgrade = save
-            .get_upgrade_mut(location, upgrade_type, upgrade_index)
-            .map(|u| u as *mut _);
-    }
-
-    unsafe {
-        match (*upgrade.unwrap()).change_shape(&mut save.file, new_shape) {
-            Ok(_) => Ok(serde_json::to_value(&save).map_err(|x| x.to_string())?),
-            Err(_) => Err("Failed to edit the upgrade's shape".to_string()),
-        }
-    }
+    serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -666,25 +789,29 @@ fn edit_slot(
     new_shape: SlotShape,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save: &mut SaveData = save_option.as_mut().unwrap();
-
-    let location = if is_storage {
-        Location::Storage
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before editing a gem slot.".to_string())?;
+    let (file, inventory) = if is_storage {
+        (&mut save.file, &mut save.storage)
     } else {
-        Location::Inventory
+        (&mut save.file, &mut save.inventory)
     };
+    let article = inventory
+        .articles
+        .get_mut(&article_type)
+        .and_then(|articles| articles.get_mut(article_index))
+        .ok_or_else(|| "The selected equipment could not be found.".to_string())?;
+    article
+        .change_slot_shape(file, slot_index, new_shape)
+        .map_err(|error| error.to_string())?;
 
-    let article: Option<*mut Article> = save
-        .get_article_mut(location, article_type, article_index)
-        .map(|u| u as *mut _);
-
-    unsafe {
-        match (*article.unwrap()).change_slot_shape(&mut save.file, slot_index, new_shape) {
-            Ok(_) => Ok(serde_json::to_value(&save).map_err(|x| x.to_string())?),
-            Err(e) => Err(e.to_string()),
-        }
-    }
+    serde_json::to_value(&save).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -696,8 +823,14 @@ fn equip_gem(
     is_storage: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before equipping a gem.".to_string())?;
 
     let result = if is_storage {
         save.storage.equip_gem(
@@ -733,8 +866,14 @@ fn unequip_gem(
     is_storage: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before unequipping a gem.".to_string())?;
 
     let result = if is_storage {
         save.storage.unequip_gem(
@@ -762,8 +901,14 @@ fn unequip_gem(
 
 #[tauri::command]
 fn export_appearance(path: &str, state_save: tauri::State<MutexSave>) -> Result<String, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_ref()
+        .ok_or_else(|| "Open a decrypted save before exporting appearance data.".to_string())?;
 
     match appearance::export(&save.file, path) {
         Ok(_) => Ok("Successfully exported".to_string()),
@@ -822,8 +967,14 @@ fn set_username(
     new_username: String,
     state_save: tauri::State<MutexSave>,
 ) -> Result<String, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before changing the hunter name.".to_string())?;
 
     match save.username.set(&mut save.file, new_username) {
         Ok(_) => Ok("Successfully changed name".to_string()),
@@ -848,6 +999,27 @@ fn get_direct_upgrade_capacity(state_save: tauri::State<MutexSave>) -> Result<bo
         .ok_or_else(|| "Open a decrypted save before checking Gem/Rune capacity.".to_string())?;
 
     Ok(save.has_safe_reusable_upgrade_record())
+}
+
+#[tauri::command]
+fn get_capacity_summary(state_save: tauri::State<MutexSave>) -> Result<CapacitySummary, String> {
+    let save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "The save data is temporarily unavailable.".to_string())?;
+    let save = save_option
+        .as_ref()
+        .ok_or_else(|| "Open a decrypted save before checking capacity.".to_string())?;
+    let shared_upgrade_records = save.safe_reusable_upgrade_record_count();
+
+    Ok(CapacitySummary {
+        inventory_free: save.file.count_inv_empty_slots(Location::Inventory),
+        storage_free: save.file.count_inv_empty_slots(Location::Storage),
+        gems_free: shared_upgrade_records,
+        runes_free: shared_upgrade_records,
+        shared_upgrade_pool: true,
+    })
 }
 
 #[tauri::command]
@@ -904,8 +1076,14 @@ fn add_item(
     is_storage: bool,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save = save_option.as_mut().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before adding an item.".to_string())?;
 
     if !is_storage {
         match save
@@ -913,7 +1091,7 @@ fn add_item(
             .add_item(&mut save.file, id, quantity, is_storage)
         {
             Ok(_) => Ok(serde_json::to_value(&save).map_err(|x| x.to_string())?),
-            Err(_) => Err("Failed to add the item".to_string()),
+            Err(error) => Err(error.to_string()),
         }
     } else {
         match save
@@ -921,7 +1099,7 @@ fn add_item(
             .add_item(&mut save.file, id, quantity, is_storage)
         {
             Ok(_) => Ok(serde_json::to_value(&save).map_err(|x| x.to_string())?),
-            Err(_) => Err("Failed to add the item".to_string()),
+            Err(error) => Err(error.to_string()),
         }
     }
 }
@@ -933,7 +1111,11 @@ fn edit_coordinates(
     z: f32,
     state_save: tauri::State<MutexSave>,
 ) -> Result<(), String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before editing coordinates.".to_string())?;
@@ -954,7 +1136,11 @@ fn teleport(
     if map_id.len() < 2 {
         return Err("The selected destination has an invalid map identifier.".to_string());
     }
-    let mut save_option = state_save.inner().data.lock().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
     let save: &mut SaveData = save_option
         .as_mut()
         .ok_or_else(|| "Open a decrypted save before teleporting.".to_string())?;
@@ -976,8 +1162,14 @@ fn change_weapon_level(
     level: u8,
     state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    let mut save_option = state_save.inner().data.lock().unwrap();
-    let save: &mut SaveData = save_option.as_mut().unwrap();
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before changing a weapon level.".to_string())?;
 
     let result = if is_storage {
         save.storage.change_weapon_level(
@@ -1034,5 +1226,35 @@ mod revision_history_tests {
 
         let redone = redo_revision_inner(&state).expect("the changed snapshot must be reapplied");
         assert_eq!(redone.file, changed.file);
+    }
+
+    #[test]
+    fn npc_flag_comparison_reports_only_changed_relative_bytes() {
+        let before = vec![0_u8; NPC_FLAG_COMPARISON_LENGTH];
+        let mut after = before.clone();
+        after[42] = 0x80;
+        after[21_714] = 0x08;
+
+        assert_eq!(
+            compare_flag_bytes(&before, &after).unwrap(),
+            vec![
+                FlagDifference {
+                    rel_offset: 42,
+                    before_value: 0,
+                    after_value: 0x80,
+                },
+                FlagDifference {
+                    rel_offset: 21_714,
+                    before_value: 0,
+                    after_value: 0x08,
+                },
+            ],
+        );
+    }
+
+    #[test]
+    fn npc_flag_comparison_rejects_truncated_regions() {
+        let truncated = vec![0_u8; NPC_FLAG_COMPARISON_LENGTH - 1];
+        assert!(compare_flag_bytes(&truncated, &truncated).is_err());
     }
 }

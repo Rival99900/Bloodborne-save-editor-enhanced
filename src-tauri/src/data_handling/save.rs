@@ -31,6 +31,7 @@ pub struct SaveData {
     pub bosses: Vec<Boss>,
     pub playtime: u32,
     pub position: Pos,
+    pub compatibility_repair_applied: bool,
 }
 
 impl SaveData {
@@ -75,6 +76,7 @@ impl SaveData {
         // structural checks. Invalid imports must not create a misleading .bak.
         file.create_backup(save_path)?;
 
+        let compatibility_repair_applied = file.compatibility_repair_applied;
         Ok(SaveData {
             file,
             stats,
@@ -84,6 +86,7 @@ impl SaveData {
             bosses,
             playtime,
             position,
+            compatibility_repair_applied,
         })
     }
 
@@ -571,6 +574,21 @@ impl SaveData {
         self.find_safe_unreferenced_upgrade_offset().is_some()
     }
 
+    pub fn safe_reusable_upgrade_record_count(&self) -> usize {
+        let referenced_ids = self.referenced_upgrade_ids();
+        (self.file.offsets.upgrades.0..self.file.offsets.upgrades.1)
+            .step_by(40)
+            .filter(|offset| {
+                self.file
+                    .bytes
+                    .get(*offset..*offset + 4)
+                    .and_then(|bytes| bytes.try_into().ok())
+                    .map(u32::from_le_bytes)
+                    .is_some_and(|id| !referenced_ids.contains(&id))
+            })
+            .count()
+    }
+
     /// Experimental direct allocation. A new upgrade is materialized only by
     /// reclaiming an unreferenced 40-byte Upgrade record that already exists
     /// inside the save. This deliberately refuses to grow or shift the opaque
@@ -643,6 +661,13 @@ impl SaveData {
             "ERROR: A direct gem or rune requires a validated primary effect.",
         ))?;
 
+        let is_storage = location == Location::Storage;
+        self.file
+            .find_inv_empty_slot(location)
+            .ok_or(Error::CustomError(
+                "ERROR: The destination inventory has no safe reusable slot.",
+            ))?;
+
         let offset = self.find_safe_unreferenced_upgrade_offset().ok_or(Error::CustomError(
             "ERROR: No safe unreferenced gem or rune record is available. Create a slot in-game or use the [CUT] workflow.",
         ))?;
@@ -672,9 +697,9 @@ impl SaveData {
             index: 0,
         };
         match location {
-            Location::Inventory => self.inventory.add_upgrade(&mut self.file, upgrade, false),
-            Location::Storage => self.storage.add_upgrade(&mut self.file, upgrade, true),
-        }
+            Location::Inventory => self.inventory.add_upgrade(&mut self.file, upgrade, false)?,
+            Location::Storage => self.storage.add_upgrade(&mut self.file, upgrade, is_storage)?,
+        };
 
         let inserted = match location {
             Location::Inventory => self.inventory.upgrades.get(&upgrade_type),
@@ -732,6 +757,16 @@ impl SaveData {
         upgrade_index: usize,
         from: Location,
     ) -> Result<(), Error> {
+        let destination = match from {
+            Location::Inventory => Location::Storage,
+            Location::Storage => Location::Inventory,
+        };
+        self.file
+            .find_inv_empty_slot(destination)
+            .ok_or(Error::CustomError(
+                "ERROR: The destination inventory has no safe reusable slot.",
+            ))?;
+
         match from {
             Location::Inventory => {
                 let upgrade = self.inventory.remove_upgrade(
@@ -740,7 +775,7 @@ impl SaveData {
                     upgrade_index,
                     false,
                 )?;
-                self.storage.add_upgrade(&mut self.file, upgrade, true);
+                self.storage.add_upgrade(&mut self.file, upgrade, true)?;
             }
             Location::Storage => {
                 let upgrade = self.storage.remove_upgrade(
@@ -749,7 +784,7 @@ impl SaveData {
                     upgrade_index,
                     true,
                 )?;
-                self.inventory.add_upgrade(&mut self.file, upgrade, false);
+                self.inventory.add_upgrade(&mut self.file, upgrade, false)?;
             }
         };
         Ok(())

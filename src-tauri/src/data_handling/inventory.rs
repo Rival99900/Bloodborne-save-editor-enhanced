@@ -148,11 +148,20 @@ impl Inventory {
         is_storage: bool,
     ) -> Result<(), Error> {
         let value_endian = u32::to_le_bytes(value);
+        let offset = file_data
+            .find_article_offset(number, id, TypeFamily::Item, is_storage)
+            .ok_or(Error::CustomError(
+                "ERROR: The Article was not found in the inventory.",
+            ))?;
+
         let mut found = false;
         for (k, v) in self.articles.iter_mut() {
             let family: TypeFamily = k.to_owned().into();
             if family == TypeFamily::Item {
-                if let Some(item) = v.iter_mut().find(|item| item.id == id) {
+                if let Some(item) = v
+                    .iter_mut()
+                    .find(|item| item.id == id && item.number == number)
+                {
                     if k == &ArticleType::Key {
                         return Err(Error::CustomError("ERROR: Key items cannot be edited."));
                     }
@@ -163,18 +172,13 @@ impl Inventory {
             }
         }
 
-        let opt = file_data.find_article_offset(number, id, TypeFamily::Item, is_storage);
-        if let Some(offset) = opt {
-            for (i, o) in (offset + 12..offset + 16).enumerate() {
-                file_data.bytes[o] = value_endian[i];
-            }
-        }
-
-        if opt.is_none() || !found {
+        if !found {
             return Err(Error::CustomError(
                 "ERROR: The Article was not found in the inventory.",
             ));
         }
+
+        file_data.bytes[offset + 12..offset + 16].copy_from_slice(&value_endian);
 
         Ok(())
     }
@@ -193,21 +197,11 @@ impl Inventory {
             ));
         }
 
-        let empty_slot_index;
-        match file_data.find_inv_empty_slot(Location::from(is_storage)) {
-            Some(index) => empty_slot_index = index,
-            None => {
-                if !is_storage {
-                    empty_slot_index = file_data.offsets.inventory.1;
-                    file_data.offsets.inventory.1 += 16;
-                } else {
-                    empty_slot_index = file_data.offsets.storage.1;
-                    file_data.offsets.storage.1 += 16;
-                }
-                (file_data.bytes[empty_slot_index + 12], _) =
-                    file_data.bytes[empty_slot_index - 4].overflowing_add(1);
-            }
-        };
+        let empty_slot_index = file_data
+            .find_inv_empty_slot(Location::from(is_storage))
+            .ok_or(Error::CustomError(
+                "ERROR: The destination inventory has no safe reusable slot.",
+            ))?;
 
         let uname = file_data.offsets.username;
         let (first_counter_index, second_counter_index) = {
@@ -320,22 +314,12 @@ impl Inventory {
         file_data: &mut FileData,
         mut upgrade: Upgrade,
         is_storage: bool,
-    ) {
-        let empty_slot_index;
-        match file_data.find_inv_empty_slot(Location::from(is_storage)) {
-            Some(index) => empty_slot_index = index,
-            None => {
-                if !is_storage {
-                    empty_slot_index = file_data.offsets.inventory.1;
-                    file_data.offsets.inventory.1 += 16;
-                } else {
-                    empty_slot_index = file_data.offsets.storage.1;
-                    file_data.offsets.storage.1 += 16;
-                }
-                (file_data.bytes[empty_slot_index + 12], _) =
-                    file_data.bytes[empty_slot_index - 4].overflowing_add(1);
-            }
-        };
+    ) -> Result<(), Error> {
+        let empty_slot_index = file_data
+            .find_inv_empty_slot(Location::from(is_storage))
+            .ok_or(Error::CustomError(
+                "ERROR: The destination inventory has no safe reusable slot.",
+            ))?;
         let uname = file_data.offsets.username;
         let (first_counter_index, second_counter_index) = {
             if !is_storage {
@@ -409,6 +393,7 @@ impl Inventory {
         let vec = self.upgrades.entry(upgrade.upgrade_type).or_default();
         upgrade.index = vec.len();
         vec.push(upgrade);
+        Ok(())
     }
 
     //This method asumes that the upgrade it's not in the inventory already
@@ -425,6 +410,14 @@ impl Inventory {
                 if let Some(ref mut slots) = &mut article.slots {
                     if let Some(slot) = slots.get_mut(slot_index) {
                         if let Some(ref mut gem) = &mut slot.gem {
+                            if file_data
+                                .find_inv_empty_slot(Location::from(is_storage))
+                                .is_none()
+                            {
+                                return Err(Error::CustomError(
+                                    "ERROR: The destination inventory has no safe reusable slot.",
+                                ));
+                            }
                             //Remove the gem in file_data
                             let first_part = article.first_part.to_le_bytes();
                             let second_part = article.second_part.to_le_bytes();
@@ -454,8 +447,7 @@ impl Inventory {
                             let gem = gem.to_owned();
                             slot.gem = None;
 
-                            self.add_upgrade(file_data, gem, is_storage);
-                            Ok(())
+                            self.add_upgrade(file_data, gem, is_storage)
                         } else {
                             Err(Error::CustomError(
                                 "ERROR: The specified slot does not have a gem.",
@@ -1013,6 +1005,72 @@ mod tests {
     }
 
     #[test]
+    fn full_inventory_rejects_item_without_changing_bytes_or_offsets() {
+        let mut save = build_save_data("testsave0");
+        let (start, end) = save.file.offsets.inventory;
+        for offset in (start..end - 4).step_by(16) {
+            save.file.bytes[offset + 4..offset + 16].fill(0xAA);
+        }
+        let bytes_before = save.file.bytes.clone();
+        let offsets_before = save.file.offsets.clone();
+
+        let result = save
+            .inventory
+            .add_item(&mut save.file, 0x460, 1, false);
+
+        assert!(result.is_err());
+        assert_eq!(save.file.bytes, bytes_before);
+        assert_eq!(save.file.offsets, offsets_before);
+    }
+
+    #[test]
+    fn duplicate_item_quantity_edit_targets_its_record_number() {
+        let mut save = build_save_data("testsave0");
+        let id = 0x460;
+        save.inventory
+            .add_item(&mut save.file, id, 11, false)
+            .unwrap();
+        save.inventory
+            .add_item(&mut save.file, id, 22, false)
+            .unwrap();
+
+        let consumables = save
+            .inventory
+            .articles
+            .get(&ArticleType::Consumable)
+            .unwrap();
+        let matching: Vec<_> = consumables.iter().filter(|item| item.id == id).collect();
+        let first_number = matching[matching.len() - 2].number;
+        let second_number = matching[matching.len() - 1].number;
+
+        save.inventory
+            .edit_item(&mut save.file, second_number, id, 77, false)
+            .unwrap();
+
+        let consumables = save
+            .inventory
+            .articles
+            .get(&ArticleType::Consumable)
+            .unwrap();
+        assert_eq!(
+            consumables
+                .iter()
+                .find(|item| item.id == id && item.number == first_number)
+                .unwrap()
+                .amount,
+            11
+        );
+        assert_eq!(
+            consumables
+                .iter()
+                .find(|item| item.id == id && item.number == second_number)
+                .unwrap()
+                .amount,
+            77
+        );
+    }
+
+    #[test]
     fn test_equipped_gems() {
         //This tests if Inventory::build allocates gems correctly
         //(To the player inventory, storage, and weapon slots)
@@ -1113,7 +1171,8 @@ mod tests {
 
         //Add to the inventory
         save.inventory
-            .add_upgrade(&mut save.file, rune.clone(), false);
+            .add_upgrade(&mut save.file, rune.clone(), false)
+            .unwrap();
         let runes = save.inventory.upgrades.get(&UpgradeType::Rune).unwrap();
         let mut rune2 = runes[1].clone();
         rune2.index = 0;
@@ -1131,7 +1190,9 @@ mod tests {
 
         //Add to a save without items in its storage
         let mut save = build_save_data("testsave7");
-        save.storage.add_upgrade(&mut save.file, rune, true);
+        save.storage
+            .add_upgrade(&mut save.file, rune, true)
+            .unwrap();
         let runes = save.storage.upgrades.get(&UpgradeType::Rune).unwrap();
         let new_rune = runes.last().unwrap();
         assert_eq!(new_rune.number, 1);

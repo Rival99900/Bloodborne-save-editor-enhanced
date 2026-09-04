@@ -6,16 +6,51 @@ use super::{
     offsets::Offsets,
 };
 use std::{
-    fs,
-    io::{self, Read},
-    path::PathBuf,
+    fs::{self, OpenOptions},
+    io::{self, Read, Write},
+    path::{Path, PathBuf},
+    process,
 };
+
+const CANONICAL_BLOODBORNE_SAVE_SIZE: usize = 0x140000;
+
+fn repair_crlf_expanded_save(bytes: Vec<u8>) -> (Vec<u8>, bool) {
+    if bytes.len() <= CANONICAL_BLOODBORNE_SAVE_SIZE {
+        return (bytes, false);
+    }
+
+    let line_feeds = bytes.iter().filter(|byte| **byte == b'\n').count();
+    let looks_expanded = bytes.len() == CANONICAL_BLOODBORNE_SAVE_SIZE + line_feeds
+        && bytes
+            .iter()
+            .enumerate()
+            .filter(|(_, byte)| **byte == b'\n')
+            .all(|(index, _)| index > 0 && bytes[index - 1] == b'\r');
+    if !looks_expanded {
+        return (bytes, false);
+    }
+
+    let mut repaired = Vec::with_capacity(CANONICAL_BLOODBORNE_SAVE_SIZE);
+    for (index, byte) in bytes.iter().copied().enumerate() {
+        if byte == b'\r' && bytes.get(index + 1) == Some(&b'\n') {
+            continue;
+        }
+        repaired.push(byte);
+    }
+
+    if repaired.len() == CANONICAL_BLOODBORNE_SAVE_SIZE {
+        (repaired, true)
+    } else {
+        (bytes, false)
+    }
+}
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct FileData {
     pub bytes: Vec<u8>,
     pub offsets: Offsets,
     pub resources_path: PathBuf, //This is here for convenience
+    pub compatibility_repair_applied: bool,
 }
 
 impl FileData {
@@ -31,6 +66,8 @@ impl FileData {
             return Err(Error::CustomError("The selected file is empty."));
         }
 
+        let (bytes, compatibility_repair_applied) = repair_crlf_expanded_save(bytes);
+
         //Search the offsets
         let offsets = Offsets::build(&bytes)?;
 
@@ -38,6 +75,7 @@ impl FileData {
             bytes,
             offsets,
             resources_path,
+            compatibility_repair_applied,
         })
     }
 
@@ -88,16 +126,34 @@ impl FileData {
             .ok_or(Error::CustomError("Boss flag is outside the save file."))
     }
 
-    pub fn set_flag(&mut self, offset_from_aob: usize, new_value: u8) {
-        let value_offset = self.offsets.username + USERNAME_TO_AOB + offset_from_aob;
-
-        self.bytes[value_offset] = new_value;
+    pub fn set_flag(&mut self, offset_from_aob: usize, new_value: u8) -> Result<(), Error> {
+        let value_offset = self
+            .offsets
+            .username
+            .checked_add(USERNAME_TO_AOB)
+            .and_then(|offset| offset.checked_add(offset_from_aob))
+            .ok_or(Error::CustomError("Boss flag offset overflow."))?;
+        let value = self
+            .bytes
+            .get_mut(value_offset)
+            .ok_or(Error::CustomError("Boss flag is outside the save file."))?;
+        *value = new_value;
+        Ok(())
     }
 
-    pub fn apply_mask(&mut self, offset_from_aob: usize, mask: u8) {
-        let value_offset = self.offsets.username + USERNAME_TO_AOB + offset_from_aob;
-
-        self.bytes[value_offset] &= mask;
+    pub fn apply_mask(&mut self, offset_from_aob: usize, mask: u8) -> Result<(), Error> {
+        let value_offset = self
+            .offsets
+            .username
+            .checked_add(USERNAME_TO_AOB)
+            .and_then(|offset| offset.checked_add(offset_from_aob))
+            .ok_or(Error::CustomError("Boss flag offset overflow."))?;
+        let value = self
+            .bytes
+            .get_mut(value_offset)
+            .ok_or(Error::CustomError("Boss flag is outside the save file."))?;
+        *value &= mask;
+        Ok(())
     }
 
     pub fn edit(&mut self, rel_offset: isize, length: usize, times: usize, value: u32) {
@@ -113,7 +169,84 @@ impl FileData {
     }
 
     pub fn save(&self, path: &str) -> Result<(), io::Error> {
-        fs::write(path, &self.bytes)
+        let target = Path::new(path);
+        let file_name = target.file_name().ok_or_else(|| {
+            io::Error::new(io::ErrorKind::InvalidInput, "Save destination has no file name.")
+        })?;
+        let parent = target.parent().unwrap_or_else(|| Path::new("."));
+        let file_name = file_name.to_string_lossy();
+
+        let mut staged = None;
+        for attempt in 0..100_u8 {
+            let staged_path = parent.join(format!(
+                ".{file_name}.{}.{}.tmp",
+                process::id(),
+                attempt
+            ));
+            match OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(&staged_path)
+            {
+                Ok(file) => {
+                    staged = Some((staged_path, file));
+                    break;
+                }
+                Err(error) if error.kind() == io::ErrorKind::AlreadyExists => continue,
+                Err(error) => return Err(error),
+            }
+        }
+
+        let (staged_path, mut staged_file) = staged.ok_or_else(|| {
+            io::Error::new(
+                io::ErrorKind::AlreadyExists,
+                "Unable to allocate a temporary save file.",
+            )
+        })?;
+
+        if let Err(error) = staged_file
+            .write_all(&self.bytes)
+            .and_then(|_| staged_file.flush())
+            .and_then(|_| staged_file.sync_all())
+        {
+            let _ = fs::remove_file(&staged_path);
+            return Err(error);
+        }
+        drop(staged_file);
+
+        #[cfg(not(target_os = "windows"))]
+        {
+            if let Err(error) = fs::rename(&staged_path, target) {
+                let _ = fs::remove_file(&staged_path);
+                return Err(error);
+            }
+        }
+
+        #[cfg(target_os = "windows")]
+        {
+            let rollback_path = parent.join(format!(
+                ".{file_name}.{}.replace-backup",
+                process::id()
+            ));
+            let had_target = target.exists();
+            if had_target {
+                let _ = fs::remove_file(&rollback_path);
+                fs::rename(target, &rollback_path)?;
+            }
+
+            if let Err(error) = fs::rename(&staged_path, target) {
+                if had_target {
+                    let _ = fs::rename(&rollback_path, target);
+                }
+                let _ = fs::remove_file(&staged_path);
+                return Err(error);
+            }
+            if had_target {
+                let _ = fs::remove_file(&rollback_path);
+            }
+        }
+
+        Ok(())
     }
 
     pub fn find_article_offset(
@@ -197,6 +330,18 @@ impl FileData {
         None
     }
 
+    pub fn count_inv_empty_slots(&self, location: Location) -> usize {
+        let (start, end) = match location {
+            Location::Inventory => self.offsets.inventory,
+            Location::Storage => self.offsets.storage,
+        };
+        let empty = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0];
+        (start..end.saturating_sub(4))
+            .step_by(16)
+            .filter(|offset| self.bytes.get(offset + 4..=offset + 15) == Some(&empty[..]))
+            .count()
+    }
+
     pub fn get_playtime(&self) -> Result<u32, Error> {
         let time_bytes: [u8; 4] = self
             .bytes
@@ -242,6 +387,29 @@ impl FileData {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn repairs_only_a_complete_crlf_expansion() {
+        let mut canonical = vec![0x55; CANONICAL_BLOODBORNE_SAVE_SIZE];
+        canonical[10] = b'\n';
+        canonical[20] = b'\r';
+        canonical[21] = b'\n';
+        let mut expanded = Vec::with_capacity(canonical.len() + 2);
+        for byte in canonical.iter().copied() {
+            if byte == b'\n' {
+                expanded.push(b'\r');
+            }
+            expanded.push(byte);
+        }
+
+        let (repaired, changed) = repair_crlf_expanded_save(expanded);
+        assert!(changed);
+        assert_eq!(repaired, canonical);
+
+        let (untouched, changed) = repair_crlf_expanded_save(canonical.clone());
+        assert!(!changed);
+        assert_eq!(untouched, canonical);
+    }
 
     #[test]
     fn test_find_upgrade_offset() {

@@ -10,6 +10,8 @@
 
 > **Credits.** Huge thanks and congratulations to [Noxde](https://github.com/Noxde) for the original project. This enhanced edition exists because of that valuable open-source work.
 
+> **Current release:** v0.4.0 adds free-capacity counters, a fully localized boss timeline, safer save mutations, and compatibility repair for decrypted files accidentally expanded by an LF-to-CRLF text-mode transfer. NPC restoration remains a read-only research tool until each NPC is validated with an isolated before/after save pair.
+
 ## Download
 
 Download the latest package from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). The stable distribution provides a **Windows x64 installer**, an **Ubuntu/Linux x64 AppImage**, signed updater metadata and a SHA-256 checksum manifest.
@@ -18,10 +20,10 @@ Download the latest package from the [Releases page](https://github.com/Rival999
 
 | Field | Details |
 | --- | --- |
-| **Name** | **Bloodborne Save Editor Enhanced v0.3.0** |
-| **Version** | `v0.3.0` |
+| **Name** | **Bloodborne Save Editor Enhanced v0.4.0** |
+| **Version** | `v0.4.0` |
 | **Status** | Stable release — test first with a copied, decrypted save and retain the automatic `.bak` backup. |
-| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne_Save_Editor_Enhanced_0.3.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/Bloodborne_Save_Editor_Enhanced_0.3.0_x64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.3.0/SHA256SUMS.txt) |
+| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/SHA256SUMS.txt) |
 
 | Step | What to do |
 | --- | --- |
@@ -48,6 +50,10 @@ Download the latest package from the [Releases page](https://github.com/Rival999
 | **Safe closing** | When there are unsaved changes, choose to save, close without saving, or cancel. The discard-and-close action exits correctly. |
 | **Revision control** | A local change log, real backend-synchronised Undo/Redo, rollback on failed composite edits, and a summary since the last checkpoint. |
 | **Inventory tools** | Text/effect search, locally stored favorites, and responsive compact/comfortable density preferences. |
+| **Free capacity** | Live free-slot counters for Inventory, Storage, Blood Gems, and Caryll Runes, with an explicit shared-pool notice for Gem/Rune records. |
+| **Boss timeline** | All 22 bosses arranged into a localized progression timeline with main-path, optional, and DLC labels. |
+| **Apollo compatibility** | Detects the exact binary LF-to-CRLF expansion observed in affected decrypted transfers, repairs the in-memory copy, and retains the untouched source in `.bak`. |
+| **NPC research** | Read-only paired-save comparison for isolating NPC progression flags without enabling unsafe unverified writes. |
 | **Preset library** | Duplicate personal presets and exchange validated Gem/Rune Forge collections through explicit JSON import/export. |
 | **Languages** | The supported game-language selector includes English, French, Italian, German, Spanish, Dutch, Polish, Russian, Danish, Norwegian Bokmål, Finnish, Swedish, Turkish and Portuguese (Portugal). |
 

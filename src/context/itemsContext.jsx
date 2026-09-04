@@ -131,7 +131,7 @@ export const ItemsProvider = ({ children }) => {
           note: 'One of the "Metamorphosis" runes. Raises stamina',
         },
         effects: [
-          [1105001, "Boosts Max HP +15%"],
+          [1105001, "Boosts Max Stamina +15%"],
           [4294967295, "No Effect"],
           [4294967295, "No Effect"],
           [4294967295, "No Effect"],

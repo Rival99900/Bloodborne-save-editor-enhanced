@@ -37,7 +37,13 @@
     "vignette.runeEffects": "Caryll-runeeffekter",
     "vignette.shape": "Form",
     "vignette.type": "Type",
-    "vignette.cursedPrefix": "Forbandet"
+    "vignette.cursedPrefix": "Forbandet",
+    "sidebar.npcs": "NPC'er", "sidebar.npcsDescription": "Forskning i genoplivning",
+    "npcs.eyebrow": "Fremskridtsområde", "npcs.title": "Genoplivning af NPC'er",
+    "npcs.lead": "NPC-opgaver kan afhænge af flere sammenkædede flag. Kontrollerne forbliver låst, indtil hvert bytemønster er verificeret med parrede gemte spil.",
+    "npcs.automaticNote": "Vender automatisk tilbage efter genindlæsning af Hunter's Dream.", "npcs.unverifiedNote": "Livs-/dødsflag kræver stadig validering med et gemmepar.", "npcs.unverified": "Ikke verificeret",
+    "npcs.labEyebrow": "Skrivebeskyttet forskningsværktøj", "npcs.labTitle": "Sammenlign to NPC-øjebliksbilleder", "npcs.labLead": "Brug to dekrypterede gemte spil fra samme figur, taget lige før og efter én NPC-tilstandsændring. Sammenligningen ændrer ingen filer.",
+    "npcs.beforeReference": "NPC i live — reference", "npcs.afterReference": "NPC død — sammenligning", "npcs.chooseSave": "Vælg et dekrypteret gemt spil", "npcs.compare": "Sammenlign fremskridtsflag", "npcs.comparing": "Sammenligner…", "npcs.compareFailed": "Sammenligningen mislykkedes.", "npcs.noDifference": "Ingen forskel i fremskridtsflag blev fundet.", "npcs.candidateCount": "{{count}} mulige flagforskelle fundet.", "npcs.candidates": "Mulige NPC-flag"
   },
   "de": {
     "actions.resetCompleted": "Zurücksetzen abgeschlossen",
@@ -77,7 +83,12 @@
     "vignette.runeEffects": "Caryll-Rune-Effekte",
     "vignette.shape": "Form",
     "vignette.type": "Typ",
-    "vignette.cursedPrefix": "Verfluchter"
+    "vignette.cursedPrefix": "Verfluchter",
+    "sidebar.npcs": "NPCs", "sidebar.npcsDescription": "Wiederbelebungsforschung",
+    "npcs.eyebrow": "Fortschrittsbereich", "npcs.title": "NPC-Wiederherstellung", "npcs.lead": "NPC-Quests können von mehreren verknüpften Flags abhängen. Die Steuerung bleibt gesperrt, bis jedes Bytemuster mit gepaarten Spielständen geprüft wurde.",
+    "npcs.automaticNote": "Kehrt nach dem Neuladen des Traums des Jägers automatisch zurück.", "npcs.unverifiedNote": "Lebend-/Tot-Flags müssen noch mit einem Speicherpaar geprüft werden.", "npcs.unverified": "Ungeprüft",
+    "npcs.labEyebrow": "Schreibgeschütztes Forschungswerkzeug", "npcs.labTitle": "Zwei NPC-Schnappschüsse vergleichen", "npcs.labLead": "Verwende zwei entschlüsselte Spielstände desselben Charakters direkt vor und nach genau einer NPC-Zustandsänderung. Keine Datei wird verändert.",
+    "npcs.beforeReference": "NPC lebendig — Referenz", "npcs.afterReference": "NPC tot — Vergleich", "npcs.chooseSave": "Entschlüsselten Spielstand wählen", "npcs.compare": "Fortschrittsflags vergleichen", "npcs.comparing": "Vergleich läuft…", "npcs.compareFailed": "Der Vergleich ist fehlgeschlagen.", "npcs.noDifference": "Keine Änderung an Fortschrittsflags gefunden.", "npcs.candidateCount": "{{count}} mögliche Flag-Unterschiede gefunden.", "npcs.candidates": "Mögliche NPC-Flags"
   },
   "es": {
     "actions.resetCompleted": "Reinicio completado",
@@ -117,7 +128,12 @@
     "vignette.runeEffects": "Efectos de Caryll Rune",
     "vignette.shape": "Forma",
     "vignette.type": "Tipo",
-    "vignette.cursedPrefix": "Maldita"
+    "vignette.cursedPrefix": "Maldita",
+    "sidebar.npcs": "PNJ", "sidebar.npcsDescription": "Investigación de reanimación",
+    "npcs.eyebrow": "Área de progreso", "npcs.title": "Restauración de PNJ", "npcs.lead": "Las misiones de PNJ pueden depender de varios indicadores enlazados. Los controles seguirán bloqueados hasta verificar cada patrón de bytes con partidas emparejadas.",
+    "npcs.automaticNote": "Regresa automáticamente al recargar el Sueño del Cazador.", "npcs.unverifiedNote": "Los indicadores vivo/muerto aún requieren validación con dos partidas.", "npcs.unverified": "Sin verificar",
+    "npcs.labEyebrow": "Herramienta de investigación de solo lectura", "npcs.labTitle": "Comparar dos capturas de PNJ", "npcs.labLead": "Usa dos partidas descifradas del mismo personaje tomadas justo antes y después de un único cambio de estado del PNJ. No se modifica ningún archivo.",
+    "npcs.beforeReference": "PNJ vivo — referencia", "npcs.afterReference": "PNJ muerto — comparación", "npcs.chooseSave": "Elegir partida descifrada", "npcs.compare": "Comparar indicadores de progreso", "npcs.comparing": "Comparando…", "npcs.compareFailed": "La comparación ha fallado.", "npcs.noDifference": "No se encontraron diferencias de progreso.", "npcs.candidateCount": "Se encontraron {{count}} posibles diferencias.", "npcs.candidates": "Posibles indicadores de PNJ"
   },
   "fi": {
     "actions.resetCompleted": "Nollaus suoritettu",
@@ -157,7 +173,12 @@
     "vignette.runeEffects": "Caryll-riimujen vaikutukset",
     "vignette.shape": "Muoto",
     "vignette.type": "Tyyppi",
-    "vignette.cursedPrefix": "Kirottu"
+    "vignette.cursedPrefix": "Kirottu",
+    "sidebar.npcs": "NPC:t", "sidebar.npcsDescription": "Elvytyksen tutkimus",
+    "npcs.eyebrow": "Etenemisnäkymä", "npcs.title": "NPC-hahmojen palautus", "npcs.lead": "NPC-tehtävät voivat riippua useista toisiinsa liittyvistä lipuista. Säätimet pysyvät lukittuina, kunnes jokainen tavukuvio on vahvistettu tallennusparilla.",
+    "npcs.automaticNote": "Palaa automaattisesti, kun Hunter's Dream ladataan uudelleen.", "npcs.unverifiedNote": "Elossa/kuollut-liput vaativat vielä tallennusparin vahvistuksen.", "npcs.unverified": "Vahvistamaton",
+    "npcs.labEyebrow": "Vain luku -tutkimustyökalu", "npcs.labTitle": "Vertaa kahta NPC-tilannekuvaa", "npcs.labLead": "Käytä saman hahmon kahta purettua tallennusta juuri ennen ja jälkeen yhden NPC-tilan muutoksen. Vertailu ei muokkaa tiedostoja.",
+    "npcs.beforeReference": "NPC elossa — vertailutallennus", "npcs.afterReference": "NPC kuollut — vertailu", "npcs.chooseSave": "Valitse purettu tallennus", "npcs.compare": "Vertaa etenemislippuja", "npcs.comparing": "Verrataan…", "npcs.compareFailed": "Vertailu epäonnistui.", "npcs.noDifference": "Etenemislipuissa ei löytynyt eroa.", "npcs.candidateCount": "Löytyi {{count}} mahdollista lippueroa.", "npcs.candidates": "Mahdolliset NPC-liput"
   },
   "fr": {
     "actions.resetCompleted": "Réinitialisation terminée",
@@ -197,7 +218,12 @@
     "vignette.runeEffects": "Effets (Caryll Rune)",
     "vignette.shape": "Forme",
     "vignette.type": "Type",
-    "vignette.cursedPrefix": "Maudite"
+    "vignette.cursedPrefix": "Maudite",
+    "sidebar.npcs": "PNJ", "sidebar.npcsDescription": "Recherche de réanimation",
+    "npcs.eyebrow": "Progression", "npcs.title": "Réanimation des PNJ", "npcs.lead": "Les quêtes de PNJ peuvent dépendre de plusieurs flags liés. Les commandes restent verrouillées jusqu'à la validation de chaque motif d'octets avec deux sauvegardes.",
+    "npcs.automaticNote": "Revient automatiquement après avoir rechargé le Rêve du chasseur.", "npcs.unverifiedNote": "Les flags vie/mort doivent encore être validés avec une paire de sauvegardes.", "npcs.unverified": "Non vérifié",
+    "npcs.labEyebrow": "Outil de recherche en lecture seule", "npcs.labTitle": "Comparer deux états de PNJ", "npcs.labLead": "Utilisez deux sauvegardes déchiffrées du même personnage prises juste avant et après un seul changement d'état du PNJ. Aucun fichier n'est modifié.",
+    "npcs.beforeReference": "PNJ vivant — référence", "npcs.afterReference": "PNJ mort — comparaison", "npcs.chooseSave": "Choisir une sauvegarde déchiffrée", "npcs.compare": "Comparer les flags de progression", "npcs.comparing": "Comparaison…", "npcs.compareFailed": "La comparaison a échoué.", "npcs.noDifference": "Aucune différence de progression détectée.", "npcs.candidateCount": "{{count}} différences de flags possibles détectées.", "npcs.candidates": "Flags de PNJ possibles"
   },
   "it": {
     "actions.resetCompleted": "Ripristino completato",
@@ -237,7 +263,12 @@
     "vignette.runeEffects": "Effetti rune di Caryll",
     "vignette.shape": "Forma",
     "vignette.type": "Tipo",
-    "vignette.cursedPrefix": "Maledetta"
+    "vignette.cursedPrefix": "Maledetta",
+    "sidebar.npcs": "PNG", "sidebar.npcsDescription": "Ricerca sulla rianimazione",
+    "npcs.eyebrow": "Area progressi", "npcs.title": "Ripristino dei PNG", "npcs.lead": "Le missioni dei PNG possono dipendere da più flag collegati. I controlli restano bloccati finché ogni sequenza di byte non viene verificata con due salvataggi.",
+    "npcs.automaticNote": "Ritorna automaticamente dopo aver ricaricato il Sogno del Cacciatore.", "npcs.unverifiedNote": "I flag vivo/morto richiedono ancora la verifica con due salvataggi.", "npcs.unverified": "Non verificato",
+    "npcs.labEyebrow": "Strumento di ricerca in sola lettura", "npcs.labTitle": "Confronta due istantanee PNG", "npcs.labLead": "Usa due salvataggi decifrati dello stesso personaggio presi subito prima e dopo un solo cambio di stato del PNG. Nessun file viene modificato.",
+    "npcs.beforeReference": "PNG vivo — riferimento", "npcs.afterReference": "PNG morto — confronto", "npcs.chooseSave": "Scegli un salvataggio decifrato", "npcs.compare": "Confronta i flag di progresso", "npcs.comparing": "Confronto…", "npcs.compareFailed": "Confronto non riuscito.", "npcs.noDifference": "Nessuna differenza nei flag di progresso.", "npcs.candidateCount": "Trovate {{count}} possibili differenze.", "npcs.candidates": "Possibili flag PNG"
   },
   "nb": {
     "actions.resetCompleted": "Tilbakestilt",
@@ -277,7 +308,12 @@
     "vignette.runeEffects": "Caryll runeeffekter",
     "vignette.shape": "Form",
     "vignette.type": "Type",
-    "vignette.cursedPrefix": "Forbannet"
+    "vignette.cursedPrefix": "Forbannet",
+    "sidebar.npcs": "NPC-er", "sidebar.npcsDescription": "Forskning på gjenoppliving",
+    "npcs.eyebrow": "Fremdriftsområde", "npcs.title": "Gjenoppretting av NPC-er", "npcs.lead": "NPC-oppdrag kan avhenge av flere koblede flagg. Kontrollene forblir låst til hvert bytemønster er bekreftet med et lagringspar.",
+    "npcs.automaticNote": "Kommer automatisk tilbake når Hunter's Dream lastes inn på nytt.", "npcs.unverifiedNote": "Levende/død-flagg må fortsatt valideres med to lagringer.", "npcs.unverified": "Ikke bekreftet",
+    "npcs.labEyebrow": "Skrivebeskyttet forskningsverktøy", "npcs.labTitle": "Sammenlign to NPC-øyeblikksbilder", "npcs.labLead": "Bruk to dekrypterte lagringer av samme figur tatt rett før og etter én NPC-statusendring. Ingen filer endres.",
+    "npcs.beforeReference": "NPC levende — referanse", "npcs.afterReference": "NPC død — sammenligning", "npcs.chooseSave": "Velg en dekryptert lagring", "npcs.compare": "Sammenlign fremdriftsflagg", "npcs.comparing": "Sammenligner…", "npcs.compareFailed": "Sammenligningen mislyktes.", "npcs.noDifference": "Ingen forskjell i fremdriftsflagg ble funnet.", "npcs.candidateCount": "Fant {{count}} mulige flaggforskjeller.", "npcs.candidates": "Mulige NPC-flagg"
   },
   "nl": {
     "actions.resetCompleted": "Reset voltooid",
@@ -317,7 +353,12 @@
     "vignette.runeEffects": "Caryll Rune-effecten",
     "vignette.shape": "Vorm",
     "vignette.type": "Soort",
-    "vignette.cursedPrefix": "Vervloekte"
+    "vignette.cursedPrefix": "Vervloekte",
+    "sidebar.npcs": "NPC's", "sidebar.npcsDescription": "Onderzoek naar herstel",
+    "npcs.eyebrow": "Voortgangswerkruimte", "npcs.title": "NPC-herstel", "npcs.lead": "NPC-missies kunnen van meerdere gekoppelde vlaggen afhangen. De bediening blijft vergrendeld totdat elk bytepatroon met twee saves is gecontroleerd.",
+    "npcs.automaticNote": "Keert automatisch terug na het herladen van de Hunter's Dream.", "npcs.unverifiedNote": "Levend/dood-vlaggen moeten nog met een savepaar worden gevalideerd.", "npcs.unverified": "Niet geverifieerd",
+    "npcs.labEyebrow": "Alleen-lezen onderzoekstool", "npcs.labTitle": "Vergelijk twee NPC-momentopnamen", "npcs.labLead": "Gebruik twee ontsleutelde saves van hetzelfde personage, direct voor en na één NPC-statuswijziging. Geen enkel bestand wordt aangepast.",
+    "npcs.beforeReference": "NPC levend — referentie", "npcs.afterReference": "NPC dood — vergelijking", "npcs.chooseSave": "Kies een ontsleutelde save", "npcs.compare": "Vergelijk voortgangsvlaggen", "npcs.comparing": "Vergelijken…", "npcs.compareFailed": "De vergelijking is mislukt.", "npcs.noDifference": "Geen verschil in voortgangsvlaggen gevonden.", "npcs.candidateCount": "{{count}} mogelijke vlagverschillen gevonden.", "npcs.candidates": "Mogelijke NPC-vlaggen"
   },
   "pl": {
     "actions.resetCompleted": "Reset zakończony",
@@ -357,7 +398,12 @@
     "vignette.runeEffects": "Efekty run Caryll",
     "vignette.shape": "Kształt",
     "vignette.type": "Typ",
-    "vignette.cursedPrefix": "Przeklęty"
+    "vignette.cursedPrefix": "Przeklęty",
+    "sidebar.npcs": "NPC", "sidebar.npcsDescription": "Badanie przywracania",
+    "npcs.eyebrow": "Obszar postępu", "npcs.title": "Przywracanie NPC", "npcs.lead": "Zadania NPC mogą zależeć od kilku powiązanych flag. Sterowanie pozostanie zablokowane, dopóki każdy wzorzec bajtów nie zostanie potwierdzony parą zapisów.",
+    "npcs.automaticNote": "Wraca automatycznie po ponownym wczytaniu Hunter's Dream.", "npcs.unverifiedNote": "Flagi żywy/martwy wymagają jeszcze walidacji parą zapisów.", "npcs.unverified": "Niezweryfikowane",
+    "npcs.labEyebrow": "Narzędzie badawcze tylko do odczytu", "npcs.labTitle": "Porównaj dwa stany NPC", "npcs.labLead": "Użyj dwóch odszyfrowanych zapisów tej samej postaci wykonanych tuż przed i po jednej zmianie stanu NPC. Żaden plik nie zostanie zmieniony.",
+    "npcs.beforeReference": "NPC żyje — wzorzec", "npcs.afterReference": "NPC martwy — porównanie", "npcs.chooseSave": "Wybierz odszyfrowany zapis", "npcs.compare": "Porównaj flagi postępu", "npcs.comparing": "Porównywanie…", "npcs.compareFailed": "Porównanie nie powiodło się.", "npcs.noDifference": "Nie znaleziono różnic flag postępu.", "npcs.candidateCount": "Znaleziono {{count}} możliwych różnic.", "npcs.candidates": "Możliwe flagi NPC"
   },
   "pt-PT": {
     "actions.resetCompleted": "Reinício concluído",
@@ -397,7 +443,12 @@
     "vignette.runeEffects": "Efeitos de Caryll Rune",
     "vignette.shape": "Forma",
     "vignette.type": "Tipo",
-    "vignette.cursedPrefix": "Amaldiçoada"
+    "vignette.cursedPrefix": "Amaldiçoada",
+    "sidebar.npcs": "NPC", "sidebar.npcsDescription": "Investigação de reanimação",
+    "npcs.eyebrow": "Área de progresso", "npcs.title": "Restauro de NPC", "npcs.lead": "As missões de NPC podem depender de vários indicadores ligados. Os controlos permanecem bloqueados até cada padrão de bytes ser verificado com dois ficheiros guardados.",
+    "npcs.automaticNote": "Regressa automaticamente após recarregar o Sonho do Caçador.", "npcs.unverifiedNote": "Os indicadores vivo/morto ainda precisam de validação com dois ficheiros.", "npcs.unverified": "Não verificado",
+    "npcs.labEyebrow": "Ferramenta de investigação só de leitura", "npcs.labTitle": "Comparar dois estados de NPC", "npcs.labLead": "Use dois ficheiros desencriptados da mesma personagem, obtidos imediatamente antes e depois de uma única alteração de estado do NPC. Nenhum ficheiro é modificado.",
+    "npcs.beforeReference": "NPC vivo — referência", "npcs.afterReference": "NPC morto — comparação", "npcs.chooseSave": "Escolher ficheiro desencriptado", "npcs.compare": "Comparar indicadores de progresso", "npcs.comparing": "A comparar…", "npcs.compareFailed": "A comparação falhou.", "npcs.noDifference": "Não foi encontrada diferença de progresso.", "npcs.candidateCount": "Foram encontradas {{count}} diferenças possíveis.", "npcs.candidates": "Possíveis indicadores de NPC"
   },
   "ru": {
     "actions.resetCompleted": "Сброс выполнен",
@@ -437,7 +488,12 @@
     "vignette.runeEffects": "Эффекты рун Caryll",
     "vignette.shape": "Форма",
     "vignette.type": "Тип",
-    "vignette.cursedPrefix": "Проклятый"
+    "vignette.cursedPrefix": "Проклятый",
+    "sidebar.npcs": "NPC", "sidebar.npcsDescription": "Исследование восстановления",
+    "npcs.eyebrow": "Область прогресса", "npcs.title": "Восстановление NPC", "npcs.lead": "Задания NPC могут зависеть от нескольких связанных флагов. Управление останется заблокированным, пока каждый шаблон байтов не будет проверен на паре сохранений.",
+    "npcs.automaticNote": "Автоматически возвращается после перезагрузки Сна охотника.", "npcs.unverifiedNote": "Флаги жизни и смерти ещё требуют проверки на паре сохранений.", "npcs.unverified": "Не проверено",
+    "npcs.labEyebrow": "Инструмент исследования только для чтения", "npcs.labTitle": "Сравнить два состояния NPC", "npcs.labLead": "Используйте два расшифрованных сохранения одного персонажа непосредственно до и после одного изменения состояния NPC. Файлы не изменяются.",
+    "npcs.beforeReference": "NPC жив — эталон", "npcs.afterReference": "NPC мёртв — сравнение", "npcs.chooseSave": "Выбрать расшифрованное сохранение", "npcs.compare": "Сравнить флаги прогресса", "npcs.comparing": "Сравнение…", "npcs.compareFailed": "Сравнение не удалось.", "npcs.noDifference": "Различий флагов прогресса не найдено.", "npcs.candidateCount": "Найдено возможных различий: {{count}}.", "npcs.candidates": "Возможные флаги NPC"
   },
   "sv": {
     "actions.resetCompleted": "Återställning slutförd",
@@ -477,7 +533,12 @@
     "vignette.runeEffects": "Caryll-runeeffekter",
     "vignette.shape": "Form",
     "vignette.type": "Typ",
-    "vignette.cursedPrefix": "Förbannad"
+    "vignette.cursedPrefix": "Förbannad",
+    "sidebar.npcs": "NPC:er", "sidebar.npcsDescription": "Forskning om återupplivning",
+    "npcs.eyebrow": "Förloppsområde", "npcs.title": "Återställ NPC:er", "npcs.lead": "NPC-uppdrag kan bero på flera länkade flaggor. Kontrollerna förblir låsta tills varje bytemönster har verifierats med ett sparpar.",
+    "npcs.automaticNote": "Återvänder automatiskt när Hunter's Dream laddas om.", "npcs.unverifiedNote": "Levande/död-flaggor måste fortfarande valideras med två sparfiler.", "npcs.unverified": "Ej verifierad",
+    "npcs.labEyebrow": "Skrivskyddat forskningsverktyg", "npcs.labTitle": "Jämför två NPC-ögonblicksbilder", "npcs.labLead": "Använd två dekrypterade sparfiler för samma figur, tagna precis före och efter en enda NPC-statusändring. Inga filer ändras.",
+    "npcs.beforeReference": "NPC levande — referens", "npcs.afterReference": "NPC död — jämförelse", "npcs.chooseSave": "Välj en dekrypterad sparfil", "npcs.compare": "Jämför förloppsflaggor", "npcs.comparing": "Jämför…", "npcs.compareFailed": "Jämförelsen misslyckades.", "npcs.noDifference": "Ingen skillnad i förloppsflaggor hittades.", "npcs.candidateCount": "{{count}} möjliga flaggskillnader hittades.", "npcs.candidates": "Möjliga NPC-flaggor"
   },
   "tr": {
     "actions.resetCompleted": "Sıfırlama tamamlandı",
@@ -517,6 +578,11 @@
     "vignette.runeEffects": "Caryll Rune Etkileri",
     "vignette.shape": "Şekil",
     "vignette.type": "Tür",
-    "vignette.cursedPrefix": "Lanetli"
+    "vignette.cursedPrefix": "Lanetli",
+    "sidebar.npcs": "NPC'ler", "sidebar.npcsDescription": "Canlandırma araştırması",
+    "npcs.eyebrow": "İlerleme alanı", "npcs.title": "NPC geri yükleme", "npcs.lead": "NPC görevleri birden fazla bağlantılı bayrağa bağlı olabilir. Her bayt deseni iki kayıtla doğrulanana kadar kontroller kilitli kalır.",
+    "npcs.automaticNote": "Avcı'nın Rüyası yeniden yüklendiğinde otomatik olarak geri döner.", "npcs.unverifiedNote": "Canlı/ölü bayrakları hâlâ iki kayıtla doğrulanmalıdır.", "npcs.unverified": "Doğrulanmadı",
+    "npcs.labEyebrow": "Salt okunur araştırma aracı", "npcs.labTitle": "İki NPC anlık görüntüsünü karşılaştır", "npcs.labLead": "Aynı karakterin, tek bir NPC durum değişikliğinin hemen öncesinde ve sonrasında alınmış iki çözülmüş kaydını kullanın. Hiçbir dosya değiştirilmez.",
+    "npcs.beforeReference": "NPC canlı — referans", "npcs.afterReference": "NPC ölü — karşılaştırma", "npcs.chooseSave": "Çözülmüş kayıt seç", "npcs.compare": "İlerleme bayraklarını karşılaştır", "npcs.comparing": "Karşılaştırılıyor…", "npcs.compareFailed": "Karşılaştırma başarısız oldu.", "npcs.noDifference": "İlerleme bayrağı farkı bulunamadı.", "npcs.candidateCount": "{{count}} olası bayrak farkı bulundu.", "npcs.candidates": "Olası NPC bayrakları"
   }
 }

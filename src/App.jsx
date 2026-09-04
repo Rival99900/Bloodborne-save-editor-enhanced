@@ -240,7 +240,12 @@ function App() {
       setRevisionEpoch((current) => current + 1);
       resetRevisions();
       setSaveName(await basename(selectedPath));
-      setSaveStatusKey("saveFlow.loadedStatus");
+      if (parsedSave.compatibility_repair_applied) {
+        setSaveStatusKey("saveFlow.compatibilityRepairedStatus");
+        setOpenSaveDialog("compatibility-repair");
+      } else {
+        setSaveStatusKey("saveFlow.loadedStatus");
+      }
       setDirtyState(false);
       return true;
     } catch (error) {
@@ -507,6 +512,15 @@ function App() {
             setLoadError("");
             setOpenSaveDialog("");
           }}
+        />
+      ) : null}
+      {openSaveDialog === "compatibility-repair" ? (
+        <SaveFlowDialog
+          eyebrow={t("saveFlow.compatibilityEyebrow")}
+          title={t("saveFlow.compatibilityTitle")}
+          description={t("saveFlow.compatibilityDescription")}
+          confirmLabel={t("saveFlow.continue")}
+          onConfirm={() => setOpenSaveDialog("")}
         />
       ) : null}
       {openSaveDialog === "save-complete" ? (

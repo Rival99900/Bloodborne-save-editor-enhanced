@@ -12,8 +12,52 @@ on:
         type: string
 
 jobs:
+  validate:
+    name: Validate tagged source
+    runs-on: ubuntu-22.04
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+
+    steps:
+      - name: Checkout tagged source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+
+      - name: Install native test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Restore Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Audit catalog and localization coverage
+        run: npm run audit:catalogs
+
+      - name: Build production frontend
+        run: npm run build
+
+      - name: Run native test suite
+        run: cargo test --manifest-path src-tauri/Cargo.toml --all-targets
+
   build:
     name: Build signed ${{ matrix.name }} asset
+    needs: validate
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -141,7 +185,25 @@ jobs:
             > latest.json
 
           jq -e '.version and .platforms["windows-x86_64"].url and .platforms["windows-x86_64"].signature and .platforms["linux-x86_64"].url and .platforms["linux-x86_64"].signature' latest.json >/dev/null
-          gh release upload "$RELEASE_TAG" latest.json --clobber
+
+          mkdir -p release-assets
+          gh release download "$RELEASE_TAG" \
+            --pattern "*.exe" \
+            --pattern "*.AppImage" \
+            --dir release-assets
+          test "$(find release-assets -maxdepth 1 -type f | wc -l)" -eq 2
+          (cd release-assets && sha256sum * | sort -k2) > SHA256SUMS.txt
+          test -s SHA256SUMS.txt
+
+          gh release upload "$RELEASE_TAG" latest.json SHA256SUMS.txt --clobber
+
+          notes_file=".github/release-notes/${RELEASE_TAG}.md"
+          if test -f "$notes_file"; then
+            gh release edit "$RELEASE_TAG" \
+              --title "Bloodborne Save Editor Enhanced ${RELEASE_TAG}" \
+              --notes-file "$notes_file" \
+              --latest
+          fi
 
           mkdir -p .github/updater
           cp latest.json .github/updater/latest.json

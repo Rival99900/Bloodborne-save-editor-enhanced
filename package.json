@@ -1,6 +1,6 @@
 {
   "name": "bloodborne-save-editor-enhanced",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
@@ -21,6 +21,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "audit:catalogs": "node scripts/audit_catalogs.mjs",
+    "translations:fill-gaps": "node scripts/fill_effect_translation_gaps.mjs",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
