@@ -2,8 +2,6 @@ name: Publish signed desktop release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*"
   workflow_dispatch:
@@ -14,45 +12,6 @@ on:
         type: string
 
 jobs:
-  prepare-v040-release:
-    name: Clean obsolete betas and create v0.4.0 tag
-    if: "github.ref == 'refs/heads/main' && github.event.head_commit.message == 'chore: trigger v0.4.0 release'"
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
-
-    steps:
-      - name: Remove obsolete beta releases and tags
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: |
-          set -euo pipefail
-          for beta_tag in \
-            v0.2.0-beta.1 \
-            v0.2.0-beta.2 \
-            v0.2.0-beta.3 \
-            v0.2.0-beta.4 \
-            v0.2.0-beta.5; do
-            release_id="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${beta_tag}" --jq '.id' 2>/dev/null || true)"
-            if test -n "$release_id"; then
-              gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${release_id}"
-            fi
-            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/${beta_tag}" 2>/dev/null || true
-          done
-
-      - name: Create v0.4.0 tag
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: |
-          set -euo pipefail
-          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v0.4.0" >/dev/null 2>&1; then
-            echo "v0.4.0 already exists; refusing to move it."
-            exit 1
-          fi
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
-            --field ref='refs/tags/v0.4.0' \
-            --field sha="${GITHUB_SHA}"
-
   validate:
     name: Validate tagged source
     if: github.ref_type == 'tag' || github.event_name == 'workflow_dispatch'
