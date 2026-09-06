@@ -1,17 +1,17 @@
-# Référence technique — Tauri v2 auto-update
+# Technical Reference — Tauri v2 Auto-Update
 
-Sources officielles consultées le 26 août 2026 :
+Official sources consulted on August 26, 2026:
 
-- [Tauri v2 — GitHub Actions release pipeline](https://v2.tauri.app/distribute/pipelines/github/)
-- [Tauri v2 — Updater plugin and signing](https://v2.tauri.app/plugin/updater/)
-- [tauri-apps/tauri-action README](https://github.com/tauri-apps/tauri-action)
+* [Tauri v2 — GitHub Actions release pipeline](https://v2.tauri.app/distribute/pipelines/github/)
+* [Tauri v2 — Updater plugin and signing](https://v2.tauri.app/plugin/updater/)
+* [tauri-apps/tauri-action README](https://github.com/tauri-apps/tauri-action)
 
-## Contraintes vérifiées
+## Verified Constraints
 
-1. Tauri v2 exige une clé publique dans la configuration de l’application et une clé privée disponible au build sous `TAURI_SIGNING_PRIVATE_KEY`; le mot de passe facultatif/associé est transmis par `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`.
-2. Avec `bundle.createUpdaterArtifacts: true`, Tauri génère des signatures `.sig` pour les bundles de mise à jour : l’installateur NSIS sous Windows et l’AppImage sous Linux.
-3. Un manifeste statique doit contenir une version, puis pour chaque plate-forme ciblée une URL de bundle et le **contenu** de sa signature. Les clés utiles ici sont `windows-x86_64` et `linux-x86_64`.
-4. L’action officielle `tauri-apps/tauri-action@v1` prend en charge l’upload des signatures avec `uploadUpdaterSignatures: true`; elle peut créer ou mettre à jour une release existante ciblée par `tagName`.
-5. Les secrets doivent rester exclusivement dans GitHub Actions. Aucun secret ne doit être versé dans le dépôt, les notes de release, les logs ou les binaires.
+1. Tauri v2 requires a public key in the application configuration and a private key available at build time under `TAURI_SIGNING_PRIVATE_KEY`; the optional/associated password is provided via `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`.
+2. With `bundle.createUpdaterArtifacts: true`, Tauri generates `.sig` signatures for update bundles: the NSIS installer on Windows and the AppImage on Linux.
+3. A static manifest must contain a version, followed by a bundle URL and the **content** of its signature for each targeted platform. The relevant keys here are `windows-x86_64` and `linux-x86_64`.
+4. The official action `tauri-apps/tauri-action@v1` supports uploading signatures with `uploadUpdaterSignatures: true`; it can create or update an existing release targeted by `tagName`.
+5. Secrets must remain exclusively within GitHub Actions. No secret should be committed to the repository, release notes, logs, or binaries.
 
-Le workflow `build.yml` s’appuie sur ces règles et publie un `latest.json` combiné, à la fois comme asset de release et dans `.github/updater/latest.json` pour audit des métadonnées.
+The `build.yml` workflow relies on these rules and publishes a combined `latest.json`, both as a release asset and in `.github/updater/latest.json` for metadata auditing.
