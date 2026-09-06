@@ -1,3 +1,4 @@
+import { useLocalization } from "../i18n/localization";
 const MAX_STAT_VALUE = 2_000_000_000;
 const STAT_VALUE_LIMITS = Object.freeze({
   Echoes: 999_999_999,
@@ -9,6 +10,7 @@ function getStatLimit(name) {
 }
 
 function Stat({ stat, setEditedStats, width }) {
+  const { t } = useLocalization();
   const maximum = getStatLimit(stat.name);
 
   function handleChange(event) {
@@ -25,6 +27,7 @@ function Stat({ stat, setEditedStats, width }) {
 
   return (
     <div
+      className="stat-field"
       style={{
         display: "flex",
         alignItems: "center",
@@ -42,11 +45,13 @@ function Stat({ stat, setEditedStats, width }) {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          width: width || "420px",
+          width: width || "100%",
+          minWidth: 0,
         }}
       >
-        <label>{stat.name}: </label>
+        <label htmlFor={`stat-${stat.name}`}>{t(`statNames.${stat.name}`)}: </label>
         <input
+          id={`stat-${stat.name}`}
           type="number"
           style={{
             textAlign: "right",

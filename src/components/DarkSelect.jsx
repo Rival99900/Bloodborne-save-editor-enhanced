@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
 import { FloatingPortal, autoUpdate, flip, offset, shift, useFloating } from "@floating-ui/react";
 
 function DarkSelect({
@@ -122,6 +122,10 @@ function DarkSelect({
             style={{ ...floatingStyles, width: refs.domReference.current?.offsetWidth }}
           >
             {normalizedOptions.map((option, index) => (
+              <Fragment key={`${option.value}-${index}`}>
+              {option.group && (index === 0 || normalizedOptions[index - 1].group !== option.group) ? (
+                <div className="dark-select__group" role="presentation">{option.group}</div>
+              ) : null}
               <button
                 ref={(element) => { optionRefs.current[index] = element; }}
                 className="dark-select__option"
@@ -157,6 +161,7 @@ function DarkSelect({
                   </>
                 )}
               </button>
+              </Fragment>
             ))}
           </div>
         </FloatingPortal>

@@ -75,13 +75,13 @@ function Stats() {
 
   return (
     <div
+      className="stats-workspace"
       key={resetEpoch}
       style={{
         alignContent: "center",
         gridColumn: "2/4",
         display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gridTemplateRows: "repeat(5, 50px)",
+
         gap: "0.8rem 0",
         alignItems: "center",
         justifyItems: "center",
@@ -101,7 +101,7 @@ function Stats() {
             stat={stat}
           />
         ))}
-      <div className="editor-action-row">
+      <div className="editor-action-row stats-actions">
         <button className="control-button control-button--quiet" type="button" onClick={resetStats}>
           {t("actions.reset")}
         </button>

@@ -91,6 +91,8 @@ The editor creates a `.bak` backup as part of its normal save workflow. Confirma
 
 ## Automatic updates
 
+Update-dialog summaries are maintained in `src/i18n/releaseSummaries.json`: edit `default` for the reusable sentence, or add a complete language map under `versions["0.4.0"]` (without the `v` prefix) for a version-specific message. Include English and the 13 translated languages. The release workflow writes these translations to `localized_notes` in the updater manifest and keeps `notes` as plain English for older clients. Updated clients select the current interface language. Local edits do not publish a release.
+
 The desktop application checks the signed `latest.json` manifest maintained in the repository’s `main` branch when it starts in the native Tauri window. The same manifest is also uploaded to every release for download and audit. When a newer version is available, the application presents an update dialog, downloads the platform package, verifies its embedded Tauri signature with the public key packaged in the application, installs it and restarts.
 
 The release workflow generates and uploads the Windows NSIS installer, Ubuntu/Linux AppImage, their corresponding `.sig` files and a combined `latest.json` updater manifest. The manifest contains the **signature content**, not only a path to a signature file. This is required for Tauri v2 update verification. `SHA256SUMS.txt` is also published for manual integrity checks.

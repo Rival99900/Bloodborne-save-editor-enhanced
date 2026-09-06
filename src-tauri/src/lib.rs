@@ -41,10 +41,7 @@ struct CapacitySummary {
 
 fn compare_flag_bytes(before: &[u8], after: &[u8]) -> Result<Vec<FlagDifference>, String> {
     if before.len() < NPC_FLAG_COMPARISON_LENGTH || after.len() < NPC_FLAG_COMPARISON_LENGTH {
-        return Err(
-            "One of the saves does not contain the complete progression flag region."
-                .to_string(),
-        );
+        return Err("npcErrors.region".to_string());
     }
 
     let differences: Vec<_> = before[..NPC_FLAG_COMPARISON_LENGTH]
@@ -61,10 +58,7 @@ fn compare_flag_bytes(before: &[u8], after: &[u8]) -> Result<Vec<FlagDifference>
         .collect();
 
     if differences.len() > MAX_NPC_FLAG_DIFFERENCES {
-        return Err(
-            "The saves differ too much for safe NPC research. Compare two snapshots of the same character taken immediately before and after the NPC state change."
-                .to_string(),
-        );
+        return Err("npcErrors.tooDifferent".to_string());
     }
 
     Ok(differences)
@@ -301,43 +295,40 @@ fn compare_npc_flag_regions(
     after_path: String,
 ) -> Result<Vec<FlagDifference>, String> {
     let before = data_handling::file::FileData::build(&before_path, PathBuf::new())
-        .map_err(format_load_error)?;
+        .map_err(|_| "npcErrors.invalidSave".to_string())?;
     let after = data_handling::file::FileData::build(&after_path, PathBuf::new())
-        .map_err(format_load_error)?;
+        .map_err(|_| "npcErrors.invalidSave".to_string())?;
 
     let before_name = before
         .bytes
         .get(before.offsets.username..before.offsets.username.saturating_add(34))
-        .ok_or_else(|| "The first save has an invalid character identity field.".to_string())?;
+        .ok_or_else(|| "npcErrors.identity".to_string())?;
     let after_name = after
         .bytes
         .get(after.offsets.username..after.offsets.username.saturating_add(34))
-        .ok_or_else(|| "The second save has an invalid character identity field.".to_string())?;
+        .ok_or_else(|| "npcErrors.identity".to_string())?;
     if before_name != after_name {
-        return Err(
-            "The selected saves do not belong to the same named character. NPC research requires two snapshots of one character."
-                .to_string(),
-        );
+        return Err("npcErrors.identity".to_string());
     }
 
     let before_start = before
         .offsets
         .username
         .checked_add(USERNAME_TO_AOB)
-        .ok_or_else(|| "The first save has an invalid progression flag offset.".to_string())?;
+        .ok_or_else(|| "npcErrors.region".to_string())?;
     let after_start = after
         .offsets
         .username
         .checked_add(USERNAME_TO_AOB)
-        .ok_or_else(|| "The second save has an invalid progression flag offset.".to_string())?;
+        .ok_or_else(|| "npcErrors.region".to_string())?;
     let before_region = before
         .bytes
         .get(before_start..)
-        .ok_or_else(|| "The first save has no readable progression flag region.".to_string())?;
+        .ok_or_else(|| "npcErrors.region".to_string())?;
     let after_region = after
         .bytes
         .get(after_start..)
-        .ok_or_else(|| "The second save has no readable progression flag region.".to_string())?;
+        .ok_or_else(|| "npcErrors.region".to_string())?;
 
     compare_flag_bytes(before_region, after_region)
 }

@@ -1,4 +1,8 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useLocalization } from "../../i18n/localization";
+import { loadVignetteTranslations } from "../../i18n/vignetteTranslations";
+import { loadEffectTranslations } from "../../i18n/effectTranslations";
+import { normalizeSearch, searchableItemText } from "../../utils/inventorySearch";
 import { SaveContext } from "../../context/context";
 import Item from "../../components/Item";
 import { Virtuoso } from "react-virtuoso";
@@ -24,24 +28,6 @@ function getItemKey(item) {
   ].join(":");
 }
 
-function getSearchableText(item) {
-  const effectText = Array.isArray(item?.effects)
-    ? item.effects.map(([, label]) => label).join(" ")
-    : "";
-  return [
-    item?.article_type,
-    item?.upgrade_type,
-    item?.info?.item_name,
-    item?.info?.name,
-    item?.info?.item_desc,
-    item?.info?.note,
-    effectText,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLocaleLowerCase();
-}
-
 function FilterComponent({
   inventory,
   selectedFilter = "0",
@@ -51,20 +37,32 @@ function FilterComponent({
   favoritesOnly = false,
 }) {
   const { save } = useContext(SaveContext);
+  const { language } = useLocalization();
+  const [translations, setTranslations] = useState({});
+  useEffect(() => {
+    let active = true;
+    Promise.all([loadVignetteTranslations(language), loadEffectTranslations(language)])
+      .then(([vignettes, effects]) => { if (active) setTranslations({ vignettes, effects }); });
+    return () => { active = false; };
+  }, [language]);
   const favoriteSet = useMemo(() => new Set(favoriteKeys), [favoriteKeys]);
+  const searchIndex = useMemo(() => {
+    const items = Object.values({ ...inventory?.articles, ...inventory?.upgrades }).flat();
+    return new Map(items.map(item => [item, searchableItemText(item, translations.vignettes, translations.effects)]));
+  }, [inventory, save, translations]);
   const items = useMemo(() => {
     const { articles = {}, upgrades = {} } = inventory ?? {};
     const all = { ...articles, ...upgrades };
     const categoryItems = selectedFilter !== "0" && selectedFilter !== 0
       ? all[FILTERS[Number(selectedFilter) - 1]] ?? []
       : Object.values(all).flat();
-    const normalizedQuery = searchQuery.trim().toLocaleLowerCase();
+    const normalizedQuery = normalizeSearch(searchQuery);
 
     return categoryItems.filter((item) => {
       if (favoritesOnly && !favoriteSet.has(getItemKey(item))) return false;
-      return !normalizedQuery || getSearchableText(item).includes(normalizedQuery);
+      return !normalizedQuery || searchIndex.get(item)?.includes(normalizedQuery);
     });
-  }, [favoriteKeys, favoriteSet, favoritesOnly, inventory, save, searchQuery, selectedFilter]);
+  }, [favoriteKeys, favoriteSet, favoritesOnly, inventory, save, searchQuery, selectedFilter, searchIndex]);
 
   return items.length ? (
     <Virtuoso

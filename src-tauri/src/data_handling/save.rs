@@ -155,6 +155,7 @@ impl SaveData {
         Ok(())
     }
 
+    #[cfg(test)]
     pub fn get_slot_mut(
         &mut self,
         location: Location,
@@ -177,6 +178,7 @@ impl SaveData {
         None
     }
 
+    #[cfg(test)]
     pub fn get_article_mut(
         &mut self,
         location: Location,
@@ -194,6 +196,7 @@ impl SaveData {
         None
     }
 
+    #[cfg(test)]
     pub fn get_equipped_upgrade_mut(
         &mut self,
         location: Location,
@@ -209,6 +212,7 @@ impl SaveData {
         None
     }
 
+    #[cfg(test)]
     pub fn get_upgrade_mut(
         &mut self,
         location: Location,

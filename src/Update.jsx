@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { check } from "@tauri-apps/plugin-updater";
+import { getReleaseSummary } from "./utils/releaseSummary";
 import { useLocalization } from "./i18n/localization";
 
 export function UpdateModal() {
-  const { t } = useLocalization();
+  const { t, language } = useLocalization();
   const [update, setUpdate] = useState(null);
   const [downloading, setDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -79,7 +80,7 @@ export function UpdateModal() {
         <h3 id="update-title" style={styles.title}>{t("update.available")}</h3>
         <p style={styles.version}>{t("update.version", { version: update.version })}</p>
 
-        {update.body && <p style={styles.notes}>{update.body}</p>}
+        <p style={styles.notes}>{getReleaseSummary(update.body, language, update.version, update.rawJson?.localized_notes)}</p>
 
         {downloading ? (
           <div style={styles.progressContainer} aria-live="polite">

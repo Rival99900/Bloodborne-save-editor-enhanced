@@ -35,6 +35,7 @@ function Inventory({ inv, isStorage }) {
   const [addScreen, setAddScreen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("0");
   const [searchQuery, setSearchQuery] = useState("");
+  const [capacity, setCapacity] = useState(null);
   const [favoriteKeys, setFavoriteKeys] = useState(readFavoriteKeys);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const nav = useNavigate();
@@ -43,7 +44,15 @@ function Inventory({ inv, isStorage }) {
   } = useContext(ImagesContext);
 
   const { save, setSave } = useContext(SaveContext);
-  const { t } = useLocalization();
+  const { t, language } = useLocalization();
+  useEffect(() => {
+    let active = true;
+    setCapacity(null);
+    invoke("get_capacity_summary").then((value) => {
+      if (active) setCapacity(value);
+    }).catch(() => { if (active) setCapacity(null); });
+    return () => { active = false; };
+  }, [save, isStorage]);
 
   useEffect(() => {
     const invCurrent = inventoryRef.current;
@@ -62,7 +71,7 @@ function Inventory({ inv, isStorage }) {
         selectedRef.current = target;
         setSelected(item);
         setQuantity(item.amount);
-      } else if (nodeName === "BUTTON") {
+      } else if (nodeName === "BUTTON" && target.dataset.index != null) {
         const { index } = target.dataset;
 
         setSelected(null);
@@ -153,7 +162,12 @@ function Inventory({ inv, isStorage }) {
         <FilterButtons selectedFilter={selectedFilter} />
         <div className="inventory-search" role="search">
           <label>
-            <span>{t(isStorage ? "inventory.searchStorage" : "inventory.searchInventory")}</span>
+            <span className="inventory-search__heading">
+              <span>{t(isStorage ? "inventory.searchStorage" : "inventory.searchInventory")}</span>
+              <span className="inventory-capacity" aria-live="polite">
+                {t("capacity.title")}: <strong>{capacity == null ? "—" : new Intl.NumberFormat(language).format(isStorage ? capacity.storage_free : capacity.inventory_free)}</strong>
+              </span>
+            </span>
             <input
               type="search"
               value={searchQuery}

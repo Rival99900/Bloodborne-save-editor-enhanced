@@ -70,8 +70,6 @@ function SideBar() {
           <p>{t("capacity.title")}</p>
           <div className="capacity-summary__grid">
             {[
-              ["inventory", capacity?.inventory_free],
-              ["storage", capacity?.storage_free],
               ["gems", capacity?.gems_free],
               ["runes", capacity?.runes_free],
             ].map(([key, value]) => (

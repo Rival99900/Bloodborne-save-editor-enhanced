@@ -63,13 +63,18 @@ function Npcs() {
   const [comparing, setComparing] = useState(false);
 
   async function chooseSnapshot(kind) {
-    const path = await dialog.open({ multiple: false, title: t(`npcs.${kind}Reference`) });
-    if (!path) return;
-    setSnapshots((current) => ({ ...current, [kind]: { path, name: "…" } }));
-    const name = await basename(path);
-    setSnapshots((current) => ({ ...current, [kind]: { path, name } }));
-    setDifferences(null);
-    setError("");
+    try {
+      const path = await dialog.open({ multiple: false, title: t(`npcs.${kind}Reference`) });
+      if (!path) return;
+      setSnapshots((current) => ({ ...current, [kind]: { path, name: "…" } }));
+      const name = await basename(path);
+      setSnapshots((current) => ({ ...current, [kind]: { path, name } }));
+      setDifferences(null);
+      setError("");
+    } catch (error) {
+      console.error("Unable to choose comparison save", error);
+      setError("npcs.compareFailed");
+    }
   }
 
   async function compareSnapshots() {
@@ -84,7 +89,8 @@ function Npcs() {
       setDifferences(result);
     } catch (comparisonError) {
       setDifferences(null);
-      setError(String(comparisonError ?? t("npcs.compareFailed")));
+      console.error("NPC comparison failed", comparisonError);
+      setError(["npcErrors.invalidSave", "npcErrors.identity", "npcErrors.region", "npcErrors.tooDifferent"].includes(comparisonError) ? comparisonError : "npcs.compareFailed");
     } finally {
       setComparing(false);
     }
@@ -125,7 +131,7 @@ function Npcs() {
         >
           {comparing ? t("npcs.comparing") : t("npcs.compare")}
         </button>
-        {error ? <p className="npc-lab__error" role="alert">{error}</p> : null}
+        {error ? <p className="npc-lab__error" role="alert">{t(error)}</p> : null}
         {differences ? (
           <div className="npc-differences">
             <p>{differences.length ? t("npcs.candidateCount", { count: differences.length }) : t("npcs.noDifference")}</p>

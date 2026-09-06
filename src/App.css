@@ -3837,3 +3837,42 @@
     inset-left: 14.5rem;
   }
 }
+
+/* v0.4.0: localized labels and compact controls. */
+.npc-lab .npc-lab__files button,
+.npc-lab .npc-lab__compare {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  min-height: 2.4rem;
+  line-height: 1.35;
+  padding: 0.55rem 0.8rem;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.npc-lab .npc-lab__files button strong { font-size: 0.78rem; }
+.dark-select__group {
+  padding: 0.65rem 0.7rem 0.35rem;
+  color: #c5aa78;
+  font: 600 0.75rem/1.4 ui-sans-serif, system-ui, sans-serif;
+  border-top: 1px solid #ffffff1a;
+  overflow-wrap: anywhere;
+  cursor: default;
+}
+.dark-select__group:first-child { border-top: 0; }
+.stats-workspace {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(50px, auto);
+  padding: 1rem;
+}
+.stats-workspace .stat-field { width: 100%; min-width: 0; padding: 0 0.75rem; box-sizing: border-box; }
+.stats-workspace .stat-field label { min-width: 0; overflow-wrap: anywhere; font-size: clamp(0.85rem, 1.6vw, 1.4rem); }
+.stats-workspace .stat-field input { max-width: 7rem; min-width: 3rem; flex-shrink: 0; }
+.stats-workspace .stats-actions { grid-column: 2; grid-row: 5; margin: 0; width: 100%; flex-wrap: wrap; justify-content: center; padding: 0 0.75rem; box-sizing: border-box; }
+.inventory-search__heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.3rem 1rem; }
+.inventory-search .inventory-capacity { color: #c5aa78; margin-left: auto; font-size: 0.75rem; line-height: 1.4; }
+.inventory-capacity strong { font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) {
+  .stats-workspace { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
+  .stats-workspace .stats-actions { grid-column: 1; grid-row: auto; }
+}

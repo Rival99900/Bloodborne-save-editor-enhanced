@@ -3,7 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { useLocalization } from "../../i18n/localization";
 import DarkSelect from "../../components/DarkSelect";
 
-const locations = [
+export const locations = [
   ["Hunter's Dream", "Hunter's Dream", -8, -6, -18, [21, 0]],
   ["Yharnam Headstone", "1st Floor Sickroom", -199.74, -50.759, 179.42, [24, 1]],
   ["Yharnam Headstone", "Central Yharnam", -193.4, -28.646, 68.5, [24, 1]],
@@ -88,18 +88,9 @@ function Teleport({ setSave, setEditedCoordinates }) {
       <DarkSelect
         className="teleport-select"
         ariaLabel={t("characterForm.teleport")}
-        options={locations}
+        options={locations.map((option) => ({ ...option, label: t(`destinations.${option.value}`), group: t(`teleportGroups.${option.group.replaceAll(".", "")}`) }))}
         value={selectedLocation}
         placeholder={t("characterForm.selectLocation")}
-        renderValue={(option) => option.node || option.area}
-        renderOption={(option, isSelected) => (
-          <span className="teleport-option">
-            <span className="teleport-option__title">{option.group}</span>
-            <span className="teleport-option__area">{option.area}</span>
-            {option.node ? <span className="teleport-option__node">{option.node}</span> : null}
-            {isSelected ? <span className="dark-select__selected" aria-hidden="true">✓</span> : null}
-          </span>
-        )}
         onChange={handleChange}
       />
     </div>

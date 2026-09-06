@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import officialUiOverrides from "./officialUiOverrides.json";
+import v040FixTranslations from "./v040FixTranslations.json";
 import { v040Translations } from "./v040Translations";
 
 const LANGUAGE_STORAGE_KEY = "bloodborne-save-editor.language.v1";
@@ -21678,6 +21679,12 @@ Object.entries(v040Translations).forEach(([language, translations]) => {
     applyTranslationPath(translatedResource, key, value);
   });
   resources[language] = translatedResource;
+});
+
+Object.entries(v040FixTranslations).forEach(([language, translations]) => {
+  const resource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => applyTranslationPath(resource, key, value));
+  resources[language] = resource;
 });
 
 Object.keys(resources).forEach((language) => {

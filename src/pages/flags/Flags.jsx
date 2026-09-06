@@ -1,4 +1,6 @@
 import Flag from "./Flag";
+import { useContext } from "react";
+import { ImagesContext } from "../../context/imagesContext";
 import "./flags.css";
 import { useLocalization } from "../../i18n/localization";
 
@@ -21,10 +23,11 @@ const KNOWN_FLAGS = [
 ];
 
 function Flags() {
+  const { images } = useContext(ImagesContext);
   const { t } = useLocalization();
 
   return (
-    <main className="flags-workspace">
+    <main className="flags-workspace" style={{ backgroundImage: `url(${images.backgrounds["statsBg.png"].src})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <header className="flags-workspace__header">
         <p>{t("flags.eyebrow")}</p>
         <h1>{t("flags.title")}</h1>
