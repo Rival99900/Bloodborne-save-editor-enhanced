@@ -1,15 +1,31 @@
 {
   "version": "0.4.0",
   "notes": "See the GitHub release for improvements and safe-save guidance.",
-  "pub_date": "2026-09-04T21:06:44Z",
+  "localized_notes": {
+    "en": "See the GitHub release for improvements and safe-save guidance.",
+    "fr": "Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
+    "it": "Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
+    "de": "Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
+    "es": "Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
+    "nl": "Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
+    "pl": "Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
+    "ru": "Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
+    "da": "Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
+    "nb": "Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
+    "fi": "Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
+    "sv": "Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
+    "tr": "İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
+    "pt-PT": "Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+  },
+  "pub_date": "2026-09-06T20:21:36Z",
   "platforms": {
     "windows-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelQrUjZKOVR0Qi8xUlFMQU9tRGE5SGw0ejVoaXc5NWJqcTFNbmhKSmxGVi9GNi9IZFZBUlFqMnhzekExdXZUUG9iOFNYd1VzcjFFU09FdjZhQ0RlT1FnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NTU1OTQzCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF94NjQtc2V0dXAuZXhlCndQU0U0MERMSnlIQkY0ZTBKZjdEUUtUdjBUYzFmNVBaZHdRb0NaRlVFenR3L3JLM0FuN0NlanNWZkdvZkJKT2RiL0xDQldXbjFzMFhpWkV4ZmpSeUNBPT0K"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelc4OVBSUjZ5QWxqcDRNU1J5WkNBaTFPZGpxdCtwNHRnRnJYYis1N083WEliMHZHNE9OT2J5MjZ6Qkl0RHFLN2pmMVVQUU40YnIyL3VDN0dKUlNQUEFRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI2MDI5CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF94NjQtc2V0dXAuZXhlCkxhbnphVnEvQ0NqaVowUHN4NU5wOFM3cDFOZGhXblJtbkRLbVNyck80QXFtT0JadGtxWmsxOUZvaGF0MlZTbnkzUGJndSszU0NFOStJakxGSk1oNUFBPT0K"
     },
     "linux-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemZsWW9DejZ1YU9GUStseHZGRktpTW5jNXVRUkdkeFdqMG1BQmVDODI2RVpWNjNqNWNXSEgwYzNBZG5TSGVIUXZoK3VFMjFaSHlSYVN5WXBBUmU4SUF3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NTU1ODQyCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF9hbWQ2NC5BcHBJbWFnZQpxRXpxRTRuWEtrZkxyQmR6NkgxeSt5U1BYSXFTaU5rUE5ZMTI3ZUdWalZ2Q00yRTgwSi96UFdnd01kaDkyYXhPWFNUQU1qMjd1TXF5UFVueFBuRXRCZz09Cg=="
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelN1R1RQbzdrYWJpNUVzd2pOd1NNVS82ajVJRDJ4MEtxUEdzV0hEck05K2dRZWN4Nng5amNzVk0vTVJobmtNMnJwYis3S2swZ2dLc3dyWC9hSmtaTlFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI1OTQ4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF9hbWQ2NC5BcHBJbWFnZQoxM1FCZ1VYQ1lkRzA5alhyM1lSSk9nNFJIL1FDeFJQcVRXbVlWa3FhODFFY29EaENPSGszRENRclF0dXFEZ2NrYWkrUEJUT3FNYzRVTjd3b0dkV1NCUT09Cg=="
     }
   }
 }
