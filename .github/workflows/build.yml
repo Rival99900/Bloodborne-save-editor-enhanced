@@ -2,8 +2,6 @@ name: Publish signed desktop release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*"
   workflow_dispatch:
@@ -16,16 +14,16 @@ on:
 jobs:
   validate:
     name: Validate tagged source
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && github.event.head_commit.message == 'release: publish corrected v0.4.0')"
+    if: github.ref_type == 'tag' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-22.04
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.4.0' }}
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
     steps:
       - name: Checkout tagged source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.sha || env.RELEASE_TAG }}
+          ref: ${{ env.RELEASE_TAG }}
 
       - name: Install native test dependencies
         run: |
@@ -63,7 +61,7 @@ jobs:
 
   build:
     name: Build signed ${{ matrix.name }} asset
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && github.event.head_commit.message == 'release: publish corrected v0.4.0')"
+    if: github.ref_type == 'tag' || github.event_name == 'workflow_dispatch'
     needs: validate
     runs-on: ${{ matrix.os }}
     permissions:
@@ -79,13 +77,13 @@ jobs:
             os: ubuntu-22.04
             args: "--bundles appimage"
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.4.0' }}
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
     steps:
       - name: Checkout tagged source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.sha || env.RELEASE_TAG }}
+          ref: ${{ env.RELEASE_TAG }}
 
       - name: Install Linux packaging dependencies
         if: runner.os == 'Linux'
@@ -144,7 +142,7 @@ jobs:
     permissions:
       contents: write
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.4.0' }}
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
     steps:
       - name: Checkout main for fallback manifest publication
@@ -152,21 +150,6 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-
-      - name: Align republished tag with validated source
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          EXPECTED_PREVIOUS_TAG: e6a097a1a91bb8282c50961a38870247e5eb47c8
-        run: |
-          set -euo pipefail
-          current="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v0.4.0" --jq '.object.sha')"
-          if test "$current" != "$EXPECTED_PREVIOUS_TAG" && test "$current" != "$GITHUB_SHA"; then
-            echo "The release tag changed unexpectedly; refusing to overwrite it."
-            exit 1
-          fi
-          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/v0.4.0" \
-            --field sha="$GITHUB_SHA" --field force=true
 
       - name: Build and upload latest.json
         env:
