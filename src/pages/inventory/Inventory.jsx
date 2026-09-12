@@ -161,20 +161,21 @@ function Inventory({ inv, isStorage }) {
       >
         <FilterButtons selectedFilter={selectedFilter} />
         <div className="inventory-search" role="search">
-          <label>
-            <span className="inventory-search__heading">
-              <span>{t(isStorage ? "inventory.searchStorage" : "inventory.searchInventory")}</span>
-              <span className="inventory-capacity" aria-live="polite">
-                {t("capacity.title")}: <strong>{capacity == null ? "—" : new Intl.NumberFormat(language).format(isStorage ? capacity.storage_free : capacity.inventory_free)}</strong>
-              </span>
+          <div className="inventory-search__heading">
+            <label htmlFor={isStorage ? "storage-search" : "inventory-search"}>
+              {t(isStorage ? "inventory.searchStorage" : "inventory.searchInventory")}
+            </label>
+            <span className="inventory-capacity" aria-live="polite">
+              {t("capacity.title")}: <strong>{capacity == null ? "—" : new Intl.NumberFormat(language).format(isStorage ? capacity.storage_free : capacity.inventory_free)}</strong>
             </span>
-            <input
-              type="search"
-              value={searchQuery}
-              placeholder={t("inventory.searchPlaceholder")}
-              onChange={(event) => setSearchQuery(event.target.value)}
-            />
-          </label>
+          </div>
+          <input
+            id={isStorage ? "storage-search" : "inventory-search"}
+            type="search"
+            value={searchQuery}
+            placeholder={t("inventory.searchPlaceholder")}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
           {searchQuery ? (
             <button type="button" onClick={() => setSearchQuery("")}>{t("inventory.clearSearch")}</button>
           ) : null}

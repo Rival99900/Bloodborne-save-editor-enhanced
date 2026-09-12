@@ -12,6 +12,14 @@ try {
   const { normalizeSearch, searchableItemText } = await server.ssrLoadModule("/src/utils/inventorySearch.js");
   const { loadVignetteTranslations, localizeVignetteText } = await server.ssrLoadModule("/src/i18n/vignetteTranslations.js");
   const { loadEffectTranslations, localizeEffectText } = await server.ssrLoadModule("/src/i18n/effectTranslations.js");
+  // Short rune aliases must never alter a word in an already translated sentence.
+  const fixture = {
+    names: { Eye: "Œil", "[CUT] Moon": "[CUT] Lune" },
+    descriptions: { example: 'Eyelid "Eye" / "Moon"' },
+  };
+  assert.equal(localizeVignetteText(fixture, "description", "example"), 'Eyelid "Œil" / "Lune"');
+  assert.equal(localizeVignetteText(fixture, "name", "Moon"), "Lune");
+  assert.equal(localizeVignetteText(fixture, "description", "Unknown"), "Unknown");
   const readJson = path => JSON.parse(readFileSync(resolve(root, path), "utf8"));
   const strings = readJson("src/i18n/v040FixTranslations.json");
   const notes = readJson("src/i18n/releaseSummaries.json");

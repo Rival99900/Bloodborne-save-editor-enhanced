@@ -45,13 +45,38 @@ const requiredNpcUiKeys = [
   "npcs.noDifference", "npcs.candidateCount", "npcs.candidates",
 ];
 
+// Include names and notes generated at runtime by gem/rune cards.
+const dynamicNames = uniqueStrings(effectEntries.map(entry => entry.name));
+const dynamicDescriptions = uniqueStrings(effectEntries.map(entry => entry.note));
+const populated = value => typeof value === "string" && value.trim().length > 0;
 const missingByLanguage = [];
+const residualEnglish = [];
+// Unambiguous untranslated phrases found during the v0.4.0 review.
+// Do not reject proper names, loanwords, or isolated words shared by languages.
+const residualPattern = /\b(?:Healing Church|Powder Kegs?|Vilebloods?|Quicksilver Bullets|Blood Echoes|runesmith|graveguard)\b/iu;
 for (const language of languages) {
   const vignette = translation("vignetteTranslations", language);
   const effects = translation("effectTranslations", language).effects;
-  const missingNames = names.filter((value) => !(value in (vignette.names ?? {})));
-  const missingDescriptions = descriptions.filter((value) => !(value in (vignette.descriptions ?? {})));
-  const missingEffects = effectStrings.filter((value) => !(value in (effects ?? {})));
+  const missingNames = names.filter((value) => !populated(vignette.names?.[value]));
+  const missingDescriptions = descriptions.filter((value) => !populated(vignette.descriptions?.[value]));
+  const missingEffects = effectStrings.filter((value) => !populated(effects?.[value]));
+  for (const value of dynamicNames) {
+    if (!populated(vignette.names?.[value]) && !populated(vignette.names?.[`[CUT] ${value}`])) missingNames.push(value);
+  }
+  for (const value of dynamicDescriptions) {
+    if (!populated(vignette.descriptions?.[value])) missingDescriptions.push(value);
+  }
+  // Check every stored entry too, including cut content and special gem names.
+  for (const [bucket, failures] of [[vignette.names, missingNames], [vignette.descriptions, missingDescriptions], [effects, missingEffects]]) {
+    for (const [key, value] of Object.entries(bucket ?? {})) {
+      if (!populated(value) && !failures.includes(key)) failures.push(key);
+    }
+  }
+  for (const [kind, entries] of Object.entries({ names: vignette.names, descriptions: vignette.descriptions, effects })) {
+    for (const [key, value] of Object.entries(entries ?? {})) {
+      if (residualPattern.test(value)) residualEnglish.push({ language, kind, key });
+    }
+  }
   const missingNpcUi = requiredNpcUiKeys.filter((key) => !(key in (officialUiOverrides[language] ?? {})));
   const missingV040Ui = v040TranslationKeys.filter((key) => {
     const value = v040Translations[language]?.[key];
@@ -94,14 +119,14 @@ console.log(`- descriptions: ${descriptions.length}`);
 console.log(`- gem/rune text: ${effectStrings.length}`);
 console.log(`- chalices without a canonical source description: ${catalogGroups.chalices.filter((entry) => !entry.item_desc?.trim()).length}`);
 console.log("");
-console.log("Missing translation keys");
+console.log("Missing or empty translations (including runtime gem/rune cards)");
 for (const result of missingByLanguage) {
   console.log(
     `- ${result.language}: names=${result.missingNames.length}, descriptions=${result.missingDescriptions.length}, effects=${result.missingEffects.length}, npcUi=${result.missingNpcUi.length}, v040Ui=${result.missingV040Ui.length}`,
   );
 }
 console.log("");
-console.log("Entries intentionally or provisionally identical to English");
+console.log("Entries identical to English (proper names/cognates require linguistic review)");
 for (const result of untranslatedCounts) {
   console.log(
     `- ${result.language}: names=${result.names}, descriptions=${result.descriptions}, effects=${result.effects}`,
@@ -127,6 +152,9 @@ console.log(`Unmapped boss names: ${unmappedProgressionBosses.length}`);
 console.log(`Boss schema entries missing from timeline: ${missingFromProgression.length}`);
 console.log(`Timeline entries missing from boss schema: ${unknownProgressionBosses.length}`);
 
+console.log(`Known English fragments remaining: ${residualEnglish.length}`);
+for (const entry of residualEnglish) console.log(`- ${entry.language}/${entry.kind}: ${entry.key}`);
+
 const missingCount = missingByLanguage.reduce(
   (total, result) =>
     total + result.missingNames.length + result.missingDescriptions.length + result.missingEffects.length + result.missingNpcUi.length + result.missingV040Ui.length,
@@ -134,6 +162,7 @@ const missingCount = missingByLanguage.reduce(
 );
 if (
   missingCount > 0 ||
+  residualEnglish.length > 0 ||
   presetMismatches.length > 0 ||
   duplicatedProgressionBosses.length > 0 ||
   unmappedProgressionBosses.length > 0 ||

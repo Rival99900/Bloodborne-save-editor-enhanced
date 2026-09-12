@@ -51,25 +51,14 @@ export function localizeVignetteText(translations, kind, sourceText) {
 
   const resolved = direct ?? cutAlias ?? sourceText;
 
-  // Source notes quote rune names (for example, "Moon"). Once a note has
-  // been translated, substitute those quoted/runtime names with their display
-  // equivalents as well. This remains strictly a presentation-layer step.
+  // Translate only explicitly quoted rune names. Replacing every occurrence of
+  // a short source name can corrupt an already translated word (e.g. Eye in Eyelid).
   if (kind === "description" && direct) {
-    const localizedRuneNames = Object.entries(translations.names ?? {})
-      .filter(([source, target]) =>
-        source &&
-        target &&
-        !source.startsWith("[CUT] ") &&
-        source.length > 2 &&
-        source !== target,
-      )
-      .sort(([left], [right]) => right.length - left.length);
-    return normalizeDisplayText(
-      localizedRuneNames.reduce(
-        (value, [source, target]) => value.replaceAll(source, target),
-        resolved,
-      ),
-    );
+    return normalizeDisplayText(resolved).replace(/"([^"\n]+)"/g, (quoted, name) => {
+      const target = translations.names?.[name]
+        ?? translations.names?.[`[CUT] ${name}`]?.replace(/^\[CUT\]\s*/u, "");
+      return target ? `"${normalizeDisplayText(target)}"` : quoted;
+    });
   }
 
   return normalizeDisplayText(resolved);

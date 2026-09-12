@@ -1,6 +1,5 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { invoke } from "@tauri-apps/api/core";
 import { SaveContext } from "../../context/context";
 import { useLocalization } from "../../i18n/localization";
 
@@ -16,26 +15,7 @@ const navigation = [
 
 function SideBar() {
   const { save } = useContext(SaveContext);
-  const { language, t } = useLocalization();
-  const [capacity, setCapacity] = useState(null);
-  const numberFormatter = useMemo(() => new Intl.NumberFormat(language), [language]);
-
-  useEffect(() => {
-    if (!save) {
-      setCapacity(null);
-      return undefined;
-    }
-    let active = true;
-    invoke("get_capacity_summary")
-      .then((summary) => {
-        if (active) setCapacity(summary);
-      })
-      .catch((error) => {
-        console.warn("Unable to read save capacity.", error);
-        if (active) setCapacity(null);
-      });
-    return () => { active = false; };
-  }, [save]);
+  const { t } = useLocalization();
 
   return (
     <aside className="sidebar" aria-label={t("sidebar.workspace")}>
@@ -65,28 +45,6 @@ function SideBar() {
         ))}
       </nav>
 
-      {save ? (
-        <section className="capacity-summary" aria-label={t("capacity.title")}>
-          <p>{t("capacity.title")}</p>
-          <div className="capacity-summary__grid">
-            {[
-              ["gems", capacity?.gems_free],
-              ["runes", capacity?.runes_free],
-            ].map(([key, value]) => (
-              <div key={key}>
-                <span>{t(`capacity.${key}`)}</span>
-                <strong>{value == null ? "—" : numberFormatter.format(value)}</strong>
-              </div>
-            ))}
-          </div>
-          <span className="capacity-summary__note">{t("capacity.sharedPool")}</span>
-        </section>
-      ) : null}
-
-      <div className="sidebar__notice">
-        <p>{t("sidebar.backupTitle")}</p>
-        <span>{t("sidebar.backupDescription")}</span>
-      </div>
     </aside>
   );
 }
