@@ -17,15 +17,15 @@
     "tr": "İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
     "pt-PT": "Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
   },
-  "pub_date": "2026-09-06T20:21:36Z",
+  "pub_date": "2026-09-12T10:33:15Z",
   "platforms": {
     "windows-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelc4OVBSUjZ5QWxqcDRNU1J5WkNBaTFPZGpxdCtwNHRnRnJYYis1N083WEliMHZHNE9OT2J5MjZ6Qkl0RHFLN2pmMVVQUU40YnIyL3VDN0dKUlNQUEFRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI2MDI5CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF94NjQtc2V0dXAuZXhlCkxhbnphVnEvQ0NqaVowUHN4NU5wOFM3cDFOZGhXblJtbkRLbVNyck80QXFtT0JadGtxWmsxOUZvaGF0MlZTbnkzUGJndSszU0NFOStJakxGSk1oNUFBPT0K"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemN6MFVLSHU3ejA2S3R0bGR2SC93Qkc4bk4rS25XMU5mMXgyMHdxU1pZSVNYOFZhdUtxQlpuRVVRdEgxeFM0T0hEeS8yK1phZDhGRW02N2p6L1NPeUFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5MjA5MTc4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF94NjQtc2V0dXAuZXhlCi9kSXBaZGlKM1dGVDNFWWt0TzJtR0pUcGRCL005Wkxkd24zZUJVSlJSRGNvZmppZmJZcG9zcDdueERKTUt6VDlvRjhkR09iSHlXaUdvaHlWMGZibkRBPT0K"
     },
     "linux-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelN1R1RQbzdrYWJpNUVzd2pOd1NNVS82ajVJRDJ4MEtxUEdzV0hEck05K2dRZWN4Nng5amNzVk0vTVJobmtNMnJwYis3S2swZ2dLc3dyWC9hSmtaTlFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI1OTQ4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF9hbWQ2NC5BcHBJbWFnZQoxM1FCZ1VYQ1lkRzA5alhyM1lSSk9nNFJIL1FDeFJQcVRXbVlWa3FhODFFY29EaENPSGszRENRclF0dXFEZ2NrYWkrUEJUT3FNYzRVTjd3b0dkV1NCUT09Cg=="
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemN1dDkvMjRzTndXL3JFVERVN0hKNHhlR3A5QjZocWlWRVZaMGI4VndyN2d5bURUUmx3ZjlJN2dXQjFYeDlFekdLdm1hUS9WZ2lyZ3JXYjdHcVFTWlFRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5MjA5MTM4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjQuMF9hbWQ2NC5BcHBJbWFnZQp0SWVzSFZnRGNJM0U3VG95UUkzV3AvOEF2VFE2TlVHZjJWQWJ2ajI2WnMvQlFmTExJTExDQUdUcWwzdzFaS2pER2FtcVVERWdzSm1DSkVxZTFpWE5CZz09Cg=="
     }
   }
 }
