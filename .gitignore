@@ -30,10 +30,12 @@ flatpak
 repo
 *.flatpak
 
-# Internal documentation stays local and is not published with the public source repository
+# Private implementation notes
 UPDATER_IMPLEMENTATION_NOTES.md
-docs/
 
 # Local review packages and diagnostics must never be committed or published
 .incoming-user-fix*/
 .local-analysis/
+
+# Also ignore a symlinked dependency directory.
+/node_modules

@@ -9,23 +9,32 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing version tag to build and publish (for example v0.3.0)"
+        description: "Existing version tag to build and publish (for example v0.5.0)"
         required: true
         type: string
+
+concurrency:
+  group: desktop-release-${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
+  cancel-in-progress: false
 
 jobs:
   validate:
     name: Validate tagged source
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && github.event.head_commit.message == 'release: refresh v0.4.0 localization and UI')"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.5.0]'))"
     runs-on: ubuntu-22.04
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.4.0' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
 
     steps:
       - name: Checkout tagged source
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.sha || env.RELEASE_TAG }}
+
+      - name: Validate release version
+        run: |
+          node -e 'const p=require("./package.json"); if (`v${p.version}` !== process.env.RELEASE_TAG) process.exit(1)'
+          test -f ".github/release-notes/${RELEASE_TAG}.md"
 
       - name: Install native test dependencies
         run: |
@@ -58,6 +67,11 @@ jobs:
       - name: Verify multilingual search and update summaries
         run: node scripts/validate_v040_localization.mjs
 
+      - name: Validate presets, comparison and UI strings
+        run: |
+          node scripts/validate_v050_features.mjs
+          node scripts/audit_ui_text.mjs
+
       - name: Build production frontend
         run: npm run build
 
@@ -66,7 +80,7 @@ jobs:
 
   build:
     name: Build signed ${{ matrix.name }} asset
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && github.event.head_commit.message == 'release: refresh v0.4.0 localization and UI')"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.5.0]'))"
     needs: validate
     runs-on: ${{ matrix.os }}
     permissions:
@@ -82,7 +96,7 @@ jobs:
             os: ubuntu-22.04
             args: "--bundles appimage"
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.4.0' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
 
     steps:
       - name: Checkout tagged source
@@ -126,17 +140,18 @@ jobs:
       - name: Build, sign and upload release assets
         uses: tauri-apps/tauri-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ env.RELEASE_TAG }}
+          releaseCommitish: ${{ github.sha }}
           releaseName: "Bloodborne Save Editor Enhanced ${{ env.RELEASE_TAG }}"
           releaseBody: "See the release notes for validated save-safety guidance, installation files and checksums."
-          releaseDraft: false
+          releaseDraft: true
           prerelease: ${{ contains(env.RELEASE_TAG, '-') }}
           args: ${{ matrix.args }}
-          releaseAssetNamePattern: "Bloodborne_Save_Editor_Enhanced_[version]_[arch][setup].[ext]"
+          releaseAssetNamePattern: "Bloodborne_Save_Editor_Enhanced_[version]_[arch][setup][ext]"
           uploadUpdaterJson: false
           uploadUpdaterSignatures: true
 
@@ -147,33 +162,18 @@ jobs:
     permissions:
       contents: write
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.4.0' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
 
     steps:
-      - name: Checkout main for fallback manifest publication
+      - name: Checkout release source and main history
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ inputs.tag || github.sha }}
           fetch-depth: 0
-
-      - name: Align refreshed v0.4.0 tag with validated source
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          EXPECTED_PREVIOUS_TAG: 6d5a186565b389a6836e73217ebba31f04ba0afc
-        run: |
-          set -euo pipefail
-          current="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v0.4.0" --jq '.object.sha')"
-          if test "$current" != "$EXPECTED_PREVIOUS_TAG" && test "$current" != "$GITHUB_SHA"; then
-            echo "The release tag changed unexpectedly; refusing to overwrite it."
-            exit 1
-          fi
-          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/v0.4.0" \
-            --field sha="$GITHUB_SHA" --field force=true
 
       - name: Build and upload latest.json
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           release="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}")"
@@ -181,6 +181,8 @@ jobs:
 
           windows_sig_name="$(jq -r '.assets[] | select(.name | endswith(".exe.sig")) | .name' <<<"$release" | head -n1)"
           linux_sig_name="$(jq -r '.assets[] | select(.name | endswith(".AppImage.sig")) | .name' <<<"$release" | head -n1)"
+          test "$windows_sig_name" = "Bloodborne_Save_Editor_Enhanced_${version}_x64-setup.exe.sig"
+          test "$linux_sig_name" = "Bloodborne_Save_Editor_Enhanced_${version}_amd64.AppImage.sig"
           windows_name="${windows_sig_name%.sig}"
           linux_name="${linux_sig_name%.sig}"
 
@@ -193,8 +195,10 @@ jobs:
             test -n "$required" && test "$required" != "null"
           done
 
-          windows_signature="$(curl --fail --location --silent --show-error "$windows_sig_url" | tr -d '\r\n')"
-          linux_signature="$(curl --fail --location --silent --show-error "$linux_sig_url" | tr -d '\r\n')"
+          mkdir -p release-signatures
+          gh release download "$RELEASE_TAG" --pattern "*.sig" --dir release-signatures
+          windows_signature="$(tr -d '\r\n' < "release-signatures/$windows_sig_name")"
+          linux_signature="$(tr -d '\r\n' < "release-signatures/$linux_sig_name")"
           test -n "$windows_signature"
           test -n "$linux_signature"
 
@@ -227,9 +231,12 @@ jobs:
             gh release edit "$RELEASE_TAG" \
               --title "Bloodborne Save Editor Enhanced ${RELEASE_TAG}" \
               --notes-file "$notes_file" \
+              --draft=false \
               --latest
           fi
 
+          git fetch origin main
+          git checkout -B updater-publication origin/main
           mkdir -p .github/updater
           cp latest.json .github/updater/latest.json
           git config user.name "Rival99900"

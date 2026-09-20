@@ -8,13 +8,13 @@
 
 **Bloodborne Save Editor Enhanced** expands the work of the original [Bloodborne Save Editor by Noxde](https://github.com/Noxde/Bloodborne-save-editor). This project was made with passion and respect for that foundation, with the aim of providing a cleaner interface, safer save workflows, more complete Gem and Rune editing, and practical quality-of-life improvements for the Bloodborne community.
 
-> **Credits.** Huge thanks and congratulations to [Noxde](https://github.com/Noxde) for the original project. This enhanced edition exists because of that valuable open-source work.
+> **Credits.** Thanks to [Noxde](https://github.com/Noxde) for the original project and [Valentino Amato (valentinoamato)](https://github.com/valentinoamato) for the weapon/armor insertion method and its GA-slot fix. This enhanced edition exists because of that valuable open-source work.
 
-> **Current release:** v0.4.0 adds free-capacity counters, a fully localized boss timeline, safer save mutations, and compatibility repair for decrypted files accidentally expanded by an LF-to-CRLF text-mode transfer. NPC restoration remains a read-only research tool until each NPC is validated with an isolated before/after save pair.
+> **Version 0.5.0:** character presets, before/after revision comparisons, modern Flags dialogs, and experimental weapon/armor insertion for Inventory and Storage with the upstream GA-slot correction.
 
-## Local development: v0.5.0 (unreleased)
+## What’s new in v0.5.0
 
-Continues the local v0.4.1 changes, including experimental equipment insertion. The UI audit fixes small-card text measurement, Chalice catalog filtering, stale Add instructions, and dialog overflow/keyboard focus. Automatic audits cover UI text keys, 13 translated catalogs, multilingual search, and navigation structure. Browser rendering and native desktop testing remain pending; see [audit details](docs/v0.5.0-ui-audit.md).
+The interface includes corrected small-card text fitting, Chalice filtering, and scrollable dialogs with keyboard focus handling. English and all 13 existing translations cover the new controls. See the [release notes](.github/release-notes/v0.5.0.md) and [technical documentation](docs/README.md).
 
 ### Character presets and before/after review
 
@@ -22,13 +22,13 @@ In **Statistics**, name and save up to 20 personal presets on this device. Each 
 
 The revision panel now shows a **before/after comparison** against the last opened or saved snapshot, plus a collapsible comparison for each recorded operation. It covers exposed statistics, character position, play time, boss state, and Inventory/Storage item quantities, identifiers, shapes, effects and gem slots. Each comparison displays at most 200 changed fields and reports any omitted rows. Operations affecting unexposed bytes retain their log entry with an explanatory message; this is not a full binary comparison. Undo/Redo keeps using the existing save snapshot mechanism.
 
-Both features follow the dark/gold theme and include English plus all 13 translated locales. Run `node scripts/validate_v050_features.mjs` for the focused validation suite. This reconstruction is local only; no v0.5.0 release or updater was published.
+Both features follow the dark/gold theme and include English plus all 13 translated locales. Run `node scripts/validate_v050_features.mjs` for the focused validation suite.
 
-### Retained from local v0.4.1
+### Equipment insertion and Flags
 
 Flag success and error messages now use the application’s dark/gold dialog, including localized text and keyboard dismissal. Changes remain in memory until Save changes is selected.
 
-Weapon and armor insertion is now available as an **experimental** operation in both Inventory and Storage. Select Add, choose Weapons or Armor, select an entry, and acknowledge the experimental confirmation. The adaptation follows valentinoamato’s upstream equipment record format while requiring an explicit reserved block and a free destination slot. Failed additions leave the save unchanged. Use a copy: game compatibility is not established and previous attempts crashed on PS4. See [the integration review](docs/v0.4.1-equipment-review.md).
+Weapon and armor insertion is now available as an **experimental** operation in both Inventory and Storage. Select Add, choose Weapons or Armor, select an entry, and acknowledge the experimental confirmation. The adaptation follows valentinoamato’s corrected GA record traversal and expands a verified empty slot from 8 to 60 bytes, then rebuilds all shifted offsets. It requires a free destination slot and sufficient verified zero padding. Unsupported layouts are rejected. Failed additions leave the save unchanged. Use a copy: game compatibility is not established and previous attempts crashed on PS4. See [the integration details](docs/v0.5.0-equipment-fix.md).
 
 ## Download
 
@@ -38,10 +38,10 @@ Download the latest package from the [Releases page](https://github.com/Rival999
 
 | Field | Details |
 | --- | --- |
-| **Name** | **Bloodborne Save Editor Enhanced v0.4.0** |
-| **Version** | `v0.4.0` |
+| **Name** | **Bloodborne Save Editor Enhanced v0.5.0** |
+| **Version** | `v0.5.0` |
 | **Status** | Stable release — test first with a copied, decrypted save and retain the automatic `.bak` backup. |
-| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/Bloodborne_Save_Editor_Enhanced_0.4.0_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.4.0/SHA256SUMS.txt) |
+| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.5.0/Bloodborne_Save_Editor_Enhanced_0.5.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.5.0/Bloodborne_Save_Editor_Enhanced_0.5.0_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.5.0/SHA256SUMS.txt) |
 
 | Step | What to do |
 | --- | --- |
@@ -109,7 +109,7 @@ The editor creates a `.bak` backup as part of its normal save workflow. Confirma
 
 ## Automatic updates
 
-Update-dialog summaries are maintained in `src/i18n/releaseSummaries.json`: edit `default` for the reusable sentence, or add a complete language map under `versions["0.4.0"]` (without the `v` prefix) for a version-specific message. Include English and the 13 translated languages. The release workflow writes these translations to `localized_notes` in the updater manifest and keeps `notes` as plain English for older clients. Updated clients select the current interface language. Local edits do not publish a release.
+Update-dialog summaries are maintained in `src/i18n/releaseSummaries.json`: edit `default` for the reusable sentence, or add a complete language map under `versions["0.5.0"]` (without the `v` prefix) for a version-specific message. Include English and the 13 translated languages. The release workflow writes these translations to `localized_notes` in the updater manifest and keeps `notes` as plain English for older clients. Updated clients select the current interface language.
 
 The desktop application checks the signed `latest.json` manifest maintained in the repository’s `main` branch when it starts in the native Tauri window. The same manifest is also uploaded to every release for download and audit. When a newer version is available, the application presents an update dialog, downloads the platform package, verifies its embedded Tauri signature with the public key packaged in the application, installs it and restarts.
 
@@ -149,4 +149,4 @@ Never place private keys, passwords, or access tokens in source code, issues, re
 
 This project is distributed under the [GPL-3.0](LICENSE). It is derived from the original work by [Noxde](https://github.com/Noxde/Bloodborne-save-editor) and continues under the same open-source license.
 
-Thanks also to [valentinoamato](https://github.com/valentinoamato) for the upstream [weapon and armor insertion method](https://github.com/Noxde/Bloodborne-save-editor/commit/84adcfaba099d4d54ba98ae9c069fe77228706e9), reviewed for this local version. The local experimental adaptation preserves Enhanced’s destination checks and transactional save handling.
+Thanks also to [valentinoamato](https://github.com/valentinoamato) for the upstream [weapon and armor insertion method](https://github.com/Noxde/Bloodborne-save-editor/commit/84adcfaba099d4d54ba98ae9c069fe77228706e9), and its [GA-slot correction](https://github.com/Noxde/Bloodborne-save-editor/commit/f562c2893a4efdf3b281dc21dc89845c080d8d34). The adaptation preserves Enhanced’s destination checks and transactional save handling.

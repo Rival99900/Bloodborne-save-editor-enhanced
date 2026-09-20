@@ -15,5 +15,22 @@
     "tr": "İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
     "pt-PT": "Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
   },
-  "versions": {}
+  "versions": {
+    "0.5.0": {
+      "en": "Character presets · Before/after comparison. See the GitHub release for improvements and safe-save guidance.",
+      "fr": "Préréglages de personnage · Comparaison avant/après. Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
+      "it": "Configurazioni del personaggio · Confronto prima/dopo. Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
+      "de": "Charaktervorlagen · Vorher-Nachher-Vergleich. Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
+      "es": "Configuraciones de personaje · Comparación antes/después. Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
+      "nl": "Personagevoorinstellingen · Vergelijking voor/na. Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
+      "pl": "Zestawy statystyk postaci · Porównanie przed i po. Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
+      "ru": "Наборы характеристик персонажа · Сравнение до и после. Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
+      "da": "Karakterforudindstillinger · Sammenligning før/efter. Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
+      "nb": "Karakterforhåndsinnstillinger · Sammenligning før/etter. Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
+      "fi": "Hahmon esiasetukset · Ennen–jälkeen-vertailu. Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
+      "sv": "Karaktärsförinställningar · Jämförelse före/efter. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
+      "tr": "Karakter ön ayarları · Öncesi/sonrası karşılaştırması. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
+      "pt-PT": "Predefinições de personagem · Comparação antes/depois. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+    }
+  }
 }
