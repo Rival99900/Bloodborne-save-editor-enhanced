@@ -16,7 +16,7 @@
 
 Flag success and error messages now use the application’s dark/gold dialog, including localized text and keyboard dismissal. Changes remain in memory until Save changes is selected.
 
-The upstream weapon/armor addition method was reviewed for both Inventory and Storage. Direct equipment insertion remains disabled because previous PS4 tests crashed and the upstream allocator does not establish a fix. Existing replacement remains available. See [the integration review](docs/v0.4.1-equipment-review.md) for the remaining validation requirements.
+Weapon and armor insertion is now available as an **experimental** operation in both Inventory and Storage. Select Add, choose Weapons or Armor, select an entry, and acknowledge the experimental confirmation. The adaptation follows valentinoamato’s upstream equipment record format while requiring an explicit reserved block and a free destination slot. Failed additions leave the save unchanged. Use a copy: game compatibility is not established and previous attempts crashed on PS4. See [the integration review](docs/v0.4.1-equipment-review.md).
 
 ## Download
 
@@ -137,4 +137,4 @@ Never place private keys, passwords, or access tokens in source code, issues, re
 
 This project is distributed under the [GPL-3.0](LICENSE). It is derived from the original work by [Noxde](https://github.com/Noxde/Bloodborne-save-editor) and continues under the same open-source license.
 
-Thanks also to [valentinoamato](https://github.com/valentinoamato) for the upstream [weapon and armor insertion method](https://github.com/Noxde/Bloodborne-save-editor/commit/84adcfaba099d4d54ba98ae9c069fe77228706e9), reviewed for this local version. This credit does not imply that direct insertion is enabled in Enhanced.
+Thanks also to [valentinoamato](https://github.com/valentinoamato) for the upstream [weapon and armor insertion method](https://github.com/Noxde/Bloodborne-save-editor/commit/84adcfaba099d4d54ba98ae9c069fe77228706e9), reviewed for this local version. The local experimental adaptation preserves Enhanced’s destination checks and transactional save handling.

@@ -1046,18 +1046,28 @@ fn add_direct_upgrade(
 
 #[tauri::command]
 fn add_direct_equipment(
-    _id: u32,
-    _is_armor: bool,
-    _is_storage: bool,
-    _state_save: tauri::State<MutexSave>,
+    id: u32,
+    is_armor: bool,
+    is_storage: bool,
+    experimental_confirmed: bool,
+    state_save: tauri::State<MutexSave>,
 ) -> Result<Value, String> {
-    // The supplied PS4 klogs reproduce SIGBUS/general-protection faults after
-    // every tested direct weapon/armor injection, for both Inventory and
-    // Storage. The parser can prove the local 60-byte layout, but it cannot
-    // prove the game-owned metadata required for a new equipment record.
-    // Refuse before mutating memory or writing a save rather than exposing an
-    // operation known to create a crash candidate.
-    Err("DIRECT_EQUIPMENT_QUARANTINED".to_string())
+    if !experimental_confirmed {
+        return Err("EXPERIMENTAL_CONFIRMATION_REQUIRED".to_string());
+    }
+    let mut save_option = state_save.inner().data.lock()
+        .map_err(|_| "SAVE_UNAVAILABLE".to_string())?;
+    let save = save_option.as_mut().ok_or_else(|| "SAVE_REQUIRED".to_string())?;
+    let mut candidate = save.clone();
+    let article = candidate.add_experimental_equipment(
+        id, is_armor, if is_storage { Location::Storage } else { Location::Inventory },
+    ).map_err(|error| error.to_string())?;
+    let result = json!({
+        "save": serde_json::to_value(&candidate).map_err(|error| error.to_string())?,
+        "article": article,
+    });
+    *save = candidate;
+    Ok(result)
 }
 
 #[tauri::command]

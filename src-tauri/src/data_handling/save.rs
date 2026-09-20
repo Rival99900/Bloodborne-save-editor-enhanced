@@ -230,6 +230,47 @@ impl SaveData {
         None
     }
 
+    /// Experimental adaptation of valentinoamato's upstream 84adcfab method.
+    /// Retains its 60-byte record and 200 header, but only writes into a verified
+    /// reservation. Unknown regions and full destinations are never overwritten.
+    pub fn add_experimental_equipment(
+        &mut self,
+        id: u32,
+        is_armor: bool,
+        location: Location,
+    ) -> Result<Article, Error> {
+        let mut candidate = self.clone();
+        let offset = candidate.file.offsets.equipped_gems.1.checked_add(1)
+            .ok_or(Error::CustomError("ERROR: Equipment-slot boundary overflow."))?;
+        let article = candidate.add_direct_equipment_at(id, is_armor, location)?;
+        // Upstream uses a 16-bit handle. Reject exhaustion instead of wrapping.
+        if article.first_part & 0x007F_FFFF > u16::MAX as u32 {
+            return Err(Error::CustomError("ERROR: No unique equipment code is available."));
+        }
+        candidate.file.bytes[offset + 8..offset + 12].copy_from_slice(&200u32.to_le_bytes());
+        // Storage's first counter overlaps the first entry number. Rebuild both
+        // views so later edits use the actual serialized numbers and references.
+        let mut upgrades = parse_upgrades(&candidate.file);
+        let mut slots = parse_equipped_gems(&mut candidate.file, &mut upgrades);
+        candidate.inventory = Inventory::build(
+            &candidate.file, candidate.file.offsets.inventory,
+            candidate.file.offsets.key_inventory, &mut upgrades, &mut slots,
+        );
+        candidate.storage = Inventory::build(
+            &candidate.file, candidate.file.offsets.storage, (0, 0),
+            &mut upgrades, &mut slots,
+        );
+        let destination = match location {
+            Location::Inventory => &candidate.inventory,
+            Location::Storage => &candidate.storage,
+        };
+        let rebuilt = destination.articles.values().flatten()
+            .find(|item| item.first_part == article.first_part && item.second_part == article.second_part)
+            .cloned().ok_or(Error::CustomError("ERROR: Added equipment could not be reparsed."))?;
+        *self = candidate;
+        Ok(rebuilt)
+    }
+
     /// Experimental direct allocation for weapons and armor. The operation
     /// consumes only a fixed destination slot and a verified 60-byte garbage
     /// reservation in the equipment-slot area; it never shifts save data.
@@ -814,6 +855,51 @@ mod tests {
             save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
         }
         start
+    }
+
+    #[test]
+    fn experimental_equipment_uses_upstream_header_in_both_destinations() {
+        for location in [Location::Inventory, Location::Storage] {
+            for is_armor in [false, true] {
+                let mut save = build_save_data("testsave9");
+                let kind = if is_armor { ArticleType::Armor } else { ArticleType::RightHand };
+                let id = save.inventory.articles[&kind][0].id;
+                let offset = reserve_equipment_blocks(&mut save, 2);
+                let original_len = save.file.bytes.len();
+                let first = save.add_experimental_equipment(id, is_armor, location).unwrap();
+                let second = save.add_experimental_equipment(id, is_armor, location).unwrap();
+                assert_ne!(first.first_part, second.first_part);
+                assert_eq!(save.file.bytes.len(), original_len);
+                for start in [offset, offset + 60] {
+                    assert_eq!(&save.file.bytes[start + 8..start + 12], &200u32.to_le_bytes());
+                }
+                let mut file = save.file.clone();
+                let mut upgrades = parse_upgrades(&file);
+                let mut slots = parse_equipped_gems(&mut file, &mut upgrades);
+                let range = match location {
+                    Location::Inventory => file.offsets.inventory,
+                    Location::Storage => file.offsets.storage,
+                };
+                let rebuilt = Inventory::build(&file, range, (0, 0), &mut upgrades, &mut slots);
+                for added in [first, second] {
+                    assert!(rebuilt.articles[&kind].iter().any(|item|
+                        item.first_part == added.first_part && item.id == added.id));
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn experimental_equipment_failure_preserves_the_complete_save() {
+        for location in [Location::Inventory, Location::Storage] {
+            let mut save = build_save_data("testsave9");
+            let offset = reserve_equipment_blocks(&mut save, 1);
+            save.file.bytes[offset] = 0x42;
+            let original = save.clone();
+            assert!(save.add_experimental_equipment(2_020_000, false, location).is_err());
+            assert_eq!(save.file, original.file);
+            assert_eq!(serde_json::to_value(&save).unwrap(), serde_json::to_value(&original).unwrap());
+        }
     }
 
     #[test]

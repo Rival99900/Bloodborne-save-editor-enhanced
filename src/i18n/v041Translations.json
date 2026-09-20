@@ -1,0 +1,58 @@
+{
+  "en": {
+    "inventory.experimentalNotice": "Experimental weapon/armor addition. Game compatibility is not confirmed; earlier attempts caused crashes. Test only on a copy and keep the original. The addition affects the selected destination in memory; save and test in-game afterwards.",
+    "inventory.experimentalFailed": "The experimental addition was refused. Check the free destination slots and equipment reservation. No equipment was added."
+  },
+  "fr": {
+    "inventory.experimentalNotice": "Ajout expérimental d’armes et d’armures. La compatibilité en jeu n’est pas confirmée ; des essais précédents ont provoqué des plantages. Testez uniquement sur une copie et conservez l’original. L’ajout concerne la destination sélectionnée en mémoire ; enregistrez puis testez en jeu.",
+    "inventory.experimentalFailed": "L’ajout expérimental a été refusé. Vérifiez les places libres de la destination et la réserve d’équipement. Aucun équipement n’a été ajouté."
+  },
+  "it": {
+    "inventory.experimentalNotice": "Aggiunta sperimentale di armi e armature. La compatibilità nel gioco non è confermata; i tentativi precedenti hanno causato arresti anomali. Usa solo una copia e conserva l’originale. L’aggiunta modifica la destinazione selezionata in memoria; salva e prova nel gioco.",
+    "inventory.experimentalFailed": "Aggiunta sperimentale rifiutata. Controlla gli spazi liberi nella destinazione e la riserva per l’equipaggiamento. Nessun equipaggiamento aggiunto."
+  },
+  "de": {
+    "inventory.experimentalNotice": "Experimentelles Hinzufügen von Waffen und Rüstungen. Die Spielkompatibilität ist unbestätigt; frühere Versuche verursachten Abstürze. Teste nur mit einer Kopie und bewahre das Original auf. Das Hinzufügen erfolgt am gewählten Ziel im Arbeitsspeicher; danach speichern und im Spiel testen.",
+    "inventory.experimentalFailed": "Experimentelles Hinzufügen abgelehnt. Prüfe freie Plätze am Ziel und den reservierten Ausrüstungsbereich. Keine Ausrüstung wurde hinzugefügt."
+  },
+  "es": {
+    "inventory.experimentalNotice": "Adición experimental de armas y armaduras. La compatibilidad en el juego no está confirmada; los intentos anteriores provocaron cierres inesperados. Usa solo una copia y conserva el original. Se modifica el destino seleccionado en memoria; después guarda y prueba en el juego.",
+    "inventory.experimentalFailed": "Se ha rechazado la adición experimental. Comprueba los espacios libres del destino y la reserva de equipo. No se ha añadido equipo."
+  },
+  "nl": {
+    "inventory.experimentalNotice": "Experimenteel toevoegen van wapens en pantsers. De compatibiliteit met het spel is niet bevestigd; eerdere pogingen veroorzaakten crashes. Test alleen met een kopie en bewaar het origineel. De gekozen bestemming wordt in het geheugen gewijzigd; sla daarna op en test in het spel.",
+    "inventory.experimentalFailed": "Experimenteel toevoegen geweigerd. Controleer de vrije doelplaatsen en de gereserveerde uitrustingsruimte. Er is geen uitrusting toegevoegd."
+  },
+  "pl": {
+    "inventory.experimentalNotice": "Eksperymentalne dodawanie broni i pancerzy. Zgodność z grą nie została potwierdzona; wcześniejsze próby powodowały awarie. Testuj wyłącznie na kopii i zachowaj oryginał. Wybrane miejsce docelowe jest zmieniane w pamięci; następnie zapisz i sprawdź w grze.",
+    "inventory.experimentalFailed": "Odrzucono eksperymentalne dodawanie. Sprawdź wolne miejsca docelowe i obszar zarezerwowany na wyposażenie. Nie dodano wyposażenia."
+  },
+  "ru": {
+    "inventory.experimentalNotice": "Экспериментальное добавление оружия и брони. Совместимость с игрой не подтверждена; прежние попытки приводили к сбоям. Используйте только копию и сохраните оригинал. Изменяется выбранное хранилище в памяти; затем сохраните файл и проверьте его в игре.",
+    "inventory.experimentalFailed": "Экспериментальное добавление отклонено. Проверьте свободные ячейки и область, зарезервированную для снаряжения. Снаряжение не добавлено."
+  },
+  "da": {
+    "inventory.experimentalNotice": "Eksperimentel tilføjelse af våben og rustninger. Kompatibiliteten med spillet er ikke bekræftet; tidligere forsøg medførte nedbrud. Test kun på en kopi, og behold originalen. Det valgte mål ændres i hukommelsen; gem derefter, og test i spillet.",
+    "inventory.experimentalFailed": "Eksperimentel tilføjelse afvist. Kontrollér ledige pladser på målet og det reserverede udstyrsområde. Intet udstyr blev tilføjet."
+  },
+  "nb": {
+    "inventory.experimentalNotice": "Eksperimentell tillegging av våpen og rustninger. Kompatibiliteten med spillet er ikke bekreftet; tidligere forsøk førte til krasj. Test bare på en kopi og behold originalen. Det valgte målet endres i minnet; lagre deretter og test i spillet.",
+    "inventory.experimentalFailed": "Eksperimentell tillegging avvist. Kontroller ledige plasser på målet og det reserverte utstyrsområdet. Ingen utrustning ble lagt til."
+  },
+  "fi": {
+    "inventory.experimentalNotice": "Kokeellinen aseiden ja panssarien lisäys. Yhteensopivuutta pelin kanssa ei ole vahvistettu; aiemmat kokeilut kaatoivat pelin. Testaa vain kopiolla ja säilytä alkuperäinen. Valittua kohdetta muutetaan muistissa; tallenna sitten ja testaa pelissä.",
+    "inventory.experimentalFailed": "Kokeellinen lisäys hylättiin. Tarkista kohteen vapaat paikat ja varusteille varattu alue. Varusteita ei lisätty."
+  },
+  "sv": {
+    "inventory.experimentalNotice": "Experimentellt tillägg av vapen och rustningar. Kompatibiliteten med spelet är inte bekräftad; tidigare försök orsakade krascher. Testa bara på en kopia och behåll originalet. Det valda målet ändras i minnet; spara sedan och testa i spelet.",
+    "inventory.experimentalFailed": "Experimentellt tillägg nekades. Kontrollera lediga målplatser och det reserverade utrustningsutrymmet. Ingen utrustning lades till."
+  },
+  "tr": {
+    "inventory.experimentalNotice": "Deneysel silah ve zırh ekleme. Oyun uyumluluğu doğrulanmadı; önceki denemeler çökmelere yol açtı. Yalnızca bir kopyada deneyin ve asıl dosyayı koruyun. Seçilen hedef bellekte değiştirilir; ardından kaydedip oyunda deneyin.",
+    "inventory.experimentalFailed": "Deneysel ekleme reddedildi. Hedefteki boş yuvaları ve ayrılmış ekipman alanını kontrol edin. Ekipman eklenmedi."
+  },
+  "pt-PT": {
+    "inventory.experimentalNotice": "Adição experimental de armas e armaduras. A compatibilidade com o jogo não está confirmada; tentativas anteriores provocaram falhas. Testa apenas numa cópia e guarda o original. O destino selecionado é alterado em memória; depois guarda e testa no jogo.",
+    "inventory.experimentalFailed": "Adição experimental recusada. Verifica os espaços livres no destino e a área reservada ao equipamento. Não foi adicionado equipamento."
+  }
+}

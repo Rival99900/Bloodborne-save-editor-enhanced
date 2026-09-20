@@ -4,6 +4,7 @@ import { SaveContext } from "../../context/context";
 import { ItemsContext } from "../../context/itemsContext";
 import SearchAllitems from "../../components/SearchAllitems";
 import SelectSearch from "../../components/SelectSearch";
+import ConfirmDialog from "../../components/ConfirmDialog";
 import DarkSelect from "../../components/DarkSelect";
 import { useLocalization } from "../../i18n/localization";
 
@@ -22,6 +23,7 @@ const GEM_SHAPES = ["Radial", "Triangle", "Waning", "Circle", "Droplet"];
 const RUNE_TYPES = ["-", "Oath"];
 
 function AddScreen({ type = "item", setAddScreen, isStorage }) {
+  const [experimentalConfirm, setExperimentalConfirm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [catalog, setCatalog] = useState(type);
   const [quantity, setQuantity] = useState(1);
@@ -85,12 +87,12 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
 
   useEffect(() => {
     function handleKeyDown(event) {
-      if (event.key === "Escape") dismiss();
+      if (event.key === "Escape" && !experimentalConfirm) dismiss();
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [experimentalConfirm]);
 
   function resetCatalog(nextCatalog) {
     setCatalog(nextCatalog);
@@ -108,7 +110,12 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
     });
   }
 
-  async function handleConfirm() {
+  async function handleConfirm(experimentalConfirmed = false) {
+    if (isSubmitting) return;
+    if (isEquipment && !experimentalConfirmed) {
+      setExperimentalConfirm(true);
+      return;
+    }
     setError("");
     try {
       setIsSubmitting(true);
@@ -132,6 +139,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           const result = await invoke("add_direct_equipment", {
             id: selected.id,
             isArmor: catalog === "armor",
+            experimentalConfirmed: true,
             isStorage,
           });
           return result.save;
@@ -163,7 +171,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
       setError(
         /No safe unreferenced gem or rune record/i.test(message)
           ? t("inventory.directUpgradeUnavailable")
-          : message || t("inventory.directAddFailed"),
+          : isEquipment ? t("inventory.experimentalFailed") : message || t("inventory.directAddFailed"),
       );
     } finally {
       setIsSubmitting(false);
@@ -185,6 +193,15 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
         if (event.target === event.currentTarget) dismiss();
       }}
     >
+      {experimentalConfirm ? (
+        <ConfirmDialog
+          title={`${t("inventory.addEquipment")} — ${destinationLabel}`}
+          description={t("inventory.experimentalNotice")}
+          confirmLabel={t("inventory.addEquipment")}
+          onCancel={() => setExperimentalConfirm(false)}
+          onConfirm={() => { setExperimentalConfirm(false); handleConfirm(true); }}
+        />
+      ) : null}
       <section className="inventory-dialog__card inventory-dialog__card--add">
         <button className="inventory-dialog__close" onClick={dismiss} aria-label={t("inventory.closeAddLabel")}>
           ×
@@ -193,7 +210,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
         <header className="inventory-dialog__header">
           <span className="inventory-dialog__eyebrow">{destinationLabel}</span>
           <h2>{isUpgrade ? t("inventory.addDirectUpgrade") : isEquipment ? t("inventory.addDirectEquipment") : t("inventory.addItem")}</h2>
-          <p>{isUpgrade ? t("inventory.directUpgradeDescription") : isEquipment ? t("inventory.addNotice") : t("inventory.addDescription")}</p>
+          {!isEquipment ? <p>{isUpgrade ? t("inventory.directUpgradeDescription") : t("inventory.addDescription")}</p> : null}
         </header>
 
         <div className="inventory-dialog__controls">
@@ -260,7 +277,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
           ) : (
             <section className="inventory-dialog__standard-content">
               <p className="inventory-dialog__notice">
-                {t("inventory.addNotice")}
+                {isEquipment ? t("inventory.experimentalNotice") : t("inventory.addNotice")}
               </p>
               <SearchAllitems key={catalog} type={catalog} onChange={setSelected} />
             </section>
@@ -276,7 +293,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
 
         <footer className="inventory-dialog__actions">
           <button onClick={dismiss} id="cancelReplace">{t("inventory.cancel")}</button>
-          <button id="confirmReplace" onClick={handleConfirm} disabled={!canConfirm || isSubmitting || isDirectUpgradeUnavailable || isEquipment}>
+          <button id="confirmReplace" onClick={() => handleConfirm()} disabled={!canConfirm || isSubmitting || isDirectUpgradeUnavailable}>
             {isSubmitting ? t("forge.confirming") : isUpgrade ? t("inventory.addDirect") : isEquipment ? t("inventory.addEquipment") : t("inventory.addSelected")}
           </button>
         </footer>
