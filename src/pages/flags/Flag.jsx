@@ -1,9 +1,9 @@
 import { invoke } from "@tauri-apps/api/core";
-import { message } from "@tauri-apps/plugin-dialog";
 import { memo, useContext, useState } from "react";
 import { useLocalization } from "../../i18n/localization";
 import { SaveContext } from "../../context/context";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import StatusDialog from "../../components/StatusDialog";
 
 function Flag({ label, offset, values, info, impact, warning = "", category = "Known flag", isMask = false }) {
   const { t } = useLocalization();
@@ -11,6 +11,7 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
   const [isApplying, setIsApplying] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [notice, setNotice] = useState(null);
 
   async function apply() {
     setIsApplying(true);
@@ -28,9 +29,9 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
         return updatedSave;
       });
       if (!editedSave) return;
-      await message(t("flags.card.applied"));
+      setNotice({ tone: "success" });
     } catch (error) {
-      await message(t("flags.card.applyFailed", { error: String(error) }));
+      setNotice({ tone: "error", error: String(error) });
     } finally {
       setIsApplying(false);
     }
@@ -38,6 +39,17 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
 
   return (
     <>
+      {notice ? (
+        <StatusDialog
+          title={label}
+          tone={notice.tone}
+          description={notice.tone === "error"
+            ? t("flags.card.applyFailed", { error: notice.error })
+            : t("flags.card.applied")}
+          closeLabel={t("saveFlow.close")}
+          onClose={() => setNotice(null)}
+        />
+      ) : null}
       {confirmOpen ? (
         <ConfirmDialog
           title={label}

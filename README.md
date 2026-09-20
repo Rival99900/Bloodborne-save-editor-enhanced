@@ -12,6 +12,12 @@
 
 > **Current release:** v0.4.0 adds free-capacity counters, a fully localized boss timeline, safer save mutations, and compatibility repair for decrypted files accidentally expanded by an LF-to-CRLF text-mode transfer. NPC restoration remains a read-only research tool until each NPC is validated with an isolated before/after save pair.
 
+## Local development: v0.4.1 (unreleased)
+
+Flag success and error messages now use the application’s dark/gold dialog, including localized text and keyboard dismissal. Changes remain in memory until Save changes is selected.
+
+The upstream weapon/armor addition method was reviewed for both Inventory and Storage. Direct equipment insertion remains disabled because previous PS4 tests crashed and the upstream allocator does not establish a fix. Existing replacement remains available. See [the integration review](docs/v0.4.1-equipment-review.md) for the remaining validation requirements.
+
 ## Download
 
 Download the latest package from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). The stable distribution provides a **Windows x64 installer**, an **Ubuntu/Linux x64 AppImage**, signed updater metadata and a SHA-256 checksum manifest.
@@ -130,3 +136,5 @@ Never place private keys, passwords, or access tokens in source code, issues, re
 ## Credits and license
 
 This project is distributed under the [GPL-3.0](LICENSE). It is derived from the original work by [Noxde](https://github.com/Noxde/Bloodborne-save-editor) and continues under the same open-source license.
+
+Thanks also to [valentinoamato](https://github.com/valentinoamato) for the upstream [weapon and armor insertion method](https://github.com/Noxde/Bloodborne-save-editor/commit/84adcfaba099d4d54ba98ae9c069fe77228706e9), reviewed for this local version. This credit does not imply that direct insertion is enabled in Enhanced.
