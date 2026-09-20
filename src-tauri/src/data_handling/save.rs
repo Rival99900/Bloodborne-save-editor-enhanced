@@ -1,5 +1,8 @@
 use serde::{Deserialize, Serialize};
 
+#[cfg(test)]
+use super::enums::ArticleType;
+
 use crate::data_handling::position::Pos;
 use serde_json::Value;
 use std::{
@@ -11,7 +14,7 @@ use std::{
 use super::{
     article::Article,
     bosses::{self, Boss},
-    enums::{ArticleType, Error, Location, SlotShape, TypeFamily, UpgradeType},
+    enums::{Error, Location, SlotShape, TypeFamily, UpgradeType},
     file::FileData,
     inventory::Inventory,
     slots::{parse_equipped_gems, Slot},

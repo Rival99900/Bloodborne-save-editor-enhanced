@@ -176,7 +176,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          release="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}")"
+          # The tag endpoint excludes drafts. Resolve the authenticated list instead.
+          release="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/releases?per_page=100" |
+            jq -ce --arg tag "$RELEASE_TAG" '[.[][] | select(.tag_name == $tag)] |
+              if length == 1 then .[0] else error("Expected exactly one matching release") end')"
+          release_commit="$(git rev-parse HEAD)"
           version="${RELEASE_TAG#v}"
 
           windows_sig_name="$(jq -r '.assets[] | select(.name | endswith(".exe.sig")) | .name' <<<"$release" | head -n1)"
@@ -231,6 +235,7 @@ jobs:
             gh release edit "$RELEASE_TAG" \
               --title "Bloodborne Save Editor Enhanced ${RELEASE_TAG}" \
               --notes-file "$notes_file" \
+              --target "$release_commit" \
               --draft=false \
               --latest
           fi
