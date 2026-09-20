@@ -8,7 +8,7 @@ export default function useDialogFocus(onClose) {
   useEffect(() => {
     const previous = document.activeElement;
     const buttons = () => Array.from(panelRef.current?.querySelectorAll(
-      'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]',
+      'summary, button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]',
     ) ?? []).filter((element) => element.getClientRects().length);
     const frame = requestAnimationFrame(() => buttons()[0]?.focus());
     function handleKeyDown(event) {

@@ -1,3 +1,4 @@
+import { buildSaveDiff, REVISION_LABEL_KEYS } from "./utils/saveDiff";
 import "./App.css";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -146,6 +147,8 @@ function App() {
         const entry = {
           id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
           label: label || t("revision.genericChange"),
+          labelKey: REVISION_LABEL_KEYS.find(key => t(key) === label) ?? (!label ? "revision.genericChange" : null),
+          diff: buildSaveDiff(saveRef.current, nextSnapshot),
           timestamp: Date.now(),
         };
         const nextHistory = {
@@ -538,6 +541,7 @@ function App() {
       ) : null}
       {revisionPanelOpen ? (
         <RevisionPanel
+          diff={buildSaveDiff(baselineSaveRef.current, save)}
           entries={revisionState.past}
           summary={buildRevisionSummary(baselineSaveRef.current, save)}
           canUndo={revisionState.past.length > 0}

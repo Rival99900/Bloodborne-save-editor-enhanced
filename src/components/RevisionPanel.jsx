@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import SaveDiffTable from "./SaveDiffTable";
+import useDialogFocus from "../utils/useDialogFocus";
 import { useLocalization } from "../i18n/localization";
 
 function formatTime(timestamp, language) {
@@ -13,34 +14,9 @@ function formatTime(timestamp, language) {
   }
 }
 
-function RevisionPanel({ entries, summary = [], onClose, onUndo, onRedo, canUndo, canRedo }) {
+function RevisionPanel({ entries, diff, summary = [], onClose, onUndo, onRedo, canUndo, canRedo }) {
   const { language, t } = useLocalization();
-  const panelRef = useRef(null);
-  const closeButtonRef = useRef(null);
-
-  useEffect(() => {
-    closeButtonRef.current?.focus();
-    function onKeyDown(event) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onClose();
-        return;
-      }
-      if (event.key !== "Tab") return;
-      const focusable = [...(panelRef.current?.querySelectorAll(
-        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      ) ?? [])];
-      if (!focusable.length) return;
-      const currentIndex = focusable.indexOf(document.activeElement);
-      const nextIndex = event.shiftKey
-        ? (currentIndex <= 0 ? focusable.length - 1 : currentIndex - 1)
-        : (currentIndex === focusable.length - 1 ? 0 : currentIndex + 1);
-      event.preventDefault();
-      focusable[nextIndex]?.focus();
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  const panelRef = useDialogFocus(onClose);
 
   return (
     <div className="revision-panel" role="dialog" aria-modal="true" aria-labelledby="revision-title" ref={panelRef}>
@@ -50,7 +26,7 @@ function RevisionPanel({ entries, summary = [], onClose, onUndo, onRedo, canUndo
             <span className="revision-panel__eyebrow">{t("revision.eyebrow")}</span>
             <h2 id="revision-title">{t("revision.title")}</h2>
           </div>
-          <button ref={closeButtonRef} className="revision-panel__close" type="button" onClick={onClose} aria-label={t("revision.close")}>×</button>
+          <button className="revision-panel__close" type="button" onClick={onClose} aria-label={t("revision.close")}>×</button>
         </div>
         <p className="revision-panel__description">{t("revision.description")}</p>
         <div className="revision-panel__actions">
@@ -58,6 +34,7 @@ function RevisionPanel({ entries, summary = [], onClose, onUndo, onRedo, canUndo
           <button type="button" onClick={onRedo} disabled={!canRedo}>{t("revision.redo")}</button>
         </div>
         <div className="revision-panel__content">
+          <details className="revision-diff" open><summary>{t("diff.details")}</summary><SaveDiffTable diff={diff}/></details>
           {summary.length ? (
             <section className="revision-panel__summary" aria-labelledby="revision-summary-title">
               <h3 id="revision-summary-title">{t("revision.summaryTitle")}</h3>
@@ -73,7 +50,7 @@ function RevisionPanel({ entries, summary = [], onClose, onUndo, onRedo, canUndo
               {[...entries].reverse().map((entry) => (
                 <li key={entry.id}>
                   <span className="revision-panel__time">{formatTime(entry.timestamp, language)}</span>
-                  <span>{entry.label}</span>
+                  <div className="revision-entry__body"><span>{entry.labelKey ? t(entry.labelKey) : entry.label}</span><details className="revision-diff"><summary>{t("diff.details")}</summary><SaveDiffTable diff={entry.diff} emptyKey="diff.unavailable"/></details></div>
                 </li>
               ))}
             </ol>

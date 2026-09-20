@@ -1,3 +1,4 @@
+import v050Translations from "./v050Translations.json";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import v041Translations from "./v041Translations.json";
 import officialUiOverrides from "./officialUiOverrides.json";
@@ -21689,6 +21690,12 @@ Object.entries(v040FixTranslations).forEach(([language, translations]) => {
 });
 
 Object.entries(v041Translations).forEach(([language, translations]) => {
+  const resource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => applyTranslationPath(resource, key, value));
+  resources[language] = resource;
+});
+
+Object.entries(v050Translations).forEach(([language, translations]) => {
   const resource = { ...(resources[language] ?? {}) };
   Object.entries(translations).forEach(([key, value]) => applyTranslationPath(resource, key, value));
   resources[language] = resource;

@@ -9,7 +9,7 @@ function getStatLimit(name) {
   return STAT_VALUE_LIMITS[name] ?? MAX_STAT_VALUE;
 }
 
-function Stat({ stat, setEditedStats, width }) {
+function Stat({ stat, setEditedStats, width, disabled = false }) {
   const { t } = useLocalization();
   const maximum = getStatLimit(stat.name);
 
@@ -17,7 +17,7 @@ function Stat({ stat, setEditedStats, width }) {
     const rawValue = event.target.value;
     const numericValue = Number(rawValue);
     const nextValue = Number.isFinite(numericValue)
-      ? Math.min(maximum, Math.max(0, numericValue))
+      ? Math.min(maximum, Math.max(0, Math.trunc(numericValue)))
       : 0;
 
     setEditedStats((previous) => previous.map((entry) => (
@@ -53,6 +53,8 @@ function Stat({ stat, setEditedStats, width }) {
         <input
           id={`stat-${stat.name}`}
           type="number"
+          step={1}
+          disabled={disabled}
           style={{
             textAlign: "right",
             background: "none",
