@@ -46,7 +46,14 @@ impl SaveData {
     }
 
     fn build_validated(save_path: &str, resources_path: PathBuf) -> Result<SaveData, Error> {
-        let mut file = FileData::build(save_path, resources_path)?;
+        let file = FileData::build(save_path, resources_path)?;
+        let save = Self::parse_file(file)?;
+        save.file.create_backup(save_path)?;
+        Ok(save)
+    }
+
+    // Rebuild all derived views after structural edits, without filesystem I/O.
+    fn parse_file(mut file: FileData) -> Result<SaveData, Error> {
         let stats = stats::new(&file).map_err(|_| {
             Error::CustomError("Failed to parse character statistics from this save.")
         })?;
@@ -71,10 +78,6 @@ impl SaveData {
         let username = Username::try_build(&file)?;
         let playtime = file.get_playtime()?;
         let position = Pos::new(&file)?;
-
-        // A backup is useful only for a save that has passed all parsing and
-        // structural checks. Invalid imports must not create a misleading .bak.
-        file.create_backup(save_path)?;
 
         let compatibility_repair_applied = file.compatibility_repair_applied;
         Ok(SaveData {
@@ -230,45 +233,88 @@ impl SaveData {
         None
     }
 
-    /// Experimental adaptation of valentinoamato's upstream 84adcfab method.
-    /// Retains its 60-byte record and 200 header, but only writes into a verified
-    /// reservation. Unknown regions and full destinations are never overwritten.
+    /// Adaptation of valentinoamato's f562c289 GA-slot insertion fix.
+    /// Scan 4096 typed records, expand one 8-byte vacancy to 60 bytes, then
+    /// reparse every shifted offset. Commit only after the candidate validates.
     pub fn add_experimental_equipment(
         &mut self,
         id: u32,
         is_armor: bool,
         location: Location,
     ) -> Result<Article, Error> {
-        let mut candidate = self.clone();
-        let offset = candidate.file.offsets.equipped_gems.1.checked_add(1)
-            .ok_or(Error::CustomError("ERROR: Equipment-slot boundary overflow."))?;
-        let article = candidate.add_direct_equipment_at(id, is_armor, location)?;
-        // Upstream uses a 16-bit handle. Reject exhaustion instead of wrapping.
-        if article.first_part & 0x007F_FFFF > u16::MAX as u32 {
-            return Err(Error::CustomError("ERROR: No unique equipment code is available."));
+        use super::constants::*;
+        let layout = super::ga::scan(&self.file.bytes, self.file.offsets.username)
+            .map_err(Error::CustomError)?;
+        let ga_offset = layout.empty.ok_or(Error::CustomError("ERROR: Equipment section is full."))?;
+        let handle = layout.max_handle.checked_add(1)
+            .ok_or(Error::CustomError("ERROR: No unique equipment code is available."))?;
+        let empty = self.file.find_inv_empty_slot(location)
+            .ok_or(Error::CustomError("ERROR: No free destination slot is available."))?;
+        let (_, article_type) = if is_armor {
+            super::inventory::get_info_armor(id, &self.file.resources_path)?
+        } else {
+            super::inventory::get_info_weapon(id, &self.file.resources_path)?
+        };
+        let family: TypeFamily = article_type.into();
+        if (is_armor && family != TypeFamily::Armor) || (!is_armor && family != TypeFamily::Weapon) {
+            return Err(Error::CustomError("ERROR: Incompatible equipment family."));
         }
-        candidate.file.bytes[offset + 8..offset + 12].copy_from_slice(&200u32.to_le_bytes());
-        // Storage's first counter overlaps the first entry number. Rebuild both
-        // views so later edits use the actual serialized numbers and references.
-        let mut upgrades = parse_upgrades(&candidate.file);
-        let mut slots = parse_equipped_gems(&mut candidate.file, &mut upgrades);
-        candidate.inventory = Inventory::build(
-            &candidate.file, candidate.file.offsets.inventory,
-            candidate.file.offsets.key_inventory, &mut upgrades, &mut slots,
-        );
-        candidate.storage = Inventory::build(
-            &candidate.file, candidate.file.offsets.storage, (0, 0),
-            &mut upgrades, &mut slots,
-        );
+        let len = self.file.bytes.len();
+        // Unlike the WIP upstream code, never truncate unknown nonzero bytes.
+        if len < 52 || self.file.bytes[len - 52..].iter().any(|byte| *byte != 0) {
+            return Err(Error::CustomError("ERROR: Save has no verified zero padding for equipment insertion."));
+        }
+        let first = (if is_armor { 0x9080_0000 } else { 0x8080_0000 }) | u32::from(handle);
+        let second = if is_armor { (id & 0x00FF_FFFF) | 0x1000_0000 } else { id };
+        // Include unparsed inventory references in the collision check.
+        for (start, end) in [self.file.offsets.inventory, self.file.offsets.storage, self.file.offsets.key_inventory] {
+            for offset in (start..end).step_by(16) {
+                if self.file.bytes.get(offset + 4..offset + 8) == Some(first.to_le_bytes().as_slice()) {
+                    return Err(Error::CustomError("ERROR: Generated equipment code collides with an existing record."));
+                }
+            }
+        }
+        let counters = match location {
+            Location::Inventory => [USERNAME_TO_FIRST_INVENTORY_COUNTER, USERNAME_TO_SECOND_INVENTORY_COUNTER],
+            Location::Storage => [USERNAME_TO_FIRST_STORAGE_COUNTER, USERNAME_TO_SECOND_STORAGE_COUNTER],
+        };
+        let mut file = self.file.clone();
+        for relative in counters {
+            let offset = file.offsets.username + relative;
+            let value = u32::from_le_bytes(file.bytes[offset..offset + 4].try_into().unwrap())
+                .checked_add(1).ok_or(Error::CustomError("ERROR: Inventory counter overflow."))?;
+            file.bytes[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
+        }
+        file.bytes[empty..empty + 4].copy_from_slice(&first.to_le_bytes());
+        file.bytes[empty + 4..empty + 8].copy_from_slice(&second.to_le_bytes());
+        file.bytes[empty + 8..empty + 12].copy_from_slice(&1u32.to_le_bytes());
+        let mut block = [0u8; 60];
+        block[..4].copy_from_slice(&first.to_le_bytes());
+        block[4..8].copy_from_slice(&second.to_le_bytes());
+        block[8..12].copy_from_slice(&200u32.to_le_bytes());
+        block[16..20].copy_from_slice(&1u32.to_le_bytes());
+        for slot in 0..5 {
+            block[20 + slot * 8..24 + slot * 8].copy_from_slice(&[0, 0, 0, 0x80]);
+        }
+        file.bytes.splice(ga_offset..ga_offset + 8, block);
+        file.bytes.truncate(len);
+        file.offsets = super::offsets::Offsets::build(&file.bytes)?;
+        if file.offsets.username != self.file.offsets.username + 52 {
+            return Err(Error::CustomError("ERROR: Shifted save layout could not be verified."));
+        }
+        super::ga::scan(&file.bytes, file.offsets.username).map_err(Error::CustomError)?;
+        let candidate = panic::catch_unwind(AssertUnwindSafe(|| Self::parse_file(file)))
+            .map_err(|_| Error::CustomError("ERROR: Added equipment could not be reparsed."))??;
+        candidate.validate_game_load_safety()?;
         let destination = match location {
             Location::Inventory => &candidate.inventory,
             Location::Storage => &candidate.storage,
         };
-        let rebuilt = destination.articles.values().flatten()
-            .find(|item| item.first_part == article.first_part && item.second_part == article.second_part)
+        let article = destination.articles.values().flatten()
+            .find(|item| item.first_part == first && item.second_part == second)
             .cloned().ok_or(Error::CustomError("ERROR: Added equipment could not be reparsed."))?;
         *self = candidate;
-        Ok(rebuilt)
+        Ok(article)
     }
 
     /// Experimental direct allocation for weapons and armor. The operation
@@ -864,7 +910,7 @@ mod tests {
                 let mut save = build_save_data("testsave9");
                 let kind = if is_armor { ArticleType::Armor } else { ArticleType::RightHand };
                 let id = save.inventory.articles[&kind][0].id;
-                let offset = reserve_equipment_blocks(&mut save, 2);
+                let offset = super::super::ga::scan(&save.file.bytes, save.file.offsets.username).unwrap().empty.unwrap();
                 let original_len = save.file.bytes.len();
                 let first = save.add_experimental_equipment(id, is_armor, location).unwrap();
                 let second = save.add_experimental_equipment(id, is_armor, location).unwrap();
@@ -890,11 +936,37 @@ mod tests {
     }
 
     #[test]
+    fn experimental_insertion_rebases_views_and_rejects_nonzero_tail() {
+        for location in [Location::Inventory, Location::Storage] {
+            let mut save = build_save_data("testsave9");
+            let original = save.clone();
+            let id = save.inventory.articles[&ArticleType::RightHand][0].id;
+            save.add_experimental_equipment(id, false, location).unwrap();
+            assert_eq!(save.file.offsets.username, original.file.offsets.username + 52);
+            assert_eq!(save.file.offsets.inventory.0, original.file.offsets.inventory.0 + 52);
+            assert_eq!(save.file.offsets.storage.0, original.file.offsets.storage.0 + 52);
+            assert_eq!(serde_json::to_value(&save.stats).unwrap(), serde_json::to_value(&original.stats).unwrap());
+            assert_eq!(serde_json::to_value(&save.bosses).unwrap(), serde_json::to_value(&original.bosses).unwrap());
+            assert_eq!(save.playtime, original.playtime);
+            let mut expected_position = serde_json::to_value(&original.position).unwrap();
+            let offset = expected_position["coordinates"]["offset"].as_u64().unwrap();
+            expected_position["coordinates"]["offset"] = serde_json::json!(offset + 52);
+            assert_eq!(serde_json::to_value(&save.position).unwrap(), expected_position);
+            let last = save.file.bytes.len() - 1;
+            save.file.bytes[last] = 0x42;
+            let before = save.clone();
+            assert!(save.add_experimental_equipment(id, true, location).is_err());
+            assert_eq!(save.file, before.file);
+            assert_eq!(serde_json::to_value(&save).unwrap(), serde_json::to_value(&before).unwrap());
+        }
+    }
+
+    #[test]
     fn experimental_equipment_failure_preserves_the_complete_save() {
         for location in [Location::Inventory, Location::Storage] {
             let mut save = build_save_data("testsave9");
-            let offset = reserve_equipment_blocks(&mut save, 1);
-            save.file.bytes[offset] = 0x42;
+            // Unknown record type must be rejected before any mutation.
+            save.file.bytes[super::super::constants::START_TO_UPGRADE + 3] = 0x42;
             let original = save.clone();
             assert!(save.add_experimental_equipment(2_020_000, false, location).is_err());
             assert_eq!(save.file, original.file);
