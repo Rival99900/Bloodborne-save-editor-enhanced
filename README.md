@@ -12,7 +12,11 @@
 
 > **Current release:** v0.4.0 adds free-capacity counters, a fully localized boss timeline, safer save mutations, and compatibility repair for decrypted files accidentally expanded by an LF-to-CRLF text-mode transfer. NPC restoration remains a read-only research tool until each NPC is validated with an isolated before/after save pair.
 
-## Local development: v0.4.1 (unreleased)
+## Local development: v0.5.0 (unreleased)
+
+Continues the local v0.4.1 changes, including experimental equipment insertion. The UI audit fixes small-card text measurement, Chalice catalog filtering, stale Add instructions, and dialog overflow/keyboard focus. Automatic audits cover UI text keys, 13 translated catalogs, multilingual search, and navigation structure. Browser rendering and native desktop testing remain pending; see [audit details](docs/v0.5.0-ui-audit.md).
+
+### Retained from local v0.4.1
 
 Flag success and error messages now use the application’s dark/gold dialog, including localized text and keyboard dismissal. Changes remain in memory until Save changes is selected.
 

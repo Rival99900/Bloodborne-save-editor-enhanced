@@ -1415,7 +1415,7 @@
 }
 
 .inventory-dialog__card--add {
-  grid-template-rows: auto auto auto minmax(12rem, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
 }
 
 .inventory-dialog__close {
@@ -3771,4 +3771,24 @@
 @media (max-width: 700px) {
   .stats-workspace { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
   .stats-workspace .stats-actions { grid-column: 1; grid-row: auto; }
+}
+
+/* v0.5.0: keep long translated dialogs within short and narrow windows. */
+.confirm-dialog { overflow-y: auto; }
+.confirm-dialog__panel {
+  box-sizing: border-box;
+  min-width: 0;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+}
+.confirm-dialog__actions > button,
+.inventory-dialog__actions > button { max-width: 100%; overflow-wrap: anywhere; }
+.inventory-dialog__header h2 { overflow-wrap: anywhere; }
+.inventory-dialog__card--add .inventory-dialog__body { overflow-y: auto; }
+.inventory-dialog__card--add .inventory-dialog__standard-content {
+  min-height: 14rem;
+}
+@media (max-height: 600px) {
+  .inventory-dialog__card--add { overflow-y: auto; grid-template-rows: auto auto minmax(14rem, 1fr) auto; }
 }

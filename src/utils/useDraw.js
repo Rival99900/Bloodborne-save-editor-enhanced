@@ -89,6 +89,7 @@ function useDraw() {
       nativeGemEffectIds.has(primaryEffectId);
     name = name ?? (article?.upgrade_type !== "Gem" ? info.name : ""); // Check for gems and runes
     note = note ?? info.note ?? "";
+    ctx.font = "18px Reim";
     const displayInfo = {
       ...info,
       item_name: fitVignetteText(ctx, localizeVignetteText(translations, "name", name)),
@@ -348,6 +349,7 @@ function useDraw() {
     };
 
     const size = 73;
+    ctx.font = "18px Reim";
     const { item_name: sourceName, item_img: image, item_desc: sourceNote } = item;
     const name = fitVignetteText(ctx, localizeVignetteText(translations, "name", sourceName));
     const note = fitVignetteText(ctx, localizeVignetteText(translations, "description", sourceNote));
@@ -383,6 +385,7 @@ function useDraw() {
   }
 
   function fitVignetteText(ctx, value, maxWidth = VIGNETTE_TEXT_MAX_WIDTH) {
+    maxWidth = Math.min(maxWidth, Math.max(0, ctx.canvas.width - 115));
     const singleLine = String(value ?? "").replace(/\s+/g, " ").trim();
     if (!singleLine || ctx.measureText(singleLine).width <= maxWidth) return singleLine;
 

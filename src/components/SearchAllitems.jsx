@@ -43,6 +43,8 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
         nextItems = weapons;
         break;
       case "chalice":
+        nextItems = items.filter((item) => item.article_type?.toLowerCase() === "chalice");
+        break;
       case "item":
         nextItems = items;
         break;
@@ -103,6 +105,8 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
             index={index + 1}
             item={item}
             isSmall={true}
+            title={item.info?.item_name}
+            aria-label={item.info?.item_name}
             role="option"
             aria-selected={hoverIndex === index}
             tabIndex={0}

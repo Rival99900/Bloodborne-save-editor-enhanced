@@ -1,4 +1,5 @@
-import { useEffect, useId } from "react";
+import useDialogFocus from "../utils/useDialogFocus";
+import { useId } from "react";
 import { useLocalization } from "../i18n/localization";
 
 /**
@@ -18,17 +19,12 @@ function ConfirmDialog({
   const titleId = useId();
   const descriptionId = useId();
 
-  useEffect(() => {
-    function onKeyDown(event) {
-      if (event.key === "Escape") onCancel?.();
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [onCancel]);
+  const panelRef = useDialogFocus(onCancel);
 
   return (
     <div className="confirm-dialog" role="presentation" onMouseDown={onCancel}>
       <section
+        ref={panelRef}
         className="confirm-dialog__panel"
         role="alertdialog"
         aria-modal="true"
