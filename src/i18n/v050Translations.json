@@ -35,7 +35,8 @@
     "presets.deleteConfirm": "Delete this preset? Your game save will not be changed.",
     "presets.applyFailed": "Unable to apply the statistics. The operation was rolled back.",
     "diff.unavailable": "This operation has no comparable exposed fields. It may affect data not shown here.",
-    "diff.more": "{{count}} additional changes are not displayed."
+    "diff.more": "{{count}} additional changes are not displayed.",
+    "update.restartFailed": "The update was installed, but automatic restart failed. Close and reopen the editor."
   },
   "fr": {
     "presets.title": "Préréglages de personnage",
@@ -73,7 +74,8 @@
     "presets.deleteConfirm": "Supprimer ce préréglage ? Votre sauvegarde de jeu ne sera pas modifiée.",
     "presets.applyFailed": "Impossible d’appliquer les statistiques. L’opération a été annulée.",
     "diff.unavailable": "Cette opération ne comporte aucun champ exposé comparable. Elle peut modifier des données non affichées ici.",
-    "diff.more": "{{count}} modifications supplémentaires ne sont pas affichées."
+    "diff.more": "{{count}} modifications supplémentaires ne sont pas affichées.",
+    "update.restartFailed": "La mise à jour est installée, mais le redémarrage automatique a échoué. Fermez puis rouvrez l’éditeur."
   },
   "it": {
     "presets.title": "Configurazioni del personaggio",
@@ -111,7 +113,8 @@
     "presets.deleteConfirm": "Eliminare questa configurazione? Il salvataggio di gioco non verrà modificato.",
     "presets.applyFailed": "Impossibile applicare le statistiche. L’operazione è stata annullata.",
     "diff.unavailable": "Questa operazione non ha campi esposti confrontabili. Potrebbe modificare dati non mostrati qui.",
-    "diff.more": "Altre {{count}} modifiche non sono visualizzate."
+    "diff.more": "Altre {{count}} modifiche non sono visualizzate.",
+    "update.restartFailed": "L’aggiornamento è installato, ma il riavvio automatico non è riuscito. Chiudi e riapri l’editor."
   },
   "de": {
     "presets.title": "Charaktervorlagen",
@@ -149,7 +152,8 @@
     "presets.deleteConfirm": "Diese Vorlage löschen? Dein Spielstand wird nicht verändert.",
     "presets.applyFailed": "Werte konnten nicht angewendet werden. Der Vorgang wurde rückgängig gemacht.",
     "diff.unavailable": "Dieser Vorgang hat keine vergleichbaren offengelegten Felder. Er kann hier nicht angezeigte Daten verändern.",
-    "diff.more": "{{count}} weitere Änderungen werden nicht angezeigt."
+    "diff.more": "{{count}} weitere Änderungen werden nicht angezeigt.",
+    "update.restartFailed": "Das Update wurde installiert, aber der automatische Neustart ist fehlgeschlagen. Schließe den Editor und öffne ihn erneut."
   },
   "es": {
     "presets.title": "Configuraciones de personaje",
@@ -187,7 +191,8 @@
     "presets.deleteConfirm": "¿Eliminar esta configuración? Tu partida guardada no cambiará.",
     "presets.applyFailed": "No se han podido aplicar las estadísticas. Se ha revertido la operación.",
     "diff.unavailable": "Esta operación no tiene campos expuestos comparables. Puede afectar a datos que no se muestran aquí.",
-    "diff.more": "No se muestran {{count}} cambios adicionales."
+    "diff.more": "No se muestran {{count}} cambios adicionales.",
+    "update.restartFailed": "La actualización está instalada, pero el reinicio automático ha fallado. Cierra y vuelve a abrir el editor."
   },
   "nl": {
     "presets.title": "Personagevoorinstellingen",
@@ -225,7 +230,8 @@
     "presets.deleteConfirm": "Deze voorinstelling verwijderen? Je opgeslagen spel wordt niet gewijzigd.",
     "presets.applyFailed": "Statistieken konden niet worden toegepast. De bewerking is teruggedraaid.",
     "diff.unavailable": "Deze bewerking heeft geen vergelijkbare zichtbare velden. Er kunnen gegevens veranderen die hier niet worden getoond.",
-    "diff.more": "{{count}} extra wijzigingen worden niet weergegeven."
+    "diff.more": "{{count}} extra wijzigingen worden niet weergegeven.",
+    "update.restartFailed": "De update is geïnstalleerd, maar automatisch herstarten is mislukt. Sluit de editor en open deze opnieuw."
   },
   "pl": {
     "presets.title": "Zestawy statystyk postaci",
@@ -263,7 +269,8 @@
     "presets.deleteConfirm": "Usunąć ten zestaw? Zapis gry nie zostanie zmieniony.",
     "presets.applyFailed": "Nie można zastosować statystyk. Operacja została cofnięta.",
     "diff.unavailable": "Ta operacja nie ma porównywalnych udostępnionych pól. Może zmieniać dane, które nie są tu wyświetlane.",
-    "diff.more": "Nie wyświetlono {{count}} dodatkowych zmian."
+    "diff.more": "Nie wyświetlono {{count}} dodatkowych zmian.",
+    "update.restartFailed": "Aktualizacja została zainstalowana, ale automatyczny restart nie powiódł się. Zamknij i otwórz ponownie edytor."
   },
   "ru": {
     "presets.title": "Наборы характеристик персонажа",
@@ -301,7 +308,8 @@
     "presets.deleteConfirm": "Удалить этот набор? Сохранение игры не изменится.",
     "presets.applyFailed": "Не удалось применить характеристики. Операция отменена.",
     "diff.unavailable": "У этой операции нет доступных для сравнения полей. Она может менять данные, которые здесь не отображаются.",
-    "diff.more": "Ещё {{count}} изменений не отображаются."
+    "diff.more": "Ещё {{count}} изменений не отображаются.",
+    "update.restartFailed": "Обновление установлено, но автоматический перезапуск не удался. Закройте и снова откройте редактор."
   },
   "da": {
     "presets.title": "Karakterforudindstillinger",
@@ -339,7 +347,8 @@
     "presets.deleteConfirm": "Slet denne forudindstilling? Dit gemte spil ændres ikke.",
     "presets.applyFailed": "Statistikkerne kunne ikke anvendes. Handlingen blev rullet tilbage.",
     "diff.unavailable": "Denne handling har ingen tilgængelige felter, der kan sammenlignes. Den kan påvirke data, der ikke vises her.",
-    "diff.more": "{{count}} yderligere ændringer vises ikke."
+    "diff.more": "{{count}} yderligere ændringer vises ikke.",
+    "update.restartFailed": "Opdateringen er installeret, men den automatiske genstart mislykkedes. Luk og åbn editoren igen."
   },
   "nb": {
     "presets.title": "Karakterforhåndsinnstillinger",
@@ -377,7 +386,8 @@
     "presets.deleteConfirm": "Slette denne forhåndsinnstillingen? Spillagringen din blir ikke endret.",
     "presets.applyFailed": "Kunne ikke bruke statistikkene. Handlingen ble rullet tilbake.",
     "diff.unavailable": "Denne handlingen har ingen tilgjengelige felt som kan sammenlignes. Den kan påvirke data som ikke vises her.",
-    "diff.more": "{{count}} ytterligere endringer vises ikke."
+    "diff.more": "{{count}} ytterligere endringer vises ikke.",
+    "update.restartFailed": "Oppdateringen er installert, men automatisk omstart mislyktes. Lukk og åpne redigeringsprogrammet på nytt."
   },
   "fi": {
     "presets.title": "Hahmon esiasetukset",
@@ -415,7 +425,8 @@
     "presets.deleteConfirm": "Poistetaanko tämä esiasetus? Pelitallennustasi ei muuteta.",
     "presets.applyFailed": "Ominaisuusarvoja ei voitu ottaa käyttöön. Toiminto peruttiin.",
     "diff.unavailable": "Tällä toiminnolla ei ole vertailtavia näkyviä kenttiä. Se voi muuttaa tietoja, joita ei näytetä tässä.",
-    "diff.more": "{{count}} muuta muutosta ei näytetä."
+    "diff.more": "{{count}} muuta muutosta ei näytetä.",
+    "update.restartFailed": "Päivitys on asennettu, mutta automaattinen uudelleenkäynnistys epäonnistui. Sulje editori ja avaa se uudelleen."
   },
   "sv": {
     "presets.title": "Karaktärsförinställningar",
@@ -453,7 +464,8 @@
     "presets.deleteConfirm": "Ta bort denna förinställning? Din spelsparfil ändras inte.",
     "presets.applyFailed": "Det gick inte att tillämpa statistikvärdena. Åtgärden återställdes.",
     "diff.unavailable": "Denna åtgärd har inga tillgängliga fält som kan jämföras. Den kan påverka data som inte visas här.",
-    "diff.more": "{{count}} ytterligare ändringar visas inte."
+    "diff.more": "{{count}} ytterligare ändringar visas inte.",
+    "update.restartFailed": "Uppdateringen är installerad, men den automatiska omstarten misslyckades. Stäng och öppna redigeraren igen."
   },
   "tr": {
     "presets.title": "Karakter ön ayarları",
@@ -491,7 +503,8 @@
     "presets.deleteConfirm": "Bu ön ayar silinsin mi? Oyun kaydınız değiştirilmeyecek.",
     "presets.applyFailed": "İstatistikler uygulanamadı. İşlem geri alındı.",
     "diff.unavailable": "Bu işlemde karşılaştırılabilir açık alan yok. Burada gösterilmeyen verileri etkileyebilir.",
-    "diff.more": "{{count}} ek değişiklik gösterilmiyor."
+    "diff.more": "{{count}} ek değişiklik gösterilmiyor.",
+    "update.restartFailed": "Güncelleme yüklendi ancak otomatik yeniden başlatma başarısız oldu. Düzenleyiciyi kapatıp yeniden açın."
   },
   "pt-PT": {
     "presets.title": "Predefinições de personagem",
@@ -529,6 +542,7 @@
     "presets.deleteConfirm": "Eliminar esta predefinição? A tua gravação de jogo não será alterada.",
     "presets.applyFailed": "Não foi possível aplicar as estatísticas. A operação foi revertida.",
     "diff.unavailable": "Esta operação não tem campos expostos comparáveis. Pode afetar dados que não são apresentados aqui.",
-    "diff.more": "Não são apresentadas {{count}} alterações adicionais."
+    "diff.more": "Não são apresentadas {{count}} alterações adicionais.",
+    "update.restartFailed": "A atualização foi instalada, mas o reinício automático falhou. Fecha e volta a abrir o editor."
   }
 }

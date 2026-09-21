@@ -50,7 +50,7 @@ function RevisionPanel({ entries, diff, summary = [], onClose, onUndo, onRedo, c
               {[...entries].reverse().map((entry) => (
                 <li key={entry.id}>
                   <span className="revision-panel__time">{formatTime(entry.timestamp, language)}</span>
-                  <div className="revision-entry__body"><span>{entry.labelKey ? t(entry.labelKey) : entry.label}</span><details className="revision-diff"><summary>{t("diff.details")}</summary><SaveDiffTable diff={entry.diff} emptyKey="diff.unavailable"/></details></div>
+                  <div className="revision-entry__body"><span>{entry.labelKey ? t(entry.labelKey) : entry.label}</span></div>
                 </li>
               ))}
             </ol>

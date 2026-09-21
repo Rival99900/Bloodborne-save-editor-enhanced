@@ -6,6 +6,8 @@ on:
       - main
     tags:
       - "v*"
+      # v0.5.0 is refreshed through main or workflow_dispatch.
+      - "!v0.5.0"
   workflow_dispatch:
     inputs:
       tag:
@@ -78,10 +80,28 @@ jobs:
       - name: Run native test suite
         run: cargo test --manifest-path src-tauri/Cargo.toml --all-targets
 
+
+  prepare-release:
+    name: Prepare release under repository owner
+    needs: validate
+    runs-on: ubuntu-22.04
+    outputs:
+      release_id: ${{ steps.prepare.outputs.release_id }}
+    env:
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
+      GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.sha || env.RELEASE_TAG }}
+      - name: Validate owner and prepare draft
+        id: prepare
+        run: bash scripts/prepare_release.sh
+
   build:
     name: Build signed ${{ matrix.name }} asset
     if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.5.0]'))"
-    needs: validate
+    needs: prepare-release
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -140,10 +160,11 @@ jobs:
       - name: Build, sign and upload release assets
         uses: tauri-apps/tauri-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
+          releaseId: ${{ needs.prepare-release.outputs.release_id }}
           tagName: ${{ env.RELEASE_TAG }}
           releaseCommitish: ${{ github.sha }}
           releaseName: "Bloodborne Save Editor Enhanced ${{ env.RELEASE_TAG }}"
@@ -170,10 +191,11 @@ jobs:
         with:
           ref: ${{ inputs.tag || github.sha }}
           fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Build and upload latest.json
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           set -euo pipefail
           # The tag endpoint excludes drafts. Resolve the authenticated list instead.

@@ -14,13 +14,13 @@
 
 ## What’s new in v0.5.0
 
-The interface includes corrected small-card text fitting, Chalice filtering, and scrollable dialogs with keyboard focus handling. English and all 13 existing translations cover the new controls. See the [release notes](.github/release-notes/v0.5.0.md) and [technical documentation](docs/README.md).
+The interface includes corrected small-card text fitting, Chalice filtering, and scrollable dialogs with keyboard focus handling. English and all 13 existing translations cover the new controls. See the [release notes](.github/release-notes/v0.5.0.md).
 
 ### Character presets and before/after review
 
 In **Statistics**, name and save up to 20 personal presets on this device. Each stores the nine displayed statistics (Health, Stamina, Level, Vitality, Endurance, Strength, Skill, Bloodtinge and Arcane). Preview a preset before loading it into the draft; **Confirm** applies the draft through the existing undoable transaction. **Save changes** writes the game file. Equipment, identity, currency and progression are excluded. Presets use the application's local storage; clearing application data removes them.
 
-The revision panel now shows a **before/after comparison** against the last opened or saved snapshot, plus a collapsible comparison for each recorded operation. It covers exposed statistics, character position, play time, boss state, and Inventory/Storage item quantities, identifiers, shapes, effects and gem slots. Each comparison displays at most 200 changed fields and reports any omitted rows. Operations affecting unexposed bytes retain their log entry with an explanatory message; this is not a full binary comparison. Undo/Redo keeps using the existing save snapshot mechanism.
+The revision panel now shows a **before/after comparison** against the last opened or saved snapshot, plus the timestamped operation log. It covers exposed statistics, character position, play time, boss state, and Inventory/Storage item quantities, identifiers, shapes, effects and gem slots. Each comparison displays at most 200 changed fields and reports any omitted rows. Operations affecting unexposed bytes retain their log entry with an explanatory message; this is not a full binary comparison. Undo/Redo keeps using the existing save snapshot mechanism.
 
 Both features follow the dark/gold theme and include English plus all 13 translated locales. Run `node scripts/validate_v050_features.mjs` for the focused validation suite.
 
@@ -28,7 +28,7 @@ Both features follow the dark/gold theme and include English plus all 13 transla
 
 Flag success and error messages now use the application’s dark/gold dialog, including localized text and keyboard dismissal. Changes remain in memory until Save changes is selected.
 
-Weapon and armor insertion is now available as an **experimental** operation in both Inventory and Storage. Select Add, choose Weapons or Armor, select an entry, and acknowledge the experimental confirmation. The adaptation follows valentinoamato’s corrected GA record traversal and expands a verified empty slot from 8 to 60 bytes, then rebuilds all shifted offsets. It requires a free destination slot and sufficient verified zero padding. Unsupported layouts are rejected. Failed additions leave the save unchanged. Use a copy: game compatibility is not established and previous attempts crashed on PS4. See [the integration details](docs/v0.5.0-equipment-fix.md).
+Weapon and armor insertion is now available as an **experimental** operation in both Inventory and Storage. Select Add, choose Weapons or Armor, select an entry, and acknowledge the experimental confirmation. The adaptation follows valentinoamato’s corrected GA record traversal and expands a verified empty slot from 8 to 60 bytes, then rebuilds all shifted offsets. It requires a free destination slot and sufficient verified zero padding. Unsupported layouts are rejected. Failed additions leave the save unchanged. Use a copy: game compatibility is not established and previous attempts crashed on PS4.
 
 ## Download
 
@@ -150,3 +150,12 @@ Never place private keys, passwords, or access tokens in source code, issues, re
 This project is distributed under the [GPL-3.0](LICENSE). It is derived from the original work by [Noxde](https://github.com/Noxde/Bloodborne-save-editor) and continues under the same open-source license.
 
 Thanks also to [valentinoamato](https://github.com/valentinoamato) for the upstream [weapon and armor insertion method](https://github.com/Noxde/Bloodborne-save-editor/commit/84adcfaba099d4d54ba98ae9c069fe77228706e9), and its [GA-slot correction](https://github.com/Noxde/Bloodborne-save-editor/commit/f562c2893a4efdf3b281dc21dc89845c080d8d34). The adaptation preserves Enhanced’s destination checks and transactional save handling.
+
+
+### Refreshed v0.5.0 packages
+
+The update dialog now keeps errors visible, offers a release-page link on failure and has permission to restart the app. A successful install followed by a restart failure is reported separately. The Statistics preset panel occupies its own row, and the revision panel shows one aggregate before/after comparison while retaining the operation log and Undo/Redo.
+
+The `docs/` research folder is no longer tracked or included in source archives. Adding a tracked folder to `.gitignore` alone does not remove it from Git.
+
+If v0.5.0 is already installed, reinstall the refreshed package manually: the updater does not treat the same version number as newer. Older installed clients retain their old updater code until replaced.

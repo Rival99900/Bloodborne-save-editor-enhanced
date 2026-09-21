@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { open } from "@tauri-apps/plugin-shell";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { check } from "@tauri-apps/plugin-updater";
 import { getReleaseSummary } from "./utils/releaseSummary";
@@ -6,6 +7,9 @@ import { useLocalization } from "./i18n/localization";
 
 export function UpdateModal() {
   const { t, language } = useLocalization();
+  const installingRef = useRef(false);
+  const installedRef = useRef(false);
+  const [failed, setFailed] = useState(false);
   const [update, setUpdate] = useState(null);
   const [downloading, setDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -29,7 +33,9 @@ export function UpdateModal() {
   }
 
   async function handleInstall() {
-    if (!update) return;
+    if (!update || installingRef.current) return;
+    installingRef.current = true;
+    setFailed(false);
     setDownloading(true);
     setProgress(0);
     setStatusText(t("update.startingDownload"));
@@ -38,7 +44,7 @@ export function UpdateModal() {
     let totalBytes = 0;
 
     try {
-      await update.downloadAndInstall((event) => {
+      if (!installedRef.current) await update.downloadAndInstall((event) => {
         switch (event.event) {
           case "Started":
             totalBytes = event.data.contentLength || 0;
@@ -63,11 +69,15 @@ export function UpdateModal() {
         }
       });
 
+      installedRef.current = true;
       setStatusText(t("update.installedRestarting"));
       await relaunch();
     } catch (error) {
       console.error("Unable to install update.", error);
-      setStatusText(t("update.installFailed"));
+      setFailed(true);
+      setStatusText(t(installedRef.current ? "update.restartFailed" : "update.installFailed"));
+    } finally {
+      installingRef.current = false;
       setDownloading(false);
     }
   }
@@ -82,19 +92,22 @@ export function UpdateModal() {
 
         <p style={styles.notes}>{getReleaseSummary(update.body, language, update.version, update.rawJson?.localized_notes)}</p>
 
+        {statusText ? <p style={styles.statusText} role={failed ? "alert" : "status"}>{statusText}</p> : null}
+        {failed ? <button type="button" style={styles.btnSecondary} onClick={() => { void open(`https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/tag/v${encodeURIComponent(update.version)}`).catch(console.error); }}>GitHub · v{update.version}</button> : null}
+
         {downloading ? (
           <div style={styles.progressContainer} aria-live="polite">
             <div style={styles.progressBarTrack}>
               <div style={{ ...styles.progressBarFill, width: `${progress}%` }} />
             </div>
-            <span style={styles.statusText}>{statusText}</span>
+
           </div>
         ) : (
           <div style={styles.actions}>
-            <button style={styles.btnSecondary} onClick={() => setUpdate(null)}>
+            <button style={styles.btnSecondary} type="button" onClick={() => setUpdate(null)}>
               {t("update.notNow")}
             </button>
-            <button style={styles.btnPrimary} onClick={handleInstall}>
+            <button style={styles.btnPrimary} type="button" onClick={handleInstall}>
               {t("update.updateAndRestart")}
             </button>
           </div>
@@ -123,6 +136,9 @@ const styles = {
     backgroundColor: "#121212",
     border: "1px solid #333",
     padding: "24px 32px",
+    maxHeight: "calc(100dvh - 32px)",
+    overflowY: "auto",
+    overflowWrap: "anywhere",
     width: "min(380px, calc(100vw - 32px))",
     boxShadow: "0 8px 32px rgba(0,0,0,0.9)",
     color: "#e0e0e0",
@@ -171,6 +187,7 @@ const styles = {
   actions: {
     display: "flex",
     justifyContent: "flex-end",
+    flexWrap: "wrap",
     gap: "12px",
     marginTop: "20px",
   },

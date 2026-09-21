@@ -36,6 +36,7 @@ try {
   const {LocalizationProvider,useLocalization,SUPPORTED_LANGUAGES}=await server.ssrLoadModule('/src/i18n/localization.jsx');
   const {default:CharacterPresets}=await server.ssrLoadModule('/src/components/CharacterPresets.jsx');
   const {default:SaveDiffTable}=await server.ssrLoadModule('/src/components/SaveDiffTable.jsx');
+  const {default:RevisionPanel}=await server.ssrLoadModule('/src/components/RevisionPanel.jsx');
   const strings=JSON.parse(readFileSync('src/i18n/v050Translations.json','utf8'));const keys=Object.keys(strings.en).sort();
   assert.equal(SUPPORTED_LANGUAGES.length,14);
   for (const {code} of SUPPORTED_LANGUAGES) {
@@ -46,5 +47,8 @@ try {
     const html=renderToStaticMarkup(React.createElement(LocalizationProvider,null,React.createElement(Check)));
     assert(html.includes('<table'));assert(!html.includes('[object Object]'));assert(!html.includes('undefined'));
   }
-  console.log('PASS: preset isolation/validation/storage failures; stat/item/transfer/effect diffs and immutable history; all 36 keys in 13 translations + English; component SSR.');
+  const journal=renderToStaticMarkup(React.createElement(LocalizationProvider,null,React.createElement(RevisionPanel,{diff,entries:[{id:1,timestamp:0,label:'Operation retained',diff}],canUndo:true,canRedo:false})));
+  assert.equal((journal.match(/<table/g)||[]).length,1,'Show only one before/after table');
+  assert(journal.includes('Operation retained'));
+  console.log('PASS: preset isolation/validation/storage failures; stat/item/transfer/effect diffs and immutable history; all locale keys in 13 translations + English; component SSR.');
 } finally {delete globalThis.localStorage;await server.close();}

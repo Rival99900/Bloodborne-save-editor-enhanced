@@ -90,18 +90,20 @@ function Stats() {
       style={{
         alignContent: "start",
         gridColumn: "2/4",
-        display: "grid",
+        display: "flex",
+        flexDirection: "column",
 
         gap: "0.8rem 0",
-        alignItems: "center",
+        alignItems: "stretch",
         justifyItems: "center",
-        placeItems: "center",
+
         fontSize: "1.5rem",
         background: `url(${images.backgrounds["statsBg.png"].src})`,
         backgroundSize: "cover",
       }}
     >
       <CharacterPresets stats={editedStats} onLoad={setEditedStats} disabled={busy}/>
+      <div className="stats-fields">
       {editedStats
         .filter((stat) => !EDITABLE_STAT_NAMES.has(stat.name))
         .map((stat) => (
@@ -113,6 +115,7 @@ function Stats() {
             disabled={busy}
           />
         ))}
+      </div>
       <div className="editor-action-row stats-actions">
         <button className="control-button control-button--quiet" type="button" disabled={busy} onClick={resetStats}>
           {t("actions.reset")}
