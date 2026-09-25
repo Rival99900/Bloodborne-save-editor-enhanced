@@ -38,6 +38,9 @@ jobs:
           node -e 'const p=require("./package.json"); if (`v${p.version}` !== process.env.RELEASE_TAG) process.exit(1)'
           test -f ".github/release-notes/${RELEASE_TAG}.md"
 
+      - name: Test release draft preparation
+        run: python3 scripts/test_prepare_release.py
+
       - name: Install native test dependencies
         run: |
           sudo apt-get update
@@ -178,7 +181,7 @@ jobs:
 
   publish-updater-manifest:
     name: Publish combined updater manifest
-    needs: build
+    needs: [prepare-release, build]
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -196,12 +199,12 @@ jobs:
       - name: Build and upload latest.json
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          RELEASE_ID: ${{ needs.prepare-release.outputs.release_id }}
         run: |
           set -euo pipefail
-          # The tag endpoint excludes drafts. Resolve the authenticated list instead.
-          release="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/releases?per_page=100" |
-            jq -ce --arg tag "$RELEASE_TAG" '[.[][] | select(.tag_name == $tag)] |
-              if length == 1 then .[0] else error("Expected exactly one matching release") end')"
+          # Use the exact draft prepared upstream, including on the first run.
+          release="$(gh api "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}")"
+          jq -e --arg tag "$RELEASE_TAG" '.tag_name == $tag and .draft == true and .author.login == "Rival99900"' <<<"$release" >/dev/null
           release_commit="$(git rev-parse HEAD)"
           version="${RELEASE_TAG#v}"
 
