@@ -257,12 +257,13 @@ jobs:
 
           notes_file=".github/release-notes/${RELEASE_TAG}.md"
           if test -f "$notes_file"; then
-            gh release edit "$RELEASE_TAG" \
-              --title "Bloodborne Save Editor Enhanced ${RELEASE_TAG}" \
-              --notes-file "$notes_file" \
-              --target "$release_commit" \
-              --draft=false \
-              --latest
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" \
+              -f tag_name="$RELEASE_TAG" \
+              -f name="Bloodborne Save Editor Enhanced ${RELEASE_TAG}" \
+              -F "body=@${notes_file}" \
+              -f target_commitish="$release_commit" \
+              -F draft=false \
+              -f make_latest=true >/dev/null
           fi
 
           git fetch origin main
