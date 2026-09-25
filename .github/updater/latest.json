@@ -17,15 +17,15 @@
     "tr": "Karakter ön ayarları · Öncesi/sonrası karşılaştırması. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
     "pt-PT": "Predefinições de personagem · Comparação antes/depois. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
   },
-  "pub_date": "2026-09-20T22:49:43Z",
+  "pub_date": "2026-09-25T22:52:09Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-c681e32188b7c5ae9bf4/Bloodborne_Save_Editor_Enhanced_0.5.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemRycEZ1Q2J1blA1d0c5YkxBWHpUTTJwVnI1RytZbXJCTU9IUVVCT1N1VEVZdEk4d2l1V2FGWGpjZUEzUlNHVHhVZFZBRG9WR0JrdGJJZ2FKT0FxdFFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5OTQ0NTY0CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjUuMF94NjQtc2V0dXAuZXhlCi9yNTRHdTlJc0lYWlhJYmEyZjlZOE0zZmZXdUl0MkNxMHFnbVliSHZpeDlzdlJLTnJodnh2aGI3WnVzMGFyK08yZk5QQjFuUFpFeW50ZEYvWU1iQkR3PT0K"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-49e196dd4260801bf2c1/Bloodborne_Save_Editor_Enhanced_0.5.0_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelpNWGJoMXk5YzRxME9rKzdnNFZKSC85Z0tmclowM3czNmdRa2FzQW5EdkxYbTljaElzZEpyQndKVE1kM1dUcnpuUlpFVTdZRHpVV0w3aG5GYTZHS1E0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwMzc2NzE1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjUuMF94NjQtc2V0dXAuZXhlCjlkcWJQeDV3djFzUkxwdzV3Ri84eWZPNlNaNUs5SStDYm44c0E0VHN6bUE5SWt1dTRJV1lhRCs1bWpiNi9xZHZMQVBnMUVLZUt5Q3ZwT2Q5ZlZrNEFBPT0K"
     },
     "linux-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-c681e32188b7c5ae9bf4/Bloodborne_Save_Editor_Enhanced_0.5.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvellrM25HNWFjZi8rLy9jYTA0cVhQTHRBM2xNeitjQU5DZGZETWUwRmhFaDRSOGRUQWgxQ0pZZExWejhOYytMd01BaGp0U0JkbWVwNW95bXJ6aGo3bkFrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5OTQ0NTU2CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjUuMF9hbWQ2NC5BcHBJbWFnZQpzMWZaV0JEMFMxNGt1bjlQVGd6UDU0am1rR3VPMEIvZDlkMFl3bFVqYzRGRDFpd21IZzhUR295cWxaWHMwMkJhdWZMa1lIVm4weE9ERzFJQ0c2aE5EZz09Cg=="
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-49e196dd4260801bf2c1/Bloodborne_Save_Editor_Enhanced_0.5.0_amd64.AppImage",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelR0aXYrdk9QZ1NlaTBXZk5BQlRZTzh2OWU5ZXpILytGQy9MbUo1M3lJTVFHQUpOdkU5b1MyQlY4VUFOa0FBUVlmempkSnpERGJoWHdmQlJqVEVvUXdFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwMzc2NzA2CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjUuMF9hbWQ2NC5BcHBJbWFnZQpWdzE1b0YrTWpoOGU3dWVhZlJSWEtLV1I5ZTRPQmRsaFBEOHhRNklnb0ZTbEJkYlN1MlJ2bmk3YjNlY0ZvZ1BqdC8xQWEvTFNScEs1TVpxemlOM29BZz09Cg=="
     }
   }
 }
