@@ -6,26 +6,27 @@ on:
       - main
     tags:
       - "v*"
-      # v0.5.0 is refreshed through main or workflow_dispatch.
+      # Versioned main commits launch these releases; exclude tag creation to avoid duplicate builds.
       - "!v0.5.0"
+      - "!v0.6.0"
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing version tag to build and publish (for example v0.5.0)"
+        description: "Existing version tag to build and publish (for example v0.6.0)"
         required: true
         type: string
 
 concurrency:
-  group: desktop-release-${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
+  group: desktop-release-${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
   cancel-in-progress: false
 
 jobs:
   validate:
     name: Validate tagged source
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.5.0]'))"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.6.0]'))"
     runs-on: ubuntu-22.04
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
 
     steps:
       - name: Checkout tagged source
@@ -75,6 +76,7 @@ jobs:
       - name: Validate presets, comparison and UI strings
         run: |
           node scripts/validate_v050_features.mjs
+          node scripts/validate_v060_patches.mjs
           node scripts/audit_ui_text.mjs
 
       - name: Build production frontend
@@ -91,7 +93,7 @@ jobs:
     outputs:
       release_id: ${{ steps.prepare.outputs.release_id }}
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
       GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     steps:
       - uses: actions/checkout@v4
@@ -103,7 +105,7 @@ jobs:
 
   build:
     name: Build signed ${{ matrix.name }} asset
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.5.0]'))"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.6.0]'))"
     needs: prepare-release
     runs-on: ${{ matrix.os }}
     permissions:
@@ -119,7 +121,7 @@ jobs:
             os: ubuntu-22.04
             args: "--bundles appimage"
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
 
     steps:
       - name: Checkout tagged source
@@ -186,7 +188,7 @@ jobs:
     permissions:
       contents: write
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.5.0' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
 
     steps:
       - name: Checkout release source and main history

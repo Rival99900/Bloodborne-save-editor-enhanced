@@ -10,7 +10,26 @@
 
 > **Credits.** Thanks to [Noxde](https://github.com/Noxde) for the original project and [Valentino Amato (valentinoamato)](https://github.com/valentinoamato) for the weapon/armor insertion method and its GA-slot fix. This enhanced edition exists because of that valuable open-source work.
 
-> **Version 0.5.0:** character presets, before/after revision comparisons, modern Flags dialogs, and experimental weapon/armor insertion for Inventory and Storage with the upstream GA-slot correction.
+> **Version 0.6.0:** experimental Bloodborne save patches with byte-level previews and Undo/Redo, 14 interface languages, and refined Statistics, Character, Inventory and Storage controls.
+
+## What’s new in v0.6.0
+
+This version includes the UI refinements prepared in v0.5.1. It adds **Patch**
+immediately below NPCs: an offline Bloodborne-only Apollo catalog, CUSA selection,
+optional declared game version, search and categories, byte-level preview, and
+application through the existing undo/redo history. English and all 13 translations
+cover the new interface and reuse the existing localized item names.
+
+The bundled source provides **CUSA00207** and **CUSA00900** only, marks the codes
+untested and does not specify game versions. Other CUSAs are explicitly unavailable.
+Patterns, boundaries, parsed target fields and record references are checked before
+application. Some upstream codes are rejected because they leave inconsistent item
+or equipment references. Changes stay in memory until the main Save action.
+See the [v0.6.0 release notes](.github/release-notes/v0.6.0.md) and [Apollo provenance](src-tauri/resources/patches/NOTICE.md).
+
+The signed release workflow builds the Windows installer and Linux AppImage, then
+publishes their signatures, checksums and localized automatic-update metadata.
+Keep an untouched original: no in-game compatibility is certified for these patches.
 
 ## What’s new in v0.5.0
 
@@ -34,14 +53,14 @@ Weapon and armor insertion is now available as an **experimental** operation in 
 
 Download the latest package from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). The stable distribution provides a **Windows x64 installer**, an **Ubuntu/Linux x64 AppImage**, signed updater metadata and a SHA-256 checksum manifest.
 
-### Current stable release
+### v0.6.0 packages
 
 | Field | Details |
 | --- | --- |
-| **Name** | **Bloodborne Save Editor Enhanced v0.5.0** |
-| **Version** | `v0.5.0` |
-| **Status** | Stable release — test first with a copied, decrypted save and retain the automatic `.bak` backup. |
-| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.5.0/Bloodborne_Save_Editor_Enhanced_0.5.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.5.0/Bloodborne_Save_Editor_Enhanced_0.5.0_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.5.0/SHA256SUMS.txt) |
+| **Name** | **Bloodborne Save Editor Enhanced v0.6.0** |
+| **Version** | `v0.6.0` |
+| **Status** | Release-channel packages are available after the signed workflow completes. Patch catalogs remain experimental. |
+| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/SHA256SUMS.txt) |
 
 | Step | What to do |
 | --- | --- |
@@ -58,6 +77,7 @@ Download the latest package from the [Releases page](https://github.com/Rival999
 | Area | What is included |
 | --- | --- |
 | **Responsive editor** | Reference-aligned Gem and Rune editing panels, bounded effect lists, stable scrolling, and controls that remain visible in normal and narrow windows. |
+| **Save patches** | Offline Apollo Bloodborne catalogs for CUSA00207/CUSA00900, explicit compatibility limits, byte previews and undoable application. |
 | **Stats** | Editable values up to **2,000,000,000**. |
 | **Inventory** | Compatible items, keys, and chalices can be added; weapon and armor replacement preserves their slot data. |
 | **Gem Forge** | Validated built-in presets, a six-effect custom builder, complete preview drafts, and confirmation-based save writing. |

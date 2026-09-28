@@ -104,25 +104,25 @@ function Stats() {
     >
       <CharacterPresets stats={editedStats} onLoad={setEditedStats} disabled={busy}/>
       <div className="stats-fields">
-      {editedStats
-        .filter((stat) => !EDITABLE_STAT_NAMES.has(stat.name))
-        .map((stat) => (
-          <Stat
-            editedStats={editedStats}
-            setEditedStats={setEditedStats}
-            key={`${resetEpoch}-${stat.name}`}
-            stat={stat}
-            disabled={busy}
-          />
-        ))}
-      </div>
-      <div className="editor-action-row stats-actions">
-        <button className="control-button control-button--quiet" type="button" disabled={busy} onClick={resetStats}>
-          {t("actions.reset")}
-        </button>
-        <button className="control-button control-button--primary" type="button" disabled={busy} onClick={confirmStats}>
-          {t("actions.confirm")}
-        </button>
+        {editedStats
+          .filter((stat) => !EDITABLE_STAT_NAMES.has(stat.name))
+          .map((stat) => (
+            <Stat
+              editedStats={editedStats}
+              setEditedStats={setEditedStats}
+              key={`${resetEpoch}-${stat.name}`}
+              stat={stat}
+              disabled={busy}
+            />
+          ))}
+        <div className="editor-action-row stats-actions">
+          <button className="control-button control-button--quiet" type="button" disabled={busy} onClick={resetStats}>
+            {t("actions.reset")}
+          </button>
+          <button className="control-button control-button--primary" type="button" disabled={busy} onClick={confirmStats}>
+            {t("actions.confirm")}
+          </button>
+        </div>
       </div>
       {notice ? (
         <StatusDialog

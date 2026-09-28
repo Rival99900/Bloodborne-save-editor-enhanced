@@ -15,3 +15,6 @@ pub mod username;
 pub mod utils;
 
 pub mod ga;
+
+pub mod patches;
+pub mod patch_session;

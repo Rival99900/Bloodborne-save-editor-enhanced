@@ -57,20 +57,12 @@ function IszGlitch() {
   }
 
   return (
-    <div
-      style={{
-        fontSize: "25px",
-        marginTop: "5px",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
+    <div className="character-isz-row">
       <span>
         {t("characterForm.iszStatus")} {isz.map((value) => value.toString(16).toUpperCase()).join(" ")}
       </span>
       <button
-        style={{ width: "174px", fontSize: "25px", padding: "0 15px", backgroundSize: "100% 100%" }}
-        className="buttonBg"
+        className="control-button control-button--quiet"
         type="button"
         onClick={fixIsz}
       >

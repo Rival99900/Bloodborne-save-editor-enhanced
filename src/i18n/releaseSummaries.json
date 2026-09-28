@@ -31,6 +31,22 @@
       "sv": "Karaktärsförinställningar · Jämförelse före/efter. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
       "tr": "Karakter ön ayarları · Öncesi/sonrası karşılaştırması. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
       "pt-PT": "Predefinições de personagem · Comparação antes/depois. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+    },
+    "0.6.0": {
+      "en": "Experimental Bloodborne save patches (CUSA00207 / CUSA00900) · Preview and Undo/Redo · Refined interface. Keep an original copy; game versions are not certified.",
+      "fr": "Patchs de sauvegarde Bloodborne expérimentaux (CUSA00207 / CUSA00900) · Aperçu et Annuler/Rétablir · Interface améliorée. Conservez une copie originale ; les versions du jeu ne sont pas certifiées.",
+      "it": "Patch sperimentali per i salvataggi di Bloodborne (CUSA00207 / CUSA00900) · Anteprima e Annulla/Ripristina · Interfaccia migliorata. Conserva una copia originale; le versioni del gioco non sono certificate.",
+      "de": "Experimentelle Bloodborne-Spielstand-Patches (CUSA00207 / CUSA00900) · Vorschau und Rückgängig/Wiederholen · Verbesserte Oberfläche. Bewahre eine Originalkopie auf; Spielversionen sind nicht bestätigt.",
+      "es": "Parches experimentales para partidas de Bloodborne (CUSA00207 / CUSA00900) · Vista previa y Deshacer/Rehacer · Interfaz mejorada. Conserva una copia original; las versiones del juego no están certificadas.",
+      "nl": "Experimentele Bloodborne-opslagpatches (CUSA00207 / CUSA00900) · Voorbeeld en Ongedaan maken/Opnieuw · Verbeterde interface. Bewaar een origineel exemplaar; spelversies zijn niet bevestigd.",
+      "pl": "Eksperymentalne poprawki zapisów Bloodborne (CUSA00207 / CUSA00900) · Podgląd i Cofnij/Ponów · Ulepszony interfejs. Zachowaj oryginalną kopię; zgodność z wersjami gry nie jest potwierdzona.",
+      "ru": "Экспериментальные патчи сохранений Bloodborne (CUSA00207 / CUSA00900) · Предпросмотр и отмена/повтор · Улучшенный интерфейс. Сохраните исходную копию; совместимость с версиями игры не подтверждена.",
+      "da": "Eksperimentelle Bloodborne-gemningspatches (CUSA00207 / CUSA00900) · Forhåndsvisning og Fortryd/Gentag · Forbedret brugerflade. Behold en original kopi; spilversioner er ikke bekræftet.",
+      "nb": "Eksperimentelle Bloodborne-lagringspatcher (CUSA00207 / CUSA00900) · Forhåndsvisning og Angre/Gjør om · Forbedret grensesnitt. Behold en original kopi; spillversjoner er ikke bekreftet.",
+      "fi": "Kokeelliset Bloodborne-tallennuspaikkaukset (CUSA00207 / CUSA00900) · Esikatselu ja Kumoa/Tee uudelleen · Parannettu käyttöliittymä. Säilytä alkuperäinen kopio; peliversioiden yhteensopivuutta ei ole vahvistettu.",
+      "sv": "Experimentella Bloodborne-sparfilspatchar (CUSA00207 / CUSA00900) · Förhandsvisning och Ångra/Gör om · Förbättrat gränssnitt. Behåll en originalkopia; spelversioner är inte bekräftade.",
+      "tr": "Deneysel Bloodborne kayıt yamaları (CUSA00207 / CUSA00900) · Önizleme ve Geri Al/Yinele · İyileştirilmiş arayüz. Orijinal bir kopyayı saklayın; oyun sürümleri doğrulanmamıştır.",
+      "pt-PT": "Patches experimentais para gravações de Bloodborne (CUSA00207 / CUSA00900) · Pré-visualização e Anular/Refazer · Interface melhorada. Guarda uma cópia original; as versões do jogo não estão certificadas."
     }
   }
 }

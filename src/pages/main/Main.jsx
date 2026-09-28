@@ -11,6 +11,7 @@ const Character = lazy(() => import("../character/Character"));
 const EquippedGems = lazy(() => import("./EquippedGems"));
 const Bosses = lazy(() => import("../bosses/Bosses"));
 const Npcs = lazy(() => import("../npcs/Npcs"));
+const Patches = lazy(() => import("../patches/Patches"));
 const Flags = lazy(() => import("../flags/Flags"));
 
 const Main = ({ save, setSave, loading }) => {
@@ -83,6 +84,7 @@ const Main = ({ save, setSave, loading }) => {
                 />
                 <Route path="/bosses" element={<Bosses />} />
                 <Route path="/npcs" element={<Npcs />} />
+                <Route path="/patches" element={<Patches />} />
                 <Route path="/flags" element={<Flags />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>

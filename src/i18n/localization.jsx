@@ -1,3 +1,4 @@
+import v060Translations from "./v060Translations.json";
 import v050Translations from "./v050Translations.json";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import v041Translations from "./v041Translations.json";
@@ -21696,6 +21697,12 @@ Object.entries(v041Translations).forEach(([language, translations]) => {
 });
 
 Object.entries(v050Translations).forEach(([language, translations]) => {
+  const resource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => applyTranslationPath(resource, key, value));
+  resources[language] = resource;
+});
+
+Object.entries(v060Translations).forEach(([language, translations]) => {
   const resource = { ...(resources[language] ?? {}) };
   Object.entries(translations).forEach(([key, value]) => applyTranslationPath(resource, key, value));
   resources[language] = resource;

@@ -10,6 +10,7 @@ const navigation = [
   { to: "/character", labelKey: "sidebar.character", descriptionKey: "sidebar.characterDescription" },
   { to: "/bosses", labelKey: "sidebar.bosses", descriptionKey: "sidebar.bossesDescription" },
   { to: "/npcs", labelKey: "sidebar.npcs", descriptionKey: "sidebar.npcsDescription" },
+  { to: "/patches", labelKey: "sidebar.patches", descriptionKey: "sidebar.patchesDescription" },
   { to: "/flags", labelKey: "sidebar.flags", descriptionKey: "sidebar.flagsDescription" },
 ];
 

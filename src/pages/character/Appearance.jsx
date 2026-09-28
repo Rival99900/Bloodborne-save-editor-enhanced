@@ -45,25 +45,16 @@ function Appearance({ onNotice }) {
   }
 
   return (
-    <div
-      style={{
-        fontSize: "25px",
-        marginTop: "5px",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
+    <div className="character-face-actions">
       <button
-        className="buttonBg"
-        style={{ padding: "0 15px", fontSize: "inherit", backgroundSize: "100% 100%" }}
+        className="control-button control-button--quiet"
         type="button"
         onClick={exportFace}
       >
         {t("characterForm.exportFace")}
       </button>
       <button
-        className="buttonBg"
-        style={{ padding: "0 15px", fontSize: "inherit", backgroundSize: "100% 100%" }}
+        className="control-button control-button--quiet"
         type="button"
         onClick={importFace}
       >

@@ -8,7 +8,6 @@ import FilterButtons from "./FilterButtons";
 import FilterComponent, { getItemKey } from "./FilterComponent";
 import EditUpgrade from "../../components/EditUpgrade";
 import AddScreen from "./AddScreen";
-import { ImagesContext } from "../../context/imagesContext";
 import { useNavigate } from "react-router-dom";
 import { useLocalization } from "../../i18n/localization";
 
@@ -39,9 +38,6 @@ function Inventory({ inv, isStorage }) {
   const [favoriteKeys, setFavoriteKeys] = useState(readFavoriteKeys);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const nav = useNavigate();
-  const {
-    images: { items, backgrounds },
-  } = useContext(ImagesContext);
 
   const { save, setSave } = useContext(SaveContext);
   const { t, language } = useLocalization();
@@ -198,11 +194,12 @@ function Inventory({ inv, isStorage }) {
       </div>
       {/* Right side buttons */}
       <div className="editButtons">
-        <span className="inventory-side-control__label">{t("inventory.itemQuantity")}</span>
+        <label className="inventory-side-control__label" htmlFor="item-quantity">{t("inventory.itemQuantity")}</label>
         <div className="editQuantity">
           <div className="inventory-side-control__field">
             <input
               type="number"
+              id="item-quantity"
               value={displayedQuantity}
               max={isStorage ? 600 : 99}
               min={0}
@@ -234,9 +231,9 @@ function Inventory({ inv, isStorage }) {
             {!canEditQuantity ? <span className="inventory-side-control__display" aria-hidden="true">{displayedQuantity}</span> : null}
           </div>
           <button
-            className="buttonBg inventory-side-control__apply"
+            className="control-button control-button--quiet inventory-side-control__apply"
             onClick={async () => {
-              const editedSave = await setSave(t("revision.quantityChanged"), () =>
+              await setSave(t("revision.quantityChanged"), () =>
                 invoke("edit_quantity", {
                   number: selected.number,
                   id: selected.id,
@@ -244,12 +241,6 @@ function Inventory({ inv, isStorage }) {
                   isStorage,
                 }),
               );
-              if (!editedSave) return;
-              const canvas = selectedRef.current;
-              const ctx = canvas.getContext("2d");
-              const itemImage = backgrounds["item.png"];
-              ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-              await drawItem(ctx, selected.info, quantity, itemImage, items);
             }}
             disabled={
               canEditQuantity && quantity > 0
@@ -260,11 +251,12 @@ function Inventory({ inv, isStorage }) {
             {t("inventory.setValue")}
           </button>
         </div>
-        <span className="inventory-side-control__label">{t("inventory.weaponLevel")}</span>
+        <label className="inventory-side-control__label" htmlFor="weapon-level">{t("inventory.weaponLevel")}</label>
         <div className="editQuantity">
           <div className="inventory-side-control__field">
             <input
               type="number"
+              id="weapon-level"
               value={displayedLevel}
               max={10}
               min={0}
@@ -286,7 +278,7 @@ function Inventory({ inv, isStorage }) {
             {!canEditWeaponLevel ? <span className="inventory-side-control__display" aria-hidden="true">{displayedLevel}</span> : null}
           </div>
           <button
-            className="buttonBg inventory-side-control__apply"
+            className="control-button control-button--quiet inventory-side-control__apply"
             onClick={async () => {
               let updatedWeapon = null;
               const editedSave = await setSave(t("revision.weaponLevelChanged"), async () => {
@@ -313,14 +305,14 @@ function Inventory({ inv, isStorage }) {
           </button>
         </div>
         <button
-          className="buttonBg inventory-btn inventory-btn--favorite"
+          className="control-button control-button--quiet inventory-btn inventory-btn--favorite"
           disabled={!selected}
           onClick={toggleSelectedFavorite}
         >
           {isSelectedFavorite ? t("inventory.removeFavorite") : t("inventory.addFavorite")}
         </button>
         <button
-          className="buttonBg inventory-btn"
+          className="control-button control-button--quiet inventory-btn"
           disabled={selected?.article_type === undefined}
           onClick={async () => {
             setReplaceScreen(true);
@@ -329,7 +321,7 @@ function Inventory({ inv, isStorage }) {
           {t("inventory.replaceItem")}
         </button>
         <button
-          className="buttonBg inventory-btn"
+          className="control-button control-button--quiet inventory-btn"
           disabled={!selected?.upgrade_type}
           onClick={async () => {
             setEditScreen(true);
@@ -338,13 +330,13 @@ function Inventory({ inv, isStorage }) {
           {t("inventory.edit")}
         </button>
         <button
-          className="buttonBg inventory-btn"
+          className="control-button control-button--quiet inventory-btn"
           onClick={() => setAddScreen(true)}
         >
           {t("inventory.addItem")}
         </button>
         <button
-          className="buttonBg inventory-btn"
+          className="control-button control-button--quiet inventory-btn"
           disabled={
             getType(selected?.article_type) !== "weapon" &&
             getType(selected?.article_type) !== "armor"
@@ -363,39 +355,6 @@ function Inventory({ inv, isStorage }) {
       </div>
     </>
   );
-}
-
-async function drawItem(ctx, item, amount, img, items) {
-  const { x, y } = {
-    x: 9,
-    y: 6,
-  };
-
-  const size = 73;
-  const { item_name: name, item_img: image, item_desc: note } = item;
-
-  const thumbnail = items[image];
-
-  ctx.font = "18px Reim";
-  ctx.drawImage(img, 0, 0);
-  ctx.drawImage(thumbnail, x, y, x + size, y + size);
-
-  // Set up text
-  ctx.shadowBlur = 3;
-  ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = 2;
-  ctx.shadowColor = "black";
-  ctx.fillStyle = "#ab9e87";
-  ctx.fillText(name, 107, 28);
-  ctx.fillText(note, 104, 69);
-
-  ctx.font = "24px Reim";
-  ctx.fillStyle = "#FFFF";
-  if (amount > 9) {
-    ctx.fillText(amount, 60, 85);
-  } else {
-    ctx.fillText(amount, 75, 83);
-  }
 }
 
 export default Inventory;

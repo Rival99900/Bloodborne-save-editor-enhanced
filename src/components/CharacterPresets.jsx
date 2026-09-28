@@ -26,13 +26,13 @@ export default function CharacterPresets({stats,onLoad,disabled=false}) {
     <h2 id="character-presets-title">{t('presets.title')}</h2><p>{t('presets.description')}</p>
     <div className="character-presets__save"><label htmlFor="character-preset-name">{t('presets.name')}</label>
       <input id="character-preset-name" value={name} maxLength={60} onChange={e=>setName(e.target.value)} disabled={disabled || !ready}/>
-      <button className="control-button" type="button" onClick={capture} disabled={disabled || !ready || !name.trim() || presets.length>=MAX_PRESETS}>{t('presets.save')}</button>
+      <button className="control-button control-button--quiet" type="button" onClick={capture} disabled={disabled || !ready || !name.trim() || presets.length>=MAX_PRESETS}>{t('presets.save')}</button>
     </div>
     {presets.length ? <ul className="character-presets__list">{presets.map(preset=><li key={preset.id}><strong>{preset.name}</strong>
-      <button className="control-button" type="button" disabled={disabled} onClick={()=>{setPreview(preset);setStatus('');}}>{t('presets.preview')}</button>
-      <button className="control-button" type="button" disabled={disabled} onClick={()=>setDeleting(preset)}>{t('presets.delete')}</button></li>)}</ul> : <p>{t('presets.empty')}</p>}
+      <button className="control-button control-button--quiet" type="button" disabled={disabled} onClick={()=>{setPreview(preset);setStatus('');}}>{t('presets.preview')}</button>
+      <button className="control-button control-button--quiet" type="button" disabled={disabled} onClick={()=>setDeleting(preset)}>{t('presets.delete')}</button></li>)}</ul> : <p>{t('presets.empty')}</p>}
     {preview ? <div className="character-presets__preview"><h3>{preview.name}</h3><SaveDiffTable diff={diff}/><div className="editor-action-row">
-      <button className="control-button" type="button" onClick={()=>setPreview(null)}>{t('forge.cancel')}</button>
+      <button className="control-button control-button--quiet" type="button" onClick={()=>setPreview(null)}>{t('forge.cancel')}</button>
       <button className="control-button control-button--primary" type="button" disabled={disabled || !diff.rows.length} onClick={()=>{onLoad(nextStats);setPreview(null);setStatus('presets.loaded');}}>{t('presets.load')}</button>
     </div></div> : null}
     {status ? <p role="status">{t(status)}</p> : null}

@@ -32,7 +32,7 @@ elif "--method" in a:
     method = a[a.index("--method") + 1]
     if method == "POST":
         assert "draft=true" in a
-        assert "body=@.github/release-notes/v0.5.0.md" in a
+        assert "body=@.github/release-notes/" + os.environ["RELEASE_TAG"] + ".md" in a
         state["releases"] = [state["created"]]
         save()
         print(json.dumps(state["created"]))
@@ -69,18 +69,18 @@ def draft(sha=NEW_SHA, **changes):
 
 
 class PrepareReleaseTests(unittest.TestCase):
-    def run_script(self, releases, tag_sha=NEW_SHA, **state):
+    def run_script(self, releases, tag_sha=NEW_SHA, release_tag="v0.5.0", **state):
         with tempfile.TemporaryDirectory() as directory:
             tmp = Path(directory)
             for name, source in {"gh": MOCK_GH, "git": f"#!/bin/sh\necho {NEW_SHA}\n"}.items():
                 (tmp / name).write_text(source)
                 (tmp / name).chmod(0o755)
-            initial = dict(releases=releases, tag_sha=tag_sha, created=draft())
+            initial = dict(releases=releases, tag_sha=tag_sha, created=draft(tag_name=release_tag))
             initial.update(state)
             (tmp / "state").write_text(json.dumps(initial))
             result = subprocess.run(["bash", "scripts/prepare_release.sh"], cwd=ROOT,
                 env={**os.environ, "PATH": f"{tmp}:{os.environ['PATH']}",
-                     "GH_TOKEN": "test-only", "RELEASE_TAG": "v0.5.0",
+                     "GH_TOKEN": "test-only", "RELEASE_TAG": release_tag,
                      "GITHUB_REPOSITORY": "Rival99900/Bloodborne-save-editor-enhanced",
                      "GITHUB_OUTPUT": str(tmp / "output"), "MOCK_STATE": str(tmp / "state"),
                      "MOCK_CALLS": str(tmp / "calls")}, capture_output=True, text=True)
@@ -94,6 +94,25 @@ class PrepareReleaseTests(unittest.TestCase):
         self.assertEqual(sum("--paginate" in c for c in calls), 1)
         self.assertTrue(any("POST" in c for c in calls))
         self.assertEqual(output, "release_id=393144615\n")
+
+    def test_v060_creates_new_draft_without_changing_v050(self):
+        result, calls, output = self.run_script([draft(draft=False)], release_tag="v0.6.0")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(output, "release_id=393144615\n")
+        self.assertTrue(any("POST" in c and "tag_name=v0.6.0" in c for c in calls))
+        self.assertFalse(any("PATCH" in c or "DELETE" in c for c in calls))
+        self.assertFalse(any("/git/ref" in arg for c in calls for arg in c))
+
+    def test_v060_retry_keeps_same_source_assets(self):
+        result, calls, _ = self.run_script([draft(tag_name="v0.6.0", assets=[{"name":"setup.exe"}])], release_tag="v0.6.0")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(any("--method" in c for c in calls))
+
+    def test_v060_rejects_wrong_source_or_published_release(self):
+        for release in [draft(OLD_SHA, tag_name="v0.6.0"), draft(tag_name="v0.6.0", draft=False)]:
+            result, calls, _ = self.run_script([release], release_tag="v0.6.0")
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(any("--method" in c for c in calls))
 
     def test_failed_empty_draft_is_reused_and_retargeted(self):
         result, calls, output = self.run_script([draft(OLD_SHA)], tag_sha=OLD_SHA)

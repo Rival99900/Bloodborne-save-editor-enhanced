@@ -124,27 +124,14 @@ function Character() {
   return (
     <div
       key={resetEpoch}
+      className="character-workspace"
       style={{
-        gridColumn: "2/4",
-        display: "grid",
-        gridTemplateRows: "minmax(370px, 60vh) min-content",
-        gap: "5rem",
-        alignContent: "center",
-        alignItems: "center",
-        justifyContent: "center",
         background: `url(${images.backgrounds["statsBg.png"].src})`,
         backgroundSize: "cover",
         position: "relative",
       }}
     >
-      <div
-        style={{
-          overflowY: "auto",
-          overflowX: "hidden",
-          height: "100%",
-          paddingBottom: "2px",
-        }}
-      >
+      <div className="character-fields">
         <div
           style={{
             display: "flex",

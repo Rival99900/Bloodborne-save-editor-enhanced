@@ -96,6 +96,55 @@ impl SaveData {
         })
     }
 
+    /// Validate a patched copy and rebuild all editor views without disk writes.
+    pub fn from_patched_bytes(&self, bytes: Vec<u8>) -> Result<Self, String> {
+        if bytes.len() != self.file.bytes.len() { return Err("patchErrors.size".into()); }
+        // Consumables have two copies of their item ID. Some upstream Pebble
+        // codes update only one; reject that partial conversion instead of
+        // silently leaving a dangling/mismatched item reference.
+        for (start, end) in [self.file.offsets.inventory, self.file.offsets.storage] {
+            for record in (start..end).step_by(16) {
+                if bytes.get(record+4..record+12) != self.file.bytes.get(record+4..record+12)
+                    && bytes.get(record+7) == Some(&0xb0) && bytes.get(record+11) == Some(&0x40)
+                    && bytes.get(record+4..record+7) != bytes.get(record+8..record+11) {
+                    return Err("patchErrors.structure".into());
+                }
+            }
+        }
+        let expected = bytes.clone();
+        let mut file = self.file.clone();
+        file.bytes = bytes;
+        file.offsets = super::offsets::Offsets::build(&file.bytes).map_err(|_| "patchErrors.structure")?;
+        let candidate = panic::catch_unwind(AssertUnwindSafe(|| Self::parse_file(file)))
+            .map_err(|_| "patchErrors.structure")?.map_err(|_| "patchErrors.structure")?;
+        if candidate.file.bytes != expected { return Err("patchErrors.structure".into()); }
+        candidate.validate_game_load_safety().map_err(|_| "patchErrors.structure")?;
+        let count = |inv: &Inventory| inv.articles.values().map(Vec::len).sum::<usize>()
+            + inv.upgrades.values().map(Vec::len).sum::<usize>();
+        if count(&candidate.inventory) != count(&self.inventory) || count(&candidate.storage) != count(&self.storage) {
+            return Err("patchErrors.structure".into());
+        }
+        // Preserve coherence between a changed rune source in the upgrade pool
+        // and every inventory/storage reference to its stable native handle.
+        for (start, end) in [candidate.file.offsets.inventory, candidate.file.offsets.storage] {
+            for record in (start..end).step_by(16) {
+                let handle = &candidate.file.bytes[record+4..record+8];
+                if handle[3] != 0xc0 { continue; }
+                let pool = (candidate.file.offsets.upgrades.0..candidate.file.offsets.upgrades.1)
+                    .step_by(40).find(|&at| &candidate.file.bytes[at..at+4] == handle);
+                if let Some(at) = pool {
+                    let source = &candidate.file.bytes[at+4..at+8];
+                    let source_changed = self.file.bytes.get(at+4..at+8) != Some(source);
+                    let record_changed = candidate.file.bytes[record+4..record+12] != self.file.bytes[record+4..record+12];
+                    if (source_changed || record_changed) && &candidate.file.bytes[record+8..record+12] != source {
+                        return Err("patchErrors.structure".into());
+                    }
+                }
+            }
+        }
+        Ok(candidate)
+    }
+
     /// Rejects incoherent slot references before a save is written. This is a
     /// pre-save validation and never mutates a loaded legacy save while the user
     /// is inspecting or repairing it.

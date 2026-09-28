@@ -44,6 +44,7 @@ function CharacterInfo({ editedStats, setEditedStats }) {
 
   return (
     <div
+      className="character-selects"
       style={{
         display: "flex",
         justifyContent: "space-evenly",

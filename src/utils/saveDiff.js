@@ -1,6 +1,6 @@
 import { BOSS_NAME_KEYS, isBossDefeated } from '../pages/bosses/bossProgression';
 const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
-export const REVISION_LABEL_KEYS = ['genericChange','quantityChanged','weaponLevelChanged','itemAdded','equipmentAdded','upgradeAdded','itemReplaced','upgradeEdited','upgradeConverted','slotShapeChanged','slotGemChanged','statsUpdated','characterUpdated','bossUpdated','flagUpdated'].map(key => `revision.${key}`);
+export const REVISION_LABEL_KEYS = ['genericChange','quantityChanged','weaponLevelChanged','itemAdded','equipmentAdded','upgradeAdded','itemReplaced','upgradeEdited','upgradeConverted','slotShapeChanged','slotGemChanged','statsUpdated','characterUpdated','bossUpdated','flagUpdated','patchesApplied'].map(key => `revision.${key}`);
 export function buildSaveDiff(before, after, limit = 200) {
   const rows = []; let total = 0;
   const add = row => { if (equal(row.before,row.after)) return; total++; if (rows.length < limit) rows.push(JSON.parse(JSON.stringify(row))); };

@@ -4,6 +4,7 @@ function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
   const { t } = useLocalization();
   return (
     <div
+      className="character-coordinates"
       style={{
         fontSize: "25px",
         marginTop: "5px",
@@ -13,6 +14,7 @@ function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
     >
       <span>{t("characterForm.coordinates")}</span>
       <div
+        className="character-coordinates__fields"
         style={{
           fontSize: "25px",
           display: "flex",
@@ -21,6 +23,7 @@ function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
       >
         X:
         <input
+          aria-label="X"
           value={x}
           onChange={(e) =>
             setCoordinates((prev) => ({ ...prev, x: +e.target.value }))
@@ -33,6 +36,7 @@ function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
         />
         Y:
         <input
+          aria-label="Y"
           value={y}
           onChange={(e) =>
             setCoordinates((prev) => ({ ...prev, y: +e.target.value }))
@@ -45,6 +49,7 @@ function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
         />
         Z:
         <input
+          aria-label="Z"
           value={z}
           onChange={(e) =>
             setCoordinates((prev) => ({ ...prev, z: +e.target.value }))
