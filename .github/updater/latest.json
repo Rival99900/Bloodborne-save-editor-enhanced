@@ -1,31 +1,31 @@
 {
-  "version": "0.5.0",
-  "notes": "Character presets · Before/after comparison. See the GitHub release for improvements and safe-save guidance.",
+  "version": "0.6.0",
+  "notes": "Experimental Bloodborne save patches (CUSA00207 / CUSA00900) · Preview and Undo/Redo · Refined interface. Keep an original copy; game versions are not certified.",
   "localized_notes": {
-    "en": "Character presets · Before/after comparison. See the GitHub release for improvements and safe-save guidance.",
-    "fr": "Préréglages de personnage · Comparaison avant/après. Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
-    "it": "Configurazioni del personaggio · Confronto prima/dopo. Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
-    "de": "Charaktervorlagen · Vorher-Nachher-Vergleich. Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
-    "es": "Configuraciones de personaje · Comparación antes/después. Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
-    "nl": "Personagevoorinstellingen · Vergelijking voor/na. Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
-    "pl": "Zestawy statystyk postaci · Porównanie przed i po. Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
-    "ru": "Наборы характеристик персонажа · Сравнение до и после. Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
-    "da": "Karakterforudindstillinger · Sammenligning før/efter. Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
-    "nb": "Karakterforhåndsinnstillinger · Sammenligning før/etter. Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
-    "fi": "Hahmon esiasetukset · Ennen–jälkeen-vertailu. Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
-    "sv": "Karaktärsförinställningar · Jämförelse före/efter. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
-    "tr": "Karakter ön ayarları · Öncesi/sonrası karşılaştırması. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
-    "pt-PT": "Predefinições de personagem · Comparação antes/depois. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+    "en": "Experimental Bloodborne save patches (CUSA00207 / CUSA00900) · Preview and Undo/Redo · Refined interface. Keep an original copy; game versions are not certified.",
+    "fr": "Patchs de sauvegarde Bloodborne expérimentaux (CUSA00207 / CUSA00900) · Aperçu et Annuler/Rétablir · Interface améliorée. Conservez une copie originale ; les versions du jeu ne sont pas certifiées.",
+    "it": "Patch sperimentali per i salvataggi di Bloodborne (CUSA00207 / CUSA00900) · Anteprima e Annulla/Ripristina · Interfaccia migliorata. Conserva una copia originale; le versioni del gioco non sono certificate.",
+    "de": "Experimentelle Bloodborne-Spielstand-Patches (CUSA00207 / CUSA00900) · Vorschau und Rückgängig/Wiederholen · Verbesserte Oberfläche. Bewahre eine Originalkopie auf; Spielversionen sind nicht bestätigt.",
+    "es": "Parches experimentales para partidas de Bloodborne (CUSA00207 / CUSA00900) · Vista previa y Deshacer/Rehacer · Interfaz mejorada. Conserva una copia original; las versiones del juego no están certificadas.",
+    "nl": "Experimentele Bloodborne-opslagpatches (CUSA00207 / CUSA00900) · Voorbeeld en Ongedaan maken/Opnieuw · Verbeterde interface. Bewaar een origineel exemplaar; spelversies zijn niet bevestigd.",
+    "pl": "Eksperymentalne poprawki zapisów Bloodborne (CUSA00207 / CUSA00900) · Podgląd i Cofnij/Ponów · Ulepszony interfejs. Zachowaj oryginalną kopię; zgodność z wersjami gry nie jest potwierdzona.",
+    "ru": "Экспериментальные патчи сохранений Bloodborne (CUSA00207 / CUSA00900) · Предпросмотр и отмена/повтор · Улучшенный интерфейс. Сохраните исходную копию; совместимость с версиями игры не подтверждена.",
+    "da": "Eksperimentelle Bloodborne-gemningspatches (CUSA00207 / CUSA00900) · Forhåndsvisning og Fortryd/Gentag · Forbedret brugerflade. Behold en original kopi; spilversioner er ikke bekræftet.",
+    "nb": "Eksperimentelle Bloodborne-lagringspatcher (CUSA00207 / CUSA00900) · Forhåndsvisning og Angre/Gjør om · Forbedret grensesnitt. Behold en original kopi; spillversjoner er ikke bekreftet.",
+    "fi": "Kokeelliset Bloodborne-tallennuspaikkaukset (CUSA00207 / CUSA00900) · Esikatselu ja Kumoa/Tee uudelleen · Parannettu käyttöliittymä. Säilytä alkuperäinen kopio; peliversioiden yhteensopivuutta ei ole vahvistettu.",
+    "sv": "Experimentella Bloodborne-sparfilspatchar (CUSA00207 / CUSA00900) · Förhandsvisning och Ångra/Gör om · Förbättrat gränssnitt. Behåll en originalkopia; spelversioner är inte bekräftade.",
+    "tr": "Deneysel Bloodborne kayıt yamaları (CUSA00207 / CUSA00900) · Önizleme ve Geri Al/Yinele · İyileştirilmiş arayüz. Orijinal bir kopyayı saklayın; oyun sürümleri doğrulanmamıştır.",
+    "pt-PT": "Patches experimentais para gravações de Bloodborne (CUSA00207 / CUSA00900) · Pré-visualização e Anular/Refazer · Interface melhorada. Guarda uma cópia original; as versões do jogo não estão certificadas."
   },
-  "pub_date": "2026-09-25T22:52:09Z",
+  "pub_date": "2026-09-28T17:20:00Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-49e196dd4260801bf2c1/Bloodborne_Save_Editor_Enhanced_0.5.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelpNWGJoMXk5YzRxME9rKzdnNFZKSC85Z0tmclowM3czNmdRa2FzQW5EdkxYbTljaElzZEpyQndKVE1kM1dUcnpuUlpFVTdZRHpVV0w3aG5GYTZHS1E0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwMzc2NzE1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjUuMF94NjQtc2V0dXAuZXhlCjlkcWJQeDV3djFzUkxwdzV3Ri84eWZPNlNaNUs5SStDYm44c0E0VHN6bUE5SWt1dTRJV1lhRCs1bWpiNi9xZHZMQVBnMUVLZUt5Q3ZwT2Q5ZlZrNEFBPT0K"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-2e0582727c27ba6ad768/Bloodborne_Save_Editor_Enhanced_0.6.0_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelFFNk1JYWduK2d5bHZwQTN4SVZvUmoxM09NU1hBdVlHU2tPNk9Lbm5FMFRZa3NYanBxWkhRc2thcXZCRUY4YUsvUWx3OXdPVmg1RHlsUGFta214ZkFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNjE1OTg0CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF94NjQtc2V0dXAuZXhlCnN6bU1QRWdwdFpMaXVqQmJDeHBFaStzVW1RTjVMRllEL3h2YlhFbGp0UzE0b1hQYUNpMW1hd3BNZXBkSE5vQ2JmcWk0Njl3R2pZeE1iSFlJMldIVEFnPT0K"
     },
     "linux-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-49e196dd4260801bf2c1/Bloodborne_Save_Editor_Enhanced_0.5.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelR0aXYrdk9QZ1NlaTBXZk5BQlRZTzh2OWU5ZXpILytGQy9MbUo1M3lJTVFHQUpOdkU5b1MyQlY4VUFOa0FBUVlmempkSnpERGJoWHdmQlJqVEVvUXdFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwMzc2NzA2CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjUuMF9hbWQ2NC5BcHBJbWFnZQpWdzE1b0YrTWpoOGU3dWVhZlJSWEtLV1I5ZTRPQmRsaFBEOHhRNklnb0ZTbEJkYlN1MlJ2bmk3YjNlY0ZvZ1BqdC8xQWEvTFNScEs1TVpxemlOM29BZz09Cg=="
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/untagged-2e0582727c27ba6ad768/Bloodborne_Save_Editor_Enhanced_0.6.0_amd64.AppImage",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelRtemFab0tnOUk4VFN3aU9xWjJ2SXI5ZmlsM0xZVmx4VzZDamNiUml3bThYSjI1YW1uN3pSK0ppaGlINWJaVDdKRFdOTnJBUklPdmhhQUlIeEw0bUE0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNjE1OTU1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF9hbWQ2NC5BcHBJbWFnZQpBMDNtd3RMRC9ramF0Y284NTRtK01FdURwTElqSStwRzZuT3VDU3A1L2pYelF3bmp2RzlhL2tVNktWRk1ZT2xuNG5rWlNTNWVGdVVXMmdhUWFIcXpEUT09Cg=="
     }
   }
 }
