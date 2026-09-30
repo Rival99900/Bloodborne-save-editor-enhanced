@@ -39,8 +39,9 @@ UPDATER_IMPLEMENTATION_NOTES.md
 # Also ignore a symlinked dependency directory.
 /node_modules
 
-# Standalone native patch validation build
-scripts/patch-native-tests/target/
+# Local diagnostic scripts; required CI tools live in .github/scripts
+/scripts/
+.github/scripts/**/__pycache__/
 
 # Local backups, conversation notes, captures and generated release files
 /exports/
@@ -54,9 +55,13 @@ scripts/patch-native-tests/target/
 /Bloodborne-save-editor-enhanced*_LOCAL_*.zip
 /release-assets/
 /release-signatures/
+/release-metadata.json
 /latest.json
 /SHA256SUMS.txt
 *.log
 __pycache__/
 .vscode/
 .idea/
+
+# Local archives
+*.zip

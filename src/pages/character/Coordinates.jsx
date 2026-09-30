@@ -3,20 +3,11 @@ import { useLocalization } from "../../i18n/localization";
 function Coordinates({ coordinates: { x, y, z }, setCoordinates }) {
   const { t } = useLocalization();
   return (
-    <div
-      className="character-coordinates"
-      style={{
-        fontSize: "25px",
-        marginTop: "5px",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
+    <div className="character-coordinates character-detail-row">
       <span>{t("characterForm.coordinates")}</span>
       <div
         className="character-coordinates__fields"
         style={{
-          fontSize: "25px",
           display: "flex",
           gap: "5px",
         }}

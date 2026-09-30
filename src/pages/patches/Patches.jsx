@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { SaveContext } from "../../context/context";
+import { ImagesContext } from "../../context/imagesContext";
 import { useLocalization } from "../../i18n/localization";
 import { loadVignetteTranslations, localizeVignetteText } from "../../i18n/vignetteTranslations";
 import "./patches.css";
@@ -17,6 +18,7 @@ const hex = (number, width) => number.toString(16).toUpperCase().padStart(width,
 
 export default function Patches() {
   const { save, setSave } = useContext(SaveContext);
+  const { images } = useContext(ImagesContext) ?? {};
   const { t, language } = useLocalization();
   const [titleId, setTitleId] = useState("");
   const [version, setVersion] = useState("");
@@ -78,7 +80,7 @@ export default function Patches() {
     } catch (e) { if (alive.current) { setReview(null); setAcknowledged(false); showError(e); } }
     finally { if (alive.current) setBusy(false); }
   }
-  return <section className="patch-workspace" aria-labelledby="patch-title" aria-busy={busy || catalogBusy}>
+  return <section className="patch-workspace" style={{ backgroundImage: `url(${images?.backgrounds?.["statsBg.png"]?.src ?? "/assets/itemsBg/statsBg.png"})` }} aria-labelledby="patch-title" aria-busy={busy || catalogBusy}>
     <header className="patch-heading"><span className="patch-eyebrow">{t("patches.offline")}</span><h1 id="patch-title">{t("patches.title")}</h1><p>{t("patches.description")}</p></header>
     <div className="patch-notice"><strong>{t("patches.experimental")}</strong><p>{t("patches.compatibility")}</p></div>
     <div className="patch-settings">

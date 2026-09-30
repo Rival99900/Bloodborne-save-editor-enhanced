@@ -1,9 +1,11 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { SaveContext } from "../context/context";
 import DarkSelect from "./DarkSelect";
+import { useLocalization } from "../i18n/localization";
 
 function Select({ options, name, setEditedStats, editedStats }) {
   const { save } = useContext(SaveContext);
+  const { t } = useLocalization();
   const draftValue = editedStats.find((entry) => entry.name === name)?.value;
   const fallbackValue = save.stats.find((entry) => entry.name === name)?.value;
   const [value, setValue] = useState(draftValue ?? fallbackValue ?? "");
@@ -26,13 +28,16 @@ function Select({ options, name, setEditedStats, editedStats }) {
   }
 
   return (
-    <DarkSelect
-      className="character-select"
-      ariaLabel={name}
-      options={normalizedOptions}
-      value={value}
-      onChange={handleChange}
-    />
+    <div className="character-select-field">
+      <span>{t(`statNames.${name}`)}</span>
+      <DarkSelect
+        className="character-select"
+        ariaLabel={t(`statNames.${name}`)}
+        options={normalizedOptions}
+        value={value}
+        onChange={handleChange}
+      />
+    </div>
   );
 }
 

@@ -132,15 +132,7 @@ function Character() {
       }}
     >
       <div className="character-fields">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-            borderBottom: "1px solid rgb(107, 95, 73)",
-          }}
-        >
+        <div className="character-detail-row character-name-row">
           <label htmlFor="username">{t("characterForm.name")}</label>
           <input
             id="username"
@@ -159,8 +151,8 @@ function Character() {
           />
         </div>
         <div id="currency" style={{ padding: "0 0px" }}>
-          <Stat editedStats={editedStats} setEditedStats={setEditedStats} stat={editedStats.find((stat) => stat.name === "Echoes")} width="100%" />
-          <Stat editedStats={editedStats} setEditedStats={setEditedStats} stat={editedStats.find((stat) => stat.name === "Insight")} width="100%" />
+          <Stat editedStats={editedStats} setEditedStats={setEditedStats} stat={editedStats.find((stat) => stat.name === "Echoes")} width="100%" borderless />
+          <Stat editedStats={editedStats} setEditedStats={setEditedStats} stat={editedStats.find((stat) => stat.name === "Insight")} width="100%" borderless />
         </div>
         <div id="characterData">
           <CharacterInfo key={`character-info-${resetEpoch}`} editedStats={editedStats} setEditedStats={setEditedStats} />

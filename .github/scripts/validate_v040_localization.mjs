@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { createServer } from "vite";
 import { resolve } from "node:path";
 
-const root = resolve(import.meta.dirname, "..");
+const root = resolve(import.meta.dirname, "../..");
 const server = await createServer({ root, logLevel: "error", server: { watch: null } });
 try {
   const { SUPPORTED_LANGUAGES } = await server.ssrLoadModule("/src/i18n/localization.jsx");

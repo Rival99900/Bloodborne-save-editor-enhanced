@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { v040Translations, v040TranslationKeys } from "../src/i18n/v040Translations.js";
-import { BOSS_NAME_KEYS, BOSS_PROGRESSION } from "../src/pages/bosses/bossProgression.js";
+import { v040Translations, v040TranslationKeys } from "../../src/i18n/v040Translations.js";
+import { BOSS_NAME_KEYS, BOSS_PROGRESSION } from "../../src/pages/bosses/bossProgression.js";
 
-const root = resolve(import.meta.dirname, "..");
+const root = resolve(import.meta.dirname, "../..");
 const resource = (name) => JSON.parse(readFileSync(resolve(root, "src-tauri/resources", name), "utf8"));
 const translation = (kind, language) =>
   JSON.parse(readFileSync(resolve(root, "src/i18n", kind, `${language}.json`), "utf8"));

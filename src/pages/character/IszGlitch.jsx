@@ -57,7 +57,7 @@ function IszGlitch() {
   }
 
   return (
-    <div className="character-isz-row">
+    <div className="character-isz-row character-detail-row">
       <span>
         {t("characterForm.iszStatus")} {isz.map((value) => value.toString(16).toUpperCase()).join(" ")}
       </span>

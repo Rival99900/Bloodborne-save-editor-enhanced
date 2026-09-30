@@ -16,10 +16,30 @@ failed_refresh_sha=9c6b4a0079c243c78c0795f51fb83a6a70b2b3ce
 recovery_id=393144615
 recovery_tag=untagged-75abb2d1a9c279164fe4
 release="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/releases?per_page=100" |
-  jq -c --arg tag "$RELEASE_TAG" --arg recovery_tag "$recovery_tag" --argjson recovery_id "$recovery_id" '
+  jq -c --arg tag "$RELEASE_TAG" --arg recovery_tag "$recovery_tag" --argjson recovery_id "$recovery_id" --arg refresh "${REFRESH_EXISTING_RELEASE:-false}" '
     [.[][] | select(.tag_name == $tag or
-      ($tag == "v0.5.0" and .id == $recovery_id and .tag_name == $recovery_tag))] |
+      ($tag == "v0.5.0" and .id == $recovery_id and .tag_name == $recovery_tag) or
+      ($tag == "v0.6.0" and $refresh == "true" and .id == 398461571 and (.tag_name | startswith("untagged-"))))] |
     if length <= 1 then .[0] // null else error("Multiple matching releases") end')"
+# Refresh only the explicitly selected, existing owner release. Never delete it.
+if test "${REFRESH_EXISTING_RELEASE:-false}" = true; then
+  test "$RELEASE_TAG" = v0.6.0
+  jq -e '.id == 398461571 and (.tag_name == "v0.6.0" or (.tag_name | startswith("untagged-"))) and .author.login == "Rival99900"' <<<"$release" >/dev/null
+  current_tag_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${RELEASE_TAG}" --jq .object.sha)"
+  previous_source="$(jq -r .target_commitish <<<"$release")"
+  if test "$current_tag_sha" != "$source_sha" && test "$current_tag_sha" != "$previous_source"; then
+    echo "::error::Unexpected release tag; refusing refresh." >&2
+    exit 1
+  fi
+  release_id="$(jq -r .id <<<"$release")"
+  # Hide the release before replacing packages; retain its ID, author and notes.
+  release="$(gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${release_id}" -F draft=true)"
+  if test "$current_tag_sha" != "$source_sha"; then
+    gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/${RELEASE_TAG}" -f sha="$source_sha" -F force=true >/dev/null
+  fi
+  release="$(gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${release_id}" \
+    -f tag_name="$RELEASE_TAG" -f target_commitish="$source_sha" -F draft=true)"
+fi
 if test "$RELEASE_TAG" = v0.5.0; then
   tag_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v0.5.0" --jq .object.sha)"
   if test "$tag_sha" != "$source_sha" && test "$tag_sha" != "$first_refresh_sha" && test "$tag_sha" != "$failed_refresh_sha"; then

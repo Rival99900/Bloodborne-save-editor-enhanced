@@ -21,8 +21,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "audit:catalogs": "node scripts/audit_catalogs.mjs",
-    "translations:fill-gaps": "node scripts/fill_effect_translation_gaps.mjs",
+    "audit:catalogs": "node .github/scripts/audit_catalogs.mjs",
+    "translations:fill-gaps": "node .github/scripts/fill_effect_translation_gaps.mjs",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",

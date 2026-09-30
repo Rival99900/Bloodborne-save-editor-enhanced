@@ -15,6 +15,11 @@ on:
         description: "Existing version tag to build and publish (for example v0.6.0)"
         required: true
         type: string
+      refresh_existing:
+        description: "Replace the existing v0.6.0 packages from the selected branch (same version)"
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: desktop-release-${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
@@ -23,7 +28,7 @@ concurrency:
 jobs:
   validate:
     name: Validate tagged source
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.6.0]'))"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.6.0]') || contains(github.event.head_commit.message, '[refresh v0.6.0]')))"
     runs-on: ubuntu-22.04
     env:
       RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
@@ -32,7 +37,7 @@ jobs:
       - name: Checkout tagged source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.sha || env.RELEASE_TAG }}
+          ref: ${{ (github.event_name == 'push' && github.ref_type == 'branch' || inputs.refresh_existing) && github.sha || env.RELEASE_TAG }}
 
       - name: Validate release version
         run: |
@@ -40,7 +45,9 @@ jobs:
           test -f ".github/release-notes/${RELEASE_TAG}.md"
 
       - name: Test release draft preparation
-        run: python3 scripts/test_prepare_release.py
+        run: |
+          python3 .github/scripts/test_prepare_release.py
+          python3 .github/scripts/test_updater_manifest.py
 
       - name: Install native test dependencies
         run: |
@@ -68,16 +75,16 @@ jobs:
         run: npm run audit:catalogs
 
       - name: Verify reviewed effect labels and numeric values
-        run: python3 scripts/localization/rebuild_effect_labels.py --check
+        run: python3 .github/scripts/localization/rebuild_effect_labels.py --check
 
       - name: Verify multilingual search and update summaries
-        run: node scripts/validate_v040_localization.mjs
+        run: node .github/scripts/validate_v040_localization.mjs
 
       - name: Validate presets, comparison and UI strings
         run: |
-          node scripts/validate_v050_features.mjs
-          node scripts/validate_v060_patches.mjs
-          node scripts/audit_ui_text.mjs
+          node .github/scripts/validate_v050_features.mjs
+          node .github/scripts/validate_v060_patches.mjs
+          node .github/scripts/audit_ui_text.mjs
 
       - name: Build production frontend
         run: npm run build
@@ -95,17 +102,19 @@ jobs:
     env:
       RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.0' }}
       GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      # An explicit refresh commit on main replaces the same owner release.
+      REFRESH_EXISTING_RELEASE: ${{ (inputs.refresh_existing || (github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[refresh v0.6.0]'))) && 'true' || 'false' }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.sha || env.RELEASE_TAG }}
+          ref: ${{ (github.event_name == 'push' && github.ref_type == 'branch' || inputs.refresh_existing) && github.sha || env.RELEASE_TAG }}
       - name: Validate owner and prepare draft
         id: prepare
-        run: bash scripts/prepare_release.sh
+        run: bash .github/scripts/prepare_release.sh
 
   build:
     name: Build signed ${{ matrix.name }} asset
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release v0.6.0]'))"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.6.0]') || contains(github.event.head_commit.message, '[refresh v0.6.0]')))"
     needs: prepare-release
     runs-on: ${{ matrix.os }}
     permissions:
@@ -127,7 +136,7 @@ jobs:
       - name: Checkout tagged source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.sha || env.RELEASE_TAG }}
+          ref: ${{ (github.event_name == 'push' && github.ref_type == 'branch' || inputs.refresh_existing) && github.sha || env.RELEASE_TAG }}
 
       - name: Install Linux packaging dependencies
         if: runner.os == 'Linux'
@@ -194,7 +203,7 @@ jobs:
       - name: Checkout release source and main history
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.tag || github.sha }}
+          ref: ${{ inputs.refresh_existing && github.sha || inputs.tag || github.sha }}
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
 
@@ -210,41 +219,13 @@ jobs:
           release_commit="$(git rev-parse HEAD)"
           version="${RELEASE_TAG#v}"
 
-          windows_sig_name="$(jq -r '.assets[] | select(.name | endswith(".exe.sig")) | .name' <<<"$release" | head -n1)"
-          linux_sig_name="$(jq -r '.assets[] | select(.name | endswith(".AppImage.sig")) | .name' <<<"$release" | head -n1)"
-          test "$windows_sig_name" = "Bloodborne_Save_Editor_Enhanced_${version}_x64-setup.exe.sig"
-          test "$linux_sig_name" = "Bloodborne_Save_Editor_Enhanced_${version}_amd64.AppImage.sig"
-          windows_name="${windows_sig_name%.sig}"
-          linux_name="${linux_sig_name%.sig}"
-
-          windows_url="$(jq -r --arg name "$windows_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
-          windows_sig_url="$(jq -r --arg name "$windows_sig_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
-          linux_url="$(jq -r --arg name "$linux_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
-          linux_sig_url="$(jq -r --arg name "$linux_sig_name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
-
-          for required in "$windows_sig_name" "$linux_sig_name" "$windows_url" "$windows_sig_url" "$linux_url" "$linux_sig_url"; do
-            test -n "$required" && test "$required" != "null"
-          done
-
+          printf '%s\n' "$release" > release-metadata.json
           mkdir -p release-signatures
           gh release download "$RELEASE_TAG" --pattern "*.sig" --dir release-signatures
-          windows_signature="$(tr -d '\r\n' < "release-signatures/$windows_sig_name")"
-          linux_signature="$(tr -d '\r\n' < "release-signatures/$linux_sig_name")"
-          test -n "$windows_signature"
-          test -n "$linux_signature"
-
-          jq -n \
-            --arg version "$version" \
-            --argjson localized_notes "$(jq -c --arg version "$version" '.versions[$version] // .default' src/i18n/releaseSummaries.json)" \
-            --arg date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            --arg windows_url "$windows_url" \
-            --arg windows_signature "$windows_signature" \
-            --arg linux_url "$linux_url" \
-            --arg linux_signature "$linux_signature" \
-            '{version:$version,notes:$localized_notes.en,localized_notes:$localized_notes,pub_date:$date,platforms:{"windows-x86_64":{url:$windows_url,signature:$windows_signature},"linux-x86_64":{url:$linux_url,signature:$linux_signature}}}' \
-            > latest.json
-
-          jq -e '.version and .platforms["windows-x86_64"].url and .platforms["windows-x86_64"].signature and .platforms["linux-x86_64"].url and .platforms["linux-x86_64"].signature' latest.json >/dev/null
+          python3 .github/scripts/build_updater_manifest.py \
+            --release release-metadata.json --tag "$RELEASE_TAG" \
+            --repository "$GITHUB_REPOSITORY" --signatures release-signatures \
+            --notes src/i18n/releaseSummaries.json --output latest.json
 
           mkdir -p release-assets
           gh release download "$RELEASE_TAG" \
@@ -267,6 +248,11 @@ jobs:
               -F draft=false \
               -f make_latest=true >/dev/null
           fi
+
+          # Check the permanent public URLs before advertising the new update.
+          while IFS= read -r asset_url; do
+            curl --fail --silent --show-error --location --head --retry 3 "$asset_url" >/dev/null
+          done < <(jq -r '.platforms[].url' latest.json)
 
           git fetch origin main
           git checkout -B updater-publication origin/main

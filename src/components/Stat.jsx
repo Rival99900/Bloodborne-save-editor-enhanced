@@ -9,7 +9,7 @@ function getStatLimit(name) {
   return STAT_VALUE_LIMITS[name] ?? MAX_STAT_VALUE;
 }
 
-function Stat({ stat, setEditedStats, width, disabled = false }) {
+function Stat({ stat, setEditedStats, width, disabled = false, borderless = false }) {
   const { t } = useLocalization();
   const maximum = getStatLimit(stat.name);
 
@@ -27,11 +27,11 @@ function Stat({ stat, setEditedStats, width, disabled = false }) {
 
   return (
     <div
-      className="stat-field"
+      className={`stat-field${borderless ? " character-detail-row" : ""}`}
       style={{
         display: "flex",
         alignItems: "center",
-        borderBottom: "1px solid #6b5f49",
+        borderBottom: borderless ? "none" : "1px solid #6b5f49",
       }}
     >
       <img

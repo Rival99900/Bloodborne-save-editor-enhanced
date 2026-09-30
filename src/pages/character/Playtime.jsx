@@ -34,25 +34,9 @@ function Playtime({ ms, setMs }) {
   }
 
   return (
-    <div
-      id="playtime"
-      style={{
-        fontSize: "25px",
-        marginTop: "5px",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
+    <div id="playtime" className="character-detail-row">
       <span>{t("characterForm.playtime")}</span>
-      <div
-        style={{
-          width: "174px",
-          fontSize: "25px",
-          display: "flex",
-          justifyContent: "space-evenly",
-          background: "#00000081",
-        }}
-      >
+      <div className="character-playtime-fields">
         <input
           value={time["hours"]}
           onChange={handleChange}

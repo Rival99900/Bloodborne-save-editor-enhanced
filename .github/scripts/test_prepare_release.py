@@ -7,7 +7,7 @@ import subprocess
 import tempfile
 import unittest
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OLD_SHA = "820bf555945e326552b689fb9e2d56af8e769474"
 FAILED_SHA = "9c6b4a0079c243c78c0795f51fb83a6a70b2b3ce"
 UNTAGGED = "untagged-75abb2d1a9c279164fe4"
@@ -38,7 +38,9 @@ elif "--method" in a:
         print(json.dumps(state["created"]))
     elif method == "PATCH" and "/releases/" in a[3]:
         release = dict(state["releases"][0])
-        release["target_commitish"] = field("target_commitish")
+        if any(x.startswith("target_commitish=") for x in a):
+            release["target_commitish"] = field("target_commitish")
+        if "draft=true" in a: release["draft"] = True
         if any(x.startswith("tag_name=") for x in a):
             release["tag_name"] = field("tag_name")
         state["releases"] = [release]
@@ -48,7 +50,7 @@ elif "--method" in a:
         state["tag_sha"] = field("sha")
         # Reproduce the real detached-draft state after a tag refresh.
         for release in state["releases"]:
-            if release["draft"] and release["tag_name"] == "v0.5.0":
+            if release["draft"] and release["tag_name"] in ["v0.5.0", "v0.6.0"]:
                 release["tag_name"] = "untagged-75abb2d1a9c279164fe4"
         save()
         print("{}")
@@ -69,7 +71,7 @@ def draft(sha=NEW_SHA, **changes):
 
 
 class PrepareReleaseTests(unittest.TestCase):
-    def run_script(self, releases, tag_sha=NEW_SHA, release_tag="v0.5.0", **state):
+    def run_script(self, releases, tag_sha=NEW_SHA, release_tag="v0.5.0", refresh=False, **state):
         with tempfile.TemporaryDirectory() as directory:
             tmp = Path(directory)
             for name, source in {"gh": MOCK_GH, "git": f"#!/bin/sh\necho {NEW_SHA}\n"}.items():
@@ -78,9 +80,10 @@ class PrepareReleaseTests(unittest.TestCase):
             initial = dict(releases=releases, tag_sha=tag_sha, created=draft(tag_name=release_tag))
             initial.update(state)
             (tmp / "state").write_text(json.dumps(initial))
-            result = subprocess.run(["bash", "scripts/prepare_release.sh"], cwd=ROOT,
+            result = subprocess.run(["bash", ".github/scripts/prepare_release.sh"], cwd=ROOT,
                 env={**os.environ, "PATH": f"{tmp}:{os.environ['PATH']}",
                      "GH_TOKEN": "test-only", "RELEASE_TAG": release_tag,
+                     "REFRESH_EXISTING_RELEASE": str(refresh).lower(),
                      "GITHUB_REPOSITORY": "Rival99900/Bloodborne-save-editor-enhanced",
                      "GITHUB_OUTPUT": str(tmp / "output"), "MOCK_STATE": str(tmp / "state"),
                      "MOCK_CALLS": str(tmp / "calls")}, capture_output=True, text=True)
@@ -94,6 +97,30 @@ class PrepareReleaseTests(unittest.TestCase):
         self.assertEqual(sum("--paginate" in c for c in calls), 1)
         self.assertTrue(any("POST" in c for c in calls))
         self.assertEqual(output, "release_id=393144615\n")
+
+    def test_explicit_v060_refresh_preserves_release_id_and_rebinds_tag(self):
+        release = draft(OLD_SHA, id=398461571, tag_name="v0.6.0", draft=False)
+        result, calls, output = self.run_script([release], tag_sha=OLD_SHA, release_tag="v0.6.0", refresh=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(output, "release_id=398461571\n")
+        self.assertFalse(any("POST" in c or "DELETE" in c for c in calls))
+        patches = [c for c in calls if "PATCH" in c]
+        self.assertIn("/releases/398461571", patches[0][3])
+        self.assertIn("/git/refs/tags/v0.6.0", patches[1][3])
+        self.assertIn("tag_name=v0.6.0", patches[2])
+
+    def test_interrupted_v060_refresh_recovers_detached_draft(self):
+        release = draft(OLD_SHA, id=398461571, tag_name=UNTAGGED)
+        result, calls, output = self.run_script([release], release_tag="v0.6.0", refresh=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(output, "release_id=398461571\n")
+        self.assertFalse(any("POST" in c or "DELETE" in c for c in calls))
+
+    def test_explicit_refresh_rejects_unexpected_release_or_tag(self):
+        for release, tag in [(draft(OLD_SHA, tag_name="v0.6.0"), OLD_SHA), (draft(OLD_SHA, id=398461571, tag_name="v0.6.0"), "b" * 40)]:
+            result, calls, _ = self.run_script([release], tag_sha=tag, release_tag="v0.6.0", refresh=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(any("--method" in c for c in calls))
 
     def test_v060_creates_new_draft_without_changing_v050(self):
         result, calls, output = self.run_script([draft(draft=False)], release_tag="v0.6.0")

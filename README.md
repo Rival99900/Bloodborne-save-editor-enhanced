@@ -41,7 +41,7 @@ In **Statistics**, name and save up to 20 personal presets on this device. Each 
 
 The revision panel now shows a **before/after comparison** against the last opened or saved snapshot, plus the timestamped operation log. It covers exposed statistics, character position, play time, boss state, and Inventory/Storage item quantities, identifiers, shapes, effects and gem slots. Each comparison displays at most 200 changed fields and reports any omitted rows. Operations affecting unexposed bytes retain their log entry with an explanatory message; this is not a full binary comparison. Undo/Redo keeps using the existing save snapshot mechanism.
 
-Both features follow the dark/gold theme and include English plus all 13 translated locales. Run `node scripts/validate_v050_features.mjs` for the focused validation suite.
+Both features follow the dark/gold theme and include English plus all 13 translated locales. Run `node .github/scripts/validate_v050_features.mjs` for the focused validation suite.
 
 ### Equipment insertion and Flags
 

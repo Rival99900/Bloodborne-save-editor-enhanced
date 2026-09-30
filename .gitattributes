@@ -1,2 +1,11 @@
-
+# Exclude local artifacts from source archives; keep required build/CI tools.
 docs/ export-ignore
+scripts/ export-ignore
+.local-analysis/ export-ignore
+captures/ export-ignore
+verification/ export-ignore
+exports/ export-ignore
+REPRISE_PROJET*.md export-ignore
+HISTORIQUE_REPRISE*.md export-ignore
+PATCHES_*_LOCAL.md export-ignore
+CHANGEMENTS*.patch export-ignore
