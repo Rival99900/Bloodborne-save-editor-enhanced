@@ -17,15 +17,15 @@
     "tr": "Deneysel Bloodborne kayıt yamaları (CUSA00207 / CUSA00900) · Önizleme ve Geri Al/Yinele · İyileştirilmiş arayüz. Orijinal bir kopyayı saklayın; oyun sürümleri doğrulanmamıştır.",
     "pt-PT": "Patches experimentais para gravações de Bloodborne (CUSA00207 / CUSA00900) · Pré-visualização e Anular/Refazer · Interface melhorada. Guarda uma cópia original; as versões do jogo não estão certificadas."
   },
-  "pub_date": "2026-09-28T17:20:00Z",
+  "pub_date": "2026-09-30T20:05:16Z",
   "platforms": {
     "windows-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelFFNk1JYWduK2d5bHZwQTN4SVZvUmoxM09NU1hBdVlHU2tPNk9Lbm5FMFRZa3NYanBxWkhRc2thcXZCRUY4YUsvUWx3OXdPVmg1RHlsUGFta214ZkFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNjE1OTg0CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF94NjQtc2V0dXAuZXhlCnN6bU1QRWdwdFpMaXVqQmJDeHBFaStzVW1RTjVMRllEL3h2YlhFbGp0UzE0b1hQYUNpMW1hd3BNZXBkSE5vQ2JmcWk0Njl3R2pZeE1iSFlJMldIVEFnPT0K"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemVlcnRxYWZkc203ajg0OHlvMGV1ZDhxRWx4ZHJrYVdCbWNkemxaU2kyZ1Mzc3hVa1lDVVYvSjd3SS9Xc21IcE9xSGJ3S0Izb1FqNUhSVTFmbEVOYXdrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNzk4NTY3CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF94NjQtc2V0dXAuZXhlCnZaZEZpdzVhSFFWSXJjbFdlWlNYbm11OWcrK0FVNC9FR1NrN0RQcTE2c3ViNDBlQ3VGcWNyLzNCV0kxamhodks1UW5tQWw0WEtwTEQ0azZFVXFoMUNnPT0K"
     },
     "linux-x86_64": {
       "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelRtemFab0tnOUk4VFN3aU9xWjJ2SXI5ZmlsM0xZVmx4VzZDamNiUml3bThYSjI1YW1uN3pSK0ppaGlINWJaVDdKRFdOTnJBUklPdmhhQUlIeEw0bUE0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNjE1OTU1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF9hbWQ2NC5BcHBJbWFnZQpBMDNtd3RMRC9ramF0Y284NTRtK01FdURwTElqSStwRzZuT3VDU3A1L2pYelF3bmp2RzlhL2tVNktWRk1ZT2xuNG5rWlNTNWVGdVVXMmdhUWFIcXpEUT09Cg=="
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelNEZ3NMeUd6RWxINDhTTG52bWJnUENrdnpGSXBtZk1oUWFLU1dmWFBqZ3MwTlNuZzcyOFJ6V0wrcjIwaDhlUFVMUFFoRm03WEw5WmpTZ1pjZHFzSGd3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNzk4Njk4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF9hbWQ2NC5BcHBJbWFnZQpwZWkxOW0wTkRqVDRMbW8xak9tYlVBa2NEWDc1NnJtcUgyOU80MlEycG1PekJBbUtYc0xERmZVTHkwa1lTb2NObllvZHFxa2x3MHZzYytUeDA0eDlBUT09Cg=="
     }
   }
 }
