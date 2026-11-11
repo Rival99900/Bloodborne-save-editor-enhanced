@@ -1,31 +1,31 @@
 {
-  "version": "0.6.0",
-  "notes": "Experimental Bloodborne save patches (CUSA00207 / CUSA00900) · Preview and Undo/Redo · Refined interface. Keep an original copy; game versions are not certified.",
+  "version": "0.6.5",
+  "notes": "Weapon and armor addition fixed · Multiplayer after defeated bosses. See the GitHub release for improvements and safe-save guidance.",
   "localized_notes": {
-    "en": "Experimental Bloodborne save patches (CUSA00207 / CUSA00900) · Preview and Undo/Redo · Refined interface. Keep an original copy; game versions are not certified.",
-    "fr": "Patchs de sauvegarde Bloodborne expérimentaux (CUSA00207 / CUSA00900) · Aperçu et Annuler/Rétablir · Interface améliorée. Conservez une copie originale ; les versions du jeu ne sont pas certifiées.",
-    "it": "Patch sperimentali per i salvataggi di Bloodborne (CUSA00207 / CUSA00900) · Anteprima e Annulla/Ripristina · Interfaccia migliorata. Conserva una copia originale; le versioni del gioco non sono certificate.",
-    "de": "Experimentelle Bloodborne-Spielstand-Patches (CUSA00207 / CUSA00900) · Vorschau und Rückgängig/Wiederholen · Verbesserte Oberfläche. Bewahre eine Originalkopie auf; Spielversionen sind nicht bestätigt.",
-    "es": "Parches experimentales para partidas de Bloodborne (CUSA00207 / CUSA00900) · Vista previa y Deshacer/Rehacer · Interfaz mejorada. Conserva una copia original; las versiones del juego no están certificadas.",
-    "nl": "Experimentele Bloodborne-opslagpatches (CUSA00207 / CUSA00900) · Voorbeeld en Ongedaan maken/Opnieuw · Verbeterde interface. Bewaar een origineel exemplaar; spelversies zijn niet bevestigd.",
-    "pl": "Eksperymentalne poprawki zapisów Bloodborne (CUSA00207 / CUSA00900) · Podgląd i Cofnij/Ponów · Ulepszony interfejs. Zachowaj oryginalną kopię; zgodność z wersjami gry nie jest potwierdzona.",
-    "ru": "Экспериментальные патчи сохранений Bloodborne (CUSA00207 / CUSA00900) · Предпросмотр и отмена/повтор · Улучшенный интерфейс. Сохраните исходную копию; совместимость с версиями игры не подтверждена.",
-    "da": "Eksperimentelle Bloodborne-gemningspatches (CUSA00207 / CUSA00900) · Forhåndsvisning og Fortryd/Gentag · Forbedret brugerflade. Behold en original kopi; spilversioner er ikke bekræftet.",
-    "nb": "Eksperimentelle Bloodborne-lagringspatcher (CUSA00207 / CUSA00900) · Forhåndsvisning og Angre/Gjør om · Forbedret grensesnitt. Behold en original kopi; spillversjoner er ikke bekreftet.",
-    "fi": "Kokeelliset Bloodborne-tallennuspaikkaukset (CUSA00207 / CUSA00900) · Esikatselu ja Kumoa/Tee uudelleen · Parannettu käyttöliittymä. Säilytä alkuperäinen kopio; peliversioiden yhteensopivuutta ei ole vahvistettu.",
-    "sv": "Experimentella Bloodborne-sparfilspatchar (CUSA00207 / CUSA00900) · Förhandsvisning och Ångra/Gör om · Förbättrat gränssnitt. Behåll en originalkopia; spelversioner är inte bekräftade.",
-    "tr": "Deneysel Bloodborne kayıt yamaları (CUSA00207 / CUSA00900) · Önizleme ve Geri Al/Yinele · İyileştirilmiş arayüz. Orijinal bir kopyayı saklayın; oyun sürümleri doğrulanmamıştır.",
-    "pt-PT": "Patches experimentais para gravações de Bloodborne (CUSA00207 / CUSA00900) · Pré-visualização e Anular/Refazer · Interface melhorada. Guarda uma cópia original; as versões do jogo não estão certificadas."
+    "en": "Weapon and armor addition fixed · Multiplayer after defeated bosses. See the GitHub release for improvements and safe-save guidance.",
+    "fr": "Ajout d’armes et d’armures corrigé · Multijoueur après les boss vaincus. Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
+    "it": "Aggiunta di armi e armature corretta · Multigiocatore dopo i boss sconfitti. Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
+    "de": "Hinzufügen von Waffen und Rüstungen behoben · Multiplayer nach besiegten Bossen. Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
+    "es": "Añadir armas y armaduras corregido · Multijugador tras los jefes derrotados. Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
+    "nl": "Wapens en uitrusting toevoegen hersteld · Multiplayer na verslagen bazen. Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
+    "pl": "Naprawiono dodawanie broni i pancerzy · Tryb wieloosobowy po pokonanych bossach. Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
+    "ru": "Исправлено добавление оружия и брони · Мультиплеер после побеждённых боссов. Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
+    "da": "Tilføjelse af våben og rustning rettet · Multiplayer efter besejrede bosser. Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
+    "nb": "Legge til våpen og rustning er fikset · Flerspiller etter beseirede sjefer. Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
+    "fi": "Aseiden ja panssareiden lisäys korjattu · Moninpeli voitettujen pomojen jälkeen. Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
+    "sv": "Tillägg av vapen och rustning åtgärdat · Flerspelarläge efter besegrade bossar. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
+    "tr": "Silah ve zırh ekleme düzeltildi · Yenilen bosslardan sonra çok oyunculu. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
+    "pt-PT": "Adição de armas e armaduras corrigida · Multijogador após chefes derrotados. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
   },
-  "pub_date": "2026-09-30T20:05:16Z",
+  "pub_date": "2026-11-11T20:17:11Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemVlcnRxYWZkc203ajg0OHlvMGV1ZDhxRWx4ZHJrYVdCbWNkemxaU2kyZ1Mzc3hVa1lDVVYvSjd3SS9Xc21IcE9xSGJ3S0Izb1FqNUhSVTFmbEVOYXdrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNzk4NTY3CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF94NjQtc2V0dXAuZXhlCnZaZEZpdzVhSFFWSXJjbFdlWlNYbm11OWcrK0FVNC9FR1NrN0RQcTE2c3ViNDBlQ3VGcWNyLzNCV0kxamhodks1UW5tQWw0WEtwTEQ0azZFVXFoMUNnPT0K"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelozaFlPY080cmtiMy81TXZMQklTSFdRaVg3Rk9Dd2laRkxnaFdJS21IdlljR3cvTDFoOGtaWXVRYWIzUndrVTVqNmgzU29ETFJKZUVFc2x1LzcvcUE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NDI4MTc1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuNV94NjQtc2V0dXAuZXhlClUvN0p1Q3B6VzMyYkkwNEQ0Q21TNk9GMERyQitRZkVGYXRLV3ZoYVg3LzA2cmtSYTZ6QVBtTVdNYkg2ZjRnMkNqbm1JRVN1NVI1Y0lqTU05cmpjVkJRPT0K"
     },
     "linux-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelNEZ3NMeUd6RWxINDhTTG52bWJnUENrdnpGSXBtZk1oUWFLU1dmWFBqZ3MwTlNuZzcyOFJ6V0wrcjIwaDhlUFVMUFFoRm03WEw5WmpTZ1pjZHFzSGd3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwNzk4Njk4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuMF9hbWQ2NC5BcHBJbWFnZQpwZWkxOW0wTkRqVDRMbW8xak9tYlVBa2NEWDc1NnJtcUgyOU80MlEycG1PekJBbUtYc0xERmZVTHkwa1lTb2NObllvZHFxa2x3MHZzYytUeDA0eDlBUT09Cg=="
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_amd64.AppImage",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemVIT1YzYW1nWXR5VGlBOUNxWGhhRzY2M1JsMXhNajU3R3N0TG0xSUErU2p4bE10aVU0RUJ3MCswUHZqZGxYMDQ2K2ttc0h6SDRCd1loOURVcCtmRUFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NDI4MTM5CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuNV9hbWQ2NC5BcHBJbWFnZQpzV0N4YmxXcGhTYk9jUGFMc2szTFArMzByT3pKdFlnUWx1aStuQWE4NjV6VkNiVzFCa2E1SUZhWlNhbHVUK2NiUTNWcENVREc4eDRraWxxMXZnbkFDdz09Cg=="
     }
   }
 }
