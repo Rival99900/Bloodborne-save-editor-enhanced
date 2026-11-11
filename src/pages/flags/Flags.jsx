@@ -1,6 +1,8 @@
 import Flag from "./Flag";
 import { useContext } from "react";
 import { ImagesContext } from "../../context/imagesContext";
+import { SaveContext } from "../../context/context";
+import { getMultiplayerMasks } from "../bosses/bossProgression";
 import "./flags.css";
 import { useLocalization } from "../../i18n/localization";
 
@@ -25,6 +27,9 @@ const KNOWN_FLAGS = [
 function Flags() {
   const { images } = useContext(ImagesContext);
   const { t } = useLocalization();
+  const { save } = useContext(SaveContext);
+  const multiplayerMasks = getMultiplayerMasks(save?.bosses);
+  const flags = [...KNOWN_FLAGS, { id: "multiplayerDefeatedBosses", masks: multiplayerMasks }];
 
   return (
     <main className="flags-workspace" style={{ backgroundImage: `url(${images.backgrounds["statsBg.png"].src})`, backgroundSize: "cover", backgroundPosition: "center" }}>
@@ -35,7 +40,7 @@ function Flags() {
       </header>
 
       <section className="flags-workspace__list" aria-label={t("flags.listLabel")}>
-        {KNOWN_FLAGS.map(({ id, ...flag }) => (
+        {flags.map(({ id, ...flag }) => (
           <Flag
             key={id}
             {...flag}

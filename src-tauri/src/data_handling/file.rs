@@ -156,6 +156,23 @@ impl FileData {
         Ok(())
     }
 
+    /// Sets the bits of `mask` without touching the other bits of the byte.
+    /// Several areas share the same multiplayer byte, so an overwrite is unsafe.
+    pub fn apply_mask_or(&mut self, offset_from_aob: usize, mask: u8) -> Result<(), Error> {
+        let value_offset = self
+            .offsets
+            .username
+            .checked_add(USERNAME_TO_AOB)
+            .and_then(|offset| offset.checked_add(offset_from_aob))
+            .ok_or(Error::CustomError("Boss flag offset overflow."))?;
+        let value = self
+            .bytes
+            .get_mut(value_offset)
+            .ok_or(Error::CustomError("Boss flag is outside the save file."))?;
+        *value |= mask;
+        Ok(())
+    }
+
     pub fn edit(&mut self, rel_offset: isize, length: usize, times: usize, value: u32) {
         let value_bytes = value.to_le_bytes();
         let from_offset = (self.offsets.username as isize + rel_offset) as usize;

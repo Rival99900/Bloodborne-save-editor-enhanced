@@ -7,6 +7,13 @@
         "dead_value": 8,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1678,
+        "dead_value": 32,
+        "alive_value": 223,
+        "current_value": 0
       }
     ]
   },
@@ -17,6 +24,13 @@
         "rel_offset": 21727,
         "dead_value": 128,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1678,
+        "dead_value": 32,
+        "alive_value": 223,
         "current_value": 0
       }
     ]
@@ -29,6 +43,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1677,
+        "dead_value": 192,
+        "alive_value": 63,
+        "current_value": 0
       }
     ]
   },
@@ -39,6 +60,13 @@
         "rel_offset": 21839,
         "dead_value": 8,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1679,
+        "dead_value": 8,
+        "alive_value": 247,
         "current_value": 0
       }
     ]
@@ -51,6 +79,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1679,
+        "dead_value": 4,
+        "alive_value": 251,
+        "current_value": 0
       }
     ]
   },
@@ -61,6 +96,13 @@
         "rel_offset": 21477,
         "dead_value": 128,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1664,
+        "dead_value": 8,
+        "alive_value": 247,
         "current_value": 0
       }
     ]
@@ -73,6 +115,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1714,
+        "dead_value": 12,
+        "alive_value": 243,
+        "current_value": 0
       }
     ]
   },
@@ -83,6 +132,13 @@
         "rel_offset": 22602,
         "dead_value": 128,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 2277,
+        "dead_value": 128,
+        "alive_value": 127,
         "current_value": 0
       }
     ]
@@ -95,6 +151,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1652,
+        "dead_value": 128,
+        "alive_value": 127,
+        "current_value": 0
       }
     ]
   },
@@ -105,6 +168,13 @@
         "rel_offset": 22352,
         "dead_value": 128,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1727,
+        "dead_value": 128,
+        "alive_value": 127,
         "current_value": 0
       }
     ]
@@ -117,6 +187,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1689,
+        "dead_value": 8,
+        "alive_value": 247,
+        "current_value": 0
       }
     ]
   },
@@ -127,6 +204,13 @@
         "rel_offset": 21464,
         "dead_value": 8,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1664,
+        "dead_value": 4,
+        "alive_value": 251,
         "current_value": 0
       }
     ]
@@ -139,6 +223,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 2289,
+        "dead_value": 8,
+        "alive_value": 247,
+        "current_value": 0
       }
     ]
   },
@@ -150,6 +241,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1702,
+        "dead_value": 64,
+        "alive_value": 191,
+        "current_value": 0
       }
     ]
   },
@@ -160,6 +258,13 @@
         "rel_offset": 22108,
         "dead_value": 63,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 1702,
+        "dead_value": 128,
+        "alive_value": 127,
         "current_value": 0
       }
     ]
@@ -209,6 +314,13 @@
         "dead_value": 1,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 2302,
+        "dead_value": 64,
+        "alive_value": 191,
+        "current_value": 0
       }
     ]
   },
@@ -219,6 +331,13 @@
         "rel_offset": 22983,
         "dead_value": 32,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 2315,
+        "dead_value": 1,
+        "alive_value": 254,
         "current_value": 0
       }
     ]
@@ -231,6 +350,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 2316,
+        "dead_value": 128,
+        "alive_value": 127,
+        "current_value": 0
       }
     ]
   },
@@ -242,6 +368,13 @@
         "dead_value": 128,
         "alive_value": 0,
         "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 2327,
+        "dead_value": 128,
+        "alive_value": 127,
+        "current_value": 0
       }
     ]
   },
@@ -252,6 +385,13 @@
         "rel_offset": 22858,
         "dead_value": 32,
         "alive_value": 0,
+        "current_value": 0
+      },
+      {
+        "_comment": "mp",
+        "rel_offset": 2302,
+        "dead_value": 128,
+        "alive_value": 127,
         "current_value": 0
       }
     ]

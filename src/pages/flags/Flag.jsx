@@ -5,7 +5,7 @@ import { SaveContext } from "../../context/context";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import StatusDialog from "../../components/StatusDialog";
 
-function Flag({ label, offset, values, info, impact, warning = "", category = "Known flag", isMask = false }) {
+function Flag({ label, offset, values = [], masks = null, info, impact, warning = "", category = "Known flag", isMask = false }) {
   const { t } = useLocalization();
   const { setSave } = useContext(SaveContext);
   const [isApplying, setIsApplying] = useState(false);
@@ -18,6 +18,14 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
     try {
       const editedSave = await setSave(t("revision.flagUpdated"), async () => {
         if (isMask) return invoke("apply_mask", { offset, mask: values[0] });
+        if (masks) {
+          // Clear only the listed bits; neighbouring bits belong to other areas.
+          let updatedSave = null;
+          for (const entry of masks) {
+            updatedSave = await invoke("apply_mask", { offset: entry.offset, mask: entry.mask });
+          }
+          return updatedSave;
+        }
 
         let updatedSave = null;
         for (let index = 0; index < values.length; index += 1) {
@@ -71,7 +79,9 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
           <div className="flag-card__details">
             <p><strong>{t("flags.card.whatChanges")}</strong> {impact}</p>
             {warning ? <p><strong>{t("flags.card.careful")}</strong> {warning}</p> : null}
-            <p className="flag-card__technical">{t("flags.card.bytePattern")} {values.join(" · ")}</p>
+            <p className="flag-card__technical">{t("flags.card.bytePattern")} {masks
+              ? masks.map((entry) => `${entry.offset} & ${entry.mask}`).join(" · ")
+              : values.join(" · ")}</p>
           </div>
         ) : null}
       </div>
@@ -80,7 +90,7 @@ function Flag({ label, offset, values, info, impact, warning = "", category = "K
         <button className="flag-card__details-button" onClick={() => setExpanded((value) => !value)}>
           {expanded ? t("flags.card.hideDetails") : t("flags.card.showDetails")}
         </button>
-        <button className="buttonBg flag-card__apply" onClick={() => setConfirmOpen(true)} disabled={isApplying}>
+        <button className="buttonBg flag-card__apply" onClick={() => setConfirmOpen(true)} disabled={isApplying || (masks !== null && masks.length === 0)}>
           {isApplying ? t("flags.card.applying") : t("flags.card.apply")}
         </button>
         </div>

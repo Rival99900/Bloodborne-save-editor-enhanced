@@ -1,0 +1,100 @@
+{
+  "en": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Re-enable multiplayer after defeated bosses",
+    "flags.entries.multiplayerDefeatedBosses.category": "Multiplayer behaviour",
+    "flags.entries.multiplayerDefeatedBosses.info": "Clears the multiplayer lock the game applies to an area once its boss is defeated, so co-op and invasions can work there again.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Only the multiplayer bit of each area listed in the boss timeline is cleared. Boss progress, items and rewards are unchanged.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Upstream testing reports that Cathedral Ward, Yahar'gul and the DLC areas may stay locked. Setting a boss back to Dead locks its area again once every boss there is defeated."
+  },
+  "fr": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Réactiver le multijoueur après les boss vaincus",
+    "flags.entries.multiplayerDefeatedBosses.category": "Comportement multijoueur",
+    "flags.entries.multiplayerDefeatedBosses.info": "Retire le verrou multijoueur que le jeu applique à une zone dès que son boss est vaincu, pour y réactiver la coopération et les invasions.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Seul le bit multijoueur de chaque zone de la chronologie des boss est effacé. La progression des boss, les objets et les récompenses ne changent pas.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "D’après les tests du projet d’origine, la Cathédrale, Yahar’gul et les zones du DLC peuvent rester verrouillés. Repasser un boss sur Vaincu reverrouille sa zone dès que tous ses boss sont vaincus."
+  },
+  "it": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Riattiva il multigiocatore dopo i boss sconfitti",
+    "flags.entries.multiplayerDefeatedBosses.category": "Comportamento multigiocatore",
+    "flags.entries.multiplayerDefeatedBosses.info": "Rimuove il blocco multigiocatore che il gioco applica a un’area quando il suo boss viene sconfitto, così cooperazione e invasioni tornano disponibili.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Viene azzerato solo il bit multigiocatore di ogni area elencata nella cronologia dei boss. Progressi dei boss, oggetti e ricompense restano invariati.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Secondo i test del progetto originale, Cattedrale, Yahar’gul e le aree del DLC potrebbero restare bloccate. Reimpostare un boss su Morto blocca di nuovo la sua area quando tutti i suoi boss sono sconfitti."
+  },
+  "de": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Multiplayer nach besiegten Bossen wieder aktivieren",
+    "flags.entries.multiplayerDefeatedBosses.category": "Multiplayer-Verhalten",
+    "flags.entries.multiplayerDefeatedBosses.info": "Entfernt die Multiplayer-Sperre, die das Spiel nach dem Sieg über den Boss eines Gebiets setzt, damit Koop und Invasionen dort wieder funktionieren.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Nur das Multiplayer-Bit jedes Gebiets aus der Boss-Zeitleiste wird gelöscht. Boss-Fortschritt, Gegenstände und Belohnungen bleiben unverändert.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Laut den Tests des Ursprungsprojekts können Kathedralbezirk, Yahar’gul und die DLC-Gebiete gesperrt bleiben. Wird ein Boss wieder auf Tot gesetzt, wird sein Gebiet erneut gesperrt, sobald alle Bosse dort besiegt sind."
+  },
+  "es": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Reactivar el multijugador tras los jefes derrotados",
+    "flags.entries.multiplayerDefeatedBosses.category": "Comportamiento multijugador",
+    "flags.entries.multiplayerDefeatedBosses.info": "Elimina el bloqueo multijugador que el juego aplica a una zona cuando su jefe es derrotado, para que la cooperación y las invasiones vuelvan a funcionar allí.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Solo se borra el bit multijugador de cada zona incluida en la cronología de jefes. El progreso de los jefes, los objetos y las recompensas no cambian.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Según las pruebas del proyecto original, la Catedral, Yahar’gul y las zonas del DLC pueden seguir bloqueadas. Volver a marcar un jefe como Muerto bloquea de nuevo su zona cuando todos sus jefes están derrotados."
+  },
+  "nl": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Multiplayer heractiveren na verslagen bazen",
+    "flags.entries.multiplayerDefeatedBosses.category": "Multiplayer-gedrag",
+    "flags.entries.multiplayerDefeatedBosses.info": "Verwijdert de multiplayerblokkade die het spel op een gebied zet zodra de baas daar verslagen is, zodat co-op en invasies er weer werken.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Alleen de multiplayerbit van elk gebied uit de bazentijdlijn wordt gewist. Voortgang van bazen, voorwerpen en beloningen blijven ongewijzigd.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Volgens tests van het oorspronkelijke project kunnen Cathedral Ward, Yahar’gul en de DLC-gebieden geblokkeerd blijven. Een baas opnieuw op Dood zetten blokkeert het gebied weer zodra alle bazen daar verslagen zijn."
+  },
+  "pl": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Przywróć tryb wieloosobowy po pokonanych bossach",
+    "flags.entries.multiplayerDefeatedBosses.category": "Zachowanie wieloosobowe",
+    "flags.entries.multiplayerDefeatedBosses.info": "Usuwa blokadę trybu wieloosobowego, którą gra nakłada na obszar po pokonaniu jego bossa, aby kooperacja i inwazje znów tam działały.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Czyszczony jest tylko bit trybu wieloosobowego każdego obszaru z osi czasu bossów. Postęp bossów, przedmioty i nagrody pozostają bez zmian.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Według testów projektu źródłowego Katedra, Yahar’gul i obszary DLC mogą pozostać zablokowane. Ponowne ustawienie bossa jako Pokonany blokuje obszar, gdy wszyscy jego bossowie są pokonani."
+  },
+  "ru": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Вернуть мультиплеер после побеждённых боссов",
+    "flags.entries.multiplayerDefeatedBosses.category": "Поведение мультиплеера",
+    "flags.entries.multiplayerDefeatedBosses.info": "Снимает блокировку мультиплеера, которую игра ставит на область после победы над её боссом, чтобы там снова работали кооператив и вторжения.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Сбрасывается только бит мультиплеера каждой области из хронологии боссов. Прогресс боссов, предметы и награды не меняются.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "По тестам исходного проекта Соборный округ, Яхар’гул и области DLC могут остаться заблокированными. Если снова отметить босса как мёртвого, область блокируется, когда побеждены все её боссы."
+  },
+  "da": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Genaktivér multiplayer efter besejrede bosser",
+    "flags.entries.multiplayerDefeatedBosses.category": "Multiplayer-adfærd",
+    "flags.entries.multiplayerDefeatedBosses.info": "Fjerner den multiplayer-lås, spillet sætter på et område, når dets boss er besejret, så co-op og invasioner virker der igen.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Kun multiplayer-bitten for hvert område på bossernes tidslinje ryddes. Bossfremskridt, genstande og belønninger ændres ikke.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Ifølge det oprindelige projekts test kan Cathedral Ward, Yahar’gul og DLC-områderne forblive låst. Sættes en boss tilbage til Død, låses området igen, når alle bosser der er besejret."
+  },
+  "nb": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Aktiver flerspiller igjen etter beseirede sjefer",
+    "flags.entries.multiplayerDefeatedBosses.category": "Flerspillersoppførsel",
+    "flags.entries.multiplayerDefeatedBosses.info": "Fjerner flerspillerlåsen spillet setter på et område når sjefen der er beseiret, slik at samarbeid og invasjoner fungerer der igjen.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Bare flerspillerbiten for hvert område i sjefstidslinjen tømmes. Sjefsfremdrift, gjenstander og belønninger endres ikke.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Ifølge testene i originalprosjektet kan Cathedral Ward, Yahar’gul og DLC-områdene forbli låst. Settes en sjef tilbake til Død, låses området igjen når alle sjefene der er beseiret."
+  },
+  "fi": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Ota moninpeli uudelleen käyttöön voitettujen pomojen jälkeen",
+    "flags.entries.multiplayerDefeatedBosses.category": "Moninpelikäyttäytyminen",
+    "flags.entries.multiplayerDefeatedBosses.info": "Poistaa moninpelilukon, jonka peli asettaa alueelle sen pomon kukistuttua, jotta yhteistyö ja hyökkäykset toimivat siellä taas.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Vain kunkin pomoaikajanan alueen moninpelibitti tyhjennetään. Pomojen eteneminen, esineet ja palkinnot eivät muutu.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Alkuperäisen projektin testien mukaan Cathedral Ward, Yahar’gul ja DLC-alueet voivat jäädä lukituiksi. Kun pomo merkitään taas kuolleeksi, alue lukitaan uudelleen, kun kaikki sen pomot on voitettu."
+  },
+  "sv": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Återaktivera flerspelarläge efter besegrade bossar",
+    "flags.entries.multiplayerDefeatedBosses.category": "Flerspelarbeteende",
+    "flags.entries.multiplayerDefeatedBosses.info": "Tar bort flerspelarlåset som spelet sätter på ett område när dess boss är besegrad, så att samarbete och invasioner fungerar där igen.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Endast flerspelarbiten för varje område i bosstidslinjen rensas. Bossframsteg, föremål och belöningar ändras inte.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Enligt originalprojektets tester kan Cathedral Ward, Yahar’gul och DLC-områdena förbli låsta. Sätts en boss tillbaka till Död låses området igen när alla bossar där är besegrade."
+  },
+  "tr": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Yenilen bosslardan sonra çok oyunculuyu yeniden etkinleştir",
+    "flags.entries.multiplayerDefeatedBosses.category": "Çok oyunculu davranış",
+    "flags.entries.multiplayerDefeatedBosses.info": "Oyunun bir bölgenin bossu yenildiğinde uyguladığı çok oyunculu kilidini kaldırır; böylece orada ortak oyun ve istilalar yeniden çalışır.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Yalnızca boss zaman çizelgesindeki her bölgenin çok oyunculu biti temizlenir. Boss ilerlemesi, eşyalar ve ödüller değişmez.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Asıl projenin testlerine göre Cathedral Ward, Yahar’gul ve DLC bölgeleri kilitli kalabilir. Bir boss yeniden Ölü yapılırsa, oradaki tüm bosslar yenildiğinde bölge yeniden kilitlenir."
+  },
+  "pt-PT": {
+    "flags.entries.multiplayerDefeatedBosses.label": "Reativar o multijogador após chefes derrotados",
+    "flags.entries.multiplayerDefeatedBosses.category": "Comportamento multijogador",
+    "flags.entries.multiplayerDefeatedBosses.info": "Remove o bloqueio multijogador que o jogo aplica a uma zona quando o respetivo chefe é derrotado, para que a cooperação e as invasões voltem a funcionar aí.",
+    "flags.entries.multiplayerDefeatedBosses.impact": "Só é limpo o bit multijogador de cada zona da cronologia de chefes. O progresso dos chefes, os objetos e as recompensas não mudam.",
+    "flags.entries.multiplayerDefeatedBosses.warning": "Segundo os testes do projeto original, a Catedral, Yahar’gul e as zonas do DLC podem continuar bloqueadas. Voltar a marcar um chefe como Morto bloqueia de novo a zona quando todos os chefes dela estão derrotados."
+  }
+}

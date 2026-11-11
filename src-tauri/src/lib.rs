@@ -282,6 +282,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             teleport,
             change_weapon_level,
             apply_mask,
+            apply_mask_or,
             start_revision,
             discard_revision,
             undo_revision,
@@ -376,6 +377,28 @@ fn apply_mask(
 
     save.file
         .apply_mask(offset, mask)
+        .map_err(|error| error.to_string())?;
+    save.bosses = bosses::new(&save.file).map_err(|error| error.to_string())?;
+    serde_json::to_value(&save).map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+fn apply_mask_or(
+    offset: usize,
+    mask: u8,
+    state_save: tauri::State<MutexSave>,
+) -> Result<Value, String> {
+    let mut save_option = state_save
+        .inner()
+        .data
+        .lock()
+        .map_err(|_| "Save state is unavailable.".to_string())?;
+    let save = save_option
+        .as_mut()
+        .ok_or_else(|| "Open a decrypted save before applying a flag.".to_string())?;
+
+    save.file
+        .apply_mask_or(offset, mask)
         .map_err(|error| error.to_string())?;
     save.bosses = bosses::new(&save.file).map_err(|error| error.to_string())?;
     serde_json::to_value(&save).map_err(|error| error.to_string())

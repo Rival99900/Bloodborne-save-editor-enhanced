@@ -4,7 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { ImagesContext } from "../../context/imagesContext";
 import Boss from "./Boss";
 import { useLocalization } from "../../i18n/localization";
-import { BOSS_NAME_KEYS, BOSS_PROGRESSION, isBossDefeated } from "./bossProgression";
+import { BOSS_NAME_KEYS, BOSS_PROGRESSION, isBossDefeated, isMultiplayerFlag } from "./bossProgression";
 
 function Bosses() {
   const { save, setSave } = useContext(SaveContext);
@@ -16,14 +16,36 @@ function Bosses() {
   const bossesByName = new Map(bosses.map((boss) => [boss.name, boss]));
   const defeatedCount = bosses.filter(isBossDefeated).length;
 
-  async function handleChange(flags) {
+  function sharesMultiplayerFlag(boss, mpFlag) {
+    return boss.flags.some((flag) => isMultiplayerFlag(flag)
+      && flag.rel_offset === mpFlag.rel_offset
+      && flag.dead_value === mpFlag.dead_value);
+  }
+
+  async function handleChange(flags, alive, bossName) {
     try {
       await setSave(t("revision.bossUpdated"), async () => {
         let updatedSave = null;
         for (const flag of flags) {
+          if (isMultiplayerFlag(flag)) continue;
           updatedSave = await invoke("set_flag", {
             offset: flag.rel_offset,
             newValue: flag.current_value,
+          });
+        }
+        // Masks, not overwrites: other areas share these bytes. A revived boss
+        // re-enables multiplayer; the bit is set again only once every boss of
+        // the area is defeated.
+        for (const flag of flags.filter(isMultiplayerFlag)) {
+          if (!alive) {
+            const areaDefeated = bosses
+              .filter((boss) => boss.name !== bossName && sharesMultiplayerFlag(boss, flag))
+              .every(isBossDefeated);
+            if (!areaDefeated) continue;
+          }
+          updatedSave = await invoke(alive ? "apply_mask" : "apply_mask_or", {
+            offset: flag.rel_offset,
+            mask: alive ? flag.alive_value : flag.dead_value,
           });
         }
         return updatedSave;

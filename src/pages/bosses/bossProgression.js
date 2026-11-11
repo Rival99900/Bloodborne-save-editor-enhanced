@@ -84,7 +84,27 @@ export const BOSS_NAME_KEYS = {
   Laurence: "laurence",
 };
 
+// "mp" flags are area multiplayer masks shared by several bosses, not defeat markers.
+export function isMultiplayerFlag(flag) {
+  return flag?._comment === "mp";
+}
+
+export function getDefeatFlags(boss) {
+  return (boss?.flags ?? []).filter((flag) => !isMultiplayerFlag(flag));
+}
+
 export function isBossDefeated(boss) {
-  const defeatedFlag = boss?.flags?.[0];
+  const [defeatedFlag] = getDefeatFlags(boss);
   return Boolean(defeatedFlag && (defeatedFlag.dead_value & defeatedFlag.current_value & 0xff) !== 0);
+}
+
+// Unique multiplayer masks: the bit is cleared to allow multiplayer again.
+export function getMultiplayerMasks(bosses) {
+  const masks = new Map();
+  for (const boss of bosses ?? []) {
+    for (const flag of boss.flags ?? []) {
+      if (isMultiplayerFlag(flag)) masks.set(`${flag.rel_offset}:${flag.alive_value}`, { offset: flag.rel_offset, mask: flag.alive_value });
+    }
+  }
+  return [...masks.values()];
 }

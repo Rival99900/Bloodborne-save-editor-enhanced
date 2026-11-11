@@ -1,3 +1,4 @@
+import v065Translations from "./v065Translations.json";
 import v060Translations from "./v060Translations.json";
 import v050Translations from "./v050Translations.json";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -318,6 +319,7 @@ const en = {
     gemEffects: "Blood Gem Effects",
     type: "Type",
     runeEffects: "Caryll Rune Effects",
+    cursedPrefix: "Cursed",
   },
   bosses: {
     alive: "Alive",
@@ -21715,6 +21717,13 @@ Object.keys(resources).forEach((language) => {
     flags: { ...en.flags, ...flagOverrides.en, ...(resources[language]?.flags ?? {}), ...flags },
     actions: { ...en.actions, ...(resources[language]?.actions ?? {}) },
   };
+});
+
+// Applied after the flag merge above, which replaces whole `entries` objects.
+Object.entries(v065Translations).forEach(([language, translations]) => {
+  const resource = { ...(resources[language] ?? {}) };
+  Object.entries(translations).forEach(([key, value]) => applyTranslationPath(resource, key, value));
+  resources[language] = resource;
 });
 
 const LocalizationContext = createContext({

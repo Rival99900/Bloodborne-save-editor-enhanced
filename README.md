@@ -9,7 +9,15 @@
 
 > **Credits.** Thanks to [Noxde](https://github.com/Noxde) for the original project and [Valentino Amato (valentinoamato)](https://github.com/valentinoamato) for the weapon/armor insertion method and its GA-slot fix. This enhanced edition exists because of that valuable open-source work.
 
-> **Version 0.6.0:** experimental Bloodborne save patches with byte-level previews and Undo/Redo, 14 interface languages, and refined Statistics, Character, Inventory and Storage controls.
+> **Version 0.6.5:** weapon and armor addition aligned with upstream Noxde 0.11.1, multiplayer restored in areas whose boss is defeated, catalogue corrections and an English Gem name fix.
+
+## What’s new in v0.6.5
+
+- **Weapon and armor addition works on real saves.** The insertion follows Noxde 0.11.1 `add_armor_or_weapon`: stale bytes at the end of the file no longer block the operation, Gems/Runes placed after an empty GA record are accepted, and the next free inventory slot is numbered. Added equipment has five closed Gem slots (upstream fix for issue #64). It is still validated on a copy before replacing the open save.
+- **Multiplayer after defeated bosses.** A new Flags entry clears the area multiplayer lock for every area in the boss timeline. In **Bosses**, reviving a boss re-enables multiplayer in its area; the lock returns only once every boss of that area is defeated. Masks are used because several areas share the same byte.
+- **Catalogue corrections** from upstream: the two Student Uniform entries are no longer swapped, the default `[CUT] Body/Arms/Legs` items are removed from the Armor list, and weapons carry their default durability.
+- **English Gem names:** Cursed Gems no longer show the raw `vignette.cursedPrefix` key before their name.
+- English and all 13 translations cover the new strings. See the [v0.6.5 release notes](.github/release-notes/v0.6.5.md).
 
 ## What’s new in v0.6.0
 
@@ -46,20 +54,20 @@ Both features follow the dark/gold theme and include English plus all 13 transla
 
 Flag success and error messages now use the application’s dark/gold dialog, including localized text and keyboard dismissal. Changes remain in memory until Save changes is selected.
 
-Weapon and armor insertion is now available as an **experimental** operation in both Inventory and Storage. Select Add, choose Weapons or Armor, select an entry, and acknowledge the experimental confirmation. The adaptation follows valentinoamato’s corrected GA record traversal and expands a verified empty slot from 8 to 60 bytes, then rebuilds all shifted offsets. It requires a free destination slot and sufficient verified zero padding. Unsupported layouts are rejected. Failed additions leave the save unchanged. Use a copy: game compatibility is not established and previous attempts crashed on PS4.
+Weapon and armor insertion is now available as an **experimental** operation in both Inventory and Storage. Select Add, choose Weapons or Armor, select an entry, and acknowledge the experimental confirmation. The adaptation follows valentinoamato’s corrected GA record traversal and expands a verified empty slot from 8 to 60 bytes, then rebuilds all shifted offsets. It requires a free destination slot (v0.6.5 removed the zero-padding requirement). Unsupported layouts are rejected. Failed additions leave the save unchanged. Use a copy: game compatibility is not established and previous attempts crashed on PS4.
 
 ## Download
 
 Download the latest package from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). The stable distribution provides a **Windows x64 installer**, an **Ubuntu/Linux x64 AppImage**, signed updater metadata and a SHA-256 checksum manifest.
 
-### v0.6.0 packages
+### v0.6.5 packages
 
 | Field | Details |
 | --- | --- |
-| **Name** | **Bloodborne Save Editor Enhanced v0.6.0** |
-| **Version** | `v0.6.0` |
+| **Name** | **Bloodborne Save Editor Enhanced v0.6.5** |
+| **Version** | `v0.6.5` |
 | **Status** | Release-channel packages are available after the signed workflow completes. Patch catalogs remain experimental. |
-| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/Bloodborne_Save_Editor_Enhanced_0.6.0_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.0/SHA256SUMS.txt) |
+| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/SHA256SUMS.txt) |
 
 | Step | What to do |
 | --- | --- |

@@ -18,7 +18,7 @@ function Nav({
         <img className="brand-mark" src="/assets/icon.png" alt="" />
         <div>
           <p className="brand-eyebrow">Bloodborne</p>
-          <p className="brand-title">Save Editor <span className="brand-version">v0.6.0</span></p>
+          <p className="brand-title">Save Editor <span className="brand-version">v0.6.5</span></p>
         </div>
       </div>
 

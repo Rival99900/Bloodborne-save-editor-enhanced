@@ -5,6 +5,10 @@ use super::enums::Error;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Flag {
+    /// `"mp"` marks the area multiplayer bit. It is a mask shared by several
+    /// bosses, never a defeated marker.
+    #[serde(rename = "_comment", default, skip_serializing_if = "Option::is_none")]
+    comment: Option<String>,
     rel_offset: usize,
     dead_value: u8,
     alive_value: u8,

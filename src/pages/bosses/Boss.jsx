@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useLocalization } from "../../i18n/localization";
 import DarkSelect from "../../components/DarkSelect";
-import { isBossDefeated } from "./bossProgression";
+import { isBossDefeated, isMultiplayerFlag } from "./bossProgression";
 
 function Boss({ boss, localizedName, optional, dlc, onChange }) {
   const { t } = useLocalization();
@@ -16,12 +16,14 @@ function Boss({ boss, localizedName, optional, dlc, onChange }) {
   );
 
   function handleChange(value) {
-    const targetValue = value === "alive" ? "alive_value" : "dead_value";
-    const nextFlags = flags.map((flag) => ({
+    const alive = value === "alive";
+    const targetValue = alive ? "alive_value" : "dead_value";
+    // Multiplayer masks are applied by Bosses, with the other bosses of the area in view.
+    const nextFlags = flags.map((flag) => (isMultiplayerFlag(flag) ? flag : {
       ...flag,
       current_value: flag[targetValue],
     }));
-    onChange?.(nextFlags);
+    onChange?.(nextFlags, alive, boss.name);
   }
 
   return (

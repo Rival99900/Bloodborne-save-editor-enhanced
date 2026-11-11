@@ -295,7 +295,7 @@ impl SaveData {
         location: Location,
     ) -> Result<Article, Error> {
         use super::constants::*;
-        let layout = super::ga::scan(&self.file.bytes, self.file.offsets.username)
+        let layout = super::ga::scan_for_insertion(&self.file.bytes, self.file.offsets.username)
             .map_err(Error::CustomError)?;
         let ga_offset = layout.empty.ok_or(Error::CustomError("ERROR: Equipment section is full."))?;
         let handle = layout.max_handle.checked_add(1)
@@ -312,9 +312,11 @@ impl SaveData {
             return Err(Error::CustomError("ERROR: Incompatible equipment family."));
         }
         let len = self.file.bytes.len();
-        // Unlike the WIP upstream code, never truncate unknown nonzero bytes.
-        if len < 52 || self.file.bytes[len - 52..].iter().any(|byte| *byte != 0) {
-            return Err(Error::CustomError("ERROR: Save has no verified zero padding for equipment insertion."));
+        // As in Noxde 0.11.1, the 52 bytes pushed past the fixed save size are
+        // dropped. They lie after every parsed section; in real saves they are
+        // stale memory, not always zero, so requiring zeros refused most saves.
+        if len < 52 || len - 52 <= self.file.offsets.lced_offset + 4 {
+            return Err(Error::CustomError("ERROR: Save is too short for equipment insertion."));
         }
         let first = (if is_armor { 0x9080_0000 } else { 0x8080_0000 }) | u32::from(handle);
         let second = if is_armor { (id & 0x00FF_FFFF) | 0x1000_0000 } else { id };
@@ -340,6 +342,16 @@ impl SaveData {
         file.bytes[empty..empty + 4].copy_from_slice(&first.to_le_bytes());
         file.bytes[empty + 4..empty + 8].copy_from_slice(&second.to_le_bytes());
         file.bytes[empty + 8..empty + 12].copy_from_slice(&1u32.to_le_bytes());
+        // Using the slot that ends the list: number the next free slot, as the
+        // game and Noxde do, so a second addition never reuses index 0.
+        let next_index = empty + 12;
+        let next_marker = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0];
+        if file.bytes.get(next_index + 4..next_index + 16) == Some(next_marker.as_slice())
+            && file.bytes[next_index..next_index + 4] == [0, 0, 0, 0]
+            && file.bytes[empty - 4] != 0
+        {
+            file.bytes[next_index] = file.bytes[empty - 4].wrapping_add(1);
+        }
         let mut block = [0u8; 60];
         block[..4].copy_from_slice(&first.to_le_bytes());
         block[4..8].copy_from_slice(&second.to_le_bytes());
@@ -354,7 +366,7 @@ impl SaveData {
         if file.offsets.username != self.file.offsets.username + 52 {
             return Err(Error::CustomError("ERROR: Shifted save layout could not be verified."));
         }
-        super::ga::scan(&file.bytes, file.offsets.username).map_err(Error::CustomError)?;
+        super::ga::scan_for_insertion(&file.bytes, file.offsets.username).map_err(Error::CustomError)?;
         let candidate = panic::catch_unwind(AssertUnwindSafe(|| Self::parse_file(file)))
             .map_err(|_| Error::CustomError("ERROR: Added equipment could not be reparsed."))??;
         candidate.validate_game_load_safety()?;
@@ -988,7 +1000,7 @@ mod tests {
     }
 
     #[test]
-    fn experimental_insertion_rebases_views_and_rejects_nonzero_tail() {
+    fn experimental_insertion_rebases_views_and_drops_stale_tail() {
         for location in [Location::Inventory, Location::Storage] {
             let mut save = build_save_data("testsave9");
             let original = save.clone();
@@ -1004,13 +1016,50 @@ mod tests {
             let offset = expected_position["coordinates"]["offset"].as_u64().unwrap();
             expected_position["coordinates"]["offset"] = serde_json::json!(offset + 52);
             assert_eq!(serde_json::to_value(&save.position).unwrap(), expected_position);
-            let last = save.file.bytes.len() - 1;
-            save.file.bytes[last] = 0x42;
-            let before = save.clone();
-            assert!(save.add_experimental_equipment(id, true, location).is_err());
-            assert_eq!(save.file, before.file);
-            assert_eq!(serde_json::to_value(&save).unwrap(), serde_json::to_value(&before).unwrap());
+            // Stale bytes at the end of the file no longer block an insertion.
+            let len = save.file.bytes.len();
+            save.file.bytes[len - 1] = 0x42;
+            let armor = save.inventory.articles[&ArticleType::Armor][0].id;
+            save.add_experimental_equipment(armor, true, location).unwrap();
+            assert_eq!(save.file.bytes.len(), len);
         }
+    }
+
+    #[test]
+    fn experimental_equipment_works_on_every_fixture_save() {
+        let fixtures = ["testsave0", "testsave1", "testsave2", "testsave3", "testsave4", "testsave5",
+            "testsave6", "testsave7", "testsave8", "testsave9", "weaponmods0", "savetestsave"];
+        for name in fixtures {
+            for location in [Location::Inventory, Location::Storage] {
+                let mut save = build_save_data(name);
+                if save.validate_game_load_safety().is_err() {
+                    // The fixture is already refused before any addition.
+                    continue;
+                }
+                let len = save.file.bytes.len();
+                // Right-hand weapon, left-hand firearm and armor from the bundled catalogues.
+                for (id, is_armor) in [(2_000_000u32, false), (6000000, false), (20_000, true)] {
+                    let article = save
+                        .add_experimental_equipment(id, is_armor, location)
+                        .unwrap_or_else(|error| panic!("{name} {id}: {error}"));
+                    let slots = article.slots.as_ref().expect("added equipment exposes its slots");
+                    assert_eq!(slots.len(), 5, "{name}");
+                    assert!(slots.iter().all(|slot| slot.shape == SlotShape::Closed), "{name}");
+                }
+                assert_eq!(save.file.bytes.len(), len, "{name}");
+                save.validate_game_load_safety().unwrap();
+            }
+        }
+    }
+
+    #[test]
+    fn experimental_equipment_numbers_the_next_free_slot() {
+        let mut save = build_save_data("testsave0");
+        let id = save.inventory.articles[&ArticleType::RightHand][0].id;
+        let first = save.add_experimental_equipment(id, false, Location::Inventory).unwrap();
+        let second = save.add_experimental_equipment(id, false, Location::Inventory).unwrap();
+        assert_ne!(first.number, 0);
+        assert_eq!(second.number, first.number.wrapping_add(1));
     }
 
     #[test]
@@ -2494,8 +2543,9 @@ mod complete_equipment_catalogue_tests {
             weapon_count, 97,
             "catalogue weapon coverage must be complete"
         );
+        // v0.6.5 removed the three default `[CUT] Body/Arms/Legs` items.
         assert_eq!(
-            armor_count, 255,
+            armor_count, 252,
             "catalogue armor coverage must be complete"
         );
 

@@ -1633,13 +1633,13 @@
     "item_desc": "\nThe School of Mensis controls the Unseen Village.\nThis hexagonal iron cage suggests their strange ways. Thecage is a device that restrains the will of the self, allowingone to see the profane world for what it is.\nIt also serves as an antenna that facilitates contact with theGreat Ones of the dream.\nBut to an observer, the iron cage appears to be precisely\nwhat delivered them to their harrowing nightmare."
   },
   "191000": {
-    "item_img": "student_uniform.png",
-    "item_name": "Student Uniform",
+    "item_img": "student_uniform_(cape).png",
+    "item_name": "Student Uniform (Cape)",
     "physicalDefense": {
       "physical": 70,
-      "blunt": 60,
-      "thrust": 60,
-      "blood": 90
+      "blunt": 70,
+      "thrust": 70,
+      "blood": 100
     },
     "elementalDefense": {
       "arcane": 140,
@@ -1651,9 +1651,9 @@
       "rapidPoison": 31,
       "frenzy": 35
     },
-    "beasthood": 45,
+    "beasthood": 35,
     "type": "Chest",
-    "item_desc": "\nUniform of the students of Byrgenwerth, a bygone institute\nlearning. This alternative lacks the thick cape.\n\nThis Healing Church has its roots in Byrgenwerth, and\nnaturally borrows heavily from its uniform design.\n\nThe focus not on knowledge, or thought, but on pure\npretension would surely bring Master Willem to despair, ifonly he knew."
+    "item_desc": "\nUniform of the students of Byrgenwerth, a bygone institute of learning. Features a thick cape.\nThe Healing Church has its roots in Byrgenwerth, andnaturally borrows heavily from its uniform design.\nThe focus not on knowledge, or thought, but on pure \npretension would surely bring Master Willem to despair, ifonly he knew."
   },
   "192000": {
     "item_img": "",
@@ -2323,13 +2323,13 @@
     "item_desc": "\nAttire of special Church doctors.\nThese doctors are superiors to the black preventative \nhunters, and specialists in experimentally-backed blood \nministration and the scourge of the beast.\nThey believe that medicine is not a means of treatment but rather a method for research, and that some knowledge can only be obtained by exposing oneself to sickness."
   },
   "301000": {
-    "item_img": "student_uniform_(cape).png",
-    "item_name": "Student Uniform (Cape)",
+    "item_img": "student_uniform.png",
+    "item_name": "Student Uniform",
     "physicalDefense": {
       "physical": 70,
-      "blunt": 70,
-      "thrust": 70,
-      "blood": 100
+      "blunt": 60,
+      "thrust": 60,
+      "blood": 90
     },
     "elementalDefense": {
       "arcane": 140,
@@ -2341,9 +2341,9 @@
       "rapidPoison": 31,
       "frenzy": 35
     },
-    "beasthood": 35,
+    "beasthood": 45,
     "type": "Chest",
-    "item_desc": "\nUniform of the students of Byrgenwerth, a bygone institute of learning. Features a thick cape.\nThe Healing Church has its roots in Byrgenwerth, andnaturally borrows heavily from its uniform design.\nThe focus not on knowledge, or thought, but on pure \npretension would surely bring Master Willem to despair, ifonly he knew."
+    "item_desc": "\nUniform of the students of Byrgenwerth, a bygone institute\nlearning. This alternative lacks the thick cape.\n\nThis Healing Church has its roots in Byrgenwerth, and\nnaturally borrows heavily from its uniform design.\n\nThe focus not on knowledge, or thought, but on pure\npretension would surely bring Master Willem to despair, ifonly he knew."
   },
   "311000": {
     "item_img": "noble_dress.png",
@@ -5131,75 +5131,6 @@
   "900000": {
     "item_img": "",
     "item_name": "[CUT] Head",
-    "physicalDefense": {
-      "physical": 0,
-      "blunt": 0,
-      "thrust": 0,
-      "blood": 0
-    },
-    "elementalDefense": {
-      "arcane": 0,
-      "fire": 0,
-      "bolt": 0
-    },
-    "resistance": {
-      "slowPoison": 0,
-      "rapidPoison": 0,
-      "frenzy": 0
-    },
-    "beasthood": 0,
-    "type": "",
-    "item_desc": "Cut content"
-  },
-  "901000": {
-    "item_img": "",
-    "item_name": "[CUT] Body",
-    "physicalDefense": {
-      "physical": 0,
-      "blunt": 0,
-      "thrust": 0,
-      "blood": 0
-    },
-    "elementalDefense": {
-      "arcane": 0,
-      "fire": 0,
-      "bolt": 0
-    },
-    "resistance": {
-      "slowPoison": 0,
-      "rapidPoison": 0,
-      "frenzy": 0
-    },
-    "beasthood": 0,
-    "type": "",
-    "item_desc": "Cut content"
-  },
-  "902000": {
-    "item_img": "",
-    "item_name": "[CUT] Arms",
-    "physicalDefense": {
-      "physical": 0,
-      "blunt": 0,
-      "thrust": 0,
-      "blood": 0
-    },
-    "elementalDefense": {
-      "arcane": 0,
-      "fire": 0,
-      "bolt": 0
-    },
-    "resistance": {
-      "slowPoison": 0,
-      "rapidPoison": 0,
-      "frenzy": 0
-    },
-    "beasthood": 0,
-    "type": "",
-    "item_desc": "Cut content"
-  },
-  "903000": {
-    "item_img": "",
-    "item_name": "[CUT] Legs",
     "physicalDefense": {
       "physical": 0,
       "blunt": 0,
