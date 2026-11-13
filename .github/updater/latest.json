@@ -1,31 +1,31 @@
 {
-  "version": "0.6.5",
-  "notes": "Weapon and armor addition fixed · Multiplayer after defeated bosses. See the GitHub release for improvements and safe-save guidance.",
+  "version": "0.7.0",
+  "notes": "Consistency check, bulk actions, trophies, save comparison, backup history and PS4/PS5 over FTP. See the GitHub release for improvements and safe-save guidance.",
   "localized_notes": {
-    "en": "Weapon and armor addition fixed · Multiplayer after defeated bosses. See the GitHub release for improvements and safe-save guidance.",
-    "fr": "Ajout d’armes et d’armures corrigé · Multijoueur après les boss vaincus. Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
-    "it": "Aggiunta di armi e armature corretta · Multigiocatore dopo i boss sconfitti. Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
-    "de": "Hinzufügen von Waffen und Rüstungen behoben · Multiplayer nach besiegten Bossen. Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
-    "es": "Añadir armas y armaduras corregido · Multijugador tras los jefes derrotados. Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
-    "nl": "Wapens en uitrusting toevoegen hersteld · Multiplayer na verslagen bazen. Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
-    "pl": "Naprawiono dodawanie broni i pancerzy · Tryb wieloosobowy po pokonanych bossach. Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
-    "ru": "Исправлено добавление оружия и брони · Мультиплеер после побеждённых боссов. Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
-    "da": "Tilføjelse af våben og rustning rettet · Multiplayer efter besejrede bosser. Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
-    "nb": "Legge til våpen og rustning er fikset · Flerspiller etter beseirede sjefer. Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
-    "fi": "Aseiden ja panssareiden lisäys korjattu · Moninpeli voitettujen pomojen jälkeen. Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
-    "sv": "Tillägg av vapen och rustning åtgärdat · Flerspelarläge efter besegrade bossar. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
-    "tr": "Silah ve zırh ekleme düzeltildi · Yenilen bosslardan sonra çok oyunculu. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
-    "pt-PT": "Adição de armas e armaduras corrigida · Multijogador após chefes derrotados. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+    "en": "Consistency check, bulk actions, trophies, save comparison, backup history and PS4/PS5 over FTP. See the GitHub release for improvements and safe-save guidance.",
+    "fr": "Vérification de cohérence, actions groupées, trophées, comparaison de sauvegardes, historique des sauvegardes et PS4/PS5 via FTP. Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
+    "it": "Controllo di coerenza, azioni multiple, trofei, confronto dei salvataggi, cronologia dei backup e PS4/PS5 via FTP. Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
+    "de": "Konsistenzprüfung, Sammelaktionen, Trophäen, Speicherstandvergleich, Sicherungsverlauf und PS4/PS5 über FTP. Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
+    "es": "Comprobación de coherencia, acciones en lote, trofeos, comparación de guardados, historial de copias y PS4/PS5 por FTP. Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
+    "nl": "Consistentiecontrole, bulkacties, trofeeën, opslagvergelijking, back-upgeschiedenis en PS4/PS5 via FTP. Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
+    "pl": "Kontrola spójności, działania zbiorcze, trofea, porównanie zapisów, historia kopii i PS4/PS5 przez FTP. Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
+    "ru": "Проверка согласованности, массовые действия, трофеи, сравнение сохранений, история копий и PS4/PS5 по FTP. Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
+    "da": "Konsistenstjek, massehandlinger, trofæer, sammenligning af gemninger, sikkerhedskopihistorik og PS4/PS5 via FTP. Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
+    "nb": "Konsistenssjekk, massehandlinger, troféer, sammenligning av lagringer, sikkerhetskopihistorikk og PS4/PS5 via FTP. Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
+    "fi": "Johdonmukaisuustarkistus, joukkotoiminnot, pokaalit, tallenteiden vertailu, varmuuskopiohistoria ja PS4/PS5 FTP:n kautta. Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
+    "sv": "Konsekvenskontroll, massåtgärder, troféer, jämförelse av sparningar, säkerhetskopieringshistorik och PS4/PS5 via FTP. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
+    "tr": "Tutarlılık denetimi, toplu işlemler, kupalar, kayıt karşılaştırma, yedek geçmişi ve FTP ile PS4/PS5. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
+    "pt-PT": "Verificação de coerência, ações em lote, troféus, comparação de gravações, histórico de cópias e PS4/PS5 por FTP. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
   },
-  "pub_date": "2026-11-11T20:17:11Z",
+  "pub_date": "2026-11-13T20:33:36Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelozaFlPY080cmtiMy81TXZMQklTSFdRaVg3Rk9Dd2laRkxnaFdJS21IdlljR3cvTDFoOGtaWXVRYWIzUndrVTVqNmgzU29ETFJKZUVFc2x1LzcvcUE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NDI4MTc1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuNV94NjQtc2V0dXAuZXhlClUvN0p1Q3B6VzMyYkkwNEQ0Q21TNk9GMERyQitRZkVGYXRLV3ZoYVg3LzA2cmtSYTZ6QVBtTVdNYkg2ZjRnMkNqbm1JRVN1NVI1Y0lqTU05cmpjVkJRPT0K"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.0/Bloodborne_Save_Editor_Enhanced_0.7.0_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelVpS2pXdklBaWo3VHFVTExEU1h0SjdmZVVSS3RERnc3dTZCUzRIenhIZElYMWxpSkJSc1NWMkNnZWZnQjh3b3RtaG05bTk4bUliWGpEMTZRdU5KNGdnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NjAxOTUyCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuMF94NjQtc2V0dXAuZXhlCllEWHVtdjhCaU11cVc4UWRwamkrZk5DVDVJMGFYTWovbEQyVlE3MFU2Wm5GclRTMkRDY3E3VmNWZlBicGNRYWdvNDlrNDNwVzVvVno5Sk1US3ZXbUN3PT0K"
     },
     "linux-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemVIT1YzYW1nWXR5VGlBOUNxWGhhRzY2M1JsMXhNajU3R3N0TG0xSUErU2p4bE10aVU0RUJ3MCswUHZqZGxYMDQ2K2ttc0h6SDRCd1loOURVcCtmRUFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NDI4MTM5CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjYuNV9hbWQ2NC5BcHBJbWFnZQpzV0N4YmxXcGhTYk9jUGFMc2szTFArMzByT3pKdFlnUWx1aStuQWE4NjV6VkNiVzFCa2E1SUZhWlNhbHVUK2NiUTNWcENVREc4eDRraWxxMXZnbkFDdz09Cg=="
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.0/Bloodborne_Save_Editor_Enhanced_0.7.0_amd64.AppImage",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemE4bndob3VCOElZcG4rTjFUZzVmcGpJTHdUQzRGbmQ3UGwyNVh3eC9qN01DQk1uTnFPU2pOT1lpcGpTZmljeno5RDJzUDlVQmFqMGNmdDBvU0pCWUFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NjAxOTg1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuMF9hbWQ2NC5BcHBJbWFnZQp5L3JOajc0RE1SendXbHpZTUlGZ3Yxc3VQTEdvM3JzZ2I4T0N4Q0l4R3J3eWZyL1hhL29uUXlJWlV2T01VTGhPV1Q4a0MvL1dZR213eXJROVpHM0pCUT09Cg=="
     }
   }
 }
