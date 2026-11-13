@@ -80,7 +80,7 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
           onChange={(event) => setSearch(event.target.value)}
           value={search}
           type="search"
-          placeholder={t("inventory.searchItems", { type: t(`inventory.type.${type}`) })}
+          placeholder={t(`inventory.searchCatalogFor.${type === "weapon" || type === "armor" ? type : "item"}`)}
         />
       </label>
 

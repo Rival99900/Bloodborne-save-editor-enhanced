@@ -81,7 +81,12 @@ impl FileData {
 
     pub fn create_backup(&self, path: &str) -> Result<(), Error> {
         let backup_path = format!("{}.bak", path);
-        fs::copy(path, backup_path).map_err(Error::IoError)?;
+        fs::copy(path, &backup_path).map_err(Error::IoError)?;
+        // Timestamped history (F9). Best effort: a read-only folder must not
+        // prevent opening the save, the single .bak above already exists.
+        if let Ok(original) = fs::read(&backup_path) {
+            let _ = super::backups::record(std::path::Path::new(path), &original);
+        }
         Ok(())
     }
 
@@ -310,6 +315,20 @@ impl FileData {
             true => Some(i),
             false => None,
         }
+    }
+
+    /// Slot of an equipment record, matched on its slot number and its full
+    /// reference (handle + id). Two copies of the same item can share a slot
+    /// number byte (a real save has two Mensis Cages numbered 0x54), which
+    /// `find_article_offset` cannot tell apart.
+    pub fn find_equipment_offset(&self, number: u8, first_part: u32, second_part: u32, is_storage: bool) -> Option<usize> {
+        let range = if is_storage { self.offsets.storage } else { self.offsets.inventory };
+        let matches = |offset: usize| {
+            self.bytes.get(offset..offset + 12).is_some_and(|slot| {
+                slot[0] == number && slot[4..8] == first_part.to_le_bytes() && slot[8..12] == second_part.to_le_bytes()
+            })
+        };
+        (range.0..=range.1.saturating_sub(16)).step_by(16).find(|&offset| matches(offset))
     }
 
     pub fn find_upgrade_offset(&self, id: u32) -> Option<usize> {

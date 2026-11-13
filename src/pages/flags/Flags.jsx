@@ -32,7 +32,7 @@ function Flags() {
   const flags = [...KNOWN_FLAGS, { id: "multiplayerDefeatedBosses", masks: multiplayerMasks }];
 
   return (
-    <main className="flags-workspace" style={{ backgroundImage: `url(${images.backgrounds["statsBg.png"].src})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+    <div className="flags-workspace" style={{ backgroundImage: `url(${images.backgrounds["statsBg.webp"].src})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <header className="flags-workspace__header">
         <p>{t("flags.eyebrow")}</p>
         <h1>{t("flags.title")}</h1>
@@ -57,7 +57,7 @@ function Flags() {
         <strong>{t("flags.safetyTitle")}</strong>
         <span>{t("flags.safetyDescription")}</span>
       </aside>
-    </main>
+    </div>
   );
 }
 

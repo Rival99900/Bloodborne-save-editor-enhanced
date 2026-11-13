@@ -1,0 +1,3674 @@
+{
+ "da": [
+  {
+   "key": "actions.back",
+   "value": "Tilbage"
+  },
+  {
+   "key": "actions.change",
+   "value": "Skift"
+  },
+  {
+   "key": "actions.changesConfirmed",
+   "value": "Ændringer bekræftet"
+  },
+  {
+   "key": "actions.confirm",
+   "value": "Bekræft"
+  },
+  {
+   "key": "actions.edit",
+   "value": "Rediger"
+  },
+  {
+   "key": "actions.reset",
+   "value": "Nulstil"
+  },
+  {
+   "key": "bosses.alive",
+   "value": "Levende"
+  },
+  {
+   "key": "bosses.dead",
+   "value": "Død"
+  },
+  {
+   "key": "characterForm.coordinates",
+   "value": "Koordinater:"
+  },
+  {
+   "key": "characterForm.name",
+   "value": "Navn:"
+  },
+  {
+   "key": "characterForm.playtime",
+   "value": "Spilletid:"
+  },
+  {
+   "key": "characterForm.selectLocation",
+   "value": "Vælg et sted"
+  },
+  {
+   "key": "characterForm.teleport",
+   "value": "Teleport:"
+  },
+  {
+   "key": "flags.eyebrow",
+   "value": "Avancerede gemningsindstillinger"
+  },
+  {
+   "key": "flags.introduction",
+   "value": "Kun uafhængigt dokumenterede byte-mønstre vises her. Ukendte offsets er bevidst udeladt for at beskytte gemningen mod utilsigtet korruption."
+  },
+  {
+   "key": "flags.listLabel",
+   "value": "Kendte gemningsflag"
+  },
+  {
+   "key": "flags.safetyDescription",
+   "value": "Anvend én ændring ad gangen, og brug derefter Gem ændringer. Behold den automatiske backup, indtil karakteren indlæses normalt."
+  },
+  {
+   "key": "flags.safetyTitle",
+   "value": "Før du anvender et flag"
+  },
+  {
+   "key": "flags.title",
+   "value": "Kendte flag"
+  },
+  {
+   "key": "forge.buildSixEffect",
+   "value": "Byg et seks-effekters {{subject}}"
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.description",
+   "value": "Bruger den indbyggede +75 kontinuerlige HP-genopretnings-effekt med holdbarheds- og skadestøtte."
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.name",
+   "value": "Abyssal Vitality +75"
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.description",
+   "value": "Forøgelse af al skade med fysisk pres og stor helingsbonus."
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.name",
+   "value": "Forpost"
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.description",
+   "value": "Skadeforøgelse for alle typer med pres ved fuld sundhed og heling."
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.name",
+   "value": "Apex Nærende"
+  },
+  {
+   "key": "forge.builtIn.apex-physical.description",
+   "value": "Fysisk skade, pres ved fuld sundhed og holdbarhedsstøtte."
+  },
+  {
+   "key": "forge.builtIn.apex-physical.name",
+   "value": "Apex Fysisk"
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.description",
+   "value": "Arkane skader med støtte til heling og holdbarhed."
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.name",
+   "value": "Arkane Stigning"
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.description",
+   "value": "Høj Bloodtinge-skade med støtte til al skade og heling."
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.name",
+   "value": "Bloodtinge-jæger"
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.description",
+   "value": "Høj stump skade med støtte til al skade og holdbarhed."
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.name",
+   "value": "Slagknuser"
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.description",
+   "value": "Lynskade med støtte til al skade og holdbarhed."
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.name",
+   "value": "Lynbølge"
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.description",
+   "value": "Arkane-, ild- og lyn-effekter i én bevidst eksperimentel opstilling."
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.name",
+   "value": "Elementær Ascendant"
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.description",
+   "value": "Maksimale kendte helings- og holdbarhedseffekter med fuld-sundheds skadebonus."
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.name",
+   "value": "Endeløs Jagt"
+  },
+  {
+   "key": "forge.builtIn.flame-surge.description",
+   "value": "Ildskade med støtte til al skade og heling."
+  },
+  {
+   "key": "forge.builtIn.flame-surge.name",
+   "value": "Flammebølge"
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.description",
+   "value": "Det stærkeste kendte bundtede holdbarhedsbonus parret med høj heling og fysisk skade."
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.name",
+   "value": "Smedet Udholdenhed"
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.description",
+   "value": "Stakker fysisk, al-skade og nær-død-multiplikatorer kun til test."
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.name",
+   "value": "Glaskanon"
+  },
+  {
+   "key": "forge.builtIn.last-stand.description",
+   "value": "Høje nær-død- og fuld-sundheds-multiplikatorer. Hold denne opstilling offline."
+  },
+  {
+   "key": "forge.builtIn.last-stand.name",
+   "value": "Sidste Stand"
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.description",
+   "value": "Heling, holdbarhed og støtte til al skade for lange udforskningssessioner."
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.name",
+   "value": "Varig Jagt"
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.description",
+   "value": "Høj stikkende skade med støtte til al skade og holdbarhed."
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.name",
+   "value": "Stikspecialist"
+  },
+  {
+   "key": "forge.cancel",
+   "value": "Annuller"
+  },
+  {
+   "key": "forge.categories.All",
+   "value": "Alle"
+  },
+  {
+   "key": "forge.categories.Attack",
+   "value": "Angreb"
+  },
+  {
+   "key": "forge.categories.Custom",
+   "value": "Brugerdefineret"
+  },
+  {
+   "key": "forge.categories.Elemental",
+   "value": "Elementær"
+  },
+  {
+   "key": "forge.categories.Experimental",
+   "value": "Eksperimentel"
+  },
+  {
+   "key": "forge.categories.Personal",
+   "value": "Personlig"
+  },
+  {
+   "key": "forge.categories.Recovery",
+   "value": "Genopretning"
+  },
+  {
+   "key": "forge.categories.Rune",
+   "value": "Rune"
+  },
+  {
+   "key": "forge.close",
+   "value": "Luk"
+  },
+  {
+   "key": "forge.closeLabel",
+   "value": "Luk {{subject}} Forge"
+  },
+  {
+   "key": "forge.confirm",
+   "value": "Bekræft"
+  },
+  {
+   "key": "forge.confirming",
+   "value": "Bekræfter…"
+  },
+  {
+   "key": "forge.convertConfirm",
+   "value": "Konverter denne {{source}} til en {{destination}}? Behold den automatiske backup, indtil du har testet gemningen."
+  },
+  {
+   "key": "forge.convertTo",
+   "value": "Konverter til {{subject}}"
+  },
+  {
+   "key": "forge.customDescription",
+   "value": "Brugerdefineret sæt — {{count}} valgte effekter."
+  },
+  {
+   "key": "forge.customName",
+   "value": "Brugerdefineret {{subject}} Forge"
+  },
+  {
+   "key": "forge.customSet",
+   "value": "Brugerdefineret sæt"
+  },
+  {
+   "key": "forge.customSetDescription",
+   "value": "Vælg op til seks validerede effekter. Tomme felter forbliver som Ingen effekt. Editoren validerer hvert valgt ID igen, når du bekræfter."
+  },
+  {
+   "key": "forge.customSetLabel",
+   "value": "Brugerdefineret {{subject}} effektsæt"
+  },
+  {
+   "key": "forge.delete",
+   "value": "Slet"
+  },
+  {
+   "key": "forge.deleteConfirm",
+   "value": "Slet den personlige forudindstilling “{{name}}”?"
+  },
+  {
+   "key": "forge.dialogLabel",
+   "value": "Rediger {{subject}}"
+  },
+  {
+   "key": "forge.draftEmpty",
+   "value": "Vælg mindst én effekt for at indlæse et brugerdefineret udkast."
+  },
+  {
+   "key": "forge.draftPreview",
+   "value": "Udkastvisning"
+  },
+  {
+   "key": "forge.editing",
+   "value": "Redigerer:"
+  },
+  {
+   "key": "forge.effect",
+   "value": "Effekt {{index}}"
+  },
+  {
+   "key": "forge.gemForge",
+   "value": "Gem Forge"
+  },
+  {
+   "key": "forge.loadCustomDraft",
+   "value": "Indlæs brugerdefineret sæt i udkast"
+  },
+  {
+   "key": "forge.loadIntoDraft",
+   "value": "Indlæs i udkast"
+  },
+  {
+   "key": "forge.modeLabel",
+   "value": "{{subject}} Forge-tilstand"
+  },
+  {
+   "key": "forge.myPresets",
+   "value": "Mine forudindstillinger"
+  },
+  {
+   "key": "forge.noEffect",
+   "value": "Ingen effekt"
+  },
+  {
+   "key": "forge.noPersonalPreset",
+   "value": "Ingen personlig forudindstilling er gemt endnu."
+  },
+  {
+   "key": "forge.noPersonalPresetDescription",
+   "value": "Rediger en gem eller rune, og brug derefter Gem som forudindstilling for at gøre den tilgængelig i begge forger."
+  },
+  {
+   "key": "forge.notice",
+   "value": "Indlæsning af en forudindstilling opdaterer kun det synlige udkast. Vælg Bekræft i editoren for at skrive det til gemningen. Hver effekt nedenfor kommer fra editorens indbyggede validerede katalog. Personlige forudindstillinger deles af Gem Forge og Rune Forge; destinationseditoren bevarer sin egen gyldige form eller type."
+  },
+  {
+   "key": "forge.personal",
+   "value": "Personlig"
+  },
+  {
+   "key": "forge.personalPresetDescription",
+   "value": "Personlig Forge-forudindstilling delt af Gem Forge og Rune Forge."
+  },
+  {
+   "key": "forge.personalPresetName",
+   "value": "Personligt {{subject}}-forudindstillingsnavn"
+  },
+  {
+   "key": "forge.personalPresetsLabel",
+   "value": "Personlige {{subject}}-forudindstillinger"
+  },
+  {
+   "key": "forge.presetCategories",
+   "value": "Forudindstillingskategorier"
+  },
+  {
+   "key": "forge.presetName",
+   "value": "Forudindstillingsnavn"
+  },
+  {
+   "key": "forge.presets",
+   "value": "Forudindstillinger"
+  },
+  {
+   "key": "forge.runeForge",
+   "value": "Rune Forge"
+  },
+  {
+   "key": "forge.runePresetDescription",
+   "value": "Valideret Caryll-rune-forudindstilling."
+  },
+  {
+   "key": "forge.runePresetPlaceholder",
+   "value": "Vælg en rune-forudindstilling"
+  },
+  {
+   "key": "forge.saveAsPreset",
+   "value": "Gem som forudindstilling"
+  },
+  {
+   "key": "forge.savedStatus",
+   "value": "Gemt “{{name}}” i Mine forudindstillinger for Gem Forge og Rune Forge."
+  },
+  {
+   "key": "forge.sharedPresetsDescription",
+   "value": "Gem et redigeret gem eller rune én gang, og indlæs derefter den samme forudindstilling fra Gem Forge eller Rune Forge."
+  },
+  {
+   "key": "forge.sharedPresetsTitle",
+   "value": "Personlige forudindstillinger delt af både Gem Forge og Rune Forge"
+  },
+  {
+   "key": "forge.title",
+   "value": "Validerede effekter og brugerdefinerede sæt"
+  },
+  {
+   "key": "forge.unableToApply",
+   "value": "Kan ikke anvende denne ændring."
+  },
+  {
+   "key": "home.eyebrow",
+   "value": "Offline karakteradministration"
+  },
+  {
+   "key": "home.guide",
+   "value": "Læs dekrypteringsvejledningen"
+  },
+  {
+   "key": "home.lead",
+   "value": "Åbn en dekrypteret Bloodborne-karaktergemning for at inspicere inventar, attributter, karakterindstillinger, bosser og flag. Editoren opretter en backup, når en fil åbnes; behold altid den, indtil du har tjekket resultatet i spillet."
+  },
+  {
+   "key": "home.stepOneDescription",
+   "value": "PlayStation-eksporter skal dekrypteres, før editoren kan læse dem."
+  },
+  {
+   "key": "home.stepOneTitle",
+   "value": "Brug en dekrypteret gemning"
+  },
+  {
+   "key": "home.stepThreeDescription",
+   "value": "Test den eksporterede fil, før du fjerner den automatiske .bak-kopi."
+  },
+  {
+   "key": "home.stepThreeTitle",
+   "value": "Bekræft før udskiftning"
+  },
+  {
+   "key": "home.stepTwoDescription",
+   "value": "Gennemgå hver ændring og undgå at bruge modificerede gemninger online."
+  },
+  {
+   "key": "home.stepTwoTitle",
+   "value": "Foretag målrettede ændringer"
+  },
+  {
+   "key": "home.title",
+   "value": "Rediger med omtanke. Bevar din jagt."
+  },
+  {
+   "key": "inventory.addDescription",
+   "value": "Vælg en genstand fra et sikkert katalog og vælg dens antal."
+  },
+  {
+   "key": "inventory.addDialogLabel",
+   "value": "Tilføj katalogiseret genstand"
+  },
+  {
+   "key": "inventory.addDirect",
+   "value": "Tilføj direkte"
+  },
+  {
+   "key": "inventory.addDirectEquipment",
+   "value": "Tilføj udstyr"
+  },
+  {
+   "key": "inventory.addDirectUpgrade",
+   "value": "Tilføj en færdig gem eller rune"
+  },
+  {
+   "key": "inventory.addEquipment",
+   "value": "Tilføj udstyr"
+  },
+  {
+   "key": "inventory.addItem",
+   "value": "Tilføj en genstand"
+  },
+  {
+   "key": "inventory.addNotice",
+   "value": "Våben og rustning bevarer ekstra slot-data. Brug Erstat på et eksisterende våben eller rustning i stedet for Tilføj, så disse data forbliver gyldige."
+  },
+  {
+   "key": "inventory.addSelected",
+   "value": "Tilføj valgte genstand"
+  },
+  {
+   "key": "inventory.cancel",
+   "value": "Annuller"
+  },
+  {
+   "key": "inventory.catalog",
+   "value": "Katalog"
+  },
+  {
+   "key": "inventory.catalogArmors",
+   "value": "Rustning"
+  },
+  {
+   "key": "inventory.catalogChaliceItems",
+   "value": "Bægergenstande"
+  },
+  {
+   "key": "inventory.catalogGems",
+   "value": "Blood Gems (eksperimentel direkte tilføjelse)"
+  },
+  {
+   "key": "inventory.catalogItems",
+   "value": "Genstande og forbrugsvarer"
+  },
+  {
+   "key": "inventory.catalogKeyItems",
+   "value": "Nøglegenstande"
+  },
+  {
+   "key": "inventory.catalogRunes",
+   "value": "Caryll-runer (eksperimentel direkte tilføjelse)"
+  },
+  {
+   "key": "inventory.catalogWeapons",
+   "value": "Våben"
+  },
+  {
+   "key": "inventory.close",
+   "value": "Luk"
+  },
+  {
+   "key": "inventory.closeAddLabel",
+   "value": "Luk Tilføj genstand"
+  },
+  {
+   "key": "inventory.closeReplaceLabel",
+   "value": "Luk Erstat genstand"
+  },
+  {
+   "key": "inventory.directAddFailed",
+   "value": "Den direkte tilføjelse kunne ikke gennemføres sikkert."
+  },
+  {
+   "key": "inventory.directEquipmentDescription",
+   "value": "Opret et katalogført våben eller rustning direkte, når gemningen indeholder en sikker genbrugelig udstyrs-slot-blok."
+  },
+  {
+   "key": "inventory.directEquipmentNotice",
+   "value": "Eksperimentel: denne operation genbruger kun en sikker forældreløs udstyrs-slot-blok og opretter fem lukkede gem-slots. Åbn slottene senere med Gems, hvis nødvendigt."
+  },
+  {
+   "key": "inventory.directUpgradeBuilder",
+   "value": "Direkte gem- og runebygger"
+  },
+  {
+   "key": "inventory.directUpgradeDescription",
+   "value": "Opret en færdig Blood Gem eller Caryll Rune direkte fra validerede effekter, når en sikker genbrugelig post er tilgængelig i gemningen."
+  },
+  {
+   "key": "inventory.directUpgradeNotice",
+   "value": "Eksperimentel: denne operation genbruger kun en sikker forældreløs opgraderingspost. Den ændrer aldrig gemningslayoutet. Behold den automatiske backup, indtil karakteren har indlæst normalt."
+  },
+  {
+   "key": "inventory.directUpgradePrimaryRequired",
+   "value": "Vælg en valideret første effekt før du tilføjer en gem eller rune."
+  },
+  {
+   "key": "inventory.directUpgradeUnavailable",
+   "value": "Denne gemning har ingen sikker genbrugelig Gem/Rune-post. Ingen ændring blev foretaget. Opret en kompatibel slot i spillet, og prøv igen."
+  },
+  {
+   "key": "inventory.edit",
+   "value": "Rediger"
+  },
+  {
+   "key": "inventory.gems",
+   "value": "Gems"
+  },
+  {
+   "key": "inventory.gemShape",
+   "value": "Gem-form"
+  },
+  {
+   "key": "inventory.item",
+   "value": "genstand"
+  },
+  {
+   "key": "inventory.itemQuantity",
+   "value": "Genstandsantal:"
+  },
+  {
+   "key": "inventory.matchingItems",
+   "value": "Matchende genstande"
+  },
+  {
+   "key": "inventory.noMatchingItem",
+   "value": "Ingen matchende genstand fundet."
+  },
+  {
+   "key": "inventory.quantity",
+   "value": "Antal"
+  },
+  {
+   "key": "inventory.replaceDescription",
+   "value": "Vælg en kompatibel {{type}} fra kataloget. Pladsens position bevares."
+  },
+  {
+   "key": "inventory.replaceDialogLabel",
+   "value": "Erstat valgte genstand"
+  },
+  {
+   "key": "inventory.replaceItem",
+   "value": "Erstat genstand"
+  },
+  {
+   "key": "inventory.replacing",
+   "value": "Erstatter"
+  },
+  {
+   "key": "inventory.runeType",
+   "value": "Rune-type"
+  },
+  {
+   "key": "inventory.searchCatalog",
+   "value": "Søg i katalog"
+  },
+  {
+   "key": "inventory.searchItems",
+   "value": "Søg efter {{type}}-genstande"
+  },
+  {
+   "key": "inventory.selectNew",
+   "value": "Vælg en ny {{type}}"
+  },
+  {
+   "key": "inventory.setValue",
+   "value": "Indstil"
+  },
+  {
+   "key": "inventory.title",
+   "value": "Inventar"
+  },
+  {
+   "key": "inventory.type.armor",
+   "value": "rustning"
+  },
+  {
+   "key": "inventory.type.chalice",
+   "value": "bægergenstand"
+  },
+  {
+   "key": "inventory.type.item",
+   "value": "genstand"
+  },
+  {
+   "key": "inventory.type.key",
+   "value": "nøglegenstand"
+  },
+  {
+   "key": "inventory.type.weapon",
+   "value": "våben"
+  },
+  {
+   "key": "inventory.weaponLevel",
+   "value": "Våbenniveau:"
+  },
+  {
+   "key": "language.label",
+   "value": "Sprog"
+  },
+  {
+   "key": "nav.activeSave",
+   "value": "Aktivt gem"
+  },
+  {
+   "key": "nav.controls",
+   "value": "Gemfilkontroller"
+  },
+  {
+   "key": "nav.noSaveLoaded",
+   "value": "Ingen gemning indlæst"
+  },
+  {
+   "key": "nav.openFileToBegin",
+   "value": "Åbn en dekrypteret karakterfil for at begynde"
+  },
+  {
+   "key": "nav.openSave",
+   "value": "Åbn gemning"
+  },
+  {
+   "key": "nav.saveChanges",
+   "value": "Gem ændringer"
+  },
+  {
+   "key": "operation.eyebrow",
+   "value": "Arbejder med gemdata"
+  },
+  {
+   "key": "operation.preparing",
+   "value": "Forbereder editoren"
+  },
+  {
+   "key": "operation.title",
+   "value": "Hold dette vindue åbent."
+  },
+  {
+   "key": "saveFlow.close",
+   "value": "Luk"
+  },
+  {
+   "key": "saveFlow.confirmSaveDescription",
+   "value": "Dette skriver de aktuelle ændringer til den valgte fil. Behold den automatiske .bak-kopi, indtil du har verificeret gemningen i spillet."
+  },
+  {
+   "key": "saveFlow.confirmSaveTitle",
+   "value": "Bekræft gemning"
+  },
+  {
+   "key": "saveFlow.discardAndOpen",
+   "value": "Forkast og åbn"
+  },
+  {
+   "key": "saveFlow.discardOpenDescription",
+   "value": "Du har ugemte ændringer. Hvis du åbner en anden gemning, vil de nuværende ændringer blive forkastet."
+  },
+  {
+   "key": "saveFlow.discardOpenTitle",
+   "value": "Forkast ugemte ændringer?"
+  },
+  {
+   "key": "saveFlow.keepEditing",
+   "value": "Fortsæt redigering"
+  },
+  {
+   "key": "saveFlow.loadedStatus",
+   "value": "Gemning indlæst. En backup blev oprettet før redigering."
+  },
+  {
+   "key": "saveFlow.openFailedDescription",
+   "value": "Den valgte fil kunne ikke læses. Vælg en dekrypteret Bloodborne-karaktergemning og prøv igen."
+  },
+  {
+   "key": "saveFlow.openFailedTitle",
+   "value": "Kan ikke åbne gemning"
+  },
+  {
+   "key": "saveFlow.openTitle",
+   "value": "Åbn dekrypteret Bloodborne-gemning"
+  },
+  {
+   "key": "saveFlow.saveCompletedDescription",
+   "value": "Behold din .bak-kopi indtil den redigerede gemning er verificeret."
+  },
+  {
+   "key": "saveFlow.saveCompletedTitle",
+   "value": "Gemning fuldført"
+  },
+  {
+   "key": "saveFlow.savedStatus",
+   "value": "Ændringer gemt."
+  },
+  {
+   "key": "saveFlow.saveFailedDescription",
+   "value": "Den redigerede gemning kunne ikke skrives. Kontroller destinationen og rettigheder, og prøv igen."
+  },
+  {
+   "key": "saveFlow.saveFailedTitle",
+   "value": "Kan ikke gemme"
+  },
+  {
+   "key": "saveFlow.saveTitle",
+   "value": "Gem redigeret karakter"
+  },
+  {
+   "key": "saveFlow.unsavedStatus",
+   "value": "Ugemte ændringer"
+  },
+  {
+   "key": "sidebar.backupDescription",
+   "value": "Når du åbner en gemning, oprettes en .bak-kopi, før ændringer foretages."
+  },
+  {
+   "key": "sidebar.backupTitle",
+   "value": "Backup-først arbejdsgang"
+  },
+  {
+   "key": "sidebar.bosses",
+   "value": "Bosser"
+  },
+  {
+   "key": "sidebar.bossesDescription",
+   "value": "Fremdriftsstatus"
+  },
+  {
+   "key": "sidebar.character",
+   "value": "Karakter"
+  },
+  {
+   "key": "sidebar.characterData",
+   "value": "Karakterdata"
+  },
+  {
+   "key": "sidebar.characterDescription",
+   "value": "Identitet og placering"
+  },
+  {
+   "key": "sidebar.flags",
+   "value": "Flag"
+  },
+  {
+   "key": "sidebar.flagsDescription",
+   "value": "Avancerede indstillinger"
+  },
+  {
+   "key": "sidebar.inventory",
+   "value": "Inventar"
+  },
+  {
+   "key": "sidebar.inventoryDescription",
+   "value": "Genstande og udstyr"
+  },
+  {
+   "key": "sidebar.stats",
+   "value": "Statistik"
+  },
+  {
+   "key": "sidebar.statsDescription",
+   "value": "Attributter og ekkoer"
+  },
+  {
+   "key": "sidebar.storage",
+   "value": "Opbevaring"
+  },
+  {
+   "key": "sidebar.storageDescription",
+   "value": "Opbevarede genstande"
+  },
+  {
+   "key": "sidebar.workspace",
+   "value": "Redigeringsområde"
+  },
+  {
+   "key": "unsaved.cancel",
+   "value": "Annuller"
+  },
+  {
+   "key": "unsaved.description",
+   "value": "Dine aktuelle ændringer er ikke skrevet til en gemfil. Vælg Gem ændringer for at beholde dem, eller luk uden at gemme for at forkaste dem."
+  },
+  {
+   "key": "unsaved.discard",
+   "value": "Luk uden at gemme"
+  },
+  {
+   "key": "unsaved.eyebrow",
+   "value": "Ugemte ændringer"
+  },
+  {
+   "key": "unsaved.save",
+   "value": "Gem ændringer"
+  },
+  {
+   "key": "unsaved.saving",
+   "value": "Gemmer…"
+  },
+  {
+   "key": "unsaved.title",
+   "value": "Gem før lukning?"
+  },
+  {
+   "key": "update.available",
+   "value": "Opdatering tilgængelig"
+  },
+  {
+   "key": "update.downloadedMegabytes",
+   "value": "{{megabytes}} MB downloadet"
+  },
+  {
+   "key": "update.downloadingProgress",
+   "value": "Downloader: {{percentage}}%"
+  },
+  {
+   "key": "update.downloadingSigned",
+   "value": "Downloader underskrevet opdatering…"
+  },
+  {
+   "key": "update.installedRestarting",
+   "value": "Opdatering installeret. Genstarter editor…"
+  },
+  {
+   "key": "update.installFailed",
+   "value": "Opdateringen kunne ikke installeres. Din nuværende version forbliver uændret."
+  },
+  {
+   "key": "update.installing",
+   "value": "Installerer opdatering…"
+  },
+  {
+   "key": "update.notNow",
+   "value": "Ikke nu"
+  },
+  {
+   "key": "update.startingDownload",
+   "value": "Starter sikker download…"
+  },
+  {
+   "key": "update.updateAndRestart",
+   "value": "Opdater og genstart"
+  },
+  {
+   "key": "update.version",
+   "value": "Version {{version}}"
+  }
+ ],
+ "fi": [
+  {
+   "key": "actions.back",
+   "value": "Takaisin"
+  },
+  {
+   "key": "actions.change",
+   "value": "Vaihda"
+  },
+  {
+   "key": "actions.changesConfirmed",
+   "value": "Muutokset vahvistettu"
+  },
+  {
+   "key": "actions.confirm",
+   "value": "Vahvista"
+  },
+  {
+   "key": "actions.edit",
+   "value": "Muokkaa"
+  },
+  {
+   "key": "actions.reset",
+   "value": "Nollaa"
+  },
+  {
+   "key": "bosses.alive",
+   "value": "Elossa"
+  },
+  {
+   "key": "bosses.dead",
+   "value": "Kuollut"
+  },
+  {
+   "key": "characterForm.coordinates",
+   "value": "Koordinaatit:"
+  },
+  {
+   "key": "characterForm.name",
+   "value": "Nimi:"
+  },
+  {
+   "key": "characterForm.playtime",
+   "value": "Peliaika:"
+  },
+  {
+   "key": "characterForm.selectLocation",
+   "value": "Valitse sijainti"
+  },
+  {
+   "key": "characterForm.teleport",
+   "value": "Teleportointi:"
+  },
+  {
+   "key": "flags.eyebrow",
+   "value": "Edistyneet tallennusasetukset"
+  },
+  {
+   "key": "flags.introduction",
+   "value": "Tässä näkyvät vain itsenäisesti dokumentoidut tavumallit. Tuntemattomat offsetit on jätetty tahallisesti pois tallennetta vahingoittumasta."
+  },
+  {
+   "key": "flags.listLabel",
+   "value": "Tunnetut tallennusliput"
+  },
+  {
+   "key": "flags.safetyDescription",
+   "value": "Tee yksi muutos kerrallaan ja käytä sitten 'Tallenna muutokset'. Säilytä automaattisesti luotu varmuuskopio, kunnes hahmo latautuu normaalisti."
+  },
+  {
+   "key": "flags.safetyTitle",
+   "value": "Ennen lipun soveltamista"
+  },
+  {
+   "key": "flags.title",
+   "value": "Tunnetut liput"
+  },
+  {
+   "key": "forge.buildSixEffect",
+   "value": "Rakenna kuusi-efektinen {{subject}}"
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.description",
+   "value": "Käyttää sisäänrakennettua +75 jatkuvaa HP‑palautusefektiä sekä kestävyyden ja vahingon tukea."
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.name",
+   "value": "Abyssal Vitality +75"
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.description",
+   "value": "Kaikkien vahinkojen vahvistus fyysisellä paineella ja korkealla palautusbonuksella."
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.name",
+   "value": "Etujoukko"
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.description",
+   "value": "Kaikkien vahinkojen vahvistus, täyden terveyden bonus ja palautus."
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.name",
+   "value": "Apex Ravitseva"
+  },
+  {
+   "key": "forge.builtIn.apex-physical.description",
+   "value": "Fyysinen vahinko, täyden terveyden bonus ja kestävyyden tuki."
+  },
+  {
+   "key": "forge.builtIn.apex-physical.name",
+   "value": "Apex (fyysinen)"
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.description",
+   "value": "Arkaani‑vahinko, palautus ja kestävyyden tuki."
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.name",
+   "value": "Arkaani‑purkaus"
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.description",
+   "value": "Korkea Bloodtinge‑vahinko sekä kaikkien vahinkojen ja palautuksen tuki."
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.name",
+   "value": "Bloodtinge-metsästäjä"
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.description",
+   "value": "Korkea tylppä vahinko, kaikkien vahinkojen ja kestävyyden tuki."
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.name",
+   "value": "Tylppä murskaaja"
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.description",
+   "value": "Salamavahinko, kaikkien vahinkojen ja kestävyyden tuki."
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.name",
+   "value": "Salamapurkaus"
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.description",
+   "value": "Arkaani-, tuli- ja salamaefektit yhdessä, tarkoituksellisesti kokeellinen kokoonpano."
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.name",
+   "value": "Elementaalinen nousija"
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.description",
+   "value": "Tunnetuista suurimmat palautus- ja kestävyysefektit täyden terveyden vahinkobonuksella."
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.name",
+   "value": "Loputon metsästys"
+  },
+  {
+   "key": "forge.builtIn.flame-surge.description",
+   "value": "Tulivahinko, kaikkien vahinkojen ja palautuksen tuki."
+  },
+  {
+   "key": "forge.builtIn.flame-surge.name",
+   "value": "Tulipurkaus"
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.description",
+   "value": "Tunnetuin paketoitu kestävyysetu, yhdistettynä korkeaan palautukseen ja fyysiseen vahinkoon."
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.name",
+   "value": "Takomakestävyys"
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.description",
+   "value": "Pinottaa fyysisiä, kaikkien vahinkojen ja lähellä‑kuolemaa kertoimia vain testaukseen."
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.name",
+   "value": "Lasikanuuna"
+  },
+  {
+   "key": "forge.builtIn.last-stand.description",
+   "value": "Korkeat lähellä-kuolemaa ja täyden terveyden kertoimet. Käytä tätä kokoonpanoa vain offline‑tilassa."
+  },
+  {
+   "key": "forge.builtIn.last-stand.name",
+   "value": "Viimeinen taistelu"
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.description",
+   "value": "Palautus, kestävyys ja kaikkien vahinkojen tuki pitkille tutkimusretkille."
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.name",
+   "value": "Pitkäkestoinen metsästys"
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.description",
+   "value": "Korkea pistosvahinko, kaikkien vahinkojen ja kestävyyden tuki."
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.name",
+   "value": "Pistosasiantuntija"
+  },
+  {
+   "key": "forge.cancel",
+   "value": "Peruuta"
+  },
+  {
+   "key": "forge.categories.All",
+   "value": "Kaikki"
+  },
+  {
+   "key": "forge.categories.Attack",
+   "value": "Hyökkäys"
+  },
+  {
+   "key": "forge.categories.Custom",
+   "value": "Mukautettu"
+  },
+  {
+   "key": "forge.categories.Elemental",
+   "value": "Elementaalinen"
+  },
+  {
+   "key": "forge.categories.Experimental",
+   "value": "Kokeellinen"
+  },
+  {
+   "key": "forge.categories.Personal",
+   "value": "Henkilökohtainen"
+  },
+  {
+   "key": "forge.categories.Recovery",
+   "value": "Palautus"
+  },
+  {
+   "key": "forge.categories.Rune",
+   "value": "Runi"
+  },
+  {
+   "key": "forge.close",
+   "value": "Sulje"
+  },
+  {
+   "key": "forge.closeLabel",
+   "value": "Sulje {{subject}} Forge"
+  },
+  {
+   "key": "forge.confirm",
+   "value": "Vahvista"
+  },
+  {
+   "key": "forge.confirming",
+   "value": "Vahvistetaan…"
+  },
+  {
+   "key": "forge.convertConfirm",
+   "value": "Muunna tämä {{source}} {{destination}}ksi? Säilytä automaattinen varmuuskopio, kunnes olet testannut tallennetta."
+  },
+  {
+   "key": "forge.convertTo",
+   "value": "Muunna {{subject}}ksi"
+  },
+  {
+   "key": "forge.customDescription",
+   "value": "Mukautettu sarja — {{count}} valittua efektiä."
+  },
+  {
+   "key": "forge.customName",
+   "value": "Mukautettu {{subject}} Forge"
+  },
+  {
+   "key": "forge.customSet",
+   "value": "Mukautettu sarja"
+  },
+  {
+   "key": "forge.customSetDescription",
+   "value": "Valitse enintään kuusi vahvistettua efektiä. Tyhjät paikat pysyvät Ei vaikutusta -tilassa. Editori tarkistaa jokaisen valitun ID:n uudelleen vahvistettaessa."
+  },
+  {
+   "key": "forge.customSetLabel",
+   "value": "Mukautettu {{subject}}-efektisarja"
+  },
+  {
+   "key": "forge.delete",
+   "value": "Poista"
+  },
+  {
+   "key": "forge.deleteConfirm",
+   "value": "Poistetaanko henkilökohtainen esiasetus “{{name}}”?"
+  },
+  {
+   "key": "forge.dialogLabel",
+   "value": "Muokkaa {{subject}}"
+  },
+  {
+   "key": "forge.draftEmpty",
+   "value": "Valitse vähintään yksi efekti ladataksesi mukautetun luonnoksen."
+  },
+  {
+   "key": "forge.draftPreview",
+   "value": "Luonnoksen esikatselu"
+  },
+  {
+   "key": "forge.editing",
+   "value": "Muokataan:"
+  },
+  {
+   "key": "forge.effect",
+   "value": "Efekti {{index}}"
+  },
+  {
+   "key": "forge.gemForge",
+   "value": "Gem Forge"
+  },
+  {
+   "key": "forge.loadCustomDraft",
+   "value": "Lataa mukautettu sarja luonnokseen"
+  },
+  {
+   "key": "forge.loadIntoDraft",
+   "value": "Lataa luonnokseen"
+  },
+  {
+   "key": "forge.modeLabel",
+   "value": "{{subject}} Forge -tila"
+  },
+  {
+   "key": "forge.myPresets",
+   "value": "Omat esiasetukset"
+  },
+  {
+   "key": "forge.noEffect",
+   "value": "Ei vaikutusta"
+  },
+  {
+   "key": "forge.noPersonalPreset",
+   "value": "Henkilökohtaista esiasetusta ei ole vielä tallennettu."
+  },
+  {
+   "key": "forge.noPersonalPresetDescription",
+   "value": "Muokkaa gemiä tai runia, käytä sitten 'Tallenna esiasetuksena' tehdäksesi sen saataville molemmissa forgeissa."
+  },
+  {
+   "key": "forge.notice",
+   "value": "Esiasetuksen lataus päivittää vain näkyvän luonnoksen. Valitse editorissa Vahvista kirjoittaaksesi sen tallenteeseen. Alla olevat efektit tulevat editorin sisäänrakennetusta vahvistetusta luettelosta. Henkilökohtaiset esiasetukset ovat yhteisiä Gem Forgelle ja Rune Forgelle; kohteen editori säilyttää oman kelvollisen muodon tai tyypin."
+  },
+  {
+   "key": "forge.personal",
+   "value": "Henkilökohtainen"
+  },
+  {
+   "key": "forge.personalPresetDescription",
+   "value": "Henkilökohtainen Forge-esiasetus, jota Gem Forge ja Rune Forge jakavat."
+  },
+  {
+   "key": "forge.personalPresetName",
+   "value": "Oma {{subject}}-esiasetuksen nimi"
+  },
+  {
+   "key": "forge.personalPresetsLabel",
+   "value": "Henkilökohtaiset {{subject}}-esiasetukset"
+  },
+  {
+   "key": "forge.presetCategories",
+   "value": "Esiasetusten kategoriat"
+  },
+  {
+   "key": "forge.presetName",
+   "value": "Esiasetuksen nimi"
+  },
+  {
+   "key": "forge.presets",
+   "value": "Esiasetukset"
+  },
+  {
+   "key": "forge.runeForge",
+   "value": "Rune Forge"
+  },
+  {
+   "key": "forge.runePresetDescription",
+   "value": "Vahvistettu Caryll Rune -esiasetus."
+  },
+  {
+   "key": "forge.runePresetPlaceholder",
+   "value": "Valitse rune-esiasetus"
+  },
+  {
+   "key": "forge.saveAsPreset",
+   "value": "Tallenna esiasetuksena"
+  },
+  {
+   "key": "forge.savedStatus",
+   "value": "Tallennettu “{{name}}” omiin esiasetuksiin Gem Forgea ja Rune Forgea varten."
+  },
+  {
+   "key": "forge.sharedPresetsDescription",
+   "value": "Tallenna kerran muokattu gem tai rune, sitten lataa sama esiasetus Gem Forgesta tai Rune Forgesta."
+  },
+  {
+   "key": "forge.sharedPresetsTitle",
+   "value": "Henkilökohtaiset esiasetukset, joita Gem Forge ja Rune Forge jakavat"
+  },
+  {
+   "key": "forge.title",
+   "value": "Vahvistetut efektit ja mukautetut sarjat"
+  },
+  {
+   "key": "forge.unableToApply",
+   "value": "Muutosta ei voitu soveltaa."
+  },
+  {
+   "key": "home.eyebrow",
+   "value": "Offline-hahmon hallinta"
+  },
+  {
+   "key": "home.guide",
+   "value": "Lue purkuohjeet"
+  },
+  {
+   "key": "home.lead",
+   "value": "Avaa purettu Bloodborne-hahmon tallenne tarkastellaksesi varastoa, ominaisuuksia, hahmoasetuksia, pomoja ja lippuja. Editori luo varmuuskopion avatessa tiedoston; säilytä se aina, kunnes olet tarkistanut tuloksen pelissä."
+  },
+  {
+   "key": "home.stepOneDescription",
+   "value": "PlayStationin vientitiedostot on purettava ennen kuin editori voi lukea niitä."
+  },
+  {
+   "key": "home.stepOneTitle",
+   "value": "Käytä purettua tallennetta"
+  },
+  {
+   "key": "home.stepThreeDescription",
+   "value": "Testaa viedyt tiedosto ennen automaattisen .bak‑kopion poistamista."
+  },
+  {
+   "key": "home.stepThreeTitle",
+   "value": "Varmista ennen korvaamista"
+  },
+  {
+   "key": "home.stepTwoDescription",
+   "value": "Tarkista jokainen muutos ja vältä muokattujen tallenteiden käyttöä verkkopeleissä."
+  },
+  {
+   "key": "home.stepTwoTitle",
+   "value": "Tee kohdennettuja muokkauksia"
+  },
+  {
+   "key": "home.title",
+   "value": "Muokkaa harkiten. Säilytä metsästyksesi."
+  },
+  {
+   "key": "inventory.addDescription",
+   "value": "Valitse esine turvallisesta luettelosta ja määritä määrä."
+  },
+  {
+   "key": "inventory.addDialogLabel",
+   "value": "Lisää luettelosta löytyvä esine"
+  },
+  {
+   "key": "inventory.addDirect",
+   "value": "Lisää suoraan"
+  },
+  {
+   "key": "inventory.addDirectEquipment",
+   "value": "Lisää ase tai haarniska"
+  },
+  {
+   "key": "inventory.addDirectUpgrade",
+   "value": "Lisää valmis gem tai rune"
+  },
+  {
+   "key": "inventory.addEquipment",
+   "value": "Lisää varuste"
+  },
+  {
+   "key": "inventory.addItem",
+   "value": "Lisää esine"
+  },
+  {
+   "key": "inventory.addNotice",
+   "value": "Aseet ja haarniskat säilyttävät lisätiedot paikassa. Käytä 'Korvaa' olemassa olevalle aseelle tai haarniskalle 'Lisää'-toiminnon sijaan, jotta tiedot pysyvät kelvollisina."
+  },
+  {
+   "key": "inventory.addSelected",
+   "value": "Lisää valittu esine"
+  },
+  {
+   "key": "inventory.cancel",
+   "value": "Peruuta"
+  },
+  {
+   "key": "inventory.catalog",
+   "value": "Luettelo"
+  },
+  {
+   "key": "inventory.catalogArmors",
+   "value": "Haarniskat"
+  },
+  {
+   "key": "inventory.catalogChaliceItems",
+   "value": "Chalice-esineet"
+  },
+  {
+   "key": "inventory.catalogGems",
+   "value": "Blood Gems (kokeellinen suora lisäys)"
+  },
+  {
+   "key": "inventory.catalogItems",
+   "value": "Esineet ja kulutettavat"
+  },
+  {
+   "key": "inventory.catalogKeyItems",
+   "value": "Tärkeät esineet"
+  },
+  {
+   "key": "inventory.catalogRunes",
+   "value": "Caryll Runes (kokeellinen suora lisäys)"
+  },
+  {
+   "key": "inventory.catalogWeapons",
+   "value": "Aseet"
+  },
+  {
+   "key": "inventory.close",
+   "value": "Sulje"
+  },
+  {
+   "key": "inventory.closeAddLabel",
+   "value": "Sulje 'Lisää esine'"
+  },
+  {
+   "key": "inventory.closeReplaceLabel",
+   "value": "Sulje 'Korvaa esine'"
+  },
+  {
+   "key": "inventory.directAddFailed",
+   "value": "Suoraa lisäystä ei voitu suorittaa turvallisesti."
+  },
+  {
+   "key": "inventory.directEquipmentDescription",
+   "value": "Luo luettelossa oleva ase tai haarniska suoraan, kun tallenteessa on turvallinen uudelleenkäytettävä varustepaikkalohko."
+  },
+  {
+   "key": "inventory.directEquipmentNotice",
+   "value": "Kokeellinen: tämä toiminto käyttää uudelleen vain turvallista hylättyä varustepaikkalohkoa ja luo viisi suljettua gem-paikkaa. Avaa paikat myöhemmin Gems‑toiminnolla tarvittaessa."
+  },
+  {
+   "key": "inventory.directUpgradeBuilder",
+   "value": "Suora gemien ja runien rakentaja"
+  },
+  {
+   "key": "inventory.directUpgradeDescription",
+   "value": "Luo valmis Blood Gem tai Caryll Rune suoraan vahvistetuista efekteistä, kun tallenteessa on turvallinen uudelleenkäytettävä tietue."
+  },
+  {
+   "key": "inventory.directUpgradeNotice",
+   "value": "Kokeellinen: tämä toiminto käyttää uudelleen vain turvallista hylättyä päivitystietuetta. Se ei koskaan siirrä tallenteen rakennetta. Säilytä automaattinen varmuuskopio, kunnes hahmo latautuu normaalisti."
+  },
+  {
+   "key": "inventory.directUpgradePrimaryRequired",
+   "value": "Valitse vahvistettu ensiefekti ennen gemin tai runin lisäämistä."
+  },
+  {
+   "key": "inventory.directUpgradeUnavailable",
+   "value": "Tässä tallenteessa ei ole turvallista uudelleenkäytettävää Gem/Rune‑tietuetta. Muutosta ei tehty. Luo yhteensopiva paikka pelissä ja yritä uudelleen."
+  },
+  {
+   "key": "inventory.edit",
+   "value": "Muokkaa"
+  },
+  {
+   "key": "inventory.gems",
+   "value": "Gemit"
+  },
+  {
+   "key": "inventory.gemShape",
+   "value": "Gemin muoto"
+  },
+  {
+   "key": "inventory.item",
+   "value": "esine"
+  },
+  {
+   "key": "inventory.itemQuantity",
+   "value": "Esineiden määrä:"
+  },
+  {
+   "key": "inventory.matchingItems",
+   "value": "Vastaavat esineet"
+  },
+  {
+   "key": "inventory.noMatchingItem",
+   "value": "Yhtään vastaavaa esinettä ei löytynyt."
+  },
+  {
+   "key": "inventory.quantity",
+   "value": "Määrä"
+  },
+  {
+   "key": "inventory.replaceDescription",
+   "value": "Valitse yhteensopiva {{type}} luettelosta. Paikan sijainti säilyy."
+  },
+  {
+   "key": "inventory.replaceDialogLabel",
+   "value": "Korvaa valittu esine"
+  },
+  {
+   "key": "inventory.replaceItem",
+   "value": "Korvaa esine"
+  },
+  {
+   "key": "inventory.replacing",
+   "value": "Korvataan"
+  },
+  {
+   "key": "inventory.runeType",
+   "value": "Runen tyyppi"
+  },
+  {
+   "key": "inventory.searchCatalog",
+   "value": "Hae luettelosta"
+  },
+  {
+   "key": "inventory.searchItems",
+   "value": "Hae {{type}}-esineitä"
+  },
+  {
+   "key": "inventory.selectNew",
+   "value": "Valitse uusi {{type}}"
+  },
+  {
+   "key": "inventory.setValue",
+   "value": "Aseta"
+  },
+  {
+   "key": "inventory.title",
+   "value": "Inventaario"
+  },
+  {
+   "key": "inventory.type.armor",
+   "value": "haarniska"
+  },
+  {
+   "key": "inventory.type.chalice",
+   "value": "esine"
+  },
+  {
+   "key": "inventory.type.item",
+   "value": "esine"
+  },
+  {
+   "key": "inventory.type.key",
+   "value": "esine"
+  },
+  {
+   "key": "inventory.type.weapon",
+   "value": "ase"
+  },
+  {
+   "key": "inventory.weaponLevel",
+   "value": "Aseen taso:"
+  },
+  {
+   "key": "language.label",
+   "value": "Kieli"
+  },
+  {
+   "key": "nav.activeSave",
+   "value": "Aktiivinen tallenne"
+  },
+  {
+   "key": "nav.controls",
+   "value": "Tallennustiedoston toiminnot"
+  },
+  {
+   "key": "nav.noSaveLoaded",
+   "value": "Ei tallennetta avattu"
+  },
+  {
+   "key": "nav.openFileToBegin",
+   "value": "Aloita avaamalla purettu hahmotiedosto"
+  },
+  {
+   "key": "nav.openSave",
+   "value": "Avaa tallenne"
+  },
+  {
+   "key": "nav.saveChanges",
+   "value": "Tallenna muutokset"
+  },
+  {
+   "key": "operation.eyebrow",
+   "value": "Tallennusdatan käsittely"
+  },
+  {
+   "key": "operation.preparing",
+   "value": "Valmistellaan editoria"
+  },
+  {
+   "key": "operation.title",
+   "value": "Pidä tämä ikkuna avoinna."
+  },
+  {
+   "key": "saveFlow.close",
+   "value": "Sulje"
+  },
+  {
+   "key": "saveFlow.confirmSaveDescription",
+   "value": "Tämä kirjoittaa nykyiset muokkaukset valittuun tiedostoon. Säilytä automaattinen .bak-varmuuskopio, kunnes olet varmistanut tallenteen pelissä."
+  },
+  {
+   "key": "saveFlow.confirmSaveTitle",
+   "value": "Vahvista tallennus"
+  },
+  {
+   "key": "saveFlow.discardAndOpen",
+   "value": "Hylkää ja avaa"
+  },
+  {
+   "key": "saveFlow.discardOpenDescription",
+   "value": "Sinulla on tallentamattomia muutoksia. Toisen tallenteen avaaminen hylkää nykyiset muokkaukset."
+  },
+  {
+   "key": "saveFlow.discardOpenTitle",
+   "value": "Hylätään tallentamattomat muutokset?"
+  },
+  {
+   "key": "saveFlow.keepEditing",
+   "value": "Jatka muokkausta"
+  },
+  {
+   "key": "saveFlow.loadedStatus",
+   "value": "Tallenne ladattu. Varmuuskopio luotiin ennen muokkausta."
+  },
+  {
+   "key": "saveFlow.openFailedDescription",
+   "value": "Valittua tiedostoa ei voitu jäsentää. Valitse purettu Bloodborne-hahmon tallenne ja yritä uudelleen."
+  },
+  {
+   "key": "saveFlow.openFailedTitle",
+   "value": "Tallennetta ei voida avata"
+  },
+  {
+   "key": "saveFlow.openTitle",
+   "value": "Avaa purettu Bloodborne-tallenne"
+  },
+  {
+   "key": "saveFlow.saveCompletedDescription",
+   "value": "Pidä .bak-varmuuskopio tallessa, kunnes muokattu tallenne on vahvistettu."
+  },
+  {
+   "key": "saveFlow.saveCompletedTitle",
+   "value": "Tallennus valmis"
+  },
+  {
+   "key": "saveFlow.savedStatus",
+   "value": "Muutokset tallennettu."
+  },
+  {
+   "key": "saveFlow.saveFailedDescription",
+   "value": "Muokattua tallennetta ei voitu kirjoittaa. Tarkista kohde ja käyttöoikeudet, yritä sitten uudelleen."
+  },
+  {
+   "key": "saveFlow.saveFailedTitle",
+   "value": "Tallentaminen epäonnistui"
+  },
+  {
+   "key": "saveFlow.saveTitle",
+   "value": "Tallenna muokattu hahmo"
+  },
+  {
+   "key": "saveFlow.unsavedStatus",
+   "value": "Tallentamattomat muutokset"
+  },
+  {
+   "key": "sidebar.backupDescription",
+   "value": "Tallennetta avatessa luodaan .bak-kopio ennen muokkauksia."
+  },
+  {
+   "key": "sidebar.backupTitle",
+   "value": "Varmuuskopio ensin"
+  },
+  {
+   "key": "sidebar.bosses",
+   "value": "Pomot"
+  },
+  {
+   "key": "sidebar.bossesDescription",
+   "value": "Edistymistila"
+  },
+  {
+   "key": "sidebar.character",
+   "value": "Hahmo"
+  },
+  {
+   "key": "sidebar.characterData",
+   "value": "Hahmotiedot"
+  },
+  {
+   "key": "sidebar.characterDescription",
+   "value": "Henkilöllisyys ja sijainti"
+  },
+  {
+   "key": "sidebar.flags",
+   "value": "Liput"
+  },
+  {
+   "key": "sidebar.flagsDescription",
+   "value": "Lisäasetukset"
+  },
+  {
+   "key": "sidebar.inventory",
+   "value": "Inventaario"
+  },
+  {
+   "key": "sidebar.inventoryDescription",
+   "value": "Esineet ja varusteet"
+  },
+  {
+   "key": "sidebar.stats",
+   "value": "Ominaisuudet"
+  },
+  {
+   "key": "sidebar.statsDescription",
+   "value": "Ominaisuudet ja kaiut"
+  },
+  {
+   "key": "sidebar.storage",
+   "value": "Säilytys"
+  },
+  {
+   "key": "sidebar.storageDescription",
+   "value": "Säilytetyt esineet"
+  },
+  {
+   "key": "sidebar.workspace",
+   "value": "Editorin työtila"
+  },
+  {
+   "key": "unsaved.cancel",
+   "value": "Peruuta"
+  },
+  {
+   "key": "unsaved.description",
+   "value": "Nykyisiä muokkauksia ei ole tallennettu tiedostoon. Valitse 'Tallenna muutokset' säilyttääksesi ne, tai sulje ilman tallennusta hylätäksesi ne."
+  },
+  {
+   "key": "unsaved.discard",
+   "value": "Sulje tallentamatta"
+  },
+  {
+   "key": "unsaved.eyebrow",
+   "value": "Tallentamattomat muutokset"
+  },
+  {
+   "key": "unsaved.save",
+   "value": "Tallenna muutokset"
+  },
+  {
+   "key": "unsaved.saving",
+   "value": "Tallennetaan…"
+  },
+  {
+   "key": "unsaved.title",
+   "value": "Tallennetaanko ennen sulkemista?"
+  },
+  {
+   "key": "update.available",
+   "value": "Päivitys saatavilla"
+  },
+  {
+   "key": "update.downloadedMegabytes",
+   "value": "{{megabytes}} MB ladattu"
+  },
+  {
+   "key": "update.downloadingProgress",
+   "value": "Ladataan: {{percentage}}%"
+  },
+  {
+   "key": "update.downloadingSigned",
+   "value": "Ladataan allekirjoitettua päivitystä…"
+  },
+  {
+   "key": "update.installedRestarting",
+   "value": "Päivitys asennettu. Editorin uudelleenkäynnistys…"
+  },
+  {
+   "key": "update.installFailed",
+   "value": "Päivityksen asennus epäonnistui. Nykyinen versiosi ei muuttunut."
+  },
+  {
+   "key": "update.installing",
+   "value": "Asennetaan päivitystä…"
+  },
+  {
+   "key": "update.notNow",
+   "value": "Ei nyt"
+  },
+  {
+   "key": "update.startingDownload",
+   "value": "Aloitetaan turvallinen lataus…"
+  },
+  {
+   "key": "update.updateAndRestart",
+   "value": "Päivitä ja käynnistä uudelleen"
+  },
+  {
+   "key": "update.version",
+   "value": "Versio {{version}}"
+  }
+ ],
+ "hu": [
+  {
+   "key": "actions.back",
+   "value": "Vissza"
+  },
+  {
+   "key": "actions.change",
+   "value": "Módosítás"
+  },
+  {
+   "key": "actions.changesConfirmed",
+   "value": "Változtatások megerősítve"
+  },
+  {
+   "key": "actions.confirm",
+   "value": "Megerősít"
+  },
+  {
+   "key": "actions.edit",
+   "value": "Szerkesztés"
+  },
+  {
+   "key": "actions.reset",
+   "value": "Visszaállítás"
+  },
+  {
+   "key": "bosses.alive",
+   "value": "Élő"
+  },
+  {
+   "key": "bosses.dead",
+   "value": "Halott"
+  },
+  {
+   "key": "characterForm.coordinates",
+   "value": "Koordináták:"
+  },
+  {
+   "key": "characterForm.name",
+   "value": "Név:"
+  },
+  {
+   "key": "characterForm.playtime",
+   "value": "Játékidő:"
+  },
+  {
+   "key": "characterForm.selectLocation",
+   "value": "Válasszon helyszínt"
+  },
+  {
+   "key": "characterForm.teleport",
+   "value": "Teleportálás:"
+  },
+  {
+   "key": "flags.eyebrow",
+   "value": "Speciális mentésbeállítások"
+  },
+  {
+   "key": "flags.introduction",
+   "value": "Itt csak függetlenül dokumentált bájtminták jelennek meg. Az ismeretlen eltolásokat szándékosan kizártuk, hogy megóvjuk a mentést a véletlen sérüléstől."
+  },
+  {
+   "key": "flags.listLabel",
+   "value": "Ismert mentészászlók"
+  },
+  {
+   "key": "flags.safetyDescription",
+   "value": "Alkalmazzon egyszerre egy változtatást, majd használja a 'Változtatások mentése'-t. Tartsa meg az automatikusan létrehozott biztonsági másolatot, amíg a karakter normálisan be nem töltődik."
+  },
+  {
+   "key": "flags.safetyTitle",
+   "value": "Zászló alkalmazása előtt"
+  },
+  {
+   "key": "flags.title",
+   "value": "Ismert zászlók"
+  },
+  {
+   "key": "forge.buildSixEffect",
+   "value": "Hozzon létre egy hat hatású {{subject}}-et"
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.description",
+   "value": "A beágyazott +75 folyamatos HP-visszanyerő hatást használja, tartósság- és sebzéstámogatással."
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.name",
+   "value": "Abisszális vitalitás +75"
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.description",
+   "value": "Általános sebzésnövelés, fizikai nyomás és magas gyógyulás-bónusz."
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.name",
+   "value": "Előőrs"
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.description",
+   "value": "Minden típusú sebzés növelése, teljes-életerőn alapuló nyomás és gyógyulás."
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.name",
+   "value": "Csúcstápláló"
+  },
+  {
+   "key": "forge.builtIn.apex-physical.description",
+   "value": "Fizikai sebzés, teljes-életerőn alapuló nyomás és tartóssági támogatás."
+  },
+  {
+   "key": "forge.builtIn.apex-physical.name",
+   "value": "Csúcspont (fizikai)"
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.description",
+   "value": "Arkán sebzés, gyógyulás- és tartósságtámogatással."
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.name",
+   "value": "Arkán hullám"
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.description",
+   "value": "Magas Bloodtinge sebzés, általános sebzés- és gyógyulástámogatással."
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.name",
+   "value": "Bloodtinge-vadász"
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.description",
+   "value": "Magas tompa sebzés, általános sebzés- és tartósságtámogatással."
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.name",
+   "value": "Tompa törő"
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.description",
+   "value": "Villámsebzés, általános sebzés- és tartósságtámogatással."
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.name",
+   "value": "Villámhullám"
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.description",
+   "value": "Arkán, tűz és villám hatások egy szándékosan kísérleti összeállításban."
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.name",
+   "value": "Elementális felemelkedés"
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.description",
+   "value": "A legismertebb maximális gyógyulás- és tartóssághatások, teljes-életerő sebzésbónusszal."
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.name",
+   "value": "Végtelen vadászat"
+  },
+  {
+   "key": "forge.builtIn.flame-surge.description",
+   "value": "Tűzsebzés, általános sebzés- és gyógyulástámogatással."
+  },
+  {
+   "key": "forge.builtIn.flame-surge.name",
+   "value": "Lánghullám"
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.description",
+   "value": "A legerősebb ismert tartósságbónusz, magas gyógyulás- és fizikai sebzés-támogatással."
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.name",
+   "value": "Kovácsolt állóképesség"
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.description",
+   "value": "Fizikai, általános sebzés- és közelhalál-szorzókat halmoz, csak teszteléshez."
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.name",
+   "value": "Üvegágyú"
+  },
+  {
+   "key": "forge.builtIn.last-stand.description",
+   "value": "Magas közelhalál- és teljes-életerő szorzók. Tartsa ezt az összeállítást offline."
+  },
+  {
+   "key": "forge.builtIn.last-stand.name",
+   "value": "Utolsó állás"
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.description",
+   "value": "Gyógyulás-, tartósság- és általános sebzés-támogatás hosszú felfedező utakhoz."
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.name",
+   "value": "Tartós vadászat"
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.description",
+   "value": "Magas szúrósebzés, általános sebzés- és tartósságtámogatással."
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.name",
+   "value": "Szúró specialist"
+  },
+  {
+   "key": "forge.cancel",
+   "value": "Mégse"
+  },
+  {
+   "key": "forge.categories.All",
+   "value": "Minden"
+  },
+  {
+   "key": "forge.categories.Attack",
+   "value": "Támadás"
+  },
+  {
+   "key": "forge.categories.Custom",
+   "value": "Egyéni"
+  },
+  {
+   "key": "forge.categories.Elemental",
+   "value": "Elementális"
+  },
+  {
+   "key": "forge.categories.Experimental",
+   "value": "Kísérleti"
+  },
+  {
+   "key": "forge.categories.Personal",
+   "value": "Személyes"
+  },
+  {
+   "key": "forge.categories.Recovery",
+   "value": "Visszanyerés"
+  },
+  {
+   "key": "forge.categories.Rune",
+   "value": "Rune"
+  },
+  {
+   "key": "forge.close",
+   "value": "Bezárás"
+  },
+  {
+   "key": "forge.closeLabel",
+   "value": "Bezárás: {{subject}} Forge"
+  },
+  {
+   "key": "forge.confirm",
+   "value": "Megerősít"
+  },
+  {
+   "key": "forge.confirming",
+   "value": "Megerősítés…"
+  },
+  {
+   "key": "forge.convertConfirm",
+   "value": "Átalakítja ezt a {{source}}-t {{destination}}-ra? Tartsa meg az automatikus biztonsági másolatot, amíg ki nem próbálta a mentést."
+  },
+  {
+   "key": "forge.convertTo",
+   "value": "Átalakítás {{subject}}-ra"
+  },
+  {
+   "key": "forge.customDescription",
+   "value": "Egyéni készlet — {{count}} kiválasztott hatás."
+  },
+  {
+   "key": "forge.customName",
+   "value": "Egyéni {{subject}} Forge"
+  },
+  {
+   "key": "forge.customSet",
+   "value": "Egyéni készlet"
+  },
+  {
+   "key": "forge.customSetDescription",
+   "value": "Válasszon legfeljebb hat ellenőrzött hatást. Az üres helyek Nincs hatás maradnak. A szerkesztő minden kiválasztott azonosítót újból ellenőriz, amikor megerősíti."
+  },
+  {
+   "key": "forge.customSetLabel",
+   "value": "Egyéni {{subject}} hatáskészlet"
+  },
+  {
+   "key": "forge.delete",
+   "value": "Törlés"
+  },
+  {
+   "key": "forge.deleteConfirm",
+   "value": "Törli a személyes “{{name}}” előbeállítást?"
+  },
+  {
+   "key": "forge.dialogLabel",
+   "value": "Szerkesztés: {{subject}}"
+  },
+  {
+   "key": "forge.draftEmpty",
+   "value": "Legalább egy hatást válasszon a személyre szabott vázlat betöltéséhez."
+  },
+  {
+   "key": "forge.draftPreview",
+   "value": "Vázlat előnézet"
+  },
+  {
+   "key": "forge.editing",
+   "value": "Szerkesztés:"
+  },
+  {
+   "key": "forge.effect",
+   "value": "Hatás {{index}}"
+  },
+  {
+   "key": "forge.gemForge",
+   "value": "Gem Forge"
+  },
+  {
+   "key": "forge.loadCustomDraft",
+   "value": "Egyéni készlet betöltése a vázlatba"
+  },
+  {
+   "key": "forge.loadIntoDraft",
+   "value": "Betöltés a vázlatba"
+  },
+  {
+   "key": "forge.modeLabel",
+   "value": "{{subject}} Forge mód"
+  },
+  {
+   "key": "forge.myPresets",
+   "value": "Saját előbeállítások"
+  },
+  {
+   "key": "forge.noEffect",
+   "value": "Nincs hatás"
+  },
+  {
+   "key": "forge.noPersonalPreset",
+   "value": "Még nincs elmentett személyes előbeállítás."
+  },
+  {
+   "key": "forge.noPersonalPresetDescription",
+   "value": "Szerkesszen egy gemet vagy runét, majd használja a 'Mentés előbeállításként'-t, hogy elérhető legyen mindkét forge-ban."
+  },
+  {
+   "key": "forge.notice",
+   "value": "Egy előbeállítás betöltése csak a látható vázlatot frissíti. A szerkesztőben válassza a Megerősítést, hogy a változtatás a mentésbe kerüljön. Az alábbi hatások mind a szerkesztő beágyazott, ellenőrzött katalógusából származnak. A személyes előbeállítások a Gem Forge és Rune Forge között megosztottak; a cél szerkesztő megtartja saját érvényes Shape vagy Type-ját."
+  },
+  {
+   "key": "forge.personal",
+   "value": "Személyes"
+  },
+  {
+   "key": "forge.personalPresetDescription",
+   "value": "Személyes Forge előbeállítás, amelyet a Gem Forge és a Rune Forge megoszt."
+  },
+  {
+   "key": "forge.personalPresetName",
+   "value": "Személyes {{subject}} előbeállítás neve"
+  },
+  {
+   "key": "forge.personalPresetsLabel",
+   "value": "Személyes {{subject}} előbeállítások"
+  },
+  {
+   "key": "forge.presetCategories",
+   "value": "Előbeállítás kategóriák"
+  },
+  {
+   "key": "forge.presetName",
+   "value": "Előbeállítás neve"
+  },
+  {
+   "key": "forge.presets",
+   "value": "Előbeállítások"
+  },
+  {
+   "key": "forge.runeForge",
+   "value": "Rune Forge"
+  },
+  {
+   "key": "forge.runePresetDescription",
+   "value": "Ellenőrzött Caryll Rune előbeállítás."
+  },
+  {
+   "key": "forge.runePresetPlaceholder",
+   "value": "Válasszon rune előbeállítást"
+  },
+  {
+   "key": "forge.saveAsPreset",
+   "value": "Mentés előbeállításként"
+  },
+  {
+   "key": "forge.savedStatus",
+   "value": "Elmentve “{{name}}” a Saját előbeállításokba a Gem Forge és Rune Forge számára."
+  },
+  {
+   "key": "forge.sharedPresetsDescription",
+   "value": "Mentse el egyszer a szerkesztett gemet vagy runét, majd töltse be ugyanazt az előbeállítást a Gem Forge-ból vagy a Rune Forge-ból."
+  },
+  {
+   "key": "forge.sharedPresetsTitle",
+   "value": "Mindkét Forge által megosztott személyes előbeállítások"
+  },
+  {
+   "key": "forge.title",
+   "value": "Ellenőrzött hatások és egyéni készletek"
+  },
+  {
+   "key": "forge.unableToApply",
+   "value": "Nem sikerült alkalmazni ezt a változtatást."
+  },
+  {
+   "key": "home.eyebrow",
+   "value": "Offline karakterkezelés"
+  },
+  {
+   "key": "home.guide",
+   "value": "Olvassa el a dekódolási útmutatót"
+  },
+  {
+   "key": "home.lead",
+   "value": "Nyisson meg egy dekódolt Bloodborne karaktermentést az inventár, tulajdonságok, karakterbeállítások, főnökök és zászlók ellenőrzéséhez. A szerkesztő fájlmegnyitáskor létrehoz egy biztonsági másolatot; mindig tartsa meg, amíg az eredményt a játékban nem ellenőrizte."
+  },
+  {
+   "key": "home.stepOneDescription",
+   "value": "A PlayStationről exportált fájlokat dekódolni kell, mielőtt a szerkesztő olvasni tudja."
+  },
+  {
+   "key": "home.stepOneTitle",
+   "value": "Használjon dekódolt mentést"
+  },
+  {
+   "key": "home.stepThreeDescription",
+   "value": "Tesztelje az exportált fájlt, mielőtt eltávolítja az automatikus .bak másolatot."
+  },
+  {
+   "key": "home.stepThreeTitle",
+   "value": "Ellenőrizze, mielőtt felülírja"
+  },
+  {
+   "key": "home.stepTwoDescription",
+   "value": "Ellenőrizzen minden változtatást, és ne használjon módosított mentéseket online játékhoz."
+  },
+  {
+   "key": "home.stepTwoTitle",
+   "value": "Végezzen célzott szerkesztéseket"
+  },
+  {
+   "key": "home.title",
+   "value": "Szerkeszd megfontoltan. Őrizd meg a vadászatod."
+  },
+  {
+   "key": "inventory.addDescription",
+   "value": "Válasszon egy tárgyat egy biztonságos katalógusból, majd adja meg a mennyiséget."
+  },
+  {
+   "key": "inventory.addDialogLabel",
+   "value": "Katalógusból tárgy hozzáadása"
+  },
+  {
+   "key": "inventory.addDirect",
+   "value": "Közvetlen hozzáadás"
+  },
+  {
+   "key": "inventory.addDirectEquipment",
+   "value": "Fegyver vagy páncél hozzáadása"
+  },
+  {
+   "key": "inventory.addDirectUpgrade",
+   "value": "Befejezett gem vagy rune hozzáadása"
+  },
+  {
+   "key": "inventory.addEquipment",
+   "value": "Felszerelés hozzáadása"
+  },
+  {
+   "key": "inventory.addItem",
+   "value": "Tárgy hozzáadása"
+  },
+  {
+   "key": "inventory.addNotice",
+   "value": "A fegyverek és páncélok extra slotadatokat tartanak. Használja a Cserét meglévő fegyvernél/páncélnál a Hozzáadás helyett, hogy ezek az adatok érvényben maradjanak."
+  },
+  {
+   "key": "inventory.addSelected",
+   "value": "Kiválasztott tárgy hozzáadása"
+  },
+  {
+   "key": "inventory.cancel",
+   "value": "Mégse"
+  },
+  {
+   "key": "inventory.catalog",
+   "value": "Katalógus"
+  },
+  {
+   "key": "inventory.catalogArmors",
+   "value": "Páncél"
+  },
+  {
+   "key": "inventory.catalogChaliceItems",
+   "value": "Kelyhes tárgyak"
+  },
+  {
+   "key": "inventory.catalogGems",
+   "value": "Vérdrágakövek (kísérleti közvetlen hozzáadás)"
+  },
+  {
+   "key": "inventory.catalogItems",
+   "value": "Tárgyak és fogyóeszközök"
+  },
+  {
+   "key": "inventory.catalogKeyItems",
+   "value": "Kulcstárgyak"
+  },
+  {
+   "key": "inventory.catalogRunes",
+   "value": "Caryll-rúnák (kísérleti közvetlen hozzáadás)"
+  },
+  {
+   "key": "inventory.catalogWeapons",
+   "value": "Fegyverek"
+  },
+  {
+   "key": "inventory.close",
+   "value": "Bezárás"
+  },
+  {
+   "key": "inventory.closeAddLabel",
+   "value": "Hozzáadás bezárása"
+  },
+  {
+   "key": "inventory.closeReplaceLabel",
+   "value": "Cserélés bezárása"
+  },
+  {
+   "key": "inventory.directAddFailed",
+   "value": "A közvetlen hozzáadás nem volt biztonságosan végrehajtható."
+  },
+  {
+   "key": "inventory.directEquipmentDescription",
+   "value": "Hozzon létre közvetlenül egy katalógusolt fegyvert vagy páncélt, ha a mentés biztonságos, újrahasználható felszerelés-slot blokkot tartalmaz."
+  },
+  {
+   "key": "inventory.directEquipmentNotice",
+   "value": "Kísérleti: ez a művelet csak egy biztonságos, árva felszerelés-slot blokkot használ újra, és létrehoz öt zárt gem-slotot. Nyissa meg a slotokat később a Gems-szel, ha szükséges."
+  },
+  {
+   "key": "inventory.directUpgradeBuilder",
+   "value": "Közvetlen gem és rune készítő"
+  },
+  {
+   "key": "inventory.directUpgradeDescription",
+   "value": "Kész Vérdrágakő vagy Caryll-rúna létrehozása közvetlenül az ellenőrzött hatásokból, ha a mentésben biztonságos, újrahasználható rekord áll rendelkezésre."
+  },
+  {
+   "key": "inventory.directUpgradeNotice",
+   "value": "Kísérleti: ez a művelet csak egy biztonságos, árva fejlesztési rekordot használ újra. Soha nem módosítja a mentés elrendezését. Tartsa meg az automatikus biztonsági másolatot, amíg a karakter normálisan nem töltődik be."
+  },
+  {
+   "key": "inventory.directUpgradePrimaryRequired",
+   "value": "Válasszon egy ellenőrzött első hatást, mielőtt gemet vagy runét ad hozzá."
+  },
+  {
+   "key": "inventory.directUpgradeUnavailable",
+   "value": "Ennek a mentésnek nincs biztonságos, újrahasználható Gem/Rune rekordja. Nem történt változtatás. Hozzon létre kompatibilis slotot a játékban, majd próbálja újra."
+  },
+  {
+   "key": "inventory.edit",
+   "value": "Szerkesztés"
+  },
+  {
+   "key": "inventory.gems",
+   "value": "Drágakövek"
+  },
+  {
+   "key": "inventory.gemShape",
+   "value": "Gem forma"
+  },
+  {
+   "key": "inventory.item",
+   "value": "tárgy"
+  },
+  {
+   "key": "inventory.itemQuantity",
+   "value": "Tárgy mennyisége:"
+  },
+  {
+   "key": "inventory.matchingItems",
+   "value": "Egyező tárgyak"
+  },
+  {
+   "key": "inventory.noMatchingItem",
+   "value": "Nincs egyező tárgy."
+  },
+  {
+   "key": "inventory.quantity",
+   "value": "Mennyiség"
+  },
+  {
+   "key": "inventory.replaceDescription",
+   "value": "Válasszon kompatibilis {{type}}-ot a katalógusból. A hely pozíciója változatlan marad."
+  },
+  {
+   "key": "inventory.replaceDialogLabel",
+   "value": "Kiválasztott tárgy cseréje"
+  },
+  {
+   "key": "inventory.replaceItem",
+   "value": "Tárgy cseréje"
+  },
+  {
+   "key": "inventory.replacing",
+   "value": "Cserélés"
+  },
+  {
+   "key": "inventory.runeType",
+   "value": "Rune típus"
+  },
+  {
+   "key": "inventory.searchCatalog",
+   "value": "Katalógus keresése"
+  },
+  {
+   "key": "inventory.searchItems",
+   "value": "Keresés {{type}} tárgyak között"
+  },
+  {
+   "key": "inventory.selectNew",
+   "value": "Válasszon új {{type}}-ot"
+  },
+  {
+   "key": "inventory.setValue",
+   "value": "Beállít"
+  },
+  {
+   "key": "inventory.title",
+   "value": "Inventár"
+  },
+  {
+   "key": "inventory.type.armor",
+   "value": "páncél"
+  },
+  {
+   "key": "inventory.type.chalice",
+   "value": "tárgy"
+  },
+  {
+   "key": "inventory.type.item",
+   "value": "tárgy"
+  },
+  {
+   "key": "inventory.type.key",
+   "value": "tárgy"
+  },
+  {
+   "key": "inventory.type.weapon",
+   "value": "fegyver"
+  },
+  {
+   "key": "inventory.weaponLevel",
+   "value": "Fegyver szintje:"
+  },
+  {
+   "key": "language.label",
+   "value": "Nyelv"
+  },
+  {
+   "key": "nav.activeSave",
+   "value": "Aktív mentés"
+  },
+  {
+   "key": "nav.controls",
+   "value": "Mentésfájl-vezérlők"
+  },
+  {
+   "key": "nav.noSaveLoaded",
+   "value": "Nincs betöltött mentés"
+  },
+  {
+   "key": "nav.openFileToBegin",
+   "value": "Kezdéshez nyisson meg egy dekódolt karakterfájlt"
+  },
+  {
+   "key": "nav.openSave",
+   "value": "Mentés megnyitása"
+  },
+  {
+   "key": "nav.saveChanges",
+   "value": "Változtatások mentése"
+  },
+  {
+   "key": "operation.eyebrow",
+   "value": "Mentésadatok kezelése"
+  },
+  {
+   "key": "operation.preparing",
+   "value": "Szerkesztő előkészítése"
+  },
+  {
+   "key": "operation.title",
+   "value": "Kérjük, tartsa nyitva ezt az ablakot."
+  },
+  {
+   "key": "saveFlow.close",
+   "value": "Bezárás"
+  },
+  {
+   "key": "saveFlow.confirmSaveDescription",
+   "value": "Ez a művelet a jelenlegi szerkesztéseket írja a kiválasztott fájlba. Tartsa meg az automatikus .bak biztonsági másolatot, amíg a mentést a játékban nem ellenőrizte."
+  },
+  {
+   "key": "saveFlow.confirmSaveTitle",
+   "value": "Mentés megerősítése"
+  },
+  {
+   "key": "saveFlow.discardAndOpen",
+   "value": "Elvetés és megnyitás"
+  },
+  {
+   "key": "saveFlow.discardOpenDescription",
+   "value": "Vannak mentetlen változtatások. Egy másik mentés megnyitása elveti a jelenlegi szerkesztéseket."
+  },
+  {
+   "key": "saveFlow.discardOpenTitle",
+   "value": "Mentetlen változtatások elvetése?"
+  },
+  {
+   "key": "saveFlow.keepEditing",
+   "value": "Szerkesztés folytatása"
+  },
+  {
+   "key": "saveFlow.loadedStatus",
+   "value": "Mentés betöltve. Szerkesztés előtt biztonsági másolat készült."
+  },
+  {
+   "key": "saveFlow.openFailedDescription",
+   "value": "A kiválasztott fájl nem elemezhető. Válasszon egy dekódolt Bloodborne karaktermentést, majd próbálja újra."
+  },
+  {
+   "key": "saveFlow.openFailedTitle",
+   "value": "Nem lehet megnyitni a mentést"
+  },
+  {
+   "key": "saveFlow.openTitle",
+   "value": "Dekódolt Bloodborne mentés megnyitása"
+  },
+  {
+   "key": "saveFlow.saveCompletedDescription",
+   "value": "Tartsa meg a .bak biztonsági másolatot, amíg a szerkesztett mentést nem ellenőrizte."
+  },
+  {
+   "key": "saveFlow.saveCompletedTitle",
+   "value": "Mentés befejezve"
+  },
+  {
+   "key": "saveFlow.savedStatus",
+   "value": "Változtatások mentve."
+  },
+  {
+   "key": "saveFlow.saveFailedDescription",
+   "value": "A szerkesztett mentést nem sikerült menteni. Ellenőrizze a célhelyet és a jogosultságokat, majd próbálja újra."
+  },
+  {
+   "key": "saveFlow.saveFailedTitle",
+   "value": "Nem lehet menteni"
+  },
+  {
+   "key": "saveFlow.saveTitle",
+   "value": "Szerkesztett karakter mentése"
+  },
+  {
+   "key": "saveFlow.unsavedStatus",
+   "value": "Mentetlen változtatások"
+  },
+  {
+   "key": "sidebar.backupDescription",
+   "value": "Mentés megnyitásakor létrejön egy .bak másolat, mielőtt a szerkesztések megtörténnének."
+  },
+  {
+   "key": "sidebar.backupTitle",
+   "value": "Biztonsági mentés-első munkafolyamat"
+  },
+  {
+   "key": "sidebar.bosses",
+   "value": "Főnökök"
+  },
+  {
+   "key": "sidebar.bossesDescription",
+   "value": "Előrehaladási állapot"
+  },
+  {
+   "key": "sidebar.character",
+   "value": "Karakter"
+  },
+  {
+   "key": "sidebar.characterData",
+   "value": "Karakteradatok"
+  },
+  {
+   "key": "sidebar.characterDescription",
+   "value": "Identitás és pozíció"
+  },
+  {
+   "key": "sidebar.flags",
+   "value": "Zászlók"
+  },
+  {
+   "key": "sidebar.flagsDescription",
+   "value": "Speciális beállítások"
+  },
+  {
+   "key": "sidebar.inventory",
+   "value": "Inventár"
+  },
+  {
+   "key": "sidebar.inventoryDescription",
+   "value": "Tárgyak és felszerelés"
+  },
+  {
+   "key": "sidebar.stats",
+   "value": "Statisztikák"
+  },
+  {
+   "key": "sidebar.statsDescription",
+   "value": "Tulajdonságok és echo-k"
+  },
+  {
+   "key": "sidebar.storage",
+   "value": "Tároló"
+  },
+  {
+   "key": "sidebar.storageDescription",
+   "value": "Tárolt tárgyak"
+  },
+  {
+   "key": "sidebar.workspace",
+   "value": "Szerkesztő munkaterület"
+  },
+  {
+   "key": "unsaved.cancel",
+   "value": "Mégse"
+  },
+  {
+   "key": "unsaved.description",
+   "value": "A jelenlegi szerkesztések nincsenek mentve. Válassza a 'Változtatások mentése' lehetőséget a megtartáshoz, vagy zárjon be mentés nélkül az elvetéshez."
+  },
+  {
+   "key": "unsaved.discard",
+   "value": "Bezárás mentés nélkül"
+  },
+  {
+   "key": "unsaved.eyebrow",
+   "value": "Mentetlen változtatások"
+  },
+  {
+   "key": "unsaved.save",
+   "value": "Változtatások mentése"
+  },
+  {
+   "key": "unsaved.saving",
+   "value": "Mentés…"
+  },
+  {
+   "key": "unsaved.title",
+   "value": "Mentés bezárás előtt?"
+  },
+  {
+   "key": "update.available",
+   "value": "Frissítés elérhető"
+  },
+  {
+   "key": "update.downloadedMegabytes",
+   "value": "{{megabytes}} MB letöltve"
+  },
+  {
+   "key": "update.downloadingProgress",
+   "value": "Letöltés: {{percentage}}%"
+  },
+  {
+   "key": "update.downloadingSigned",
+   "value": "Aláírt frissítés letöltése…"
+  },
+  {
+   "key": "update.installedRestarting",
+   "value": "Frissítés telepítve. A szerkesztő újraindul…"
+  },
+  {
+   "key": "update.installFailed",
+   "value": "A frissítést nem sikerült telepíteni. A jelenlegi verzió változatlan maradt."
+  },
+  {
+   "key": "update.installing",
+   "value": "Frissítés telepítése…"
+  },
+  {
+   "key": "update.notNow",
+   "value": "Most nem"
+  },
+  {
+   "key": "update.startingDownload",
+   "value": "Biztonságos letöltés indítása…"
+  },
+  {
+   "key": "update.updateAndRestart",
+   "value": "Frissítés és újraindítás"
+  },
+  {
+   "key": "update.version",
+   "value": "Verzió {{version}}"
+  }
+ ],
+ "nb": [
+  {
+   "key": "actions.back",
+   "value": "Tilbake"
+  },
+  {
+   "key": "actions.change",
+   "value": "Endre"
+  },
+  {
+   "key": "actions.changesConfirmed",
+   "value": "Endringer bekreftet"
+  },
+  {
+   "key": "actions.confirm",
+   "value": "Bekreft"
+  },
+  {
+   "key": "actions.edit",
+   "value": "Rediger"
+  },
+  {
+   "key": "actions.reset",
+   "value": "Tilbakestill"
+  },
+  {
+   "key": "bosses.alive",
+   "value": "Levende"
+  },
+  {
+   "key": "bosses.dead",
+   "value": "Død"
+  },
+  {
+   "key": "characterForm.coordinates",
+   "value": "Koordinater:"
+  },
+  {
+   "key": "characterForm.name",
+   "value": "Navn:"
+  },
+  {
+   "key": "characterForm.playtime",
+   "value": "Spilletid:"
+  },
+  {
+   "key": "characterForm.selectLocation",
+   "value": "Velg en lokasjon"
+  },
+  {
+   "key": "characterForm.teleport",
+   "value": "Teleportering:"
+  },
+  {
+   "key": "flags.eyebrow",
+   "value": "Avanserte lagringsinnstillinger"
+  },
+  {
+   "key": "flags.introduction",
+   "value": "Kun byte-mønstre som er dokumentert uavhengig vises her. Ukjente offseter er bevisst utelatt for å beskytte lagringen mot utilsiktet korrupsjon."
+  },
+  {
+   "key": "flags.listLabel",
+   "value": "Kjente lagringsflagg"
+  },
+  {
+   "key": "flags.safetyDescription",
+   "value": "Utfør én endring om gangen, og bruk deretter Lagre endringer. Behold den automatisk opprettede sikkerhetskopien til karakteren laster normalt."
+  },
+  {
+   "key": "flags.safetyTitle",
+   "value": "Før du bruker et flagg"
+  },
+  {
+   "key": "flags.title",
+   "value": "Kjente flagg"
+  },
+  {
+   "key": "forge.buildSixEffect",
+   "value": "Bygg en seks-effekts {{subject}}"
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.description",
+   "value": "Bruker den innebygde +75 kontinuerlige HP-gjenopprettingseffekten med holdbarhet og skade-støtte."
+  },
+  {
+   "key": "forge.builtIn.abyssal-vitality.name",
+   "value": "Abyssal Vitality +75"
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.description",
+   "value": "Forsterkning av all skade med fysisk press og høy gjenopprettingsbonus."
+  },
+  {
+   "key": "forge.builtIn.all-damage-vanguard.name",
+   "value": "Vanguard"
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.description",
+   "value": "Forsterkning av all skade med full-helse press og gjenoppretting."
+  },
+  {
+   "key": "forge.builtIn.apex-nourishing.name",
+   "value": "Apex Nourishing"
+  },
+  {
+   "key": "forge.builtIn.apex-physical.description",
+   "value": "Fysisk skade, press ved full helse og støtte for holdbarhet."
+  },
+  {
+   "key": "forge.builtIn.apex-physical.name",
+   "value": "Apex Physical"
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.description",
+   "value": "Arcane-skade med støtte for gjenoppretting og holdbarhet."
+  },
+  {
+   "key": "forge.builtIn.arcane-surge.name",
+   "value": "Arcane Surge"
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.description",
+   "value": "Høy Bloodtinge-skade med støtte for all skade og gjenoppretting."
+  },
+  {
+   "key": "forge.builtIn.bloodtinge-hunter.name",
+   "value": "Bloodtinge Hunter"
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.description",
+   "value": "Høy stump skade med støtte for all skade og holdbarhet."
+  },
+  {
+   "key": "forge.builtIn.blunt-breaker.name",
+   "value": "Blunt Breaker"
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.description",
+   "value": "Lynskade med støtte for all skade og holdbarhet."
+  },
+  {
+   "key": "forge.builtIn.bolt-surge.name",
+   "value": "Bolt Surge"
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.description",
+   "value": "Arcane-, ild- og lyn-effekter i ett bevisst eksperimentelt oppsett."
+  },
+  {
+   "key": "forge.builtIn.elemental-ascendant.name",
+   "value": "Elemental Ascendant"
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.description",
+   "value": "Maksimale kjente gjenopprettings- og holdbarhetseffekter med bonus for full helse."
+  },
+  {
+   "key": "forge.builtIn.endless-hunt.name",
+   "value": "Endless Hunt"
+  },
+  {
+   "key": "forge.builtIn.flame-surge.description",
+   "value": "Ildskade med støtte for all skade og gjenoppretting."
+  },
+  {
+   "key": "forge.builtIn.flame-surge.name",
+   "value": "Flame Surge"
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.description",
+   "value": "Den sterkeste kjente samlede holdbarhetsbonusen kombinert med høy gjenoppretting og fysisk skade."
+  },
+  {
+   "key": "forge.builtIn.forged-endurance.name",
+   "value": "Forged Endurance"
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.description",
+   "value": "Stabler fysisk, all-skade og nær-død multiplikatorer kun for testing."
+  },
+  {
+   "key": "forge.builtIn.glass-cannon.name",
+   "value": "Glass Cannon"
+  },
+  {
+   "key": "forge.builtIn.last-stand.description",
+   "value": "Høye nær-død- og full-helse-multiplikatorer. Hold dette oppsettet offline."
+  },
+  {
+   "key": "forge.builtIn.last-stand.name",
+   "value": "Last Stand"
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.description",
+   "value": "Gjenoppretting, holdbarhet og støtte for all skade ved lange utforskningsøkter."
+  },
+  {
+   "key": "forge.builtIn.sustained-hunt.name",
+   "value": "Sustained Hunt"
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.description",
+   "value": "Høy stikkskade med støtte for all skade og holdbarhet."
+  },
+  {
+   "key": "forge.builtIn.thrust-specialist.name",
+   "value": "Thrust Specialist"
+  },
+  {
+   "key": "forge.cancel",
+   "value": "Avbryt"
+  },
+  {
+   "key": "forge.categories.All",
+   "value": "Alle"
+  },
+  {
+   "key": "forge.categories.Attack",
+   "value": "Angrep"
+  },
+  {
+   "key": "forge.categories.Custom",
+   "value": "Egendefinert"
+  },
+  {
+   "key": "forge.categories.Elemental",
+   "value": "Elemental"
+  },
+  {
+   "key": "forge.categories.Experimental",
+   "value": "Eksperimentell"
+  },
+  {
+   "key": "forge.categories.Personal",
+   "value": "Personlig"
+  },
+  {
+   "key": "forge.categories.Recovery",
+   "value": "Gjenoppretting"
+  },
+  {
+   "key": "forge.categories.Rune",
+   "value": "Rune"
+  },
+  {
+   "key": "forge.close",
+   "value": "Lukk"
+  },
+  {
+   "key": "forge.closeLabel",
+   "value": "Lukk {{subject}} Forge"
+  },
+  {
+   "key": "forge.confirm",
+   "value": "Bekreft"
+  },
+  {
+   "key": "forge.confirming",
+   "value": "Bekrefter…"
+  },
+  {
+   "key": "forge.convertConfirm",
+   "value": "Konverter denne {{source}} til en {{destination}}? Behold den automatiske sikkerhetskopien til du har testet lagringen."
+  },
+  {
+   "key": "forge.convertTo",
+   "value": "Konverter til {{subject}}"
+  },
+  {
+   "key": "forge.customDescription",
+   "value": "Egendefinert sett — {{count}} valgt(e) effekt(er)."
+  },
+  {
+   "key": "forge.customName",
+   "value": "Egendefinert {{subject}} Forge"
+  },
+  {
+   "key": "forge.customSet",
+   "value": "Egendefinert sett"
+  },
+  {
+   "key": "forge.customSetDescription",
+   "value": "Velg opptil seks validerte effekter. Tomme plasser forblir som Ingen effekt. Redigeringsprogrammet validerer hver valgt ID på nytt når du bekrefter."
+  },
+  {
+   "key": "forge.customSetLabel",
+   "value": "Egendefinert {{subject}}-effektsett"
+  },
+  {
+   "key": "forge.delete",
+   "value": "Slett"
+  },
+  {
+   "key": "forge.deleteConfirm",
+   "value": "Slett den personlige preset “{{name}}”?"
+  },
+  {
+   "key": "forge.dialogLabel",
+   "value": "Rediger {{subject}}"
+  },
+  {
+   "key": "forge.draftEmpty",
+   "value": "Velg minst én effekt for å laste et egendefinert utkast."
+  },
+  {
+   "key": "forge.draftPreview",
+   "value": "Utkastforhåndsvisning"
+  },
+  {
+   "key": "forge.editing",
+   "value": "Redigerer:"
+  },
+  {
+   "key": "forge.effect",
+   "value": "Effekt {{index}}"
+  },
+  {
+   "key": "forge.gemForge",
+   "value": "Gem Forge"
+  },
+  {
+   "key": "forge.loadCustomDraft",
+   "value": "Last egendefinert sett inn i utkast"
+  },
+  {
+   "key": "forge.loadIntoDraft",
+   "value": "Last inn i utkast"
+  },
+  {
+   "key": "forge.modeLabel",
+   "value": "{{subject}} Forge-modus"
+  },
+  {
+   "key": "forge.myPresets",
+   "value": "Mine presets"
+  },
+  {
+   "key": "forge.noEffect",
+   "value": "Ingen effekt"
+  },
+  {
+   "key": "forge.noPersonalPreset",
+   "value": "Ingen personlig preset er lagret ennå."
+  },
+  {
+   "key": "forge.noPersonalPresetDescription",
+   "value": "Rediger en gem eller rune, bruk så Lagre som preset for å gjøre den tilgjengelig i begge forges."
+  },
+  {
+   "key": "forge.notice",
+   "value": "Laste inn et preset oppdaterer bare det synlige utkastet. Velg Bekreft i redigeringsprogrammet for å skrive det til lagringen. Hver effekt under kommer fra redigeringsprogrammets innebygde validerte katalog. Personlige presets deles av Gem Forge og Rune Forge; målredigereren beholder sin egen gyldige Shape eller Type."
+  },
+  {
+   "key": "forge.personal",
+   "value": "Personlig"
+  },
+  {
+   "key": "forge.personalPresetDescription",
+   "value": "Personlig Forge-preset delt av Gem Forge og Rune Forge."
+  },
+  {
+   "key": "forge.personalPresetName",
+   "value": "Personlig {{subject}}-presetnavn"
+  },
+  {
+   "key": "forge.personalPresetsLabel",
+   "value": "Personlige {{subject}}-presets"
+  },
+  {
+   "key": "forge.presetCategories",
+   "value": "Preset-kategorier"
+  },
+  {
+   "key": "forge.presetName",
+   "value": "Preset-navn"
+  },
+  {
+   "key": "forge.presets",
+   "value": "Presets"
+  },
+  {
+   "key": "forge.runeForge",
+   "value": "Rune Forge"
+  },
+  {
+   "key": "forge.runePresetDescription",
+   "value": "Validert Caryll Rune-preset."
+  },
+  {
+   "key": "forge.runePresetPlaceholder",
+   "value": "Velg rune-preset"
+  },
+  {
+   "key": "forge.saveAsPreset",
+   "value": "Lagre som preset"
+  },
+  {
+   "key": "forge.savedStatus",
+   "value": "Lagret “{{name}}” i Mine presets for Gem Forge og Rune Forge."
+  },
+  {
+   "key": "forge.sharedPresetsDescription",
+   "value": "Lagre en redigert gem eller rune én gang, og last deretter samme preset fra Gem Forge eller Rune Forge."
+  },
+  {
+   "key": "forge.sharedPresetsTitle",
+   "value": "Personlige presets delt av begge forges"
+  },
+  {
+   "key": "forge.title",
+   "value": "Validerte effekter og egendefinerte sett"
+  },
+  {
+   "key": "forge.unableToApply",
+   "value": "Kan ikke anvende denne endringen."
+  },
+  {
+   "key": "home.eyebrow",
+   "value": "Offline karakterbehandling"
+  },
+  {
+   "key": "home.guide",
+   "value": "Les dekrypteringsveiledningen"
+  },
+  {
+   "key": "home.lead",
+   "value": "Åpne en dekryptert Bloodborne-karakterlagring for å inspisere inventar, attributter, karakterinnstillinger, sjefer og flagg. Redigeringsprogrammet oppretter en sikkerhetskopi når en fil åpnes; behold alltid denne til du har kontrollert resultatet i spillet."
+  },
+  {
+   "key": "home.stepOneDescription",
+   "value": "PlayStation-eksporter må dekrypteres før de kan leses av redigeringsprogrammet."
+  },
+  {
+   "key": "home.stepOneTitle",
+   "value": "Bruk en dekryptert lagring"
+  },
+  {
+   "key": "home.stepThreeDescription",
+   "value": "Test den eksporterte filen før du fjerner den automatiske .bak-kopien."
+  },
+  {
+   "key": "home.stepThreeTitle",
+   "value": "Verifiser før du erstatter"
+  },
+  {
+   "key": "home.stepTwoDescription",
+   "value": "Gå gjennom hver endring, og unngå å bruke endrede lagringer i nettspill."
+  },
+  {
+   "key": "home.stepTwoTitle",
+   "value": "Gjør målrettede endringer"
+  },
+  {
+   "key": "home.title",
+   "value": "Rediger med omhu. Bevar jakten."
+  },
+  {
+   "key": "inventory.addDescription",
+   "value": "Velg en gjenstand fra en sikker katalog og velg antallet."
+  },
+  {
+   "key": "inventory.addDialogLabel",
+   "value": "Legg til gjenstand fra katalogen"
+  },
+  {
+   "key": "inventory.addDirect",
+   "value": "Legg til direkte"
+  },
+  {
+   "key": "inventory.addDirectEquipment",
+   "value": "Legg til et våpen eller en rustning"
+  },
+  {
+   "key": "inventory.addDirectUpgrade",
+   "value": "Legg til en ferdig gem eller rune"
+  },
+  {
+   "key": "inventory.addEquipment",
+   "value": "Legg til utstyr"
+  },
+  {
+   "key": "inventory.addItem",
+   "value": "Legg til en gjenstand"
+  },
+  {
+   "key": "inventory.addNotice",
+   "value": "Våpen og rustning beholder tilleggsdata for slot. Bruk Erstatt på et eksisterende våpen eller rustning i stedet for Legg til, slik at disse dataene forblir gyldige."
+  },
+  {
+   "key": "inventory.addSelected",
+   "value": "Legg til valgt gjenstand"
+  },
+  {
+   "key": "inventory.cancel",
+   "value": "Avbryt"
+  },
+  {
+   "key": "inventory.catalog",
+   "value": "Katalog"
+  },
+  {
+   "key": "inventory.catalogArmors",
+   "value": "Rustning"
+  },
+  {
+   "key": "inventory.catalogChaliceItems",
+   "value": "Chalice-gjenstander"
+  },
+  {
+   "key": "inventory.catalogGems",
+   "value": "Blood Gems (eksperimentell direkte tillegg)"
+  },
+  {
+   "key": "inventory.catalogItems",
+   "value": "Gjenstander og forbruksvarer"
+  },
+  {
+   "key": "inventory.catalogKeyItems",
+   "value": "Nøkkelgjenstander"
+  },
+  {
+   "key": "inventory.catalogRunes",
+   "value": "Caryll Runes (eksperimentell direkte tillegg)"
+  },
+  {
+   "key": "inventory.catalogWeapons",
+   "value": "Våpen"
+  },
+  {
+   "key": "inventory.close",
+   "value": "Lukk"
+  },
+  {
+   "key": "inventory.closeAddLabel",
+   "value": "Lukk Legg til gjenstand"
+  },
+  {
+   "key": "inventory.closeReplaceLabel",
+   "value": "Lukk Erstatt gjenstand"
+  },
+  {
+   "key": "inventory.directAddFailed",
+   "value": "Det direkte tillegg kunne ikke fullføres på en sikker måte."
+  },
+  {
+   "key": "inventory.directEquipmentDescription",
+   "value": "Opprett et katalogført våpen eller rustning direkte når lagringen inneholder en sikker gjenbrukbar equipment-slot-blokk."
+  },
+  {
+   "key": "inventory.directEquipmentNotice",
+   "value": "Eksperimentelt: denne operasjonen gjenbruker kun en sikker foreldreløs equipment-slot-blokk og oppretter fem lukkede gem-slots. Åpne slotene senere med Gems om nødvendig."
+  },
+  {
+   "key": "inventory.directUpgradeBuilder",
+   "value": "Direkte gem- og runebygger"
+  },
+  {
+   "key": "inventory.directUpgradeDescription",
+   "value": "Opprett en ferdig Blood Gem eller Caryll Rune direkte fra validerte effekter når en sikker gjenbrukbar post er tilgjengelig i lagringen."
+  },
+  {
+   "key": "inventory.directUpgradeNotice",
+   "value": "Eksperimentelt: denne operasjonen gjenbruker kun en sikker foreldreløs oppgraderingspost. Den endrer aldri lagringsoppsettet. Behold den automatiske sikkerhetskopien til karakteren har lastet normalt."
+  },
+  {
+   "key": "inventory.directUpgradePrimaryRequired",
+   "value": "Velg en validert primæreffekt før du legger til en gem eller rune."
+  },
+  {
+   "key": "inventory.directUpgradeUnavailable",
+   "value": "Denne lagringen har ingen sikker gjenbrukbar Gem/Rune-post. Ingen endring ble gjort. Opprett en kompatibel slot i spillet, og prøv igjen."
+  },
+  {
+   "key": "inventory.edit",
+   "value": "Rediger"
+  },
+  {
+   "key": "inventory.gems",
+   "value": "Gems"
+  },
+  {
+   "key": "inventory.gemShape",
+   "value": "Gem-form"
+  },
+  {
+   "key": "inventory.item",
+   "value": "gjenstand"
+  },
+  {
+   "key": "inventory.itemQuantity",
+   "value": "Antall gjenstander:"
+  },
+  {
+   "key": "inventory.matchingItems",
+   "value": "Matchende gjenstander"
+  },
+  {
+   "key": "inventory.noMatchingItem",
+   "value": "Ingen matchende gjenstand funnet."
+  },
+  {
+   "key": "inventory.quantity",
+   "value": "Antall"
+  },
+  {
+   "key": "inventory.replaceDescription",
+   "value": "Velg en kompatibel {{type}} fra katalogen. Slot-posisjonen bevares."
+  },
+  {
+   "key": "inventory.replaceDialogLabel",
+   "value": "Erstatt valgt gjenstand"
+  },
+  {
+   "key": "inventory.replaceItem",
+   "value": "Erstatt gjenstand"
+  },
+  {
+   "key": "inventory.replacing",
+   "value": "Erstatter"
+  },
+  {
+   "key": "inventory.runeType",
+   "value": "Rune-type"
+  },
+  {
+   "key": "inventory.searchCatalog",
+   "value": "Søk i katalogen"
+  },
+  {
+   "key": "inventory.searchItems",
+   "value": "Søk etter {{type}}-gjenstander"
+  },
+  {
+   "key": "inventory.selectNew",
+   "value": "Velg en ny {{type}}"
+  },
+  {
+   "key": "inventory.setValue",
+   "value": "Angi"
+  },
+  {
+   "key": "inventory.title",
+   "value": "Inventar"
+  },
+  {
+   "key": "inventory.type.armor",
+   "value": "rustning"
+  },
+  {
+   "key": "inventory.type.chalice",
+   "value": "gjenstand"
+  },
+  {
+   "key": "inventory.type.item",
+   "value": "gjenstand"
+  },
+  {
+   "key": "inventory.type.key",
+   "value": "gjenstand"
+  },
+  {
+   "key": "inventory.type.weapon",
+   "value": "våpen"
+  },
+  {
+   "key": "inventory.weaponLevel",
+   "value": "Våpennivå:"
+  },
+  {
+   "key": "language.label",
+   "value": "Språk"
+  },
+  {
+   "key": "nav.activeSave",
+   "value": "Aktiv lagring"
+  },
+  {
+   "key": "nav.controls",
+   "value": "Kontroller for lagringsfil"
+  },
+  {
+   "key": "nav.noSaveLoaded",
+   "value": "Ingen lagring lastet"
+  },
+  {
+   "key": "nav.openFileToBegin",
+   "value": "Åpne en dekryptert karakterfil for å begynne"
+  },
+  {
+   "key": "nav.openSave",
+   "value": "Åpne lagring"
+  },
+  {
+   "key": "nav.saveChanges",
+   "value": "Lagre endringer"
+  },
+  {
+   "key": "operation.eyebrow",
+   "value": "Arbeider med lagringsdata"
+  },
+  {
+   "key": "operation.preparing",
+   "value": "Forbereder redigeringsprogrammet"
+  },
+  {
+   "key": "operation.title",
+   "value": "Vennligst hold dette vinduet åpent."
+  },
+  {
+   "key": "saveFlow.close",
+   "value": "Lukk"
+  },
+  {
+   "key": "saveFlow.confirmSaveDescription",
+   "value": "Dette skriver de nåværende endringene til den valgte filen. Behold den automatiske .bak-sikkerhetskopien til du har verifisert lagringen i spillet."
+  },
+  {
+   "key": "saveFlow.confirmSaveTitle",
+   "value": "Bekreft lagring"
+  },
+  {
+   "key": "saveFlow.discardAndOpen",
+   "value": "Forkast og åpne"
+  },
+  {
+   "key": "saveFlow.discardOpenDescription",
+   "value": "Du har ikke-lagrede endringer. Åpning av en annen lagring vil forkaste de nåværende endringene."
+  },
+  {
+   "key": "saveFlow.discardOpenTitle",
+   "value": "Forkast ikke-lagrede endringer?"
+  },
+  {
+   "key": "saveFlow.keepEditing",
+   "value": "Fortsett å redigere"
+  },
+  {
+   "key": "saveFlow.loadedStatus",
+   "value": "Lagring lastet. En sikkerhetskopi ble opprettet før redigering."
+  },
+  {
+   "key": "saveFlow.openFailedDescription",
+   "value": "Den valgte filen kunne ikke tolkes. Velg en dekryptert Bloodborne-karakterlagring og prøv igjen."
+  },
+  {
+   "key": "saveFlow.openFailedTitle",
+   "value": "Kan ikke åpne lagring"
+  },
+  {
+   "key": "saveFlow.openTitle",
+   "value": "Åpne dekryptert Bloodborne-lagring"
+  },
+  {
+   "key": "saveFlow.saveCompletedDescription",
+   "value": "Behold .bak-sikkerhetskopien til den redigerte lagringen er verifisert."
+  },
+  {
+   "key": "saveFlow.saveCompletedTitle",
+   "value": "Lagring fullført"
+  },
+  {
+   "key": "saveFlow.savedStatus",
+   "value": "Endringer lagret."
+  },
+  {
+   "key": "saveFlow.saveFailedDescription",
+   "value": "Den redigerte lagringen kunne ikke skrives. Sjekk målplassering og rettigheter, og prøv igjen."
+  },
+  {
+   "key": "saveFlow.saveFailedTitle",
+   "value": "Kan ikke lagre"
+  },
+  {
+   "key": "saveFlow.saveTitle",
+   "value": "Lagre redigert karakter"
+  },
+  {
+   "key": "saveFlow.unsavedStatus",
+   "value": "Ulagrede endringer"
+  },
+  {
+   "key": "sidebar.backupDescription",
+   "value": "Åpning av en lagring oppretter en .bak-kopi før endringer gjøres."
+  },
+  {
+   "key": "sidebar.backupTitle",
+   "value": "Sikkerhetskopi-først arbeidsflyt"
+  },
+  {
+   "key": "sidebar.bosses",
+   "value": "Sjefer"
+  },
+  {
+   "key": "sidebar.bossesDescription",
+   "value": "Fremdriftsstatus"
+  },
+  {
+   "key": "sidebar.character",
+   "value": "Karakter"
+  },
+  {
+   "key": "sidebar.characterData",
+   "value": "Karakterdata"
+  },
+  {
+   "key": "sidebar.characterDescription",
+   "value": "Identitet og posisjon"
+  },
+  {
+   "key": "sidebar.flags",
+   "value": "Flagg"
+  },
+  {
+   "key": "sidebar.flagsDescription",
+   "value": "Avanserte innstillinger"
+  },
+  {
+   "key": "sidebar.inventory",
+   "value": "Inventar"
+  },
+  {
+   "key": "sidebar.inventoryDescription",
+   "value": "Gjenstander og utstyr"
+  },
+  {
+   "key": "sidebar.stats",
+   "value": "Statistikk"
+  },
+  {
+   "key": "sidebar.statsDescription",
+   "value": "Attributter og ekkoer"
+  },
+  {
+   "key": "sidebar.storage",
+   "value": "Lager"
+  },
+  {
+   "key": "sidebar.storageDescription",
+   "value": "Lagrede gjenstander"
+  },
+  {
+   "key": "sidebar.workspace",
+   "value": "Redigeringsarbeidsområde"
+  },
+  {
+   "key": "unsaved.cancel",
+   "value": "Avbryt"
+  },
+  {
+   "key": "unsaved.description",
+   "value": "Dine nåværende endringer er ikke skrevet til en lagringsfil. Velg Lagre endringer for å beholde dem, eller lukk uten å lagre for å forkaste dem."
+  },
+  {
+   "key": "unsaved.discard",
+   "value": "Lukk uten å lagre"
+  },
+  {
+   "key": "unsaved.eyebrow",
+   "value": "Ulagrede endringer"
+  },
+  {
+   "key": "unsaved.save",
+   "value": "Lagre endringer"
+  },
+  {
+   "key": "unsaved.saving",
+   "value": "Lagrer…"
+  },
+  {
+   "key": "unsaved.title",
+   "value": "Lagre før lukking?"
+  },
+  {
+   "key": "update.available",
+   "value": "Oppdatering tilgjengelig"
+  },
+  {
+   "key": "update.downloadedMegabytes",
+   "value": "{{megabytes}} MB lastet ned"
+  },
+  {
+   "key": "update.downloadingProgress",
+   "value": "Laster ned: {{percentage}}%"
+  },
+  {
+   "key": "update.downloadingSigned",
+   "value": "Laster ned signert oppdatering…"
+  },
+  {
+   "key": "update.installedRestarting",
+   "value": "Oppdatering installert. Starter redigeringsprogrammet på nytt…"
+  },
+  {
+   "key": "update.installFailed",
+   "value": "Oppdateringen kunne ikke installeres. Din nåværende versjon er uendret."
+  },
+  {
+   "key": "update.installing",
+   "value": "Installerer oppdatering…"
+  },
+  {
+   "key": "update.notNow",
+   "value": "Ikke nå"
+  },
+  {
+   "key": "update.startingDownload",
+   "value": "Starter sikker nedlasting…"
+  },
+  {
+   "key": "update.updateAndRestart",
+   "value": "Oppdater og start på nytt"
+  },
+  {
+   "key": "update.version",
+   "value": "Versjon {{version}}"
+  }
+ ]
+}

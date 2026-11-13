@@ -169,7 +169,7 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
       console.error(reason);
       const message = typeof reason === "string" ? reason : "";
       setError(
-        /No safe unreferenced gem or rune record/i.test(message)
+        /No safe unreferenced gem or rune record|Gem\/Rune section is full/i.test(message)
           ? t("inventory.directUpgradeUnavailable")
           : isEquipment ? t("inventory.experimentalFailed") : message || t("inventory.directAddFailed"),
       );

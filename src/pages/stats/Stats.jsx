@@ -1,4 +1,6 @@
 import CharacterPresets from "../../components/CharacterPresets";
+import SaveCheckPanel from "../../components/SaveCheckPanel";
+import { recalculatedStats } from "../../utils/saveCheck";
 import { useContext, useEffect, useState, useRef } from "react";
 import { SaveContext } from "../../context/context";
 import Stat from "../../components/Stat";
@@ -98,11 +100,21 @@ function Stats() {
         justifyItems: "center",
 
         fontSize: "1.5rem",
-        background: `url(${images.backgrounds["statsBg.png"].src})`,
+        background: `url(${images.backgrounds["statsBg.webp"].src})`,
         backgroundSize: "cover",
       }}
     >
       <CharacterPresets stats={editedStats} onLoad={setEditedStats} disabled={busy}/>
+      <SaveCheckPanel
+        save={save}
+        draftStats={editedStats}
+        disabled={busy}
+        onRecalculate={() => {
+          // Only the draft changes; Confirm writes it like any other edit.
+          setEditedStats((current) => recalculatedStats(current));
+          setResetEpoch((current) => current + 1);
+        }}
+      />
       <div className="stats-fields">
         {editedStats
           .filter((stat) => !EDITABLE_STAT_NAMES.has(stat.name))

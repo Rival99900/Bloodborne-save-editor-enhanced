@@ -1,3 +1,5 @@
+import useDialogFocus from "../utils/useDialogFocus";
+import { getShapeIconPath } from "../utils/useDraw";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import {
@@ -102,6 +104,10 @@ function EditUpgrade({
   } = edited;
   const [isConfirming, setIsConfirming] = useState(false);
   const [forgeOpen, setForgeOpen] = useState(false);
+  // Escape closes the editor like Cancel; the Forge and confirmations stack above it.
+  const editorRef = useDialogFocus(() => {
+    if (!confirmInFlightRef.current) setEditScreen(false);
+  });
   const [conversionConfirmOpen, setConversionConfirmOpen] = useState(false);
   // Rune presets are one-time actions; this control never stores a selected value.
   // It always opens blank, including when the same Rune is edited repeatedly.
@@ -248,8 +254,9 @@ function EditUpgrade({
       // Surface it instead of failing silently — a rejected `invoke` previously left
       // Confirm looking like it did nothing at all, with no clue in the UI why.
       console.error("Unable to confirm the gem or rune edit.", error);
+      const message = typeof error === "string" ? error : error?.message;
       setConfirmError(
-        typeof error === "string" ? error : error?.message || t("forge.unableToApply"),
+        message || t("forge.unableToApply"),
       );
     } finally {
       confirmInFlightRef.current = false;
@@ -343,7 +350,7 @@ function EditUpgrade({
           onCancel={() => setConversionConfirmOpen(false)}
         />
       ) : null}
-      <div id="replaceScreen" className="upgrade-editor" role="dialog" aria-modal="true" aria-label={t("forge.dialogLabel", { subject: upgrade_type })}>
+      <div id="replaceScreen" ref={editorRef} className="upgrade-editor" role="dialog" aria-modal="true" aria-label={t("forge.dialogLabel", { subject: upgrade_type })}>
       {forgeOpen ? (
         <GemPresetPanel
           gemEffects={gemEffectCatalog}
@@ -466,20 +473,16 @@ function EditUpgrade({
           <div className="upgrade-editor__info">
             {upgrade_type === "Gem" ? (
               <>
-                <span
-                  style={{
-                    position: "absolute",
-                    right: "0.9375rem",
-                    top: "1.25rem",
-                  }}
-                >
-                  {rating}
-                </span>
+                <span className="upgrade-editor__rating-value">{rating}</span>
+                {getShapeIconPath(shape) ? (
+                  <img className="upgrade-editor__shape-icon" src={getShapeIconPath(shape)} alt="" aria-hidden="true" />
+                ) : null}
                 <SelectSearch
                   style={{
                     position: "absolute",
                     right: "0.9375rem",
-                    top: "3.75rem",
+                    // Centred on the Shape label row (top 3.95rem, height 1.6rem).
+                    top: "3.575rem",
                     width: "8.25rem",
                     textAlign: "right",
                   }}

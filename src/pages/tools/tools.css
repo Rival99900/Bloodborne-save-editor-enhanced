@@ -1,0 +1,180 @@
+/* F3/F4 Tools page. */
+.tools-workspace {
+  grid-column: 2 / -1;
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  height: 100%;
+  overflow-y: auto;
+  padding: 1.75rem 2rem;
+  font-family: var(--font-ui);
+  background-position: center;
+  background-size: cover;
+}
+
+/* The shared Flags header is centred; Tools keeps it aligned with its content. */
+.tools-workspace > .flags-workspace__header {
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  justify-self: stretch;
+}
+
+.tools-lead,
+.tools-note {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.tools-note {
+  font-size: 0.8rem;
+}
+
+.tools-trophies,
+.tools-compare {
+  display: grid;
+  gap: 1rem;
+}
+
+.trophy-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+}
+
+.trophy-column {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+
+.trophy-card {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(226, 195, 125, 0.25);
+  background: rgba(14, 14, 16, 0.78);
+}
+
+.trophy-card.is-done {
+  border-color: rgba(159, 194, 154, 0.55);
+}
+
+.trophy-card header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.trophy-card h2 {
+  margin: 0;
+  color: var(--color-gold-strong);
+  font-size: 1.05rem;
+}
+
+.trophy-card header p {
+  margin: 0.2rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+.trophy-card strong {
+  color: var(--color-text);
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.trophy-card.is-done strong {
+  color: #9fc29a;
+}
+
+.trophy-card ul {
+  display: grid;
+  gap: 0.2rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trophy-card li {
+  display: flex;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+}
+
+.trophy-card li.is-owned {
+  color: var(--color-text);
+}
+
+.trophy-card li.is-owned span {
+  color: #9fc29a;
+}
+
+.trophy-card li.is-missing {
+  color: var(--color-muted);
+}
+
+.tools-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.compare-file {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(226, 195, 125, 0.2);
+  background: rgba(14, 14, 16, 0.72);
+  font-size: 0.85rem;
+}
+
+.compare-file__label {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.compare-file__path {
+  overflow: hidden;
+  color: var(--color-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compare-table-wrap {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(14, 14, 16, 0.78);
+  font-size: 0.82rem;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+}
+
+.compare-table th {
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.compare-table code {
+  color: var(--color-text);
+}
+
+.compare-table small {
+  color: var(--color-muted);
+}

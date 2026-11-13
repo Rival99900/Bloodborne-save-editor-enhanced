@@ -604,12 +604,12 @@ impl Inventory {
         article_type: ArticleType,
         article_index: usize,
         _slot_index: usize,
-        _is_storage: bool,
+        is_storage: bool,
         level: u8,
     ) -> Result<Article, Error> {
         if let Some(articles_of_type) = self.articles.get_mut(&article_type) {
             if let Some(article) = articles_of_type.get_mut(article_index) {
-                article.set_imprint_and_upgrade(file_data, None, Some(level))
+                article.set_imprint_and_upgrade_in(file_data, None, Some(level), is_storage)
             } else {
                 Err(Error::CustomError(
                     "ERROR: There are no articles of the specified type.",
@@ -669,6 +669,30 @@ pub fn get_info_armor(
     Err(Error::CustomError(
         "ERROR: Failed to find info for the armor.",
     ))
+}
+
+/// Whether a weapon can be reinforced or re-imprinted (v0.7.0). NPC-only
+/// "Bloody" variants (x80000) and catalogue entries without a durability, such
+/// as Adella's End-Quest Dagger, have no +1 to +10 or Uncanny/Lost versions.
+pub fn weapon_is_upgradable(second_part: u32) -> bool {
+    let variant = (second_part % 100_000) - (second_part % 10_000);
+    if variant == 80_000 {
+        return false;
+    }
+    let base = second_part - (second_part % 10_000);
+    let weapons: Value = serde_json::from_str(include_str!("../../resources/weapons.json")).unwrap();
+    weapons
+        .as_object()
+        .unwrap()
+        .values()
+        .filter_map(|hand| hand.get(base.to_string()))
+        .any(|entry| entry.get("durability").is_some_and(|durability| !durability.is_null()))
+}
+
+/// Catalogue id (+0) of a weapon variant, if it exists.
+pub fn weapon_variant_exists(base_id: u32) -> bool {
+    let weapons: Value = serde_json::from_str(include_str!("../../resources/weapons.json")).unwrap();
+    weapons.as_object().unwrap().values().any(|hand| hand.get(base_id.to_string()).is_some())
 }
 
 pub fn get_info_weapon(

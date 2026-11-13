@@ -1,6 +1,6 @@
 {
   "10000": {
-    "item_img": "grey_wolf_cap.png",
+    "item_img": "grey_wolf_cap.webp",
     "item_name": "Grey Wolf Cap",
     "physicalDefense": {
       "physical": 50,
@@ -23,7 +23,7 @@
     "item_desc": "\nAttire of the retired hunter Djura. \nThis worn wolf cap was his trademark.\nDjura is known through his contact with the Powder Kegs,\nthe heretics of the workshop. He is said to have been \nboth uncommonly kind and dreadfully foolish.\n\nDjura felt defeated by the state of Old Yharnam,\nand renounced his hunter's vows."
   },
   "11000": {
-    "item_img": "charred_hunter_garb.png",
+    "item_img": "charred_hunter_garb.webp",
     "item_name": "Charred Hunter Garb",
     "physicalDefense": {
       "physical": 110,
@@ -46,7 +46,7 @@
     "item_desc": "\nOne of the staple articles of hunter attire, fashioned at the \nworkshop.\nA product of the scourge of the beast that once plagued Old \nYharnam and culminated in the town's fiery cleansing.\nThe cape's dampness makes it highly resistant to fire.\nWearers of this attire hunted down victims of the scourge w\nho survived the raging flames and stench of singed blood."
   },
   "12000": {
-    "item_img": "charred_hunter_gloves.png",
+    "item_img": "charred_hunter_gloves.webp",
     "item_name": "Charred Hunter Gloves",
     "physicalDefense": {
       "physical": 60,
@@ -69,7 +69,7 @@
     "item_desc": "\nOne of the staple articles of hunter attire, fashioned at the workshop.\nA product of the scourge of the beast that once plagued Old \nYharnam and culminated in the town's fiery cleansing.\nDesigned to be highly resistant to fire. Wearers of this attire \nhunted down victims of the scourge who survived the raging \nflames and stench of singed blood."
   },
   "13000": {
-    "item_img": "charred_hunter_trousers.png",
+    "item_img": "charred_hunter_trousers.webp",
     "item_name": "Charred Hunter Trousers",
     "physicalDefense": {
       "physical": 60,
@@ -92,7 +92,7 @@
     "item_desc": "\nOne of the staple articles of hunter attire, fashioned at the \nworkshop.\nA product of the scourge of the beast that once plagued Old \nYharnam and culminated in the town's fiery cleansing.\nDesigned to be highly resistant to fire. Wearers of this attire \nhunted down victims of the scourge who survived the raging \nflames and stench of singed blood."
   },
   "20000": {
-    "item_img": "black_hooded_iron_helm.png",
+    "item_img": "black_hooded_iron_helm.webp",
     "item_name": "Black Hooded Iron Helm",
     "physicalDefense": {
       "physical": 60,
@@ -115,7 +115,7 @@
     "item_desc": "\nIron helmet worn by hunters of the Unseen Village.\nThe hunters of Yahar'gul answer to the village's founders,\nthe School of Mensis. Hunters in name only, these\nkidnappers wear their black hoods low to shadow their\neyes.\nThis helm is made of metal, a rarity for hunter garb, and has\nhigh defence, but only against physical attacks."
   },
   "21000": {
-    "item_img": "yahar'gul_black_garb.png",
+    "item_img": "yahar'gul_black_garb.webp",
     "item_name": "Yahar'gul Black Garb",
     "physicalDefense": {
       "physical": 110,
@@ -138,7 +138,7 @@
     "item_desc": "\nThick black pullover worn by hunters of the Unseen Village.\nThe hunters of Yahar'gul answer to the village's founders,\nthe School of Mensis. Hunters in name only, these\nkidnappers blend into the night wearing this attire.\nDesigned primarily to defend from physical attacks, the\nbinding of thick rope serves both to protect its wearer, and\nrestrain his foes."
   },
   "22000": {
-    "item_img": "yahar'gul_black_gloves.png",
+    "item_img": "yahar'gul_black_gloves.webp",
     "item_name": "Yahar'gul Black Gloves",
     "physicalDefense": {
       "physical": 50,
@@ -161,7 +161,7 @@
     "item_desc": "\nThick black gloves worn by hunters of the Unseen Village.\nThe hunters of Yahar'gul answer to the village's founders,\nthe School of Mensis. Hunters in name only, these\nkidnappers blend into the night wearing this attire.\nDesigned primarily to defend from physical attacks."
   },
   "23000": {
-    "item_img": "yahar'gul_black_trousers.png",
+    "item_img": "yahar'gul_black_trousers.webp",
     "item_name": "Yahar'gul Black Trousers",
     "physicalDefense": {
       "physical": 60,
@@ -184,7 +184,7 @@
     "item_desc": "\nThick black trousers worn by hunters of the Unseen Village.\nThe hunters of Yahar'gul answer to the village's founders,\nthe School of Mensis. Hunters in name only, these\nkidnappers blend into the night wearing this attire.\nDesigned primarily to defend from physical attacks."
   },
   "30000": {
-    "item_img": "graveguard_mask.png",
+    "item_img": "graveguard_mask.webp",
     "item_name": "Graveguard Mask",
     "physicalDefense": {
       "physical": 40,
@@ -207,7 +207,7 @@
     "item_desc": "\nMask of Dores, graveguard of the Forbidden Woods.\nHis pale countenance mimics the labyrinth watchers. \nWillem kept two loyal servants back at Byrgenwerth. Whenthey were sent into the labyrinth, they encountered theeldritch Truth, and went mad. One became the passwordgatekeeper, while Dores became a graveguard of the forest.\nBoth remained loyal, even in madness."
   },
   "31000": {
-    "item_img": "graveguard_robe.png",
+    "item_img": "graveguard_robe.webp",
     "item_name": "Graveguard Robe",
     "physicalDefense": {
       "physical": 80,
@@ -230,7 +230,7 @@
     "item_desc": "\nRobe of Dores, graveguard of the Forbidden Woods.\nCountless bloodied ritual tools hang from its back.\nWillem kept two loyal servants back at Byrgenwerth. When they were sent into the labyrinth, they encountered the eldritch Truth, and went mad. One became the password gatekeeper, while Dores became a graveguard of the forest.\nBoth remained loyal, even in madness."
   },
   "32000": {
-    "item_img": "graveguard_manchettes.png",
+    "item_img": "graveguard_manchettes.webp",
     "item_name": "Graveguard Manchettes",
     "physicalDefense": {
       "physical": 40,
@@ -253,7 +253,7 @@
     "item_desc": "\nManchettes of Dores, graveguard of the Forbidden Woods.\nCovered in the blood of untidy rituals.\nWillem kept two loyal servants back at Byrgenwerth. When  they were sent into the labyrinth, they encountered the  eldritch Truth, and went mad. One became the password  gatekeeper, while Dores became a graveguard of the forest.\nBoth remained loyal, even in madness."
   },
   "33000": {
-    "item_img": "graveguard_kilt.png",
+    "item_img": "graveguard_kilt.webp",
     "item_name": "Graveguard Kilt",
     "physicalDefense": {
       "physical": 50,
@@ -276,7 +276,7 @@
     "item_desc": "\nLeggings of Dores, graveguard of the Forbidden Woods.\nCovered in the blood of untidy rituals.\nWillem kept two loyal servants back at Byrgenwerth. When they were sent into the labyrinth, they encountered the eldritch Truth, and went mad. One became the password gatekeeper, while Dores became a graveguard of the forest.\nBoth remained loyal, even in madness."
   },
   "40000": {
-    "item_img": "bone_ash_mask.png",
+    "item_img": "bone_ash_mask.webp",
     "item_name": "Bone Ash Mask",
     "physicalDefense": {
       "physical": 60,
@@ -299,7 +299,7 @@
     "item_desc": "\nA mask made of bone ash, worn by the oldest keepers.           \nThe keepers, who mind the slumbering great Ones, gained\n eternal life, preserved in ashen form in a ceremony of flame that cremated body and soul.            \nThe long, pointed hat is a symbol of the old keepers and is considered evidence of their companionship, forged in a certain sin."
   },
   "41000": {
-    "item_img": "bone_ash_armor.png",
+    "item_img": "bone_ash_armor.webp",
     "item_name": "Bone Ash Armor",
     "physicalDefense": {
       "physical": 110,
@@ -322,7 +322,7 @@
     "item_desc": "Armor made of bone ash, worn by the oldest keepers.\n\nThe keepers, who mind the slumbering great Ones, gained\neternal life, preserved in ashen form in a ceremony of flame\nthat cremated body and soul.\n\nNow, their frail armor is white and sinewy, a window into\nan arcane lost art."
   },
   "42000": {
-    "item_img": "bone_ash_gauntlets.png",
+    "item_img": "bone_ash_gauntlets.webp",
     "item_name": "Bone Ash Gauntlets",
     "physicalDefense": {
       "physical": 60,
@@ -345,7 +345,7 @@
     "item_desc": "\nGauntlets made of bone ash, worn by the oldest keepers.       \nThe keepers, who mind the slumbering great Ones, gainedeternal life, preserved in ashen form in  a ceremony of flame  that cremated body and soul.           \nNow, their frail armor is white and sinewy, a window into  an arcane lost art."
   },
   "43000": {
-    "item_img": "bone_ash_leggings.png",
+    "item_img": "bone_ash_leggings.webp",
     "item_name": "Bone Ash Leggings",
     "physicalDefense": {
       "physical": 60,
@@ -368,7 +368,7 @@
     "item_desc": "\nLeggings made of bone ash, worn by the oldest keepers.            \nThe keepers, who mind the slumbering great Ones, gained eternal life, preserved in ashen form in a ceremony of flame that cremated body and soul.           \nNow, their frail armor is white and sinewy, a window into an arcane lost art."
   },
   "50000": {
-    "item_img": "henryk's_hunter_cap.png",
+    "item_img": "henryk's_hunter_cap.webp",
     "item_name": "Henryk's Hunter Cap",
     "physicalDefense": {
       "physical": 50,
@@ -391,7 +391,7 @@
     "item_desc": "\nHunter's hat worn by Henryk, the old hunter.\nThe taciturn old hunter Henryk was once partners with \nFather Gascoigne, and though they were a fierce and gallant \nduo, their partnership led to Henryk's tragically long life.\nHenryk's unique yellow garb is resistant to bolt and will be \nof great help to any hunter who has inherited the onus of the \nhunt."
   },
   "51000": {
-    "item_img": "henryk's_hunter_garb.png",
+    "item_img": "henryk's_hunter_garb.webp",
     "item_name": "Henryk's Hunter Garb",
     "physicalDefense": {
       "physical": 100,
@@ -414,7 +414,7 @@
     "item_desc": "\nHunter's attire worn by Henryk, the old hunter.\nThe taciturn old hunter Henryk was once partners with \nFather Gascoigne, and though they were a fierce and gallant \nduo, their partnership led to Henryk's tragically long life.\nHenryk's unique yellow garb is resistant to bolt and will be \nof great help to any hunter who has inherited the onus of the \nhunt."
   },
   "52000": {
-    "item_img": "henryk's_hunter_gloves.png",
+    "item_img": "henryk's_hunter_gloves.webp",
     "item_name": "Henryk's Hunter Gloves",
     "physicalDefense": {
       "physical": 50,
@@ -437,7 +437,7 @@
     "item_desc": "\nHunter's attire worn by Henryk, the old hunter.\nThe taciturn old hunter Henryk was once partners with \nFather Gascoigne, and though they were a fierce and gallant \nduo, their partnership led to Henryk's tragically long life.\nHenryk's unique yellow garb is resistant to bolt and will be \nof great help to any hunter who has inherited the onus of the \nhunt."
   },
   "53000": {
-    "item_img": "henryk's_hunter_trousers.png",
+    "item_img": "henryk's_hunter_trousers.webp",
     "item_name": "Henryk's Hunter Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -460,7 +460,7 @@
     "item_desc": "\nHunter's trousers worn by Henryk, the old hunter.\nThe taciturn old hunter Henryk was once partners with \nFather Gascoigne, and though they were a fierce and gallant \nduo, their partnership led to Henryk's tragically long life.\nHenryk's unique yellow garb is resistant to bolt and will be \nof great help to any hunter who has inherited the onus of the \nhunt."
   },
   "60000": {
-    "item_img": "yharnam_hunter_cap.png",
+    "item_img": "yharnam_hunter_cap.webp",
     "item_name": "Yharnam Hunter Cap",
     "physicalDefense": {
       "physical": 50,
@@ -483,7 +483,7 @@
     "item_desc": "\nLudwig, the first hunter of the Healing Church, \nonce recruited Yharnamites to serve as hunters.\nThis hunter's attire was made for new recruits, \nand has excellent straightforward defense.\nBut not nearly enough to allow an ordinary\nman to stand any real chance against the beasts."
   },
   "61000": {
-    "item_img": "yharnam_hunter_garb.png",
+    "item_img": "yharnam_hunter_garb.webp",
     "item_name": "Yharnam Hunter Garb",
     "physicalDefense": {
       "physical": 110,
@@ -506,7 +506,7 @@
     "item_desc": "\nLudwig, the first hunter of the Healing Church, \nonce recruited Yharnamites to serve as hunters.\nThis hunter's attire was made for new recruits, \nand has excellent straightforward defense.\nBut not nearly enough to allow an ordinary \nman to stand any real chance against the beasts."
   },
   "62000": {
-    "item_img": "yharnam_hunter_trousers.png",
+    "item_img": "yharnam_hunter_trousers.webp",
     "item_name": "Yharnam Hunter Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -529,7 +529,7 @@
     "item_desc": "\nLudwig, the first hunter of the Healing Church, \nonce recruited Yharnamites to serve as hunters.\nThis hunter's attire was made for new recruits, \nand has excellent straightforward defense.\nBut not nearly enough to allow an ordinary \nman to stand any real chance against the beasts."
   },
   "63000": {
-    "item_img": "yharnam_hunter_gloves.png",
+    "item_img": "yharnam_hunter_gloves.webp",
     "item_name": "Yharnam Hunter Gloves",
     "physicalDefense": {
       "physical": 40,
@@ -552,7 +552,7 @@
     "item_desc": "\nLudwig, the first hunter of the Healing Church, \nonce recruited Yharnamites to serve as hunters.\nThis hunter's attire was made for new recruits, \nand has excellent straightforward defense.\nBut not nearly enough to allow an ordinary \nman to stand any real chance against the beasts.\n"
   },
   "70000": {
-    "item_img": "hunter_hat.png",
+    "item_img": "hunter_hat.webp",
     "item_name": "Hunter Hat",
     "physicalDefense": {
       "physical": 50,
@@ -575,7 +575,7 @@
     "item_desc": "\nOne of the standard articles of hunter attire fashioned at the \nworkshop.\nA fine piece of hunter attire that provides stable defence to \nanyone facing Yharnam's beastly threat.\nRecognizable by its withered feathers, this cap is fashioned \nafter one of the old hunters."
   },
   "71000": {
-    "item_img": "hunter_garb_(cape).png",
+    "item_img": "hunter_garb_(cape).webp",
     "item_name": "Hunter Garb (Cape)",
     "physicalDefense": {
       "physical": 110,
@@ -598,7 +598,7 @@
     "item_desc": "\nOne of the standard articles of hunter attire fashioned at the workshop, accompanied with a short cape to wipe away  blood.\nA fine piece of hunter attire that provides stable defence to \nanyone facing Yharnam's beastly threat.\nAllows one to stalk beasts unannounced, by cover of night."
   },
   "72000": {
-    "item_img": "hunter_gloves.png",
+    "item_img": "hunter_gloves.webp",
     "item_name": "Hunter Gloves",
     "physicalDefense": {
       "physical": 50,
@@ -621,7 +621,7 @@
     "item_desc": "\nOne of the standard articles of hunter attire fashioned at the \nworkshop.\nA fine piece of hunter attire the provides stable defence to \nanyone facing Yharnam's beastly threat.\nAllows one to stalk beasts unannounced, by cover of night."
   },
   "73000": {
-    "item_img": "hunter_trousers.png",
+    "item_img": "hunter_trousers.webp",
     "item_name": "Hunter Trousers",
     "physicalDefense": {
       "physical": 60,
@@ -644,7 +644,7 @@
     "item_desc": "\nOne of the standard articles of hunter attire fashioned at the \nworkshop.\nA fine piece of hunter attire that provides stable defence to \nanyone facing Yharnam's beastly threat.\nAllows one to stalk beasts unannounced, by cover of night."
   },
   "80000": {
-    "item_img": "knight's_wig.png",
+    "item_img": "knight's_wig.webp",
     "item_name": "Knight's Wig",
     "physicalDefense": {
       "physical": 30,
@@ -667,7 +667,7 @@
     "item_desc": "\nAdornment prized by the knights of Cainhurst.\nResembles a ponytail of silver hair.\nThe Cainhurst way is a mix of nostalgia and bombast. Theytake great pride even in the blood-stained corpses of beasts that they leave behind, confident that they will stand as example of decadent art."
   },
   "81000": {
-    "item_img": "knight's_garb.png",
+    "item_img": "knight's_garb.webp",
     "item_name": "Knight's Garb",
     "physicalDefense": {
       "physical": 90,
@@ -690,7 +690,7 @@
     "item_desc": "\nAttire of the knights of Cainhurst.\nA regal piece graced by intricate goldwork.\nThe Cainhurst way is a mix of nostalgia and bombast. Theytake great pride even in the blood-stained corpses of beasts that they leave behind, confident that they will stand as examples of decadent art."
   },
   "82000": {
-    "item_img": "knight's_gloves.png",
+    "item_img": "knight's_gloves.webp",
     "item_name": "Knight's Gloves",
     "physicalDefense": {
       "physical": 40,
@@ -713,7 +713,7 @@
     "item_desc": "\nGloves of the knights of Cainhurst.\nA regal piece graced with goldwork on red fabric.\nThe Cainhurst way is a mix of nostalgia and bombast. They take great pride even in the blood-stained corpses of beasts that they leave behind, confident that they will stand as examples of decadent art."
   },
   "83000": {
-    "item_img": "knight's_trousers.png",
+    "item_img": "knight's_trousers.webp",
     "item_name": "Knight's Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -736,7 +736,7 @@
     "item_desc": "\nAttire of the knights of Cainhurst.\nA regal piece made with the finest leather.\nThe Cainhurst way is a mix of nostalgia and bombast.\nThey take great pride even in the blood-stained\ncorpses of beasts that they leave behind, confident\nthat they will stand as examples of decadent art."
   },
   "90000": {
-    "item_img": "en5304.png",
+    "item_img": "en5304.webp",
     "item_name": "[CUT] en5304.",
     "physicalDefense": {
       "physical": 0,
@@ -759,7 +759,7 @@
     "item_desc": "Cut content."
   },
   "91000": {
-    "item_img": "en5305.png",
+    "item_img": "en5305.webp",
     "item_name": "[CUT] en5305 (FEMALE).",
     "physicalDefense": {
       "physical": 0,
@@ -782,7 +782,7 @@
     "item_desc": "Cut content."
   },
   "100000": {
-    "item_img": "cainhurst_helmet.png",
+    "item_img": "cainhurst_helmet.webp",
     "item_name": "Cainhurst Helmet",
     "physicalDefense": {
       "physical": 60,
@@ -805,7 +805,7 @@
     "item_desc": "\n\nSilver helmet worn by the royal guards who protect\nAnnalise, Queen of the Vilebloods at Cainhurst Castle.\nThis paper-thin silver armor is said to deflect blood of ill-\nintent, and is what allows the royal guards to capture prey\nfor their beloved Queen, so that one day, she may bear a\nChild of Blood."
   },
   "101000": {
-    "item_img": "cainhurst_armor.png",
+    "item_img": "cainhurst_armor.webp",
     "item_name": "Cainhurst Armor",
     "physicalDefense": {
       "physical": 120,
@@ -828,7 +828,7 @@
     "item_desc": "\nSilver armor worn by the royal guards who protect Annalise,\nQueen of the Vilebloods at Cainhurst Castle.\nThis paper-thin silver armor is said to deflect blood of ill-\nintent, and is what allows the royal guards to capture prey\nfor their beloved Queen, so that one day, she may bear a\nChild of Blood."
   },
   "102000": {
-    "item_img": "cainhurst_gauntlets.png",
+    "item_img": "cainhurst_gauntlets.webp",
     "item_name": "Cainhurst Gauntlets",
     "physicalDefense": {
       "physical": 60,
@@ -851,7 +851,7 @@
     "item_desc": "\nSilver gauntlets worn by the royal guards who protect\nAnnalise, Queen of the Vilebloods at Cainhurst Castle.\nThis paper-thin silver armor is said to deflect blood of ill-\nintent, and is what allows the royal guards to capture prey\nfor their beloved Queen, so that one day, she may bear a\nChild of Blood."
   },
   "103000": {
-    "item_img": "cainhurst_leggings.png",
+    "item_img": "cainhurst_leggings.webp",
     "item_name": "Cainhurst Leggings",
     "physicalDefense": {
       "physical": 60,
@@ -874,7 +874,7 @@
     "item_desc": "\nSilver leggings worn by the royal guards who protect \nAnnalise, Queen of the Vilebloods at Cainhurst Castle.\nThis paper-thin silver armor is said to deflect blood of ill-\nintent, and is what allows the royal guards to capture prey\nfor their beloved Queen, so that one day, she may bear a\nChild of Blood."
   },
   "110000": {
-    "item_img": "black_church_hat.png",
+    "item_img": "black_church_hat.webp",
     "item_name": "Black Church Hat",
     "physicalDefense": {
       "physical": 40,
@@ -897,7 +897,7 @@
     "item_desc": "\nAttire of Healing Church hunters.\nMost Healing Church hunters are elementary doctors whounderstand the importance of early prevention of the scourge, achived by disposing of victims, and even potential victims, before signs of sickness manifest themselves.\nTheir black attire is synonymous with fear, and that peculiar Yharnam madness."
   },
   "111000": {
-    "item_img": "black_church_garb.png",
+    "item_img": "black_church_garb.webp",
     "item_name": "Black Church Garb",
     "physicalDefense": {
       "physical": 90,
@@ -920,7 +920,7 @@
     "item_desc": "\nAttire of Healing Church hunters. The Holy Shawl, symbol ofthe Healing Church, flutters proudly on their backs.\nMost Healing Church hunters are elementary doctors whounderstand the importance of early prevention of the scourge, achieved by disposing of victims, and even potentialvictims, before signs of sickness manifest themselves.\nTheir black attire is synonymous with fear, and that peculiar Yharnam madness."
   },
   "112000": {
-    "item_img": "surgical_long_gloves.png",
+    "item_img": "surgical_long_gloves.webp",
     "item_name": "Surgical Long Gloves",
     "physicalDefense": {
       "physical": 40,
@@ -943,7 +943,7 @@
     "item_desc": "\nWhite surgical gloves. The intricate embroidery weaves a spell that protects their wearer.\nThe Church engages in the hunt in a medical capacity. \nWhen a cancer is discovered, one must pinpoint its location, reach in, and wrench it from the host's bosom."
   },
   "113000": {
-    "item_img": "black_church_trousers_or_dress.png",
+    "item_img": "black_church_trousers_or_dress.webp",
     "item_name": "Black Church Trousers/Dress",
     "physicalDefense": {
       "physical": 50,
@@ -966,7 +966,7 @@
     "item_desc": "\nAttire of Healing Church hunters.\nMost Healing Church hunters are elementary doctors who understand the importance of early prevention of the scourge, achived by disposing of victims, and even potential victims, before signs of sickness manifest themselves.\nTheir black attire is synonymous with fear, and that peculiar Yharnam madness."
   },
   "120000": {
-    "item_img": "blindfold_cap.png",
+    "item_img": "blindfold_cap.webp",
     "item_name": "Blindfold Cap",
     "physicalDefense": {
       "physical": 30,
@@ -989,7 +989,7 @@
     "item_desc": "Attire of the Choir, high-ranking members of the Healing Church.\nMembers of the Choir are both the highest-ranking clerics of \n  the Healing Church, and scholars who continue the work\n  that began at Byrgenwerth.\nThe eye covering indicates their debt to the teachings of\n  Master Willem, even though their paths diverged."
   },
   "121000": {
-    "item_img": "choir_garb.png",
+    "item_img": "choir_garb.webp",
     "item_name": "Choir Garb",
     "physicalDefense": {
       "physical": 80,
@@ -1012,7 +1012,7 @@
     "item_desc": "\nAttire of the Choir, high-ranking members of the Healing Church.\nMembers of the Choir are both the highest-ranking clerics of the Healing Church, and scholars who continue the work that began at Byrgenwerth.\nTogether with the left behind Great One, they look to the skies, in search of astral signs, that may lead them to the rediscovery of true greatness."
   },
   "122000": {
-    "item_img": "choir_gloves.png",
+    "item_img": "choir_gloves.webp",
     "item_name": "Choir Gloves",
     "physicalDefense": {
       "physical": 40,
@@ -1035,7 +1035,7 @@
     "item_desc": "\nAttire of the Choir, high-ranking members of the Healing Church.\nMembers of the Choir are both the highest-ranking clerics of the Healing Church, and scholars who continue the work that began at Byrgenwerth.\nTogether with the left behind Great One, they look to the skies, in search of astral signs, that may lead them to the rediscovery of true greatness."
   },
   "123000": {
-    "item_img": "choir_trousers.png",
+    "item_img": "choir_trousers.webp",
     "item_name": "Choir Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -1058,7 +1058,7 @@
     "item_desc": "\nAttire of the Choir, high-ranking members of the Healing Church.\nMembers of the Choir are both the highest-ranking clerics of the Healing Church, and scholars who continue the work that began at Byrgenwerth.\nTogether with the left behind Great One, they look to the skies, in search of astral signs, that may lead them to the rediscovery of true greatness."
   },
   "130000": {
-    "item_img": "gascoigne's_cap.png",
+    "item_img": "gascoigne's_cap.webp",
     "item_name": "Gascoigne's Cap",
     "physicalDefense": {
       "physical": 40,
@@ -1081,7 +1081,7 @@
     "item_desc": "\nHunter attire worn by Father Gascoigne.\nSimilar to the hunter garb created at the workshop, only these are tainted by a pungent beastly stench that eats away at Gascoigne.\n\"Father\" is a title used for clerics in a foreign land, and there is no such rank in the Healing Church."
   },
   "131000": {
-    "item_img": "gascoigne's_garb.png",
+    "item_img": "gascoigne's_garb.webp",
     "item_name": "Gascoigne's Garb",
     "physicalDefense": {
       "physical": 90,
@@ -1104,7 +1104,7 @@
     "item_desc": "\nHunter attire worn by Father Gascoigne.\nThe Dingy scarf is a Holy Shawl and symbol of the HealingChurch, from which Gascoigne would eventually part ways.\n\"Father\" is a title used for clerics in a foreign land, and thereis no such rank in the Healing Church."
   },
   "132000": {
-    "item_img": "gascoigne's_gloves.png",
+    "item_img": "gascoigne's_gloves.webp",
     "item_name": "Gascoigne's Gloves",
     "physicalDefense": {
       "physical": 40,
@@ -1127,7 +1127,7 @@
     "item_desc": "\nHunter attire worn by Father Gascoigne.\nSimilar to the hunter garb created at the workshop, only these are tainted by a pungent beastly stench that eats away at Gascoigne.\n\"Father\" is a title used for clerics in a foreign land, and there is no such rank in the Healing Church."
   },
   "133000": {
-    "item_img": "gascoigne's_trousers.png",
+    "item_img": "gascoigne's_trousers.webp",
     "item_name": "Gascoigne's Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -1150,7 +1150,7 @@
     "item_desc": "\nHunter attire worn by Father Gascoigne.\nSimilar to the hunter garb created at the workshop, only these are tainted by a pungent beastly stench that eats away at Gascoigne.\n\"Father\" is a title used for clerics in a foreign land, and there is no such rank in the Healing Church."
   },
   "140000": {
-    "item_img": "tomb_prospector_hood.png",
+    "item_img": "tomb_prospector_hood.webp",
     "item_name": "Tomb Prospector Hood",
     "physicalDefense": {
       "physical": 40,
@@ -1173,7 +1173,7 @@
     "item_desc": "\nAttire of tomb prospectors who explore the old labyrinth on \nbehalf of the Healing Church.\nThe Healing Church traces its roots to Byrgenwerth, and is \ntherefore aware of the ruins' true importance.\nThey contain much more than mere hunter trinkets, indeed, \nthey hide the very secrets of the old Great Ones, sought after \nby those with the insight to imagine greatness."
   },
   "141000": {
-    "item_img": "tomb_prospector_garb.png",
+    "item_img": "tomb_prospector_garb.webp",
     "item_name": "Tomb Prospector Garb",
     "physicalDefense": {
       "physical": 90,
@@ -1196,7 +1196,7 @@
     "item_desc": "\nAttire of tomb prospectors who explore the old labyrinth on \nbehalf of the Healing Church.\nThe Healing Church traces its roots to Byrgenwerth, and is \ntherefore aware of the ruins' true importance.\nThey contain much more than mere hunter trinkets, indeed, \nthey hide the very secrets of the old Great Ones, sought after \nby those with the insight to imagine greatness."
   },
   "142000": {
-    "item_img": "tomb_prospector_gloves.png",
+    "item_img": "tomb_prospector_gloves.webp",
     "item_name": "Tomb Prospector Gloves",
     "physicalDefense": {
       "physical": 40,
@@ -1219,7 +1219,7 @@
     "item_desc": "\nAttire of tomb prospectors who explore the old labyrinth on \nbehalf of the Healing Church.\nThe Healing Church traces its roots to Byrgenwerth, and is \ntherefore aware of the ruins' true importance.\nThey contain much more than mere hunter trinkets, indeed, \nthey hide the very secrets of the old Great Ones, sought after \nby those with the insight to imagine greatness."
   },
   "143000": {
-    "item_img": "tomb_prospector_trousers.png",
+    "item_img": "tomb_prospector_trousers.webp",
     "item_name": "Tomb Prospector Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -1242,7 +1242,7 @@
     "item_desc": "\nAttire of tomb prospectors who explore the old labyrinth on \nbehalf of the Healing Church.\nThe Healing Church traces its roots to Byrgenwerth, and is \ntherefore aware of the ruins' true importance.\nThey contain much more than mere hunter trinkets, indeed, \nthey hide the very secrets of the old Great Ones, sought after \nby those with the insight to imagine greatness."
   },
   "150000": {
-    "item_img": "gold_ardeo.png",
+    "item_img": "gold_ardeo.webp",
     "item_name": "Gold Ardeo",
     "physicalDefense": {
       "physical": 50,
@@ -1265,7 +1265,7 @@
     "item_desc": "\nThe odd helmet worn by the band of executioners\ncommanded by the martyr Logarius.\nThe conical gold helmet, symbol of the executioners,\nrepresents luminosity, ambition, and an unflagging resolve to face impurity, staring it down with stern, golden spirit.\nAs the great Logarius once said, \"Act of goodness are not\n  always wise, and acts of evil are not always foolish, butregardless, we shall always strive to be good.\""
   },
   "151000": {
-    "item_img": "executioner_garb.png",
+    "item_img": "executioner_garb.webp",
     "item_name": "Executioner Garb",
     "physicalDefense": {
       "physical": 90,
@@ -1288,7 +1288,7 @@
     "item_desc": "\nAttire worn by the band of executioners commanded by the martyr Logarius.\nLater became that basis for all Church attire, with its heavy draping of Holy Shawl.\nAs the great Logarius once said, \"Acts of goodness are not always wise, and acts of evil are not always foolish, butregardless, we shall always strive to be good.\""
   },
   "152000": {
-    "item_img": "executioner_gauntlets.png",
+    "item_img": "executioner_gauntlets.webp",
     "item_name": "Executioner Gauntlets",
     "physicalDefense": {
       "physical": 40,
@@ -1311,7 +1311,7 @@
     "item_desc": "\nGauntlets worn by the band of executioners commanded by the martyr Logarius.\nThe brass rivets are unique to the executioners, and reflect their adoration of hand-to-hand combat.\nAs the great Logarius once said, \"Acts of goodness are not always wise, and acts of evil are not always foolish, but regardless, we shall always strive to be good.\""
   },
   "153000": {
-    "item_img": "executioner_trousers.png",
+    "item_img": "executioner_trousers.webp",
     "item_name": "Executioner Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -1518,7 +1518,7 @@
     "item_desc": "Cut content"
   },
   "180000": {
-    "item_img": "beak_mask.png",
+    "item_img": "beak_mask.webp",
     "item_name": "Beak Mask",
     "physicalDefense": {
       "physical": 50,
@@ -1541,7 +1541,7 @@
     "item_desc": "\nWood-carved mask of Eileen the Crow, Hunter of Hunters.\nThe beak contains incense to mask scents of blood and \nbeast.\nHunters of Hunters dress as crows to suggest sky burial.\nThe first Hunter of Hunters came from a foreign land, and\ngave the dead a virtuous native funeral ritual, rather than\nimpose a blasphemous Yharnam burial service upon them,\nwith the hope that former compatriots might be returned to\nthe skies, and find rest in a hunter's dream."
   },
   "181000": {
-    "item_img": "crowfeather_garb.png",
+    "item_img": "crowfeather_garb.webp",
     "item_name": "Crowfeather Garb",
     "physicalDefense": {
       "physical": 100,
@@ -1564,7 +1564,7 @@
     "item_desc": "\nAttire worn by Eileen the Crow, Hunter of Hunters,\nknown in particular for her crowfeather cape.\nHunters of Hunters dress as crows to suggest sky burial.\nThe first Hunter of Hunters came from a foreign land, and\ngave the dead a virtuous native funeral ritual, rather than\nimpose a blasphemous Yharnam burial service upon them,\nwith the hope that former compatriots might be returned to\nthe skies, and find rest in a hunter's dream."
   },
   "182000": {
-    "item_img": "crowfeather_manchettes.png",
+    "item_img": "crowfeather_manchettes.webp",
     "item_name": "Crowfeather Manchettes",
     "physicalDefense": {
       "physical": 40,
@@ -1587,7 +1587,7 @@
     "item_desc": "\nAttire worn by Eileen the Crow, Hunter of Hunters.\nHunters of Hunters dress as crows to suggest sky burial.\nThe first Hunter of Hunters came from a foreign land, and\ngave the dead a virtuous native funeral ritual, rather than\nimpose a blasphemous Yharnam burial service upon them,\nwith the hope that former compatriots might be returned to\nthe skies, and find rest in a hunter's dream."
   },
   "183000": {
-    "item_img": "crowfeather_trousers.png",
+    "item_img": "crowfeather_trousers.webp",
     "item_name": "Crowfeather Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -1610,7 +1610,7 @@
     "item_desc": "\nAttire worn by Eileen the Crow, Hunter of Hunters.\nHunters of Hunters dress as crows to suggest sky burial.\nThe first Hunter of Hunters came from a foreign land, and\ngave the dead a virtuous native funeral ritual, rather than\nimpose a blasphemous Yharnam burial service upon them,\nwith the hope that former compatriots might be returned to\nthe skies, and find rest in a hunter's dream."
   },
   "190000": {
-    "item_img": "mensis_cage.png",
+    "item_img": "mensis_cage.webp",
     "item_name": "Mensis Cage",
     "physicalDefense": {
       "physical": 60,
@@ -1633,7 +1633,7 @@
     "item_desc": "\nThe School of Mensis controls the Unseen Village.\nThis hexagonal iron cage suggests their strange ways. Thecage is a device that restrains the will of the self, allowingone to see the profane world for what it is.\nIt also serves as an antenna that facilitates contact with theGreat Ones of the dream.\nBut to an observer, the iron cage appears to be precisely\nwhat delivered them to their harrowing nightmare."
   },
   "191000": {
-    "item_img": "student_uniform_(cape).png",
+    "item_img": "student_uniform_(cape).webp",
     "item_name": "Student Uniform (Cape)",
     "physicalDefense": {
       "physical": 70,
@@ -1679,7 +1679,7 @@
     "item_desc": "Cut content"
   },
   "193000": {
-    "item_img": "student_trousers.png",
+    "item_img": "student_trousers.webp",
     "item_name": "Student Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -1702,7 +1702,7 @@
     "item_desc": "\nUniform of the students of Byrgenwerth, a bygone institute  of learning. \nThe Healing Church has its roots in Byrgenwerth, and  naturally borrows heavily from its uniform design.\nThe focus not on knowledge, or thought, but on pure \npretension would surely bring Master Willem to despair, if  only he knew."
   },
   "200000": {
-    "item_img": "gehrman's_hunter_cap.png",
+    "item_img": "gehrman's_hunter_cap.webp",
     "item_name": "Gehrman's Hunter Cap",
     "physicalDefense": {
       "physical": 40,
@@ -1725,7 +1725,7 @@
     "item_desc": "\nHunter attire of Gehrman, the first hunter.\nCreated before the workshop existed by making adjustments \nto everyday clothing, and later became the basis for all\nhunter's garb.\nThe hunter's emphasis on engaging beasts with speed, and\ntherefore of selecting lightweight attire, no doubt traces back\nto Gehrman's own combat style."
   },
   "201000": {
-    "item_img": "gehrman's_hunter_garb.png",
+    "item_img": "gehrman's_hunter_garb.webp",
     "item_name": "Gehrman's Hunter Garb",
     "physicalDefense": {
       "physical": 100,
@@ -1748,7 +1748,7 @@
     "item_desc": "\nHunter attire of Gehrman, the first hunter.\nCreated before the workshop existed by making adjustments \nto everyday clothing, and later became the basis for all\nhunter's garb.\nThe hunter's emphasis on engaging beasts with speed, and\ntherefore of selecting lightweight attire, no doubt traces back\nto Gehrman's own combat style."
   },
   "203000": {
-    "item_img": "gehrman's_hunter_trousers.png",
+    "item_img": "gehrman's_hunter_trousers.webp",
     "item_name": "Gehrman's Hunter Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -1771,7 +1771,7 @@
     "item_desc": "\nHunter attire of Gehrman, the first hunter.\nCreated before the workshop existed by making adjustments \nto everyday clothing, and later became the basis for all\nhunter's garb.\nThe hunter's emphasis on engaging beasts with speed, and\ntherefore of selecting lightweight attire, no doubt traces back\nto Gehrman's own combat style."
   },
   "210000": {
-    "item_img": "madman_hood.png",
+    "item_img": "madman_hood.webp",
     "item_name": "Madman Hood",
     "physicalDefense": {
       "physical": 40,
@@ -1794,7 +1794,7 @@
     "item_desc": "\nMost tomb prospectors, members of the Healing Church\nchose to explore the old labyrinth, are unable to withstandthe weight of the old knowledge, and go mad.\nThis attire is worn by those lost souls.\nTruth often resembles madness, inaccessible to the dull ofmind. Those who go mad are merely thoughtful souls whofailed to reach any conclusions."
   },
   "211000": {
-    "item_img": "madman_garb.png",
+    "item_img": "madman_garb.webp",
     "item_name": "Madman Garb",
     "physicalDefense": {
       "physical": 80,
@@ -1817,7 +1817,7 @@
     "item_desc": "\nMost tomb prospectors, members of the Healing Church\nchose to explore the old labyrinth, are unable towithstand the weight of the old knowledge, and go mad.\nThis attire is worn by those lost souls.\nThe appendages draped across them are said to be a kind of protective charm, or at least, that is what these lost souls believe with all their hearts."
   },
   "212000": {
-    "item_img": "madman_manchettes.png",
+    "item_img": "madman_manchettes.webp",
     "item_name": "Madman Manchettes",
     "physicalDefense": {
       "physical": 40,
@@ -1840,7 +1840,7 @@
     "item_desc": "\nMost tomb prospectors, members of the Healing Church\nchose to explore the old labyrinth, are unable to withstandthe weight of the old knowledge, and go mad.\nThis attire is worn by those lost souls.\nTruth often resembles madness, inaccessible to the dull ofmind. Those who go mad are merely thoughtful souls whofailed to reach any conclusions."
   },
   "213000": {
-    "item_img": "madman_leggings.png",
+    "item_img": "madman_leggings.webp",
     "item_name": "Madman Leggings",
     "physicalDefense": {
       "physical": 50,
@@ -1863,7 +1863,7 @@
     "item_desc": "\nMost tomb prospectors, members of the Healing Church\nchose to explore the old labyrinth, are unable to withstandthe weight of the old knowledge, and go mad.\nThis attire is worn by those lost souls.\nTruth often resembles madness, inaccessible to the dull ofmind. Those who go mad are merely thoughtful souls whofailed to reach any conclusions."
   },
   "220000": {
-    "item_img": "doll_hat.png",
+    "item_img": "doll_hat.webp",
     "item_name": "Doll Hat",
     "physicalDefense": {
       "physical": 10,
@@ -1886,7 +1886,7 @@
     "item_desc": "\nA discarded doll's hat, likely a spare for dress-up.\nA deep love for the doll can be surmised by the fine\ncraftsmanship of this article, and the care with which it was\nkept.\nIt borderlines on mania, and exudes a slight warmth."
   },
   "221000": {
-    "item_img": "doll_clothes.png",
+    "item_img": "doll_clothes.webp",
     "item_name": "Doll Clothes",
     "physicalDefense": {
       "physical": 30,
@@ -1909,7 +1909,7 @@
     "item_desc": "\nDiscarded doll clothing, likely a spare for dress-up.\nA deep love for the doll can be surmised by the fine \ncraftsmanship of this article, and the care with which it was \nkept.\nIt borderlines on mania, and exudes a slight warmth."
   },
   "222000": {
-    "item_img": "doll_gloves.png",
+    "item_img": "doll_gloves.webp",
     "item_name": "Doll Gloves",
     "physicalDefense": {
       "physical": 30,
@@ -1932,7 +1932,7 @@
     "item_desc": "\nDiscarded doll gloves, likely a spare for dress-up.\nA deep love for the doll can be surmised by the fine \ncraftsmanship of this article, and the care with which it was \nkept.\nIt borderlines on mania, and exudes a slight warmth."
   },
   "223000": {
-    "item_img": "doll_skirt.png",
+    "item_img": "doll_skirt.webp",
     "item_name": "Doll Skirt",
     "physicalDefense": {
       "physical": 40,
@@ -1955,7 +1955,7 @@
     "item_desc": "\nDiscarded doll skirt, likely a spare for dress-up.\nA deep love for the doll can be surmised by the fine \ncraftsmanship of this article, and the care with which it was \nkept.\nIt borderlines on mania, and exudes a slight warmth."
   },
   "230000": {
-    "item_img": "black_hood.png",
+    "item_img": "black_hood.webp",
     "item_name": "Black Hood",
     "physicalDefense": {
       "physical": 20,
@@ -1978,7 +1978,7 @@
     "item_desc": "\nHood worn upon awakening to the nightmare of blood and beasts.\nPerhaps its wearer had to stay out of sight, \nand travel by cover of darkness.\nWithout memory, who will ever know?"
   },
   "231000": {
-    "item_img": "foreign_garb.png",
+    "item_img": "foreign_garb.webp",
     "item_name": "Foreign Garb",
     "physicalDefense": {
       "physical": 60,
@@ -2001,7 +2001,7 @@
     "item_desc": "\nClothing worn upon awakening to the nightmare of blood and beasts.\nNot typical clothing of Yharnam, perhaps it is of foreign origin, It is said, after all, the traveller came to Yharnam  from afar.\nWithout memory, who will ever know?"
   },
   "232000": {
-    "item_img": "sullied_bandage.png",
+    "item_img": "sullied_bandage.webp",
     "item_name": "Sullied Bandage",
     "physicalDefense": {
       "physical": 30,
@@ -2024,7 +2024,7 @@
     "item_desc": "\nBandage worn upon awakening to the nightmare of blood and beasts. Terribly worn and unsanitary.\nA faint memory recalls blood ministration, involving the transfusion of unknown blood.\nNot long after, the nightmare began."
   },
   "233000": {
-    "item_img": "foreign_trousers.png",
+    "item_img": "foreign_trousers.webp",
     "item_name": "Foreign Trousers",
     "physicalDefense": {
       "physical": 40,
@@ -2070,7 +2070,7 @@
     "item_desc": "Cut content"
   },
   "241000": {
-    "item_img": "ashen_hunter_garb.png",
+    "item_img": "ashen_hunter_garb.webp",
     "item_name": "Ashen Hunter Garb",
     "physicalDefense": {
       "physical": 100,
@@ -2093,7 +2093,7 @@
     "item_desc": "\nAttire of the retired hunter Djura. \nPainted with ash in a ceremony to ward off blood.\nDjura is known through his contact with the Powder Kegs,\nthe heretics of the workshop. He is said to have been both\nuncommonly kind and dreadfully foolish.\nDjura felt defeated by the state of Old Yharnam, and\nrenounced his hunter's vows."
   },
   "242000": {
-    "item_img": "ashen_hunter_gloves.png",
+    "item_img": "ashen_hunter_gloves.webp",
     "item_name": "Ashen Hunter Gloves",
     "physicalDefense": {
       "physical": 40,
@@ -2116,7 +2116,7 @@
     "item_desc": "\nAttire of the retired hunter Djura. \nPainted with ash in a ceremony to ward off blood.\nDjura is known through his contact with the Powder Kegs,\nthe heretics of the workshop. He is said to have been both\nuncommonly kind and dreadfully foolish.\nDjura felt defeated by the state of Old Yharnam, and\nrenounced his hunter's vows."
   },
   "243000": {
-    "item_img": "ashen_hunter_trousers.png",
+    "item_img": "ashen_hunter_trousers.webp",
     "item_name": "Ashen Hunter Trousers",
     "physicalDefense": {
       "physical": 60,
@@ -2139,7 +2139,7 @@
     "item_desc": "\nAttire of the retired hunter Djura. \nPainted with ash in a ceremony to ward off blood.\nDjura is known through his contact with the Powder Kegs,\nthe heretics of the workshop. He is said to have been both\nuncommonly kind and dreadfully foolish.\nDjura felt defeated by the state of Old Yharnam, and\nrenounced his hunter's vows."
   },
   "250000": {
-    "item_img": "crown_of_illusions.png",
+    "item_img": "crown_of_illusions.webp",
     "item_name": "Crown of Illusions",
     "physicalDefense": {
       "physical": 40,
@@ -2162,7 +2162,7 @@
     "item_desc": "\nOne of the precious secrets of Cainhurst.\nThe old king's crown is said to reveal illusions,\nand expose a mirage that hides a secret.\nAnd so Logarius donned the crown of his own volition,\ndetermined to prevent a single soul from stumbling\nupon the vile secret.\nWhat visions did he see, sitting serenely upon his \nnew throne?"
   },
   "260000": {
-    "item_img": "master's_iron_helm.png",
+    "item_img": "master's_iron_helm.webp",
     "item_name": "Master's Iron Helm",
     "physicalDefense": {
       "physical": 60,
@@ -2185,7 +2185,7 @@
     "item_desc": "An iron helm resembling an upside-down bucket."
   },
   "270000": {
-    "item_img": "iron_yahar'gul_helm.png",
+    "item_img": "iron_yahar'gul_helm.webp",
     "item_name": "Iron Yahar'gul Helm",
     "physicalDefense": {
       "physical": 60,
@@ -2208,7 +2208,7 @@
     "item_desc": "\nIron helmet worn by hunters of the Unseen Village.\nRemoving the hood reveals something reminiscent of awarrior of a previous age.\nThis headwear is made of metal, a rarity for hunter garb,\nand has high defence, but only against physical attacks."
   },
   "280000": {
-    "item_img": "top_hat.png",
+    "item_img": "top_hat.webp",
     "item_name": "Top Hat",
     "physicalDefense": {
       "physical": 30,
@@ -2231,7 +2231,7 @@
     "item_desc": "\nHat worn by hunters who admire formality.\nSome hunters place an emphasis on form, as seen by the use of the threaded cane.\nFor them, formality, beauty, and justice are the very essence of our humanity, and precisely what keeps hunters from becoming something else."
   },
   "281000": {
-    "item_img": "hunter_garb.png",
+    "item_img": "hunter_garb.webp",
     "item_name": "Hunter Garb",
     "physicalDefense": {
       "physical": 110,
@@ -2254,7 +2254,7 @@
     "item_desc": "\nOne of the standard articles of hunter attire fashioned at the workshop, accompanied with a short cape to wipe away blood.\nA fine piece of hunter attire that provides stable defence to \nanyone facing Yharnam's beastly threat.\nAllows one to stalk beasts unannounced, by cover of night."
   },
   "290000": {
-    "item_img": "white_church_hat.png",
+    "item_img": "white_church_hat.webp",
     "item_name": "White Church Hat",
     "physicalDefense": {
       "physical": 30,
@@ -2277,7 +2277,7 @@
     "item_desc": "\nAttire of special Church doctors.\nThese doctors are superiors to the black preventative \nhunters, and specialists in experimentally-backed blood \nministration and the scourge of the beast.\nThey believe that medicine is not a means of treatment but \nrather a method for research, and that some knowledge can \nonly be obtained by exposing oneself to sickness."
   },
   "291000": {
-    "item_img": "white_church_garb.png",
+    "item_img": "white_church_garb.webp",
     "item_name": "White Church Garb",
     "physicalDefense": {
       "physical": 80,
@@ -2300,7 +2300,7 @@
     "item_desc": "\nAttire of special Church doctors.\nThese doctors are superiors to the black preventative \nhunters, and specialists in experimentally-backed blood \nministration and the scourge of the beast.\nThey believe that medicine is not a means of treatment but \nrather a method for research, and that some knowledge canonly be obtained by exposing oneself to sickness."
   },
   "293000": {
-    "item_img": "white_church_trousers_or_dress.png",
+    "item_img": "white_church_trousers_or_dress.webp",
     "item_name": "White Church Trousers/Dress",
     "physicalDefense": {
       "physical": 50,
@@ -2323,7 +2323,7 @@
     "item_desc": "\nAttire of special Church doctors.\nThese doctors are superiors to the black preventative \nhunters, and specialists in experimentally-backed blood \nministration and the scourge of the beast.\nThey believe that medicine is not a means of treatment but rather a method for research, and that some knowledge can only be obtained by exposing oneself to sickness."
   },
   "301000": {
-    "item_img": "student_uniform.png",
+    "item_img": "student_uniform.webp",
     "item_name": "Student Uniform",
     "physicalDefense": {
       "physical": 70,
@@ -2346,7 +2346,7 @@
     "item_desc": "\nUniform of the students of Byrgenwerth, a bygone institute\nlearning. This alternative lacks the thick cape.\n\nThis Healing Church has its roots in Byrgenwerth, and\nnaturally borrows heavily from its uniform design.\n\nThe focus not on knowledge, or thought, but on pure\npretension would surely bring Master Willem to despair, ifonly he knew."
   },
   "311000": {
-    "item_img": "noble_dress.png",
+    "item_img": "noble_dress.webp",
     "item_name": "Noble Dress",
     "physicalDefense": {
       "physical": 50,
@@ -2369,7 +2369,7 @@
     "item_desc": "\nA finely tailored bordeaux dress.\nWorn by the nobles of the old bloodline that traces back tothe forsaken Castle Cainhurst."
   },
   "313000": {
-    "item_img": "arianna's_shoes.png",
+    "item_img": "arianna's_shoes.webp",
     "item_name": "Arianna's Shoes",
     "physicalDefense": {
       "physical": 40,
@@ -2392,7 +2392,7 @@
     "item_desc": "\nShoes worn by Arianna, woman of the night in the Cathedral Ward.\nInnocent and cute, in contrast with its owner."
   },
   "320000": {
-    "item_img": "rumpled_yharnam_hat.png",
+    "item_img": "rumpled_yharnam_hat.webp",
     "item_name": "Rumpled Yharnam Hat",
     "physicalDefense": {
       "physical": 20,
@@ -2415,7 +2415,7 @@
     "item_desc": "\nCommon Yharnam cap.\n\nWell-worn and losing its shape."
   },
   "321000": {
-    "item_img": "sweaty_clothes.png",
+    "item_img": "sweaty_clothes.webp",
     "item_name": "Sweaty Clothes",
     "physicalDefense": {
       "physical": 60,
@@ -2438,7 +2438,7 @@
     "item_desc": "\nCommon Yharnam clothing.\nWell-worn and damp with sweat."
   },
   "330000": {
-    "item_img": "butcher_mask.png",
+    "item_img": "butcher_mask.webp",
     "item_name": "Butcher Mask",
     "physicalDefense": {
       "physical": 50,
@@ -2461,7 +2461,7 @@
     "item_desc": "\nMask of the Madaras twins, denizens of the Forbidden \nWoods, likely belonging to the older of the two. \n\nThe twins grew up in silent kinship with a poisonous snake. \nEventually they learned human ways, and became hunters. \n\nWhen they discovered vermin even in their beloved snake, \nthe younger brother is said to have murdered the older."
   },
   "331000": {
-    "item_img": "butcher_garb.png",
+    "item_img": "butcher_garb.webp",
     "item_name": "Butcher Garb",
     "physicalDefense": {
       "physical": 100,
@@ -2484,7 +2484,7 @@
     "item_desc": "\nGarb of the Madaras twins, denizens of the Forbidden \nWoods, likely belonging to the older of the two.\n\nBoth the twins became hunters, and brought back and \ndissected their beast prey, in order to support the villagers in \ntheir forbidden research."
   },
   "332000": {
-    "item_img": "butcher_gloves.png",
+    "item_img": "butcher_gloves.webp",
     "item_name": "Butcher Gloves",
     "physicalDefense": {
       "physical": 60,
@@ -2507,7 +2507,7 @@
     "item_desc": "\nGloves of the Madaras twins, denizens of the Forbidden \nWoods, likely belonging to the older of the two.\n\nBoth the twins became hunters, and brought back and \ndissected their beast prey, in order to support the villagers in\ntheir forbidden research."
   },
   "333000": {
-    "item_img": "butcher_trousers.png",
+    "item_img": "butcher_trousers.webp",
     "item_name": "Butcher Trousers",
     "physicalDefense": {
       "physical": 60,
@@ -2530,7 +2530,7 @@
     "item_desc": "\nTrousers of the Madaras twins, denizens of the Forbidden \nWoods, likely belonging to the older of the two.\n\nBoth the twins became hunters, and brought back and \ndissected their beast prey, in order to support the villagers in\ntheir forbidden research."
   },
   "340000": {
-    "item_img": "harrowed_hood.png",
+    "item_img": "harrowed_hood.webp",
     "item_name": "Harrowed Hood",
     "physicalDefense": {
       "physical": 60,
@@ -2553,7 +2553,7 @@
     "item_desc": "\nCertain Church hunters obfuscate their identities and slip \ninto the nooks and crannies of the city.\nThis is the garb that allows these harrowed individuals to go \nunnoticed.\n\nThese hunters are keen to early signs of the scourge, serving \n as a first line of defence against its outbreak.\nOr perhaps, when the time is ripe, they find signs of the \nscourge where there are none. It just goes to show, the \ncorner beggar is not always who he seems."
   },
   "341000": {
-    "item_img": "harrowed_garb.png",
+    "item_img": "harrowed_garb.webp",
     "item_name": "Harrowed Garb",
     "physicalDefense": {
       "physical": 120,
@@ -2576,7 +2576,7 @@
     "item_desc": "\nCertain Church hunters obfuscate their identities and slip \ninto the nooks and crannies of the city.\nThis is the garb that allows these harrowed individuals to go \nunnoticed.\n\nThese hunters are keen to early signs of the scourge, serving as a first line of defence against its outbreak.\nOr perhaps, when the time is ripe, they find signs of the \nscourge where there are none. It just goes to show, the \ncorner beggar is not always who he seems."
   },
   "342000": {
-    "item_img": "harrowed_gloves.png",
+    "item_img": "harrowed_gloves.webp",
     "item_name": "Harrowed Gloves",
     "physicalDefense": {
       "physical": 60,
@@ -2599,7 +2599,7 @@
     "item_desc": "\nCertain Church hunters obfuscate their identities and slip \ninto the nooks and crannies of the city.\nThis is the garb that allows these harrowed individuals to go \nunnoticed.\n\nThese hunters are keen to early signs of the scourge, serving as a first line of defence against its outbreak.\nOr perhaps, when the time is ripe, they find signs of the \nscourge where there are none. It just goes to show, the \ncorner beggar is not always who he seems."
   },
   "343000": {
-    "item_img": "harrowed_trousers.png",
+    "item_img": "harrowed_trousers.webp",
     "item_name": "Harrowed Trousers",
     "physicalDefense": {
       "physical": 70,
@@ -2622,7 +2622,7 @@
     "item_desc": "\nCertain Church hunters obfuscate their identities and slip \ninto the nooks and crannies of the city.\nThis is the garb that allows these harrowed individuals to go \nunnoticed.\n\nThese hunters are keen to early signs of the scourge, serving as a first line of defence against its outbreak.\nOr perhaps, when the time is ripe, they find signs of the \nscourge where there are none. It just goes to show, the \ncorner beggar is not always who he seems."
   },
   "350000": {
-    "item_img": "old_hunter_cap.png",
+    "item_img": "old_hunter_cap.webp",
     "item_name": "Old Hunter Cap",
     "physicalDefense": {
       "physical": 50,
@@ -2645,7 +2645,7 @@
     "item_desc": "\nOld Hunter Cap with a wide brim that hides their sharp gaze.\n\nIn the old days, when hunters were ten a penny, this was \npart of their standard garb."
   },
   "351000": {
-    "item_img": "old_hunter_garb.png",
+    "item_img": "old_hunter_garb.webp",
     "item_name": "Old Hunter Garb",
     "physicalDefense": {
       "physical": 100,
@@ -2668,7 +2668,7 @@
     "item_desc": "\nOld hunter garb.\n\nOne day, the hunters disappeared, and Yharnamites began\nto whisper of the hunters' sin.\n\nDrunk with blood, chasing after beasts, they would pass on \nto the Nightmare, every last one of them."
   },
   "352000": {
-    "item_img": "old_hunter_gloves.png",
+    "item_img": "old_hunter_gloves.webp",
     "item_name": "Old Hunter Gloves",
     "physicalDefense": {
       "physical": 60,
@@ -2691,7 +2691,7 @@
     "item_desc": "\nOld hunter gauntlets made of brass to protect their weapon-\nbearing hands.\n\nAt the time, some hunters believed that certain metals would \nward off beast blood.\nOn a night of the hunt, it is no wonder that people would \nresort to superstition."
   },
   "353000": {
-    "item_img": "old_hunter_trousers.png",
+    "item_img": "old_hunter_trousers.webp",
     "item_name": "Old Hunter Trousers",
     "physicalDefense": {
       "physical": 60,
@@ -2714,7 +2714,7 @@
     "item_desc": "\n\nOld hunter trousers that protected countless hunters from\nthe beasts in an older age.\n\nA widespread belief of the period was that \"beast blood crept\nup the right leg,\" and this led to the double-wrapped belt."
   },
   "360000": {
-    "item_img": "old_hunter_top_hat.png",
+    "item_img": "old_hunter_top_hat.webp",
     "item_name": "Old Hunter Top Hat",
     "physicalDefense": {
       "physical": 30,
@@ -2737,7 +2737,7 @@
     "item_desc": "\nOld hunter top hat, warped by blood stains.\n\nIn the old days, when hunters were ten a penny, this was \npart of their standard garb."
   },
   "361000": {
-    "item_img": "decorative_old_hunter_garb.png",
+    "item_img": "decorative_old_hunter_garb.webp",
     "item_name": "Decorative Old Hunter Garb",
     "physicalDefense": {
       "physical": 110,
@@ -2760,7 +2760,7 @@
     "item_desc": "Old hunter garb decorated with brass trinkets.\n\nAt the time, some hunters believed that certain metals would\nward off beast blood.\nOn a night of the hunt, it is no wonder that people would\nresort to superstition."
   },
   "363000": {
-    "item_img": "decorative_old_hunter_trousers.png",
+    "item_img": "decorative_old_hunter_trousers.webp",
     "item_name": "Decorative Old Hunter Trousers",
     "physicalDefense": {
       "physical": 70,
@@ -2783,7 +2783,7 @@
     "item_desc": "Old hunter garb decorated with brass trinkets.\n\nAt the time, some hunters believed that certain metals would\nward off beast blood.\nOn a night of the hunt, it is no wonder that people would\nresort to superstition."
   },
   "370000": {
-    "item_img": "maria_hunter_cap.png",
+    "item_img": "maria_hunter_cap.webp",
     "item_name": "Maria Hunter Cap",
     "physicalDefense": {
       "physical": 40,
@@ -2806,7 +2806,7 @@
     "item_desc": "\nAmong the first hunters, all students of Gehrman, was the \nlady hunter Maria. This was her hunter's cap, crafted in \nCainhurst.\n\nMaria is distantly related to the undead queen, but had great \nadmiration for Gehrman, unaware of his curious mania."
   },
   "371000": {
-    "item_img": "maria_hunter_garb.png",
+    "item_img": "maria_hunter_garb.webp",
     "item_name": "Maria Hunter Garb",
     "physicalDefense": {
       "physical": 80,
@@ -2829,7 +2829,7 @@
     "item_desc": "\nAmong the first hunters, all students of Gehrman, was the \nlady hunter Maria. This was her hunter's garb, crafted in \nCainhurst.\n\nMaria is distantly related to the undead queen, but had great\nadmiration for Gehrman, unaware of his curious mania."
   },
   "372000": {
-    "item_img": "maria_hunter_gloves.png",
+    "item_img": "maria_hunter_gloves.webp",
     "item_name": "Maria Hunter Gloves",
     "physicalDefense": {
       "physical": 50,
@@ -2852,7 +2852,7 @@
     "item_desc": "\nAmong the first hunters, all students of Gehrman, was the \nlady hunter Maria. These were her hunter's gloves, crafted in \nCainhurst.\n\nMaria is distantly related to the undead queen, but had great\nadmiration for Gehrman, unaware of his curious mania."
   },
   "373000": {
-    "item_img": "maria_hunter_trousers.png",
+    "item_img": "maria_hunter_trousers.webp",
     "item_name": "Maria Hunter Trousers",
     "physicalDefense": {
       "physical": 50,
@@ -2875,7 +2875,7 @@
     "item_desc": "\nAmong the first hunters, all students of Gehrman, was the \nlady hunter Maria. These were her hunter's trousers, crafted in Cainhurst.\n\nMaria is distantly related to the undead queen, but had great\nadmiration for Gehrman, unaware of his curious mania."
   },
   "380000": {
-    "item_img": "master's_iron_helm.png",
+    "item_img": "master's_iron_helm.webp",
     "item_name": "One-eyed Iron Helm",
     "physicalDefense": {
       "physical": 60,
@@ -2898,7 +2898,7 @@
     "item_desc": "An iron helm resembling an upside-down bucket."
   },
   "381000": {
-    "item_img": "constable's_garb.png",
+    "item_img": "constable's_garb.webp",
     "item_name": "Constable's Garb",
     "physicalDefense": {
       "physical": 90,
@@ -2921,7 +2921,7 @@
     "item_desc": "\n\nOnce upon a time, a troupe of foreign constables chased a \nbeast all the way to Yharnam, and this is what they wore.\nThe constables became victims of the beast, except for one \nsurvivor, who in turn devoured the creature whole, all by \nhimself.\n\nThe fable is a favourite among Yharnamites, who are partial \nto any stories of pompous, intolerant foreigners who suffer \nfor their ignorance. \n\nIt makes the blood taste that much sweeter."
   },
   "382000": {
-    "item_img": "constable's_gloves.png",
+    "item_img": "constable's_gloves.webp",
     "item_name": "Constable's Gloves",
     "physicalDefense": {
       "physical": 60,
@@ -2944,7 +2944,7 @@
     "item_desc": "\n\nOnce upon a time, a troupe of foreign constables chased a \nbeast all the way to Yharnam, and this is what they wore.\nThe constables became victims of the beast, except for one \nsurvivor, who in turn devoured the creature whole, all by \nhimself.\n\nThe fable is a favourite among Yharnamites, who are partial \nto any stories of pompous, intolerant foreigners who suffer \nfor their ignorance. \n\nIt makes the blood taste that much sweeter."
   },
   "383000": {
-    "item_img": "constable's_trousers.png",
+    "item_img": "constable's_trousers.webp",
     "item_name": "Constable's Trousers",
     "physicalDefense": {
       "physical": 60,
@@ -2967,7 +2967,7 @@
     "item_desc": "\n\nOnce upon a time, a troupe of foreign constables chased a \nbeast all the way to Yharnam, and this is what they wore.\nThe constables became victims of the beast, except for one \nsurvivor, who in turn devoured the creature whole, all by \nhimself.\n\nThe fable is a favourite among Yharnamites, who are partial \nto any stories of pompous, intolerant foreigners who suffer \nfor their ignorance. \n\nIt makes the blood taste that much sweeter."
   },
   "390000": {
-    "item_img": "brador's_testimony.png",
+    "item_img": "brador's_testimony.webp",
     "item_name": "Brador's Testimony",
     "physicalDefense": {
       "physical": 50,
@@ -2990,7 +2990,7 @@
     "item_desc": "\nThe scalp of a horrid cleric beast, indicating that hunter \nBrador, a Healing Church assassin, had killed a compatriot.\n\nAfterward, he wore his ally's own scalp, and hid himself \naway, deep below in a cell. The Church provided him with a \nsingle, soundless bell of death, to ensure their secrets would \nbe kept."
   },
   "391000": {
-    "item_img": "beast_hide_garb.png",
+    "item_img": "beast_hide_garb.webp",
     "item_name": "Beast Hide Garb",
     "physicalDefense": {
       "physical": 120,
@@ -3013,7 +3013,7 @@
     "item_desc": "\nThe bloodied hide of a horrible cleric beast, pulled over the \nback. Without the attacked beast hide this foreigner garb \nwouldn't raise anyone's eyebrows.\n\nBrador donned a compatriot's beastly scalp and hide while \nstill moist with blood. Most of the blood stains on this hide \nwere from that day."
   },
   "392000": {
-    "item_img": "bloodied_arm_bands.png",
+    "item_img": "bloodied_arm_bands.webp",
     "item_name": "Bloodied Arm Bands",
     "physicalDefense": {
       "physical": 30,
@@ -3036,7 +3036,7 @@
     "item_desc": "\nBloodied arm bands.\n\nBrador donned a compatriot's beastly scalp and hide while \nstill moist with blood. Most of the blood stains on this hide \nwere from that day."
   },
   "393000": {
-    "item_img": "bloodied_trousers.png",
+    "item_img": "bloodied_trousers.webp",
     "item_name": "Bloodied Trousers",
     "physicalDefense": {
       "physical": 40,
@@ -3059,7 +3059,7 @@
     "item_desc": "\nBloodied foreign trousers.\n\nBrador donned a compatriot's beastly scalp and hide while \nstill moist with blood. Most of the blood stains on this hide \nwere from that day."
   },
   "400000": {
-    "item_img": "yamamura_hunter_hat.png",
+    "item_img": "yamamura_hunter_hat.webp",
     "item_name": "Yamamura Hunter Hat",
     "physicalDefense": {
       "physical": 50,
@@ -3082,7 +3082,7 @@
     "item_desc": "\nA standard hunter's hat, worn by Yamamura the Wanderer.\n\nThis hat and staff were given to him when he became a \nhunter and confederate of the League."
   },
   "401000": {
-    "item_img": "khaki_haori.png",
+    "item_img": "khaki_haori.webp",
     "item_name": "Khaki Haori",
     "physicalDefense": {
       "physical": 80,
@@ -3105,7 +3105,7 @@
     "item_desc": "\nGarb of a distant Eastern land, worn by Yamamura the \nWanderer.\n\nThis Eastern warrior pursued a beast for honourable \nrevenge, then became a hunter of the League. But when he\nstared straight into impurity, it drove him mad."
   },
   "402000": {
-    "item_img": "old_hunter_arm_bands.png",
+    "item_img": "old_hunter_arm_bands.webp",
     "item_name": "Old Hunter Arm Bands",
     "physicalDefense": {
       "physical": 40,
@@ -3128,7 +3128,7 @@
     "item_desc": "\nOld Hunter arm bands wound tightly to prevent infection\nwith the scourge.\n\nOf course, the idea that the scourge was infectious was pure\nhearsay."
   },
   "403000": {
-    "item_img": "wine_hakama.png",
+    "item_img": "wine_hakama.webp",
     "item_name": "Wine Hakama",
     "physicalDefense": {
       "physical": 40,
@@ -3335,7 +3335,7 @@
     "item_desc": "Cut content."
   },
   "430000": {
-    "item_img": "enlarged_head.png",
+    "item_img": "enlarged_head.webp",
     "item_name": "Enlarged Head",
     "physicalDefense": {
       "physical": 20,

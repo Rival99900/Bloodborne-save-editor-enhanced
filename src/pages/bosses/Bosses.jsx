@@ -65,7 +65,7 @@ function Bosses() {
     <div
       ref={scrollDiv}
       className="bosses-workspace"
-      style={{ backgroundImage: `url(${images.backgrounds["statsBg.png"].src})` }}
+      style={{ backgroundImage: `url(${images.backgrounds["statsBg.webp"].src})` }}
     >
       <header className="bosses-workspace__header">
         <p>{t("bosses.timelineEyebrow")}</p>

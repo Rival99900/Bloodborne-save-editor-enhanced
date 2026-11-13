@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
-import { useFloating, flip, offset, autoUpdate } from "@floating-ui/react";
+import { useFloating, flip, offset, shift, size, autoUpdate, FloatingPortal } from "@floating-ui/react";
 import { useLocalization } from "../i18n/localization";
 
 const NO_EFFECT_ID = "4294967295";
@@ -40,6 +40,9 @@ function SelectSearch({
 }) {
   const { t } = useLocalization();
   const [isOpen, setIsOpen] = useState(false);
+  // Height left between the field and the window edge, so the whole list stays
+  // reachable with its own scrollbar instead of the panel's.
+  const [availableHeight, setAvailableHeight] = useState(maxListHeight);
   const resolvedSelectedLabel = isNoEffectSelection(selected)
     ? t("forge.noEffect")
     : getSelectedLabel(options, selected);
@@ -53,12 +56,24 @@ function SelectSearch({
   const userEditedRef = useRef(false);
 
   // 1. Initialize Floating UI
+  // The list is rendered in a portal with fixed positioning: inside a scrolling
+  // panel (Gem/Rune editor) an absolute list was clipped by the panel, which
+  // then had to be scrolled to reach the last options.
   const { refs, floatingStyles } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
+    strategy: "fixed",
+    placement: "bottom-start",
     middleware: [
       offset(4), // Little gap between input and dropdown
-      flip({ fallbackAxisSideDirection: "start" }), // Automatically opens up if bottom is blocked
+      flip({ fallbackAxisSideDirection: "start", padding: 8 }), // Opens upwards if the bottom is blocked
+      shift({ padding: 8 }),
+      size({
+        padding: 8,
+        apply({ availableHeight: height }) {
+          setAvailableHeight((current) => (Math.abs(current - height) > 1 ? height : current));
+        },
+      }),
     ],
     whileElementsMounted: autoUpdate, // Keeps positioning accurate if window resizes/scrolls
   });
@@ -68,13 +83,14 @@ function SelectSearch({
   // Handle outside clicks safely
   useEffect(() => {
     function toggle(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      const floating = refs.floating.current;
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target) && !floating?.contains(e.target)) {
         setIsOpen(false);
       }
     }
     document.addEventListener("mousedown", toggle);
     return () => document.removeEventListener("mousedown", toggle);
-  }, []);
+  }, [refs.floating]);
 
   useEffect(() => {
     // A Rune preset is a one-time command rather than a form field: every fresh
@@ -170,8 +186,10 @@ function SelectSearch({
 
       {/* 3. Dropdown Menu */}
       {isOpen && (
+        <FloatingPortal>
         <div
           ref={refs.setFloating}
+          className="select-search__menu"
           style={{
             ...floatingStyles, // Floating UI injects left/top absolute coordinates dynamically
             width: dropdownRef.current
@@ -184,15 +202,21 @@ function SelectSearch({
           }}
         >
           <List
-            height={Math.min(maxListHeight, filteredOptions.length * (compact ? 32 : 34))}
+            height={Math.max(
+              compact ? 32 : 34,
+              Math.min(maxListHeight, Math.floor(availableHeight), filteredOptions.length * (compact ? 32 : 34)),
+            )}
             itemCount={filteredOptions.length}
             itemSize={compact ? 32 : 34}
             width="100%"
             overscanCount={10}
+            // The wheel scrolls the list only, never the panel behind it.
+            style={{ overscrollBehavior: "contain" }}
           >
             {Row}
           </List>
         </div>
+        </FloatingPortal>
       )}
     </div>
   );

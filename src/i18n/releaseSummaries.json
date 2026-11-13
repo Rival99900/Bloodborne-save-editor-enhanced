@@ -63,6 +63,22 @@
       "sv": "Tillägg av vapen och rustning åtgärdat · Flerspelarläge efter besegrade bossar. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
       "tr": "Silah ve zırh ekleme düzeltildi · Yenilen bosslardan sonra çok oyunculu. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
       "pt-PT": "Adição de armas e armaduras corrigida · Multijogador após chefes derrotados. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+    },
+    "0.7.0": {
+      "en": "Consistency check, bulk actions, trophies, save comparison, backup history and PS4/PS5 over FTP. See the GitHub release for improvements and safe-save guidance.",
+      "fr": "Vérification de cohérence, actions groupées, trophées, comparaison de sauvegardes, historique des sauvegardes et PS4/PS5 via FTP. Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
+      "it": "Controllo di coerenza, azioni multiple, trofei, confronto dei salvataggi, cronologia dei backup e PS4/PS5 via FTP. Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
+      "de": "Konsistenzprüfung, Sammelaktionen, Trophäen, Speicherstandvergleich, Sicherungsverlauf und PS4/PS5 über FTP. Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
+      "es": "Comprobación de coherencia, acciones en lote, trofeos, comparación de guardados, historial de copias y PS4/PS5 por FTP. Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
+      "nl": "Consistentiecontrole, bulkacties, trofeeën, opslagvergelijking, back-upgeschiedenis en PS4/PS5 via FTP. Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
+      "pl": "Kontrola spójności, działania zbiorcze, trofea, porównanie zapisów, historia kopii i PS4/PS5 przez FTP. Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
+      "ru": "Проверка согласованности, массовые действия, трофеи, сравнение сохранений, история копий и PS4/PS5 по FTP. Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
+      "da": "Konsistenstjek, massehandlinger, trofæer, sammenligning af gemninger, sikkerhedskopihistorik og PS4/PS5 via FTP. Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
+      "nb": "Konsistenssjekk, massehandlinger, troféer, sammenligning av lagringer, sikkerhetskopihistorikk og PS4/PS5 via FTP. Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
+      "fi": "Johdonmukaisuustarkistus, joukkotoiminnot, pokaalit, tallenteiden vertailu, varmuuskopiohistoria ja PS4/PS5 FTP:n kautta. Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
+      "sv": "Konsekvenskontroll, massåtgärder, troféer, jämförelse av sparningar, säkerhetskopieringshistorik och PS4/PS5 via FTP. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
+      "tr": "Tutarlılık denetimi, toplu işlemler, kupalar, kayıt karşılaştırma, yedek geçmişi ve FTP ile PS4/PS5. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
+      "pt-PT": "Verificação de coerência, ações em lote, troféus, comparação de gravações, histórico de cópias e PS4/PS5 por FTP. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
     }
   }
 }

@@ -37,7 +37,7 @@ function FilterComponent({
   favoritesOnly = false,
 }) {
   const { save } = useContext(SaveContext);
-  const { language } = useLocalization();
+  const { language, t } = useLocalization();
   const [translations, setTranslations] = useState({});
   useEffect(() => {
     let active = true;
@@ -81,7 +81,11 @@ function FilterComponent({
       }}
       fixedItemHeight={91}
     />
-  ) : null;
+  ) : (
+    <p className="inventory-empty" role="status">
+      {t(normalizeSearch(searchQuery) ? "inventory.empty.search" : favoritesOnly ? "inventory.empty.favorites" : "inventory.empty.category")}
+    </p>
+  );
 }
 
 export { getItemKey };

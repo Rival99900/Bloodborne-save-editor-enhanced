@@ -39,6 +39,7 @@ function Playtime({ ms, setMs }) {
       <div className="character-playtime-fields">
         <input
           value={time["hours"]}
+          aria-label={t("character.playtimeHours")}
           onChange={handleChange}
           onInput={handleInput}
           type="number"
@@ -47,6 +48,7 @@ function Playtime({ ms, setMs }) {
         <span>:</span>
         <input
           value={time["minutes"]}
+          aria-label={t("character.playtimeMinutes")}
           onChange={handleChange}
           onInput={handleInput}
           type="number"
@@ -55,6 +57,7 @@ function Playtime({ ms, setMs }) {
         <span>:</span>
         <input
           value={time["seconds"]}
+          aria-label={t("character.playtimeSeconds")}
           onChange={handleChange}
           onInput={handleInput}
           type="number"

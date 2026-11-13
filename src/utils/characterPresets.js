@@ -31,3 +31,26 @@ export function applyPresetDraft(stats, preset) {
   const validated = validatePreset(preset);
   return stats.map(stat => Object.hasOwn(validated.stats, stat.name) ? {...stat, value: validated.stats[stat.name]} : {...stat});
 }
+
+// F7: share presets as a JSON file.
+export const PRESET_EXPORT_FORMAT = 'bloodborne-save-editor.character-presets.v1';
+export function exportPresets(presets) {
+  return { format: PRESET_EXPORT_FORMAT, presets: validatePresets(presets) };
+}
+// Merges imported presets after the existing ones. Ids already present get a new
+// id; the total stays within MAX_PRESETS. Returns { presets, added, skipped }.
+export function mergeImportedPresets(existing, payload, makeId) {
+  const list = Array.isArray(payload) ? payload : payload?.presets;
+  if (!Array.isArray(list)) throw new Error('invalid');
+  const incoming = list.map(validatePreset);
+  const ids = new Set(existing.map(p => p.id));
+  const merged = [...existing];
+  let skipped = 0;
+  for (const preset of incoming) {
+    if (merged.length >= MAX_PRESETS) { skipped += 1; continue; }
+    const id = ids.has(preset.id) ? makeId() : preset.id;
+    ids.add(id);
+    merged.push({ ...preset, id });
+  }
+  return { presets: validatePresets(merged), added: merged.length - existing.length, skipped };
+}

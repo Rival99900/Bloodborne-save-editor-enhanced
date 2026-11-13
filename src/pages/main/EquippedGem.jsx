@@ -81,7 +81,7 @@ function EquippedGem({
         style={{
           position: "relative",
           padding: "1rem",
-          backgroundImage: "url(/assets/gems/gem_bg.png)",
+          backgroundImage: "url(/assets/gems/gem_bg.webp)",
           backgroundSize: "contain",
         }}
         onClick={() => {

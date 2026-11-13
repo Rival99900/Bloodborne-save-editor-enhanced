@@ -2,7 +2,7 @@ select {
   display: block;
   appearance: none;
   background-color: #00000081;
-  color: #dbd9d5;
+  color: var(--color-text-soft);
   font-family: inherit;
   font-size: 1rem;
   padding: 10px;

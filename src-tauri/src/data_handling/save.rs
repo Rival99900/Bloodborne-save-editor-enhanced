@@ -48,6 +48,12 @@ impl SaveData {
         .map_err(|_| Error::CustomError("Save has an invalid or unsupported internal structure."))?
     }
 
+    /// Parses a save without writing anything next to it (no backup copy).
+    pub fn inspect(save_path: &str, resources_path: PathBuf) -> Result<SaveData, Error> {
+        panic::catch_unwind(AssertUnwindSafe(|| Self::parse_file(FileData::build(save_path, resources_path)?)))
+            .map_err(|_| Error::CustomError("Save has an invalid or unsupported internal structure."))?
+    }
+
     fn build_validated(save_path: &str, resources_path: PathBuf) -> Result<SaveData, Error> {
         let file = FileData::build(save_path, resources_path)?;
         let save = Self::parse_file(file)?;
@@ -165,7 +171,10 @@ impl SaveData {
                     if matches!(article.type_family, TypeFamily::Weapon | TypeFamily::Armor) {
                         let record_offset = self
                             .file
-                            .find_article_offset(article.number, article.id, article.type_family, is_storage)
+                            .find_equipment_offset(article.number, article.first_part, article.second_part, is_storage)
+                            // Exact match first (two copies can share a slot number); otherwise
+                            // the record is checked below and reported as a reference mismatch.
+                            .or_else(|| self.file.find_article_offset(article.number, article.id, article.type_family, is_storage))
                             .ok_or(Error::CustomError(
                                 "ERROR: Equipment is missing its destination inventory record. Undo the addition or reopen an unmodified save before saving.",
                             ))?;
@@ -187,14 +196,10 @@ impl SaveData {
                         continue;
                     };
                     for slot in slots {
-                        if article.type_family == TypeFamily::Weapon
-                            && slot.shape != SlotShape::Closed
-                            && slot.gem.is_none()
-                        {
-                            return Err(Error::CustomError(
-                                "ERROR: A weapon has an active gem slot without a gem. Equip a matching gem or close the slot before saving.",
-                            ));
-                        }
+                        // An open slot without a Gem is a normal game state: real saves
+                        // store it as the shape followed by a zero Gem reference (126 such
+                        // slots in a completed save). Only a closed slot that still points
+                        // to an upgrade is incoherent.
                         if article.type_family == TypeFamily::Weapon
                             && slot.shape == SlotShape::Closed
                             && slot.gem.is_some()
@@ -690,12 +695,22 @@ impl SaveData {
             })
             .collect();
 
+        // Inventory/Storage entries in the file count even if a view missed them.
+        let raw_entry_ids: Vec<u32> = [self.file.offsets.inventory, self.file.offsets.storage, self.file.offsets.key_inventory]
+            .into_iter()
+            .flat_map(|(start, end)| (start..end).step_by(16))
+            .filter_map(|offset| self.file.bytes.get(offset + 4..offset + 8))
+            .map(|bytes| u32::from_le_bytes(bytes.try_into().unwrap()))
+            .filter(|id| id >> 24 == 0xC0)
+            .collect();
+
         self.inventory
             .upgrades
             .values()
             .chain(self.storage.upgrades.values())
             .flat_map(|entries| entries.iter().map(|upgrade| upgrade.id))
             .chain(raw_slot_upgrade_ids)
+            .chain(raw_entry_ids)
             .chain(
                 self.inventory
                     .articles
@@ -742,6 +757,92 @@ impl SaveData {
                     .is_some_and(|id| !referenced_ids.contains(&id))
             })
             .count()
+    }
+
+    /// Item id for a new Gem: copied from a Gem of the same shape already in the
+    /// save (so the name matches what the player knows), else a known default.
+    fn gem_source_for_shape(&self, shape: u8) -> u32 {
+        (self.file.offsets.upgrades.0..self.file.offsets.upgrades.1)
+            .step_by(40)
+            .filter_map(|offset| self.file.bytes.get(offset..offset + 40))
+            .find(|record| {
+                let source = u32::from_le_bytes(record[4..8].try_into().unwrap());
+                record[8] == 0x01 && record[12] == shape && source & 0x8000_0000 != 0 && !super::upgrades::is_rune_source(source)
+            })
+            .map(|record| u32::from_le_bytes(record[4..8].try_into().unwrap()))
+            .unwrap_or_else(|| super::upgrades::default_gem_source(shape))
+    }
+
+    /// Where a new 40-byte upgrade record can go: right after the Gem/Rune
+    /// records (the parser and the game keep them first), taking the place of
+    /// the first 8-byte vacancy that follows. Returns (insert at, vacancy, handle).
+    fn upgrade_record_slot(&self) -> Result<(usize, usize, u16), Error> {
+        let layout = super::ga::scan_for_insertion(&self.file.bytes, self.file.offsets.username)
+            .map_err(Error::CustomError)?;
+        let insert_at = self.file.offsets.upgrades.1 + 1;
+        let vacancy = layout
+            .empty
+            .filter(|vacancy| *vacancy >= insert_at)
+            .ok_or(Error::CustomError("ERROR: The Gem/Rune section is full."))?;
+        let handle = layout
+            .max_handle
+            .checked_add(1)
+            .ok_or(Error::CustomError("ERROR: No unique upgrade code is available."))?;
+        Ok((insert_at, vacancy, handle))
+    }
+
+    /// True when a Gem or Rune can be added: a record nobody uses, or room for a new one.
+    pub fn can_add_upgrade(&self) -> bool {
+        self.has_safe_reusable_upgrade_record() || self.upgrade_record_slot().is_ok()
+    }
+
+    /// How many Gems/Runes can still be added (reusable records + free GA slots).
+    pub fn addable_upgrade_count(&self) -> usize {
+        let free_slots = self
+            .upgrade_record_slot()
+            .ok()
+            .and_then(|_| super::ga::scan_for_insertion(&self.file.bytes, self.file.offsets.username).ok())
+            .map_or(0, |layout| layout.vacancies);
+        self.safe_reusable_upgrade_record_count() + free_slots
+    }
+
+    /// Copy of the save with a new upgrade record (id written into `record`).
+    /// The 40-byte record replaces an 8-byte vacancy, so everything after the
+    /// Gem/Rune records moves by 32 bytes and the last 32 bytes of the file
+    /// (past every parsed section) are dropped, as for added equipment.
+    fn with_new_upgrade_record(&self, record: &mut [u8; 40]) -> Result<SaveData, Error> {
+        const GROWTH: usize = 32;
+        let (insert_at, vacancy, handle) = self.upgrade_record_slot()?;
+        let id = 0xC080_0000 | u32::from(handle);
+        let used = |bytes: &[u8]| bytes == id.to_le_bytes();
+        let ga_collision = (self.file.offsets.upgrades.0..self.file.offsets.upgrades.1)
+            .step_by(40)
+            .any(|offset| used(&self.file.bytes[offset..offset + 4]));
+        let reference_collision = [self.file.offsets.inventory, self.file.offsets.storage, self.file.offsets.key_inventory]
+            .into_iter()
+            .flat_map(|(start, end)| (start..end).step_by(16))
+            .any(|offset| self.file.bytes.get(offset + 4..offset + 8).is_some_and(used));
+        if ga_collision || reference_collision {
+            return Err(Error::CustomError("ERROR: Generated upgrade code collides with an existing record."));
+        }
+        let len = self.file.bytes.len();
+        if len < GROWTH || len - GROWTH <= self.file.offsets.lced_offset + 4 {
+            return Err(Error::CustomError("ERROR: Save is too short for a new upgrade record."));
+        }
+        record[..4].copy_from_slice(&id.to_le_bytes());
+        let mut file = self.file.clone();
+        file.bytes.drain(vacancy..vacancy + 8);
+        file.bytes.splice(insert_at..insert_at, record.iter().copied());
+        file.bytes.truncate(len);
+        file.offsets = super::offsets::Offsets::build(&file.bytes)?;
+        if file.offsets.username != self.file.offsets.username + GROWTH
+            || file.offsets.upgrades.1 != self.file.offsets.upgrades.1 + 40
+        {
+            return Err(Error::CustomError("ERROR: Shifted save layout could not be verified."));
+        }
+        super::ga::scan_for_insertion(&file.bytes, file.offsets.username).map_err(Error::CustomError)?;
+        panic::catch_unwind(AssertUnwindSafe(|| Self::parse_file(file)))
+            .map_err(|_| Error::CustomError("ERROR: The new upgrade record could not be reparsed."))?
     }
 
     /// Experimental direct allocation. A new upgrade is materialized only by
@@ -816,30 +917,45 @@ impl SaveData {
             "ERROR: A direct gem or rune requires a validated primary effect.",
         ))?;
 
-        let is_storage = location == Location::Storage;
+        let source = match upgrade_type {
+            // Runes may carry Gem effects (the game accepts them): the item id comes
+            // from the first rune effect, or the Moon rune when there is none.
+            UpgradeType::Rune => normalized_effects
+                .iter()
+                .find_map(|effect| super::upgrades::rune_source_for_effect(*effect))
+                .unwrap_or(0x8000_0000 | 100_001),
+            UpgradeType::Gem => self.gem_source_for_shape(shape_number),
+        };
+
         self.file
             .find_inv_empty_slot(location)
             .ok_or(Error::CustomError(
                 "ERROR: The destination inventory has no safe reusable slot.",
             ))?;
 
-        let offset = self.find_safe_unreferenced_upgrade_offset().ok_or(Error::CustomError(
-            "ERROR: No safe unreferenced gem or rune record is available. Create a slot in-game or use the [CUT] workflow.",
-        ))?;
-
-        let id = u32::from_le_bytes(self.file.bytes[offset..offset + 4].try_into().unwrap());
-        let source =
-            u32::from_le_bytes(self.file.bytes[offset + 4..offset + 8].try_into().unwrap());
-        self.file.bytes[offset + 8] = match upgrade_type {
+        let mut record = [0u8; 40];
+        record[4..8].copy_from_slice(&source.to_le_bytes());
+        record[8] = match upgrade_type {
             UpgradeType::Gem => 0x01,
             UpgradeType::Rune => 0x02,
         };
-        self.file.bytes[offset + 9..offset + 16].fill(0);
-        self.file.bytes[offset + 12] = shape_number;
+        record[12] = shape_number;
         for (index, effect_id) in normalized_effects.iter().enumerate() {
-            let start = offset + 16 + index * 4;
-            self.file.bytes[start..start + 4].copy_from_slice(&effect_id.to_le_bytes());
+            record[16 + index * 4..20 + index * 4].copy_from_slice(&effect_id.to_le_bytes());
         }
+
+        // 1. Reuse a record nothing points to. 2. Otherwise give the record its own
+        // GA slot, the way equipment is added.
+        let mut candidate = match self.find_safe_unreferenced_upgrade_offset() {
+            Some(offset) => {
+                let mut candidate = self.clone();
+                record[..4].copy_from_slice(&candidate.file.bytes[offset..offset + 4]);
+                candidate.file.bytes[offset..offset + 40].copy_from_slice(&record);
+                candidate
+            }
+            None => self.with_new_upgrade_record(&mut record)?,
+        };
+        let id = u32::from_le_bytes(record[..4].try_into().unwrap());
 
         let upgrade = Upgrade {
             number: 0,
@@ -851,20 +967,29 @@ impl SaveData {
             info,
             index: 0,
         };
+        let is_storage = location == Location::Storage;
         match location {
-            Location::Inventory => self.inventory.add_upgrade(&mut self.file, upgrade, false)?,
-            Location::Storage => self.storage.add_upgrade(&mut self.file, upgrade, is_storage)?,
+            Location::Inventory => candidate.inventory.add_upgrade(&mut candidate.file, upgrade, false)?,
+            Location::Storage => candidate.storage.add_upgrade(&mut candidate.file, upgrade, is_storage)?,
         };
 
+        // Commit only a save that reparses with the new upgrade in its destination.
+        let file = candidate.file.clone();
+        let reparsed = panic::catch_unwind(AssertUnwindSafe(|| Self::parse_file(file)))
+            .map_err(|_| Error::CustomError("ERROR: Direct upgrade insertion failed."))??;
+        reparsed.validate_game_load_safety()?;
         let inserted = match location {
-            Location::Inventory => self.inventory.upgrades.get(&upgrade_type),
-            Location::Storage => self.storage.upgrades.get(&upgrade_type),
+            Location::Inventory => &reparsed.inventory,
+            Location::Storage => &reparsed.storage,
         }
-        .and_then(|entries| entries.last())
+        .upgrades
+        .get(&upgrade_type)
+        .and_then(|entries| entries.iter().find(|entry| entry.id == id))
         .cloned()
         .ok_or(Error::CustomError(
             "ERROR: Direct upgrade insertion failed.",
         ))?;
+        *self = reparsed;
 
         Ok(inserted)
     }
@@ -905,7 +1030,57 @@ impl SaveData {
         Ok(transformed)
     }
 
-    #[cfg_attr(not(test), allow(dead_code))]
+    /// Raises every reinforceable weapon of Inventory or Storage below `level` to
+    /// `level` (F8). Weapons without reinforced versions are skipped. Callers
+    /// run this on a copy of the save. Returns (upgraded, skipped).
+    pub fn upgrade_all_weapons(&mut self, is_storage: bool, level: u8) -> Result<(usize, usize), Error> {
+        let container = if is_storage { &mut self.storage } else { &mut self.inventory };
+        let (mut upgraded, mut skipped) = (0, 0);
+        for article_type in [super::enums::ArticleType::RightHand, super::enums::ArticleType::LeftHand] {
+            let count = container.articles.get(&article_type).map_or(0, Vec::len);
+            for index in 0..count {
+                let second_part = container.articles[&article_type][index].second_part;
+                if !super::inventory::weapon_is_upgradable(second_part) {
+                    skipped += 1;
+                    continue;
+                }
+                if ((second_part % 10_000) / 100) as u8 >= level {
+                    continue;
+                }
+                container.change_weapon_level(&mut self.file, article_type, index, 0, is_storage, level)?;
+                upgraded += 1;
+            }
+        }
+        Ok((upgraded, skipped))
+    }
+
+    /// Moves several Gems or Runes between Inventory and Storage (F6).
+    /// Indices refer to the source list; they are processed from the highest so
+    /// earlier indices stay valid. Callers run this on a copy of the save.
+    pub fn move_upgrades(
+        &mut self,
+        upgrade_type: UpgradeType,
+        mut indices: Vec<usize>,
+        from: Location,
+    ) -> Result<usize, Error> {
+        indices.sort_unstable_by(|a, b| b.cmp(a));
+        indices.dedup();
+        let destination = match from {
+            Location::Inventory => Location::Storage,
+            Location::Storage => Location::Inventory,
+        };
+        if indices.is_empty() {
+            return Ok(0);
+        }
+        if self.file.count_inv_empty_slots(destination) < indices.len() {
+            return Err(Error::CustomError("ERROR: Not enough free slots at the destination."));
+        }
+        for &index in &indices {
+            self.move_upgrade(upgrade_type, index, from)?;
+        }
+        Ok(indices.len())
+    }
+
     pub fn move_upgrade(
         &mut self,
         upgrade_type: UpgradeType,
@@ -1032,10 +1207,7 @@ mod tests {
         for name in fixtures {
             for location in [Location::Inventory, Location::Storage] {
                 let mut save = build_save_data(name);
-                if save.validate_game_load_safety().is_err() {
-                    // The fixture is already refused before any addition.
-                    continue;
-                }
+                save.validate_game_load_safety().unwrap_or_else(|error| panic!("{name} refused before any addition: {error}"));
                 let len = save.file.bytes.len();
                 // Right-hand weapon, left-hand firearm and armor from the bundled catalogues.
                 for (id, is_armor) in [(2_000_000u32, false), (6000000, false), (20_000, true)] {
@@ -1050,6 +1222,37 @@ mod tests {
                 save.validate_game_load_safety().unwrap();
             }
         }
+    }
+
+    #[test]
+    fn added_weapon_with_open_empty_slots_can_be_saved() {
+        // Reported in v0.7.0: opening the five slots of an added weapon without
+        // Gems blocked saving. Real saves contain open empty slots.
+        let mut save = build_save_data("testsave8");
+        save.validate_game_load_safety().expect("a completed save with open empty slots is valid");
+        let added = save.add_experimental_equipment(2_000_000, false, Location::Inventory).unwrap();
+        let index = save.inventory.articles[&ArticleType::RightHand]
+            .iter()
+            .position(|article| article.number == added.number && article.id == added.id)
+            .unwrap();
+        let shapes = [SlotShape::Radial, SlotShape::Triangle, SlotShape::Waning, SlotShape::Circle, SlotShape::Droplet];
+        for (slot, shape) in shapes.into_iter().enumerate() {
+            let article = &mut save.inventory.articles.get_mut(&ArticleType::RightHand).unwrap()[index];
+            article.change_slot_shape(&mut save.file, slot, shape).unwrap();
+        }
+        save.validate_game_load_safety().expect("open empty slots must not block saving");
+
+        let path = std::env::temp_dir().join("bbse_open_slots_test");
+        std::fs::write(&path, &save.file.bytes).unwrap();
+        let reparsed = SaveData::build(path.to_str().unwrap(), save.file.resources_path.clone()).unwrap();
+        let weapon = reparsed.inventory.articles[&ArticleType::RightHand]
+            .iter()
+            .find(|article| article.number == added.number)
+            .unwrap();
+        let slots = weapon.slots.as_ref().unwrap();
+        assert_eq!(slots.iter().map(|slot| slot.shape).collect::<Vec<_>>(), shapes.to_vec());
+        assert!(slots.iter().all(|slot| slot.gem.is_none()));
+        reparsed.validate_game_load_safety().unwrap();
     }
 
     #[test]
@@ -1072,6 +1275,19 @@ mod tests {
             assert!(save.add_experimental_equipment(2_020_000, false, location).is_err());
             assert_eq!(save.file, original.file);
             assert_eq!(serde_json::to_value(&save).unwrap(), serde_json::to_value(&original).unwrap());
+        }
+    }
+
+    /// Turns an upgrade into a real orphan: its Inventory/Storage entries in the
+    /// file become empty slots, as when the player discards it in game.
+    fn orphan_in_file(save: &mut SaveData, id: u32) {
+        let empty = [0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0];
+        for (start, end) in [save.file.offsets.inventory, save.file.offsets.storage] {
+            for entry in (start..end).step_by(16) {
+                if save.file.bytes[entry + 4..entry + 8] == id.to_le_bytes() {
+                    save.file.bytes[entry + 4..entry + 16].copy_from_slice(&empty);
+                }
+            }
         }
     }
 
@@ -1107,6 +1323,7 @@ mod tests {
         for (index, rune) in runes.iter_mut().enumerate() {
             rune.index = index;
         }
+        orphan_in_file(&mut save, original.id);
         assert!(
             save.has_safe_reusable_upgrade_record(),
             "removing the inventory reference must expose the reusable record"
@@ -1166,6 +1383,7 @@ mod tests {
                 gem.index = index;
             }
         }
+        orphan_in_file(&mut save, orphaned_gem.id);
 
         let added_gem = save
             .add_direct_upgrade(
@@ -1191,6 +1409,7 @@ mod tests {
                 rune.index = index;
             }
         }
+        orphan_in_file(&mut save, orphaned_rune.id);
 
         let added_rune = save
             .add_direct_upgrade(
@@ -2644,7 +2863,7 @@ mod save_safety_validation_tests {
     };
 
     #[test]
-    fn save_validation_rejects_empty_or_closed_inconsistent_slots() {
+    fn save_validation_accepts_open_empty_slots_and_rejects_closed_slots_with_gems() {
         let mut empty_slot_save = build_save_data("testsave9");
         let article = empty_slot_save
             .inventory
@@ -2652,8 +2871,11 @@ mod save_safety_validation_tests {
             .get_mut(&ArticleType::RightHand)
             .and_then(|articles| articles.first_mut())
             .expect("test save must contain a right-hand weapon");
-        article.slots.as_mut().expect("weapon must contain slots")[0].gem = None;
-        assert!(empty_slot_save.validate_game_load_safety().is_err());
+        let slots = article.slots.as_mut().expect("weapon must contain slots");
+        assert!(slots[0].gem.is_some(), "fixture slot must hold a gem");
+        // An open slot without a Gem is a normal game state.
+        slots[0].gem = None;
+        assert!(empty_slot_save.validate_game_load_safety().is_ok());
 
         let mut closed_slot_save = build_save_data("testsave9");
         let article = closed_slot_save
@@ -2793,5 +3015,227 @@ mod load_regression_tests {
             "accepted saves must retain the automatic backup"
         );
         cleanup(&path);
+    }
+}
+
+#[cfg(test)]
+mod move_upgrades_tests {
+    use super::*;
+    use crate::data_handling::utils::test_utils::build_save_data;
+
+    fn count(save: &SaveData, upgrade_type: UpgradeType, storage: bool) -> usize {
+        let container = if storage { &save.storage } else { &save.inventory };
+        container.upgrades.get(&upgrade_type).map_or(0, Vec::len)
+    }
+
+    #[test]
+    fn moves_runes_to_storage_and_back() {
+        let mut save = build_save_data("testsave5");
+        let len = save.file.bytes.len();
+        let runes = count(&save, UpgradeType::Rune, false);
+        assert!(runes >= 3);
+        let before_storage = count(&save, UpgradeType::Rune, true);
+        let moved = save.move_upgrades(UpgradeType::Rune, vec![0, 2, 2, 1], Location::Inventory).unwrap();
+        assert_eq!(moved, 3);
+        assert_eq!(count(&save, UpgradeType::Rune, false), runes - 3);
+        assert_eq!(count(&save, UpgradeType::Rune, true), before_storage + 3);
+        assert_eq!(save.file.bytes.len(), len);
+
+        // The bytes reparse to the same lists.
+        let path = std::env::temp_dir().join("bbse_move_upgrades_test");
+        std::fs::write(&path, &save.file.bytes).unwrap();
+        let reparsed = SaveData::build(path.to_str().unwrap(), save.file.resources_path.clone()).unwrap();
+        assert_eq!(count(&reparsed, UpgradeType::Rune, false), runes - 3);
+        assert_eq!(count(&reparsed, UpgradeType::Rune, true), before_storage + 3);
+
+        let back: Vec<usize> = (before_storage..before_storage + 3).collect();
+        save.move_upgrades(UpgradeType::Rune, back, Location::Storage).unwrap();
+        assert_eq!(count(&save, UpgradeType::Rune, false), runes);
+        assert_eq!(count(&save, UpgradeType::Rune, true), before_storage);
+    }
+
+    #[test]
+    fn rejects_invalid_indices_without_partial_changes_on_a_copy() {
+        let save = build_save_data("testsave5");
+        let mut candidate = save.clone();
+        assert!(candidate.move_upgrades(UpgradeType::Rune, vec![0, 999], Location::Inventory).is_err());
+        // The command only commits the copy on success; the original is untouched.
+        assert_eq!(count(&save, UpgradeType::Rune, false), count(&build_save_data("testsave5"), UpgradeType::Rune, false));
+    }
+}
+
+#[cfg(test)]
+mod weapon_level_tests {
+    use super::*;
+    use crate::data_handling::utils::test_utils::build_save_data;
+
+    fn weapons(save: &SaveData, storage: bool) -> Vec<Article> {
+        let container = if storage { &save.storage } else { &save.inventory };
+        [ArticleType::RightHand, ArticleType::LeftHand]
+            .iter()
+            .flat_map(|kind| container.articles.get(kind).cloned().unwrap_or_default())
+            .collect()
+    }
+
+    #[test]
+    fn upgrades_every_weapon_in_both_containers_keeping_variants() {
+        for storage in [false, true] {
+            let mut save = build_save_data("testsave8");
+            let before = weapons(&save, storage);
+            assert!(!before.is_empty());
+            let (upgraded, skipped) = save.upgrade_all_weapons(storage, 10).unwrap();
+            assert!(upgraded > 0, "storage={storage}");
+            let after = weapons(&save, storage);
+            for (old, new) in before.iter().zip(after.iter()) {
+                let variant = |id: u32| (id % 100_000) - (id % 10_000);
+                assert_eq!(variant(old.second_part), variant(new.second_part), "{} keeps its variant", old.info.item_name);
+                assert_eq!(old.second_part / 100_000, new.second_part / 100_000);
+                if crate::data_handling::inventory::weapon_is_upgradable(old.second_part) {
+                    assert_eq!((new.second_part % 10_000) / 100, 10, "{}", old.info.item_name);
+                } else {
+                    assert_eq!(old.second_part, new.second_part, "{} is left untouched", old.info.item_name);
+                }
+            }
+            let _ = skipped;
+            // Every weapon still matches its own equipment record (duplicates included).
+            save.validate_game_load_safety().unwrap();
+            let path = std::env::temp_dir().join(format!("bbse_upgrade_all_{storage}"));
+            std::fs::write(&path, &save.file.bytes).unwrap();
+            let reparsed = SaveData::build(path.to_str().unwrap(), save.file.resources_path.clone()).unwrap();
+            assert_eq!(
+                weapons(&reparsed, storage).iter().map(|weapon| weapon.second_part).collect::<Vec<_>>(),
+                after.iter().map(|weapon| weapon.second_part).collect::<Vec<_>>()
+            );
+        }
+    }
+
+    #[test]
+    fn refuses_weapons_without_reinforced_versions_and_leaves_them_intact() {
+        use crate::data_handling::inventory::weapon_is_upgradable;
+        assert!(!weapon_is_upgradable(12_080_000), "Bloody Logarius' Wheel");
+        assert!(!weapon_is_upgradable(900_000), "Adella's End-Quest Dagger");
+        assert!(weapon_is_upgradable(7_000_000));
+        assert!(weapon_is_upgradable(7_010_300), "Uncanny Saw Cleaver +3");
+    }
+}
+
+#[cfg(test)]
+mod upgrade_allocation_tests {
+    use super::*;
+    use crate::data_handling::upgrades::{is_rune_source, rune_source_for_effect};
+    use crate::data_handling::utils::test_utils::build_save_data;
+    use std::path::PathBuf;
+
+    const FIXTURES: [&str; 10] = [
+        "testsave0", "testsave1", "testsave2", "testsave3", "testsave4", "testsave5", "testsave6", "testsave7",
+        "testsave8", "testsave9",
+    ];
+
+    fn reload(save: &SaveData, name: &str) -> SaveData {
+        let path = std::env::temp_dir().join(format!("bbse_upgrade_alloc_{name}_{}", std::process::id()));
+        save.file.save(path.to_str().unwrap()).unwrap();
+        let reloaded = SaveData::build(path.to_str().unwrap(), PathBuf::from("resources")).unwrap();
+        let _ = std::fs::remove_file(&path);
+        let _ = std::fs::remove_file(path.with_extension("bak"));
+        let _ = std::fs::remove_dir_all(PathBuf::from(format!("{}.backups", path.display())));
+        reloaded
+    }
+
+    fn all_upgrades(save: &SaveData) -> Vec<Upgrade> {
+        save.inventory.upgrades.values().chain(save.storage.upgrades.values()).flatten().cloned().collect()
+    }
+
+    #[test]
+    fn rune_item_ids_match_the_ones_found_in_real_saves() {
+        let (mut checked, mut matched) = (0, 0);
+        for name in FIXTURES {
+            let save = build_save_data(name);
+            let (start, end) = save.file.offsets.upgrades;
+            for offset in (start..end).step_by(40) {
+                let record = &save.file.bytes[offset..offset + 40];
+                let source = u32::from_le_bytes(record[4..8].try_into().unwrap());
+                let effect = u32::from_le_bytes(record[16..20].try_into().unwrap());
+                if record[8] != 0x02 || (source & 0x7FFF_FFFF) > 999_999 {
+                    continue;
+                }
+                if let Some(expected) = rune_source_for_effect(effect) {
+                    checked += 1;
+                    matched += usize::from(expected == source);
+                }
+            }
+        }
+        assert!(checked > 150, "only {checked} runes checked");
+        assert!(matched * 100 >= checked * 98, "{matched}/{checked} rune ids match");
+        assert!(rune_source_for_effect(13_101).is_none(), "a Gem effect has no rune item");
+        assert!(is_rune_source(0x8001_86A1) && !is_rune_source(0x8001_6026));
+    }
+
+    #[test]
+    fn gems_and_runes_get_new_records_when_none_can_be_reused() {
+        for name in FIXTURES {
+            let mut save = build_save_data(name);
+            let length = save.file.bytes.len();
+            let before = all_upgrades(&save).len();
+            // Use up the reusable records first, then keep adding.
+            let mut added = Vec::new();
+            for round in 0..(save.safe_reusable_upgrade_record_count() + 3) {
+                let location = if round % 2 == 0 { Location::Inventory } else { Location::Storage };
+                let (kind, shape, effect) = if round % 3 == 0 {
+                    (UpgradeType::Rune, "-", 1_107_002)
+                } else {
+                    (UpgradeType::Gem, "Droplet", 13_101)
+                };
+                match save.add_direct_upgrade(kind, shape.to_string(), vec![effect], location) {
+                    Ok(upgrade) => added.push(upgrade),
+                    Err(error) => panic!("{name} round {round}: {error}"),
+                }
+            }
+            assert_eq!(save.file.bytes.len(), length, "{name}: the save size never changes");
+            let reloaded = reload(&save, name);
+            let upgrades = all_upgrades(&reloaded);
+            assert_eq!(upgrades.len(), before + added.len(), "{name}: every addition survives a reload");
+            for upgrade in &added {
+                let stored = upgrades.iter().find(|entry| entry.id == upgrade.id).expect("added upgrade is listed");
+                match stored.upgrade_type {
+                    UpgradeType::Rune => assert_eq!(Some(stored.source), rune_source_for_effect(1_107_002)),
+                    UpgradeType::Gem => assert!(!is_rune_source(stored.source), "{name}: gem keeps a gem item id"),
+                }
+            }
+            reloaded.validate_game_load_safety().unwrap();
+            assert!(super::super::ga::scan_for_insertion(&reloaded.file.bytes, reloaded.file.offsets.username).is_ok());
+        }
+    }
+
+    #[test]
+    fn runes_accept_gem_effects_and_follow_their_first_rune_effect() {
+        let mut save = build_save_data("testsave1");
+        let rune = save.inventory.upgrades.get_mut(&UpgradeType::Rune).unwrap().first_mut().unwrap();
+        let rune_source = rune.source;
+        // A Gem effect in first position keeps the rune's item id.
+        rune.change_effect(&mut save.file, 13_101, 0).unwrap();
+        assert_eq!(rune.source, rune_source);
+        rune.change_effect(&mut save.file, 1_107_001, 0).unwrap();
+        let (id, source) = (rune.id, rune.source);
+        assert_eq!(Some(source), rune_source_for_effect(1_107_001));
+        let reloaded = reload(&save, "rune_edit");
+        let stored = all_upgrades(&reloaded).into_iter().find(|entry| entry.id == id).unwrap();
+        assert_eq!(stored.source, source, "record and inventory entry carry the rune item id");
+        let mixed = save
+            .add_direct_upgrade(UpgradeType::Rune, "-".into(), vec![13_101, 1_107_001], Location::Inventory)
+            .unwrap();
+        assert_eq!(mixed.effects[0].0, 13_101);
+        assert_eq!(Some(mixed.source), rune_source_for_effect(1_107_001));
+    }
+
+    #[test]
+    fn converting_between_gem_and_rune_changes_the_item_id() {
+        let mut save = build_save_data("testsave1");
+        let converted = save.transform_upgrade(UpgradeType::Gem, 0, Location::Inventory).unwrap();
+        assert_eq!(converted.upgrade_type, UpgradeType::Rune);
+        assert!(is_rune_source(converted.source));
+        let back = save.transform_upgrade(UpgradeType::Rune, converted.index, Location::Inventory).unwrap();
+        assert!(!is_rune_source(back.source));
+        let reloaded = reload(&save, "transform");
+        assert_eq!(all_upgrades(&reloaded).into_iter().find(|entry| entry.id == back.id).unwrap().source, back.source);
     }
 }

@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { useContext, useMemo } from "react";
 import DarkSelect from "../../components/DarkSelect";
 import { ImagesContext } from "../../context/imagesContext";
@@ -53,13 +54,16 @@ function Npcs() {
   return (
     <div
       className="npc-workspace"
-      style={{ backgroundImage: `url(${images.backgrounds["statsBg.png"].src})` }}
+      style={{ backgroundImage: `url(${images.backgrounds["statsBg.webp"].src})` }}
     >
       <header className="npc-workspace__header">
         <p>{t("npcs.eyebrow")}</p>
         <h1>{t("npcs.title")}</h1>
         <span>{t("npcs.lead")}</span>
       </header>
+      <p className="npc-research-link">
+        {t("npcs.researchHint")} <NavLink to="/tools">{t("npcs.researchLink")}</NavLink>
+      </p>
 
       <section className="npc-list" aria-label={t("npcs.title")}>
         {NPCS.map((npc) => <NpcRow key={npc.key} npc={npc} />)}

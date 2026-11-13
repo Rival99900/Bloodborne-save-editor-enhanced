@@ -272,6 +272,16 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             get_capacity_summary,
             add_direct_upgrade,
             add_direct_equipment,
+            move_upgrades,
+            upgrade_all_weapons,
+            list_backups,
+            restore_backup,
+            ps4_ftp_list,
+            ps4_ftp_download,
+            ps4_ftp_upload,
+            ps4_ftp_find_saves,
+            ps4_ftp_import,
+            ps4_ftp_delete,
             edit_slot,
             get_isz,
             fix_isz,
@@ -1018,7 +1028,7 @@ fn get_direct_upgrade_capacity(state_save: tauri::State<MutexSave>) -> Result<bo
         .as_ref()
         .ok_or_else(|| "Open a decrypted save before checking Gem/Rune capacity.".to_string())?;
 
-    Ok(save.has_safe_reusable_upgrade_record())
+    Ok(save.can_add_upgrade())
 }
 
 #[tauri::command]
@@ -1031,7 +1041,7 @@ fn get_capacity_summary(state_save: tauri::State<MutexSave>) -> Result<CapacityS
     let save = save_option
         .as_ref()
         .ok_or_else(|| "Open a decrypted save before checking capacity.".to_string())?;
-    let shared_upgrade_records = save.safe_reusable_upgrade_record_count();
+    let shared_upgrade_records = save.addable_upgrade_count();
 
     Ok(CapacitySummary {
         inventory_free: save.file.count_inv_empty_slots(Location::Inventory),
@@ -1071,6 +1081,134 @@ fn add_direct_upgrade(
         "save": serde_json::to_value(&save).map_err(|error| error.to_string())?,
         "upgrade": upgrade,
     }))
+}
+
+#[tauri::command]
+fn list_backups(path: String) -> Result<Vec<data_handling::backups::BackupEntry>, String> {
+    data_handling::backups::list(std::path::Path::new(&path)).map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+fn restore_backup(path: String, backup: String) -> Result<(), String> {
+    // The frontend reopens `path` afterwards, through the normal load checks.
+    data_handling::backups::restore(std::path::Path::new(&path), std::path::Path::new(&backup))
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+async fn ps4_ftp_list(host: String, port: u16, dir: String) -> Result<Vec<data_handling::ps4_ftp::RemoteEntry>, String> {
+    tauri::async_runtime::spawn_blocking(move || data_handling::ps4_ftp::list(&host, port, &dir))
+        .await
+        .map_err(|error| error.to_string())?
+}
+
+/// Downloads a console file into the app cache and returns the local path,
+/// which the frontend then opens with `make_save`.
+#[tauri::command]
+async fn ps4_ftp_download(host: String, port: u16, remote: String, handle: tauri::AppHandle) -> Result<String, String> {
+    let cache = handle.path().app_cache_dir().map_err(|error| error.to_string())?;
+    tauri::async_runtime::spawn_blocking(move || {
+        data_handling::ps4_ftp::download_to(&cache, &host, port, &remote).map(|path| path.to_string_lossy().to_string())
+    })
+    .await
+    .map_err(|error| error.to_string())?
+}
+
+#[tauri::command]
+async fn ps4_ftp_upload(host: String, port: u16, local: String, remote: String) -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        data_handling::ps4_ftp::upload(&host, port, std::path::Path::new(&local), &remote)
+    })
+    .await
+    .map_err(|error| error.to_string())?
+}
+
+/// Folder holding the Bloodborne saves on the console (or `/`).
+#[tauri::command]
+async fn ps4_ftp_find_saves(host: String, port: u16) -> Result<Vec<String>, String> {
+    tauri::async_runtime::spawn_blocking(move || data_handling::ps4_ftp::find_save_folders(&host, port))
+        .await
+        .map_err(|error| error.to_string())?
+}
+
+/// Sends a local Bloodborne save into a console folder. The file must parse
+/// as a save before anything is written on the console.
+#[tauri::command]
+async fn ps4_ftp_import(
+    host: String,
+    port: u16,
+    local: String,
+    dir: String,
+    name: Option<String>,
+    handle: tauri::AppHandle,
+) -> Result<String, String> {
+    let cache = handle.path().app_cache_dir().map_err(|error| error.to_string())?;
+    let resource_path = handle
+        .path()
+        .resolve("resources/", BaseDirectory::Resource)
+        .map_err(|error| format!("Application resources are unavailable: {error}"))?;
+    tauri::async_runtime::spawn_blocking(move || {
+        let target = name.clone().unwrap_or_else(|| {
+            std::path::Path::new(&local).file_name().map(|name| name.to_string_lossy().to_string()).unwrap_or_default()
+        });
+        if !data_handling::ps4_ftp::is_save_name(&target) {
+            return Err("FTP_NOT_A_SAVE".to_string());
+        }
+        SaveData::inspect(&local, resource_path).map_err(|_| "FTP_INVALID_SAVE".to_string())?;
+        data_handling::ps4_ftp::import(&cache, &host, port, std::path::Path::new(&local), &dir, Some(&target))
+    })
+    .await
+    .map_err(|error| error.to_string())?
+}
+
+/// Deletes a console save; a local copy is kept first and its path returned.
+#[tauri::command]
+async fn ps4_ftp_delete(host: String, port: u16, remote: String, handle: tauri::AppHandle) -> Result<String, String> {
+    let cache = handle.path().app_cache_dir().map_err(|error| error.to_string())?;
+    tauri::async_runtime::spawn_blocking(move || {
+        data_handling::ps4_ftp::delete(&cache, &host, port, &remote).map(|path| path.to_string_lossy().to_string())
+    })
+    .await
+    .map_err(|error| error.to_string())?
+}
+
+#[tauri::command]
+fn upgrade_all_weapons(is_storage: bool, level: u8, state_save: tauri::State<MutexSave>) -> Result<Value, String> {
+    let mut save_option = state_save.inner().data.lock()
+        .map_err(|_| "SAVE_UNAVAILABLE".to_string())?;
+    let save = save_option.as_mut().ok_or_else(|| "SAVE_REQUIRED".to_string())?;
+    // All or nothing, like move_upgrades.
+    let mut candidate = save.clone();
+    let (upgraded, skipped) = candidate.upgrade_all_weapons(is_storage, level).map_err(|error| error.to_string())?;
+    let result = json!({
+        "save": serde_json::to_value(&candidate).map_err(|error| error.to_string())?,
+        "upgraded": upgraded,
+        "skipped": skipped,
+    });
+    *save = candidate;
+    Ok(result)
+}
+
+#[tauri::command]
+fn move_upgrades(
+    upgrade_type: UpgradeType,
+    indices: Vec<usize>,
+    is_storage: bool,
+    state_save: tauri::State<MutexSave>,
+) -> Result<Value, String> {
+    let mut save_option = state_save.inner().data.lock()
+        .map_err(|_| "SAVE_UNAVAILABLE".to_string())?;
+    let save = save_option.as_mut().ok_or_else(|| "SAVE_REQUIRED".to_string())?;
+    // All or nothing: the moves run on a copy that replaces the save on success.
+    let mut candidate = save.clone();
+    let from = if is_storage { Location::Storage } else { Location::Inventory };
+    let moved = candidate.move_upgrades(upgrade_type, indices, from).map_err(|error| error.to_string())?;
+    let result = json!({
+        "save": serde_json::to_value(&candidate).map_err(|error| error.to_string())?,
+        "moved": moved,
+    });
+    *save = candidate;
+    Ok(result)
 }
 
 #[tauri::command]

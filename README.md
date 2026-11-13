@@ -9,7 +9,18 @@
 
 > **Credits.** Thanks to [Noxde](https://github.com/Noxde) for the original project and [Valentino Amato (valentinoamato)](https://github.com/valentinoamato) for the weapon/armor insertion method and its GA-slot fix. This enhanced edition exists because of that valuable open-source work.
 
-> **Version 0.6.5:** weapon and armor addition aligned with upstream Noxde 0.11.1, multiplayer restored in areas whose boss is defeated, catalogue corrections and an English Gem name fix.
+> **Version 0.7.0:** consistency check, bulk actions, trophy assistant, save comparison, backup history, PS4/PS5 over FTP and a full interface pass.
+
+## What’s new in v0.7.0
+
+- **Consistency check** (Stats): Level recalculated from the attributes, HP from Vitality, and a list of values outside the normal game range.
+- **Bulk actions** (Inventory and Storage): move many Gems/Runes between Inventory and Storage in one all-or-nothing step, upgrade every weapon to +10.
+- **Tools** page: progress of Hunter's Essence, Hunter's Craft and Weapon Master with adding of missing entries, and a byte comparison of the flag region of two saves (with JSON export) to document NPC flags.
+- **File menu**: recent saves, drag and drop, keyboard shortcuts (F1), and a **backup history** of dated copies in `<file>.backups/` that can be restored.
+- **PS4/PS5 over FTP**: GoldHEN on PS4 (port 2121) or etaHEN on PS5 (port 1337). On PS4 the folders where Apollo exported Bloodborne saves are listed (Apollo has no PS5 version, so on PS5 you browse to the save). Open, send back (checked by reading the file back), send to any folder, import or delete a save. Other files are read-only, and the console's version is kept locally before any replacement or deletion.
+- Character presets export/import, unified visual system, Gem shape icons, Escape in the Gem editor, WebP images and 0 `npm audit` vulnerabilities.
+
+See the [v0.7.0 release notes](.github/release-notes/v0.7.0.md).
 
 ## What’s new in v0.6.5
 
@@ -60,14 +71,14 @@ Weapon and armor insertion is now available as an **experimental** operation in 
 
 Download the latest package from the [Releases page](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases). The stable distribution provides a **Windows x64 installer**, an **Ubuntu/Linux x64 AppImage**, signed updater metadata and a SHA-256 checksum manifest.
 
-### v0.6.5 packages
+### v0.7.0 packages
 
 | Field | Details |
 | --- | --- |
-| **Name** | **Bloodborne Save Editor Enhanced v0.6.5** |
-| **Version** | `v0.6.5` |
+| **Name** | **Bloodborne Save Editor Enhanced v0.7.0** |
+| **Version** | `v0.7.0` |
 | **Status** | Release-channel packages are available after the signed workflow completes. Patch catalogs remain experimental. |
-| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/Bloodborne_Save_Editor_Enhanced_0.6.5_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.6.5/SHA256SUMS.txt) |
+| **Downloads** | [Windows x64 installer](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.0/Bloodborne_Save_Editor_Enhanced_0.7.0_x64-setup.exe) · [Ubuntu/Linux x64 AppImage](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.0/Bloodborne_Save_Editor_Enhanced_0.7.0_amd64.AppImage) · [SHA-256 checksums](https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.0/SHA256SUMS.txt) |
 
 | Step | What to do |
 | --- | --- |

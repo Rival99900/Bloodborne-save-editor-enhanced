@@ -71,16 +71,16 @@ function getRunePath(name, shape, rating) {
     .replaceAll(/^_+|_+$/g, "");
 
   if (shape === "Oath") {
-    return `/assets/runes/oath/${OATH_RUNES.has(normalized) ? normalized : "hunter"}.png`;
+    return `/assets/runes/oath/${OATH_RUNES.has(normalized) ? normalized : "hunter"}.webp`;
   }
 
   const runeName = normalizeRuneName(name);
   const assetDirectory = RUNE_ASSET_DIRECTORY[runeName] ?? runeName;
-  return `/assets/runes/${assetDirectory}/${normalizeRuneTier(runeName, rating)}.png`;
+  return `/assets/runes/${assetDirectory}/${normalizeRuneTier(runeName, rating)}.webp`;
 }
 
 function getRuneFallbackPath(shape) {
-  return shape === "Oath" ? "/assets/runes/oath/hunter.png" : "/assets/runes/moon/0.png";
+  return shape === "Oath" ? "/assets/runes/oath/hunter.webp" : "/assets/runes/moon/0.webp";
 }
 
 function removeRunePrefix(name) {
@@ -120,7 +120,7 @@ function getGemPath(
   runeOriginPrimaryEffect,
   canonicalPrimaryEffect,
 ) {
-  if (unique) return `/assets/gems/unique/${unique.image}.png`;
+  if (unique) return `/assets/gems/unique/${unique.image}.webp`;
 
   // A gem slot can end up holding an effect id that only exists in the Caryll Rune
   // catalogue (produced by other save-edit tools, or by legitimate in-game data).
@@ -140,11 +140,11 @@ function getGemPath(
   const cursed = isCursed(effects);
   return `/assets/gems/${normalizeGemShape(shape)}/${GEM_COLORS.has(color) ? color : "red"}/${
     cursed ? "cursed_" : ""
-  }${normalizeGemLevel(level)}.png`;
+  }${normalizeGemLevel(level)}.webp`;
 }
 
 function getGemFallbackPath() {
-  return "/assets/gems/radial/red/7.png";
+  return "/assets/gems/radial/red/7.webp";
 }
 
 function getGemColor(primaryEffect) {

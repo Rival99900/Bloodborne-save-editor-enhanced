@@ -8,6 +8,8 @@ pub const GA_SECTION_SLOTS: usize = 4096;
 pub struct Layout {
     pub empty: Option<usize>,
     pub max_handle: u16,
+    /// Number of 8-byte vacancies (free GA slots).
+    pub vacancies: usize,
 }
 
 /// Strict traversal used by patch validation: canonical vacancies only and
@@ -29,6 +31,7 @@ fn scan_with(bytes: &[u8], username: usize, strict: bool) -> Result<Layout, &'st
     let mut cursor = START_TO_UPGRADE;
     let mut empty = None;
     let mut max_handle = 0;
+    let mut vacancies = 0;
     for _ in 0..GA_SECTION_SLOTS {
         let header = bytes.get(cursor..cursor + 8).ok_or("Truncated GA record.")?;
         let kind = header[3];
@@ -44,6 +47,7 @@ fn scan_with(bytes: &[u8], username: usize, strict: bool) -> Result<Layout, &'st
                     return Err("Invalid GA vacancy marker.");
                 }
                 empty.get_or_insert(cursor);
+                vacancies += 1;
                 8
             }
             _ => return Err("Invalid GA record type."),
@@ -53,7 +57,7 @@ fn scan_with(bytes: &[u8], username: usize, strict: bool) -> Result<Layout, &'st
         if cursor > boundary || cursor > bytes.len() { return Err("GA record exceeds section boundary."); }
     }
     if cursor != boundary { return Err("GA slot count does not match section boundary."); }
-    Ok(Layout { empty, max_handle })
+    Ok(Layout { empty, max_handle, vacancies })
 }
 
 #[cfg(test)]

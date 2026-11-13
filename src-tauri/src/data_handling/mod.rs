@@ -1,4 +1,5 @@
 pub mod appearance;
+pub mod backups;
 pub mod article;
 pub mod bosses;
 pub mod constants;
@@ -17,4 +18,5 @@ pub mod utils;
 pub mod ga;
 
 pub mod patches;
+pub mod ps4_ftp;
 pub mod patch_session;

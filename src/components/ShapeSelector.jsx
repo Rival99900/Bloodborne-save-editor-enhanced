@@ -76,12 +76,12 @@ function ShapeSelector({ shape, isStorage, article, setArticle, slotIndex }) {
           padding: 0,
           border: 0,
           cursor: "pointer",
-          background: "url(/assets/shape_bg.png) center / contain no-repeat",
+          background: "url(/assets/shape_bg.webp) center / contain no-repeat",
         }}
       >
         {selected !== "Closed" ? (
           <img
-            src={`/assets/${selected.toLowerCase()}.png`}
+            src={`/assets/${selected.toLowerCase()}.webp`}
             width="48"
             height="48"
             alt=""
@@ -131,7 +131,7 @@ function ShapeSelector({ shape, isStorage, article, setArticle, slotIndex }) {
               }}
             >
               <img
-                src={`/assets/${candidate === "Closed" ? "shape_bg" : candidate.toLowerCase()}.png`}
+                src={`/assets/${candidate === "Closed" ? "shape_bg" : candidate.toLowerCase()}.webp`}
                 width="40"
                 height="40"
                 alt=""

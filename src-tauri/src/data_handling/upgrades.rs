@@ -26,7 +26,87 @@ pub struct Upgrade {
     pub index: usize, //Index of the upgrade inside the vector
 }
 
+const SOURCE_FLAG: u32 = 0x8000_0000;
+
+/// Item id ("source") of the Caryll Rune whose first effect is `effect`. The game
+/// takes a rune's name and validity from this id, so a rune must never keep the
+/// id of a Gem (it shows as "?GemName?"). Values are the ones found in real
+/// saves: tier `n` of a rune is `base + n + 1`; Oath runes have a single id.
+pub fn rune_source_for_effect(effect: u32) -> Option<u32> {
+    let (kind, tier) = (effect / 1000, effect % 1000);
+    let base = match kind {
+        1100 => 100_000,
+        1102 => 100_200,
+        1103 => 100_300,
+        1105 => 100_400,
+        1107 => 100_500,
+        1108 => 100_600,
+        1110 => 100_700,
+        1112 => 100_800,
+        1118 => 101_300,
+        1119 => 101_400,
+        1121 => 101_600,
+        1122 => 101_700,
+        1123 => 101_800,
+        1125 => 102_000,
+        1126 => 102_100,
+        1127 => 102_200,
+        1128 => 102_300,
+        1129 => 102_400,
+        1134 => 102_900,
+        1136 => 103_100,
+        // Guidance is numbered from its first tier.
+        1141 if tier <= 2 => return Some(SOURCE_FLAG | (104_000 + tier)),
+        2107 => return Some(SOURCE_FLAG | 200_000),
+        2108 => return Some(SOURCE_FLAG | 200_010),
+        2110 => return Some(SOURCE_FLAG | 200_020),
+        2127 => return Some(SOURCE_FLAG | 200_030),
+        2128 => return Some(SOURCE_FLAG | 200_040),
+        2129 => return Some(SOURCE_FLAG | 200_050),
+        _ => return None,
+    };
+    (tier < 9).then_some(SOURCE_FLAG | (base + tier + 1))
+}
+
+/// True when `source` is a Caryll Rune item id rather than a Gem one.
+pub fn is_rune_source(source: u32) -> bool {
+    let id = source & !SOURCE_FLAG;
+    (100_000..=104_999).contains(&id) || (200_000..=200_099).contains(&id) || (1_100_000..=1_104_999).contains(&id)
+}
+
+/// A Gem item id seen in real saves for each shape byte, used when the save
+/// itself has no Gem of that shape to copy the id from.
+pub fn default_gem_source(shape: u8) -> u32 {
+    SOURCE_FLAG
+        | match shape {
+            0x02 => 53_705,
+            0x04 => 50_100,
+            0x08 => 90_110,
+            0x3F => 126_001,
+            _ => 52_620,
+        }
+}
+
 impl Upgrade {
+    /// Writes a new item id in the upgrade record and in every Inventory and
+    /// Storage entry that points to it.
+    pub fn set_source(&mut self, file_data: &mut FileData, source: u32) -> Result<(), Error> {
+        let offset = file_data
+            .find_upgrade_offset(self.id)
+            .ok_or(Error::CustomError("Failed to find the upgrade in the file data."))?;
+        file_data.bytes[offset + 4..offset + 8].copy_from_slice(&source.to_le_bytes());
+        let id = self.id.to_le_bytes();
+        for (start, end) in [file_data.offsets.inventory, file_data.offsets.storage] {
+            for entry in (start..end).step_by(16) {
+                if file_data.bytes.get(entry + 4..entry + 8) == Some(id.as_slice()) {
+                    file_data.bytes[entry + 8..entry + 12].copy_from_slice(&source.to_le_bytes());
+                }
+            }
+        }
+        self.source = source;
+        Ok(())
+    }
+
     pub fn change_shape(
         &mut self,
         file_data: &mut FileData,
@@ -123,6 +203,15 @@ impl Upgrade {
         let bytes = new_value.to_le_bytes();
 
         file_data.bytes[effect_offset..effect_offset + 4].copy_from_slice(&bytes);
+
+        // A rune's item id follows its first effect when that effect is a rune one.
+        if value_index == 0 && self.upgrade_type == UpgradeType::Rune {
+            if let Some(source) = rune_source_for_effect(new_value) {
+                if source != self.source {
+                    self.set_source(file_data, source)?;
+                }
+            }
+        }
         Ok(())
     }
 
@@ -192,11 +281,15 @@ impl Upgrade {
             }
         };
 
-        //Update everything except id and source
+        //Update everything except id, then give the record an item id of its new kind
         for i in upgrade_offset + 8..upgrade_offset + 40 {
             file_data.bytes[i] = new_upgrade_bytes[i - 8 - upgrade_offset];
         }
-        Ok(())
+        let source = match self.upgrade_type {
+            UpgradeType::Rune => rune_source_for_effect(self.effects[0].0).unwrap_or(SOURCE_FLAG | 100_001),
+            UpgradeType::Gem => default_gem_source(0x01),
+        };
+        self.set_source(file_data, source)
     }
 }
 
@@ -709,8 +802,7 @@ mod tests {
         assert_eq!(gem2, gem3);
         assert_eq!(rune2, rune3);
 
-        // Preserve compatibility with legacy saves that use an effect id from
-        // the other catalogue, while structural slot validation remains separate.
+        // Gems may carry rune effects and runes Gem effects: both work in game.
         let mut file_data = FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
         let upgrades = parse_upgrades(&file_data);
         let mut gem = upgrades.get(&3229614145).unwrap().0.clone();
@@ -740,7 +832,8 @@ mod tests {
         rune.transform(&mut file_data).unwrap(); //Transform the rune into a gem
                                                  //Rune -> Gem
         assert_eq!(rune.id, u32::from_le_bytes([0x42, 0x00, 0x80, 0xC0]));
-        assert_eq!(rune.source, u32::from_le_bytes([0xBF, 0x92, 0x01, 0x80]));
+        // A converted rune gets a Gem item id.
+        assert_eq!(rune.source, default_gem_source(0x01));
         assert_eq!(rune.upgrade_type, UpgradeType::Gem);
         assert_eq!(
             rune.effects,
@@ -763,7 +856,8 @@ mod tests {
 
         //Gem -> Rune
         assert_eq!(gem.id, u32::from_le_bytes([0x41, 0x00, 0x80, 0xC0]));
-        assert_eq!(gem.source, u32::from_le_bytes([0x26, 0x60, 0x01, 0x80]));
+        // A converted gem gets the item id of the Moon rune (its first effect).
+        assert_eq!(gem.source, 0x8000_0000 | 100_001);
         assert_eq!(gem.upgrade_type, UpgradeType::Rune);
         assert_eq!(
             gem.effects,

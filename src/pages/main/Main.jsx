@@ -13,8 +13,9 @@ const Bosses = lazy(() => import("../bosses/Bosses"));
 const Npcs = lazy(() => import("../npcs/Npcs"));
 const Patches = lazy(() => import("../patches/Patches"));
 const Flags = lazy(() => import("../flags/Flags"));
+const Tools = lazy(() => import("../tools/Tools"));
 
-const Main = ({ save, setSave, loading }) => {
+const Main = ({ save, setSave, loading, currentPath = "" }) => {
   const { loading: loadingImages } = useContext(ImagesContext);
   const { t } = useLocalization();
 
@@ -24,7 +25,7 @@ const Main = ({ save, setSave, loading }) => {
         className={`startup-overlay ${loadingImages ? "" : "fade-out"}`}
         aria-hidden={!loadingImages}
       >
-        <img src="/assets/icon.png" width="120" height="120" alt="" />
+        <img src="/assets/icon.webp" width="120" height="120" alt="" />
         <p>{t("operation.preparing")}</p>
         <div className="spinner" />
       </div>
@@ -86,6 +87,14 @@ const Main = ({ save, setSave, loading }) => {
                 <Route path="/npcs" element={<Npcs />} />
                 <Route path="/patches" element={<Patches />} />
                 <Route path="/flags" element={<Flags />} />
+                <Route
+                  path="/tools"
+                  element={
+                    <ItemsProvider>
+                      <Tools currentPath={currentPath} />
+                    </ItemsProvider>
+                  }
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>

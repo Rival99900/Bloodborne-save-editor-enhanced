@@ -90,7 +90,7 @@ function EquippedGems() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: `url(${images.backgrounds["statsBg.png"].src})`,
+          background: `url(${images.backgrounds["statsBg.webp"].src})`,
           backgroundSize: "cover",
           padding: "2rem",
         }}
@@ -119,16 +119,17 @@ function EquippedGems() {
             />
           ))}
         </div>
-        <div style={{ marginTop: "5rem" }}>
-          <button onClick={() => nav("/")}>{t("actions.back")}</button>
+        <div className="gem-screen-actions" style={{ marginTop: "5rem" }}>
+          <button className="control-button control-button--quiet" onClick={() => nav("/")}>{t("actions.back")}</button>
           <button
-            style={{ margin: "0 2rem" }}
+            className="control-button control-button--quiet"
             onClick={() => setChangeScreen(true)}
             disabled={!selectedGem}
           >
             {t("actions.change")}
           </button>
           <button
+            className="control-button control-button--primary"
             onClick={() => setEditScreen(true)}
             disabled={!selectedGem?.gem}
           >

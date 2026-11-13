@@ -1,5 +1,6 @@
 import { useLocalization } from "../i18n/localization";
 import LanguagePicker from "./LanguagePicker";
+import packageInfo from "../../package.json";
 
 function Nav({
   save,
@@ -9,16 +10,17 @@ function Nav({
   onOpenSave,
   onSaveChanges,
   onShowRevisions,
+  fileMenu = null,
 }) {
   const { t } = useLocalization();
 
   return (
     <nav className="nav" aria-label={t("nav.controls")}>
       <div className="brand-lockup">
-        <img className="brand-mark" src="/assets/icon.png" alt="" />
+        <img className="brand-mark" src="/assets/icon.webp" alt="" />
         <div>
           <p className="brand-eyebrow">Bloodborne</p>
-          <p className="brand-title">Save Editor <span className="brand-version">v0.6.5</span></p>
+          <p className="brand-title">Save Editor <span className="brand-version">v{packageInfo.version}</span></p>
         </div>
       </div>
 
@@ -43,6 +45,7 @@ function Nav({
         <button className="control-button control-button--quiet" id="openSave" onClick={onOpenSave}>
           {t("nav.openSave")}
         </button>
+        {fileMenu}
         <button
           className="control-button control-button--primary"
           disabled={!save}

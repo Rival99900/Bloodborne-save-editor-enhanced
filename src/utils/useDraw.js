@@ -7,9 +7,18 @@ import {
   getGemPath as getSafeGemPath,
   getRunePath as getSafeRunePath,
   getRuneFallbackPath as getSafeRuneFallbackPath,
+  getGemFallbackPath,
   getUnique as getSafeUnique,
   isCursed as isSafeCursed,
 } from "./upgrades";
+
+const SHAPE_ICONS = new Set(["radial", "triangle", "waning", "circle", "droplet"]);
+
+// Icon of a Gem shape from public/assets, or undefined for unknown shapes.
+export function getShapeIconPath(shape) {
+  const normalized = String(shape ?? "").trim().toLowerCase();
+  return SHAPE_ICONS.has(normalized) ? `/assets/${normalized}.webp` : undefined;
+}
 
 // Image loading is asynchronous. A canvas can receive a newer save state before an
 // older gem/rune thumbnail finishes loading, so each draw gets a monotonic token.
@@ -43,7 +52,7 @@ function useDraw() {
         ctx,
         info,
         "",
-        images.backgrounds["item_small.png"],
+        images.backgrounds["item_small.webp"],
         context,
         translations,
         isCurrentRender,
@@ -58,17 +67,17 @@ function useDraw() {
     const type = getType(item.article_type);
     switch (type || item.upgrade_type) {
       case "Gem":
-        return "gem.png";
+        return "gem.webp";
       case "chalice":
-        return "chalice.png";
+        return "chalice.webp";
       case "weapon":
-        return "weapon.png";
+        return "weapon.webp";
       case "armor":
-        return "armor.png";
+        return "armor.webp";
       case "Rune":
       case "key":
       case "item":
-        return "item.png";
+        return "item.webp";
     }
   }
 
@@ -101,7 +110,7 @@ function useDraw() {
     ctx.drawImage(img, 0, 0);
 
     if (image && isCurrentRender()) {
-      const thumbnail = imgContext.items[image || "empty.png"];
+      const thumbnail = imgContext.items[image || "empty.webp"];
       ctx.drawImage(thumbnail, x, y, x + size, y + size);
     }
 
@@ -279,6 +288,17 @@ function useDraw() {
       ctx.fillStyle = "#b8b7ad";
       ctx.fillText(rating, 135, 77);
       ctx.fillText(localizeGemShape(shape), margin * 2 + 27, 77);
+
+      // The background only has an empty frame for the shape: draw its icon in it.
+      const shapeIcon = await loadImage(getShapeIconPath(shape)).catch(() => undefined);
+      if (!isCurrentRender()) return;
+      if (shapeIcon !== undefined) {
+        ctx.save();
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.drawImage(shapeIcon, 194, 53, 26, 26);
+        ctx.restore();
+      }
     } else {
       const {
         effects,
@@ -355,9 +375,9 @@ function useDraw() {
     const note = fitVignetteText(ctx, localizeVignetteText(translations, "description", sourceNote));
 
     // const thumbnail = await loadImage(
-    //   "/assets/itemImages/" + image || "empty.png"
+    //   "/assets/itemImages/" + image || "empty.webp"
     // );
-    const thumbnail = context.items[image || "empty.png"];
+    const thumbnail = context.items[image || "empty.webp"];
 
     if (!isCurrentRender()) return;
     ctx.font = "18px Reim";

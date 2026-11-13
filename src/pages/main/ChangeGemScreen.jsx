@@ -78,6 +78,7 @@ function ChangeGemScreen({
           ></div>
           {gems.map((x, i) => (
             <Item
+              key={x.id ?? `${x.number ?? "gem"}-${i}`}
               item={x}
               index={i + 1}
               isSmall={false}
@@ -88,14 +89,15 @@ function ChangeGemScreen({
             />
           ))}
         </div>
-        <div style={{ marginTop: "1rem" }}>
+        <div className="gem-screen-actions" style={{ marginTop: "1rem" }}>
           <button
-            style={{ marginRight: "1rem" }}
+            className="control-button control-button--quiet"
             onClick={() => setScreen(false)}
           >
             {t("inventory.cancel")}
           </button>
           <button
+            className="control-button control-button--primary"
             onClick={async () => {
               if (selectedGem.number === -1) {
                 const edited = await setSave(t("revision.slotGemChanged"), () =>

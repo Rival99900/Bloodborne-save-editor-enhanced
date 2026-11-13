@@ -1,3 +1,4 @@
+import useDialogFocus from "../utils/useDialogFocus";
 import { useMemo, useState } from "react";
 import * as dialog from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
@@ -144,6 +145,8 @@ function GemPresetPanel({
   forgeType = "gem",
   builtInPresets = GEM_PRESETS,
 }) {
+  // Escape closes the Forge only; the Gem editor below it stays open.
+  const panelRef = useDialogFocus(onClose);
   const { t } = useLocalization();
   const isRuneForge = forgeType === "rune";
   const subject = isRuneForge ? "Rune" : "Gem";
@@ -329,7 +332,7 @@ function GemPresetPanel({
           onCancel={() => setPendingDelete(null)}
         />
       ) : null}
-      <div className="gem-forge" role="dialog" aria-modal="true" aria-label={t("forge.modeLabel", { subject })}>
+      <div className="gem-forge" ref={panelRef} role="dialog" aria-modal="true" aria-label={t("forge.modeLabel", { subject })}>
       <div className="gem-forge__header">
         <div>
           <p className="gem-forge__eyebrow">{isRuneForge ? t("forge.runeForge") : t("forge.gemForge")}</p>

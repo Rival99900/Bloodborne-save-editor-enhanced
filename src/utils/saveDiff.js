@@ -3,7 +3,8 @@ const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
 export const REVISION_LABEL_KEYS = ['genericChange','quantityChanged','weaponLevelChanged','itemAdded','equipmentAdded','upgradeAdded','itemReplaced','upgradeEdited','upgradeConverted','slotShapeChanged','slotGemChanged','statsUpdated','characterUpdated','bossUpdated','flagUpdated','patchesApplied'].map(key => `revision.${key}`);
 export function buildSaveDiff(before, after, limit = 200) {
   const rows = []; let total = 0;
-  const add = row => { if (equal(row.before,row.after)) return; total++; if (rows.length < limit) rows.push(JSON.parse(JSON.stringify(row))); };
+  const blank = value => value == null || value === '';
+  const add = row => { if (equal(row.before,row.after) || (blank(row.before) && blank(row.after))) return; total++; if (rows.length < limit) rows.push(JSON.parse(JSON.stringify(row))); };
   if (!before || !after) return {rows, omitted: 0};
   const oldStats = new Map((before.stats ?? []).map(s => [s.name,s.value]));
   for (const stat of after.stats ?? []) add({label:`statNames.${stat.name}`,before:oldStats.get(stat.name),after:stat.value});
@@ -31,7 +32,12 @@ export function buildSaveDiff(before, after, limit = 200) {
     const a = map(before), b = map(after);
     for (const id of new Set([...a.keys(),...b.keys()])) {
       const old = a.get(id), next = b.get(id), item = next ?? old;
-      const name = record => record?.info?.item_name ?? record?.info?.name ?? (record ? String(record.id) : undefined);
+      // Unknown records can carry an empty name: fall back to the native id instead of an empty cell.
+      const name = record => {
+        if (!record) return undefined;
+        const label = [record.info?.item_name, record.info?.name].find(value => typeof value === 'string' && value.trim());
+        return label ?? (record.id != null ? `#${record.id}` : undefined);
+      };
       const meta = {location,name:name(item)};
       add({...meta,label:'diff.item',type:'name',before:name(old),after:name(next)});
       if (!old || !next) continue;

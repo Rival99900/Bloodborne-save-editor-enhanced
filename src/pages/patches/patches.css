@@ -1,22 +1,22 @@
-.patch-workspace { background-position: center; background-size: cover; grid-column: 2 / -1; min-width: 0; min-height: 0; overflow-y: auto; padding: clamp(1rem, 2.3vw, 2.2rem); color: var(--text-primary, #eee6d6); }
+.patch-workspace { background-position: center; background-size: cover; grid-column: 2 / -1; min-width: 0; min-height: 0; overflow-y: auto; padding: clamp(1rem, 2.3vw, 2.2rem); color: var(--text-primary, var(--color-text)); }
 .patch-workspace *, .patch-workspace *::before, .patch-workspace *::after { box-sizing: border-box; }
 .patch-heading, .patch-settings, .patch-columns, .patch-notice, .patch-workspace > .patch-muted, .patch-credits { max-width: 82rem; margin-left: auto; margin-right: auto; }
-.patch-heading h1 { font-size: clamp(1.5rem, 2vw, 2rem); margin: .3rem 0 .5rem; color: #e4c77f; }
+.patch-heading h1 { font-size: clamp(1.5rem, 2vw, 2rem); margin: .3rem 0 .5rem; color: var(--color-gold-strong); }
 .patch-heading p, .patch-notice p { margin: .35rem 0; line-height: 1.55; }
 .patch-eyebrow { text-transform: uppercase; letter-spacing: .13em; color: #c9a557; font-size: .73rem; font-weight: 700; }
 .patch-notice { margin-top: 1rem; margin-bottom: 1rem; padding: .85rem 1rem; border: 1px solid #97763b66; border-radius: 8px; background: #bc914314; font-size: .88rem; }
 .patch-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .patch-workspace label { font-size: .86rem; }
 .patch-settings label, .patch-filters label { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
-.patch-workspace input:not([type=checkbox]), .patch-workspace select { width: 100%; min-width: 0; max-width: 100%; min-height: 2.6rem; padding: .6rem .75rem; border: 1px solid #b8a47855; border-radius: 6px; background: #101112; color: #eee6d6; font: inherit; }
-.patch-workspace input[type=checkbox] { flex: 0 0 auto; width: 1.05rem; height: 1.05rem; margin: .2rem 0 0; accent-color: #d8b266; }
-.patch-workspace :is(button, input, select, summary, a):focus-visible { outline: 2px solid #e6c780; outline-offset: 3px; }
-.patch-muted { color: #b5b0a4; font-size: .82rem; line-height: 1.5; }
+.patch-workspace input:not([type=checkbox]), .patch-workspace select { width: 100%; min-width: 0; max-width: 100%; min-height: 2.6rem; padding: .6rem .75rem; border: 1px solid #b8a47855; border-radius: 6px; background: var(--color-surface); color: var(--color-text); font: inherit; }
+.patch-workspace input[type=checkbox] { flex: 0 0 auto; width: 1.05rem; height: 1.05rem; margin: .2rem 0 0; accent-color: var(--color-gold); }
+.patch-workspace :is(button, input, select, summary, a):focus-visible { outline: 2px solid var(--color-gold-strong); outline-offset: 3px; }
+.patch-muted { color: var(--color-muted); font-size: .82rem; line-height: 1.5; }
 .patch-columns { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(17rem, .85fr); gap: 1rem; align-items: start; margin-top: 1.1rem; }
 .patch-panel { min-width: 0; padding: 1.1rem; border: 1px solid #b8a47830; border-radius: 10px; background: #111316b8; }
 .patch-panel h2 { font-size: 1.1rem; margin: 0 0 .9rem; color: #e6d3a5; }
 .patch-panel-heading { display: flex; align-items: baseline; justify-content: space-between; gap: .7rem; flex-wrap: wrap; }
-.patch-panel-heading > span { font-size: .8rem; color: #bdb5a2; }
+.patch-panel-heading > span { font-size: .8rem; color: var(--color-muted); }
 .patch-filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(7rem, .65fr); gap: .65rem; margin-bottom: .9rem; }
 .patch-list { display: grid; gap: .6rem; max-height: 31rem; overflow-y: auto; padding: .2rem .3rem .2rem .2rem; }
 .patch-card { min-width: 0; border: 1px solid #ffffff14; border-radius: 7px; background: #ffffff03; padding: .8rem; }
@@ -25,17 +25,17 @@
 .patch-choice span { min-width: 0; }
 .patch-choice strong, .patch-choice small { display: block; overflow-wrap: anywhere; line-height: 1.5; }
 .patch-choice strong { font-size: .94rem; }
-.patch-choice small { margin-top: .25rem; color: #b5b0a4; font-size: .79rem; }
+.patch-choice small { margin-top: .25rem; color: var(--color-muted); font-size: .79rem; }
 .patch-workspace summary { cursor: pointer; font-size: .78rem; color: #d5b774; margin-top: .7rem; }
 .patch-workspace pre { max-width: 100%; overflow-x: auto; font: .76rem/1.6 monospace; padding: .6rem; background: #050606; border-radius: 5px; }
 .patch-card details p { overflow-wrap: anywhere; }
 .patch-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
 .patch-actions button { flex: 1 1 9rem; }
 .patch-workspace .control-button { white-space: normal; overflow-wrap: anywhere; min-height: 2.7rem; height: auto; line-height: 1.35; padding: .7rem 1rem; }
-.patch-count { color: #e8c779; font-size: 1.15rem; font-weight: 700; }
+.patch-count { color: var(--color-gold-strong); font-size: 1.15rem; font-weight: 700; }
 .patch-results { padding: 0; list-style: none; display: grid; gap: .7rem; }
 .patch-results li { display: grid; gap: .25rem; font-size: .85rem; overflow-wrap: anywhere; }
-.patch-results span, .patch-results small { color: #b5b0a4; }
+.patch-results span, .patch-results small { color: var(--color-muted); }
 .patch-table-scroll { max-height: 15rem; overflow: auto; margin-top: .7rem; }
 .patch-workspace table { width: 100%; border-collapse: collapse; font-size: .78rem; text-align: left; }
 .patch-workspace th, .patch-workspace td { padding: .5rem; border-bottom: 1px solid #ffffff18; }

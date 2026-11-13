@@ -126,7 +126,7 @@ function Character() {
       key={resetEpoch}
       className="character-workspace"
       style={{
-        background: `url(${images.backgrounds["statsBg.png"].src})`,
+        background: `url(${images.backgrounds["statsBg.webp"].src})`,
         backgroundSize: "cover",
         position: "relative",
       }}

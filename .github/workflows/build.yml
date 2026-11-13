@@ -10,6 +10,7 @@ on:
       - "!v0.5.0"
       - "!v0.6.0"
       - "!v0.6.5"
+      - "!v0.7.0"
   workflow_dispatch:
     inputs:
       tag:
@@ -23,16 +24,16 @@ on:
         type: boolean
 
 concurrency:
-  group: desktop-release-${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.5' }}
+  group: desktop-release-${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
   cancel-in-progress: false
 
 jobs:
   validate:
     name: Validate tagged source
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.6.5]') || contains(github.event.head_commit.message, '[refresh v0.6.5]')))"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.7.0]') || contains(github.event.head_commit.message, '[refresh v0.7.0]')))"
     runs-on: ubuntu-22.04
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.5' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
 
     steps:
       - name: Checkout tagged source
@@ -86,6 +87,7 @@ jobs:
           node .github/scripts/validate_v050_features.mjs
           node .github/scripts/validate_v060_patches.mjs
           node .github/scripts/validate_v065_release.mjs
+          node .github/scripts/validate_v070_release.mjs
           node .github/scripts/audit_ui_text.mjs
 
       - name: Build production frontend
@@ -102,10 +104,10 @@ jobs:
     outputs:
       release_id: ${{ steps.prepare.outputs.release_id }}
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.5' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
       GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       # An explicit refresh commit on main replaces the same owner release.
-      REFRESH_EXISTING_RELEASE: ${{ (inputs.refresh_existing || (github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[refresh v0.6.5]'))) && 'true' || 'false' }}
+      REFRESH_EXISTING_RELEASE: ${{ (inputs.refresh_existing || (github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[refresh v0.7.0]'))) && 'true' || 'false' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -116,7 +118,7 @@ jobs:
 
   build:
     name: Build signed ${{ matrix.name }} asset
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.6.5]') || contains(github.event.head_commit.message, '[refresh v0.6.5]')))"
+    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.7.0]') || contains(github.event.head_commit.message, '[refresh v0.7.0]')))"
     needs: prepare-release
     runs-on: ${{ matrix.os }}
     permissions:
@@ -132,7 +134,7 @@ jobs:
             os: ubuntu-22.04
             args: "--bundles appimage"
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.5' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
 
     steps:
       - name: Checkout tagged source
@@ -199,7 +201,7 @@ jobs:
     permissions:
       contents: write
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.6.5' }}
+      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
 
     steps:
       - name: Checkout release source and main history

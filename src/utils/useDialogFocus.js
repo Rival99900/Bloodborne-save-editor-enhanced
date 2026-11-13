@@ -1,5 +1,9 @@
 import { useEffect, useRef } from "react";
 
+// Open dialogs, innermost last. Only the top dialog handles Escape and Tab, so
+// a confirmation opened over the Gem editor closes alone.
+const dialogStack = [];
+
 // Keep keyboard navigation inside the active confirmation/status dialog.
 export default function useDialogFocus(onClose) {
   const panelRef = useRef(null);
@@ -10,8 +14,11 @@ export default function useDialogFocus(onClose) {
     const buttons = () => Array.from(panelRef.current?.querySelectorAll(
       'summary, button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]',
     ) ?? []).filter((element) => element.getClientRects().length);
+    const entry = {};
+    dialogStack.push(entry);
     const frame = requestAnimationFrame(() => buttons()[0]?.focus());
     function handleKeyDown(event) {
+      if (dialogStack.at(-1) !== entry) return;
       if (event.key === "Escape") {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -33,6 +40,8 @@ export default function useDialogFocus(onClose) {
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("keydown", handleKeyDown, true);
+      const index = dialogStack.indexOf(entry);
+      if (index !== -1) dialogStack.splice(index, 1);
       if (previous?.isConnected) previous.focus();
     };
   }, []);

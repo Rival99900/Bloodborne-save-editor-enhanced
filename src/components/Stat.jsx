@@ -38,7 +38,7 @@ function Stat({ stat, setEditedStats, width, disabled = false, borderless = fals
         width={32}
         height={32}
         style={{ marginRight: "10px" }}
-        src={`/assets/stats/${stat.name.toLowerCase()}.png`}
+        src={`/assets/stats/${stat.name.toLowerCase()}.webp`}
         alt=""
       />
       <div

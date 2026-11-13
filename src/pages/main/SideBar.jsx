@@ -12,6 +12,7 @@ const navigation = [
   { to: "/npcs", labelKey: "sidebar.npcs", descriptionKey: "sidebar.npcsDescription" },
   { to: "/patches", labelKey: "sidebar.patches", descriptionKey: "sidebar.patchesDescription" },
   { to: "/flags", labelKey: "sidebar.flags", descriptionKey: "sidebar.flagsDescription" },
+  { to: "/tools", labelKey: "sidebar.tools", descriptionKey: "sidebar.toolsDescription" },
 ];
 
 function SideBar() {

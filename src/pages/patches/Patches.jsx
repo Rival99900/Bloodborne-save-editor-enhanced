@@ -80,7 +80,7 @@ export default function Patches() {
     } catch (e) { if (alive.current) { setReview(null); setAcknowledged(false); showError(e); } }
     finally { if (alive.current) setBusy(false); }
   }
-  return <section className="patch-workspace" style={{ backgroundImage: `url(${images?.backgrounds?.["statsBg.png"]?.src ?? "/assets/itemsBg/statsBg.png"})` }} aria-labelledby="patch-title" aria-busy={busy || catalogBusy}>
+  return <section className="patch-workspace" style={{ backgroundImage: `url(${images?.backgrounds?.["statsBg.webp"]?.src ?? "/assets/itemsBg/statsBg.webp"})` }} aria-labelledby="patch-title" aria-busy={busy || catalogBusy}>
     <header className="patch-heading"><span className="patch-eyebrow">{t("patches.offline")}</span><h1 id="patch-title">{t("patches.title")}</h1><p>{t("patches.description")}</p></header>
     <div className="patch-notice"><strong>{t("patches.experimental")}</strong><p>{t("patches.compatibility")}</p></div>
     <div className="patch-settings">

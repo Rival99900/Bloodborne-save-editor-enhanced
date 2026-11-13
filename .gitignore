@@ -65,3 +65,6 @@ __pycache__/
 
 # Local archives
 *.zip
+
+# Backup history created next to opened saves (v0.7.0)
+*.backups/

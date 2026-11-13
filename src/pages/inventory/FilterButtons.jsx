@@ -1,7 +1,23 @@
+import { useLocalization } from "../../i18n/localization";
+
+// Order matches FILTERS in FilterComponent (data-index 1 to 9).
+const CATEGORIES = [
+  { key: "consumables", image: "consumables" },
+  { key: "materials", image: "materials" },
+  { key: "key", image: "key" },
+  { key: "rightHand", image: "right_hand" },
+  { key: "leftHand", image: "left_hand" },
+  { key: "armor", image: "armor" },
+  { key: "gems", image: "gems" },
+  { key: "runes", image: "runes" },
+  { key: "chalices", image: "chalices" },
+];
+
 function FilterButtons({ selectedFilter }) {
+  const { t } = useLocalization();
   const spaceBetween = (795 - 9 * 80) / (9 + 1);
   return (
-    <div className="filters">
+    <div className="filters" role="toolbar" aria-label={t("inventory.filters.label")}>
       <div
         id="filterHover"
         style={{
@@ -11,70 +27,20 @@ function FilterButtons({ selectedFilter }) {
           }px`,
         }}
       ></div>
-      {/* Should change the naming scheme to be iterable */}
-      <button
-        data-index={1}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/consumables.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={2}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/materials.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={3}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/key.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={4}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/right_hand.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={5}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/left_hand.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={6}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/armor.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={7}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/gems.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={8}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/runes.png"})`,
-        }}
-      ></button>
-      <button
-        data-index={9}
-        className="filters-button"
-        style={{
-          background: `url(${"/assets/filters/chalices.png"})`,
-        }}
-      ></button>
+      {CATEGORIES.map(({ key, image }, index) => (
+        <button
+          key={key}
+          type="button"
+          data-index={index + 1}
+          className="filters-button"
+          title={t(`inventory.filters.${key}`)}
+          aria-label={t(`inventory.filters.${key}`)}
+          aria-pressed={String(selectedFilter) === String(index + 1)}
+          style={{
+            background: `url(/assets/filters/${image}.webp)`,
+          }}
+        ></button>
+      ))}
     </div>
   );
 }

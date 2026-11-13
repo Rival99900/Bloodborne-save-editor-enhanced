@@ -8,6 +8,8 @@ import FilterButtons from "./FilterButtons";
 import FilterComponent, { getItemKey } from "./FilterComponent";
 import EditUpgrade from "../../components/EditUpgrade";
 import AddScreen from "./AddScreen";
+import BulkActions from "../../components/BulkActions";
+import { weaponIsUpgradable } from "../../utils/weaponLevels";
 import { useNavigate } from "react-router-dom";
 import { useLocalization } from "../../i18n/localization";
 
@@ -32,6 +34,7 @@ function Inventory({ inv, isStorage }) {
   const [replaceScreen, setReplaceScreen] = useState(false);
   const [editScreen, setEditScreen] = useState(false);
   const [addScreen, setAddScreen] = useState(false);
+  const [bulkScreen, setBulkScreen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("0");
   const [searchQuery, setSearchQuery] = useState("");
   const [capacity, setCapacity] = useState(null);
@@ -104,10 +107,11 @@ function Inventory({ inv, isStorage }) {
   const selectedFavoriteKey = selected ? getItemKey(selected) : null;
   const isSelectedFavorite = selectedFavoriteKey ? favoriteKeys.includes(selectedFavoriteKey) : false;
   const selectedType = getType(selected?.article_type);
-  const displayedQuantity = Number.isFinite(Number(quantity)) ? Number(quantity) : 0;
-  const displayedLevel = Number.isFinite(Number(level)) ? Number(level) : 0;
+  // Without a selection the fields stay empty instead of showing a misleading 0.
+  const displayedQuantity = selected && Number.isFinite(Number(quantity)) ? Number(quantity) : "";
+  const displayedLevel = selected && Number.isFinite(Number(level)) ? Number(level) : "";
   const canEditQuantity = selectedType === "item";
-  const canEditWeaponLevel = selectedType === "weapon";
+  const canEditWeaponLevel = selectedType === "weapon" && weaponIsUpgradable(selected?.id);
 
   function toggleSelectedFavorite() {
     if (!selectedFavoriteKey) return;
@@ -228,7 +232,7 @@ function Inventory({ inv, isStorage }) {
               }
             }}
             />
-            {!canEditQuantity ? <span className="inventory-side-control__display" aria-hidden="true">{displayedQuantity}</span> : null}
+            {!canEditQuantity ? <span className="inventory-side-control__display" aria-hidden="true">{displayedQuantity === "" ? "—" : displayedQuantity}</span> : null}
           </div>
           <button
             className="control-button control-button--quiet inventory-side-control__apply"
@@ -275,7 +279,7 @@ function Inventory({ inv, isStorage }) {
               }
             }}
             />
-            {!canEditWeaponLevel ? <span className="inventory-side-control__display" aria-hidden="true">{displayedLevel}</span> : null}
+            {!canEditWeaponLevel ? <span className="inventory-side-control__display" aria-hidden="true">{displayedLevel === "" ? "—" : displayedLevel}</span> : null}
           </div>
           <button
             className="control-button control-button--quiet inventory-side-control__apply"
@@ -352,7 +356,14 @@ function Inventory({ inv, isStorage }) {
         >
           {t("inventory.gems")}
         </button>
+        <button
+          className="control-button control-button--quiet inventory-btn"
+          onClick={() => setBulkScreen(true)}
+        >
+          {t("bulk.open")}
+        </button>
       </div>
+      {bulkScreen ? <BulkActions isStorage={isStorage} onClose={() => setBulkScreen(false)} /> : null}
     </>
   );
 }

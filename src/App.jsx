@@ -14,6 +14,12 @@ import { ImagesProvider } from "./context/imagesContext";
 import { UpdateModal } from "./Update";
 import { useLocalization } from "./i18n/localization";
 import RevisionPanel from "./components/RevisionPanel";
+import FileMenu from "./components/FileMenu";
+import BackupsDialog from "./components/BackupsDialog";
+import Ps4Dialog from "./components/Ps4Dialog";
+import ShortcutsDialog from "./components/ShortcutsDialog";
+import { clearRecentFiles, forgetRecentFile, readRecentFiles, rememberRecentFile } from "./utils/recentFiles";
+import { getCurrentWebview } from "@tauri-apps/api/webview";
 
 function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
   const { t } = useLocalization();
@@ -97,6 +103,11 @@ function App() {
   const [save, setSaveState] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saveName, setSaveName] = useState("");
+  // Full path of the open file and, for a PS4 save, where it came from (F9, F10, F12).
+  const [currentFile, setCurrentFile] = useState(null);
+  const [recentFiles, setRecentFiles] = useState(readRecentFiles);
+  const [toolDialog, setToolDialog] = useState(null);
+  const pendingOpenRef = useRef(null);
   const [saveStatusKey, setSaveStatusKey] = useState("");
   const [isDirty, setIsDirty] = useState(false);
   const [exitRequested, setExitRequested] = useState(false);
@@ -220,15 +231,9 @@ function App() {
     }
   }), [enqueueRevision, setDirtyState]);
 
-  const chooseSaveFile = useCallback(async () => {
+  const loadSaveFromPath = useCallback(async (selectedPath, remote = null) => {
     await revisionQueueRef.current;
     try {
-      const selectedPath = await dialog.open({
-        multiple: false,
-        title: t("saveFlow.openTitle"),
-      });
-      if (!selectedPath) return false;
-
       setSaveStatusKey("");
       setLoading(true);
       const parsedSave = await invoke("make_save", { path: selectedPath });
@@ -240,7 +245,10 @@ function App() {
       // so no page keeps a draft or canvas from the previously opened save.
       setRevisionEpoch((current) => current + 1);
       resetRevisions();
-      setSaveName(await basename(selectedPath));
+      const name = await basename(selectedPath);
+      setSaveName(name);
+      setCurrentFile({ path: selectedPath, remote });
+      setRecentFiles(rememberRecentFile(selectedPath, name, remote));
       if (parsedSave.compatibility_repair_applied) {
         setSaveStatusKey("saveFlow.compatibilityRepairedStatus");
         setOpenSaveDialog("compatibility-repair");
@@ -256,7 +264,28 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, [resetRevisions, setDirtyState, t]);
+  }, [resetRevisions, setDirtyState]);
+
+  const chooseSaveFile = useCallback(async () => {
+    await revisionQueueRef.current;
+    const selectedPath = await dialog.open({
+      multiple: false,
+      title: t("saveFlow.openTitle"),
+    });
+    if (!selectedPath) return false;
+    return loadSaveFromPath(selectedPath);
+  }, [loadSaveFromPath, t]);
+
+  // Recent file, dropped file, restored backup or PS4 download: same unsaved-changes guard.
+  const openPath = useCallback(async (path, remote = null) => {
+    await revisionQueueRef.current;
+    if (dirtyRef.current) {
+      pendingOpenRef.current = () => loadSaveFromPath(path, remote);
+      setOpenSaveDialog("discard");
+      return false;
+    }
+    return loadSaveFromPath(path, remote);
+  }, [loadSaveFromPath]);
 
   const openSave = useCallback(async () => {
     await revisionQueueRef.current;
@@ -298,7 +327,14 @@ function App() {
       await invoke("save", { path });
       baselineSaveRef.current = cloneSave(saveRef.current);
       setSaveStatusKey("saveFlow.savedStatus");
-      setSaveName(await basename(path));
+      const savedName = await basename(path);
+      setSaveName(savedName);
+      // Saving elsewhere detaches the session from its PS4 origin.
+      setCurrentFile((previous) => {
+        const remote = previous?.path === path ? previous.remote ?? null : null;
+        setRecentFiles(rememberRecentFile(path, savedName, remote));
+        return { path, remote };
+      });
       setDirtyState(false);
       setPendingSavePath("");
       setOpenSaveDialog("save-complete");
@@ -320,6 +356,27 @@ function App() {
       setLoading(false);
     }
   }, [closeApplication, setDirtyState]);
+
+  // F10: open a save dropped on the window.
+  useEffect(() => {
+    if (!window.__TAURI_INTERNALS__) return undefined;
+    let unlisten;
+    let disposed = false;
+    getCurrentWebview()
+      .onDragDropEvent((event) => {
+        if (event.payload.type !== "drop" || !event.payload.paths?.length) return;
+        void openPath(event.payload.paths[0]);
+      })
+      .then((listener) => {
+        if (disposed) listener();
+        else unlisten = listener;
+      })
+      .catch((error) => console.error("Unable to register file drops.", error));
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [openPath]);
 
   const saveChanges = useCallback(async ({ closeAfterSave = false } = {}) => {
     await revisionQueueRef.current;
@@ -377,6 +434,12 @@ function App() {
       // editor therefore owns Ctrl/Cmd+R and keeps the current save and revisions.
       if (primaryModifier && (key === "r" || event.code === "KeyR")) {
         event.preventDefault();
+        return;
+      }
+
+      if (event.key === "F1") {
+        event.preventDefault();
+        setToolDialog("shortcuts");
         return;
       }
 
@@ -474,9 +537,14 @@ function App() {
           cancelLabel={t("saveFlow.keepEditing")}
           onConfirm={() => {
             setOpenSaveDialog("");
-            void chooseSaveFile();
+            const pending = pendingOpenRef.current;
+            pendingOpenRef.current = null;
+            void (pending ? pending() : chooseSaveFile());
           }}
-          onCancel={() => setOpenSaveDialog("")}
+          onCancel={() => {
+            pendingOpenRef.current = null;
+            setOpenSaveDialog("");
+          }}
         />
       ) : null}
       {openSaveDialog === "confirm-save" ? (
@@ -559,6 +627,32 @@ function App() {
           onCancel={() => setExitRequested(false)}
         />
       ) : null}
+      {toolDialog === "backups" && currentFile?.path ? (
+        <BackupsDialog
+          path={currentFile.path}
+          dirty={isDirty}
+          onClose={() => setToolDialog(null)}
+          onRestored={async (path) => {
+            setToolDialog(null);
+            // The file on disk changed: reload it, dropping in-memory edits.
+            setDirtyState(false);
+            await loadSaveFromPath(path, currentFile.remote ?? null);
+          }}
+        />
+      ) : null}
+      {toolDialog === "ps4" ? (
+        <Ps4Dialog
+          current={currentFile}
+          dirty={isDirty}
+          onClose={() => setToolDialog(null)}
+          onOpenRemote={async (localPath, remote) => {
+            // If edits are pending, the discard confirmation takes over.
+            setToolDialog(null);
+            await openPath(localPath, remote);
+          }}
+        />
+      ) : null}
+      {toolDialog === "shortcuts" ? <ShortcutsDialog onClose={() => setToolDialog(null)} /> : null}
       <Router>
         <Nav
           save={save}
@@ -568,9 +662,23 @@ function App() {
           onOpenSave={openSave}
           onSaveChanges={saveChanges}
           onShowRevisions={() => setRevisionPanelOpen(true)}
+          fileMenu={(
+            <FileMenu
+              recentFiles={recentFiles}
+              hasSave={Boolean(save)}
+              hasPath={Boolean(currentFile?.path)}
+              onOpenRecent={(entry) => void openPath(entry.path, entry.remote ?? null).then((opened) => {
+                if (opened === false && !dirtyRef.current) setRecentFiles(forgetRecentFile(entry.path));
+              })}
+              onClearRecent={() => setRecentFiles(clearRecentFiles())}
+              onBackups={() => setToolDialog("backups")}
+              onPs4={() => setToolDialog("ps4")}
+              onShortcuts={() => setToolDialog("shortcuts")}
+            />
+          )}
         />
         <ImagesProvider>
-          <Main key={`save-revision-${revisionEpoch}`} save={save} setSave={commitEditorMutation} loading={loading} />
+          <Main key={`save-revision-${revisionEpoch}`} save={save} setSave={commitEditorMutation} loading={loading} currentPath={currentFile?.path ?? ""} />
         </ImagesProvider>
       </Router>
     </div>
