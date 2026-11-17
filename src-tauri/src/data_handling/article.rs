@@ -1,7 +1,9 @@
 use super::{
     enums::{ArticleType, Error, Imprint, SlotShape, TypeFamily},
     file::FileData,
-    inventory::{get_info_armor, get_info_item, get_info_weapon, weapon_is_upgradable, weapon_variant_exists},
+    inventory::{
+        get_info_armor, get_info_item, get_info_weapon, weapon_is_upgradable, weapon_variant_exists,
+    },
     slots::Slot,
 };
 use serde::{Deserialize, Serialize};
@@ -277,7 +279,9 @@ impl Article {
         let current_level = weapon_mods.upgrade_level;
         let changes_level = upgrade_level.is_some_and(|level| level != current_level);
         if (imprint.is_some() || changes_level) && !weapon_is_upgradable(self.second_part) {
-            return Err(Error::CustomError("ERROR: This weapon has no reinforced or imprinted versions."));
+            return Err(Error::CustomError(
+                "ERROR: This weapon has no reinforced or imprinted versions.",
+            ));
         }
 
         // Family (x100000) + variant digit (Uncanny/Lost/Bloody); the old
@@ -292,14 +296,20 @@ impl Article {
         };
         // Every check happens before the article is touched, so an error leaves it intact.
         if upgrade_level.is_some_and(|level| level > 10) {
-            return Err(Error::CustomError("ERROR: Upgrade level cannot be bigger than 10."));
+            return Err(Error::CustomError(
+                "ERROR: Upgrade level cannot be bigger than 10.",
+            ));
         }
         if !weapon_variant_exists(family + target_variant) {
-            return Err(Error::CustomError("ERROR: This weapon has no version with that imprint."));
+            return Err(Error::CustomError(
+                "ERROR: This weapon has no version with that imprint.",
+            ));
         }
         let inventory_offset = file_data
             .find_equipment_offset(self.number, self.first_part, self.second_part, is_storage)
-            .ok_or(Error::CustomError("ERROR: The Article was not found in the inventory."))?;
+            .ok_or(Error::CustomError(
+                "ERROR: The Article was not found in the inventory.",
+            ))?;
         // Equipment record above the inventory: match the whole reference
         // (handle + id). Matching the id alone hit the wrong copy when several
         // identical weapons exist.
@@ -311,7 +321,9 @@ impl Article {
                 file_data.bytes[i + 8..=i + 11] == second_part_array
                     && file_data.bytes[i + 4..=i + 7] == first_part_array
             })
-            .ok_or(Error::CustomError("ERROR: The weapon was not found above the inventory."))?;
+            .ok_or(Error::CustomError(
+                "ERROR: The weapon was not found above the inventory.",
+            ))?;
         let mut new_second_part = family;
         if let Some(extra_info) = &mut self.info.extra_info {
             if let Some(imp) = imprint {
@@ -335,7 +347,8 @@ impl Article {
         new_second_part += 100 * (weapon_mods.upgrade_level as u32);
         let new_second_part_array = new_second_part.to_le_bytes();
         // Inventory/Storage slot, then the equipment record (both located above).
-        file_data.bytes[inventory_offset + 8..=inventory_offset + 11].copy_from_slice(&new_second_part_array);
+        file_data.bytes[inventory_offset + 8..=inventory_offset + 11]
+            .copy_from_slice(&new_second_part_array);
         file_data.bytes[ga_offset + 8..=ga_offset + 11].copy_from_slice(&new_second_part_array);
 
         self.id = new_second_part;
@@ -792,37 +805,88 @@ mod tests {
         // Firearms have no Uncanny/Lost versions: refused, bytes untouched.
         let mut save = build_save_data("testsave0");
         let before = save.file.bytes.clone();
-        let article = &mut save.inventory.articles.get_mut(&ArticleType::LeftHand).unwrap()[0];
+        let article = &mut save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::LeftHand)
+            .unwrap()[0];
         assert_eq!(article.second_part, 14_000_000);
-        assert!(article.set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Lost)), Some(8)).is_err());
-        assert!(article.set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Uncanny)), None).is_err());
+        assert!(article
+            .set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Lost)), Some(8))
+            .is_err());
+        assert!(article
+            .set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Uncanny)), None)
+            .is_err());
         assert_eq!(save.file.bytes, before);
         assert_eq!(article.second_part, 14_000_000);
 
         // Reinforcement only: 14000000 -> 14000800 in the inventory slot and the record above it.
-        article.set_imprint_and_upgrade(&mut save.file, None, Some(8)).unwrap();
+        article
+            .set_imprint_and_upgrade(&mut save.file, None, Some(8))
+            .unwrap();
         let expected = 14_000_800u32.to_le_bytes();
-        assert!(check_bytes(&save.file, 0x89ec, &[0x4a, 0x00, 0x83, 0x7c, 0x51, 0x00, 0x80, 0x80, expected[0], expected[1], expected[2], expected[3], 0x01, 0x00, 0x00, 0x00]));
+        assert!(check_bytes(
+            &save.file,
+            0x89ec,
+            &[
+                0x4a,
+                0x00,
+                0x83,
+                0x7c,
+                0x51,
+                0x00,
+                0x80,
+                0x80,
+                expected[0],
+                expected[1],
+                expected[2],
+                expected[3],
+                0x01,
+                0x00,
+                0x00,
+                0x00
+            ]
+        ));
         assert!(check_bytes(&save.file, 0x5f8, &expected));
         assert_eq!(article.id, 14_000_800);
-        assert_eq!(article.info.extra_info.clone().unwrap()["upgrade_level"], Value::from(8));
+        assert_eq!(
+            article.info.extra_info.clone().unwrap()["upgrade_level"],
+            Value::from(8)
+        );
 
         // A trick weapon with variants: Lost, then Uncanny +10, keeping the family.
         let mut save = build_save_data("testsave0");
         let index = save.inventory.articles[&ArticleType::RightHand]
             .iter()
-            .position(|weapon| crate::data_handling::inventory::weapon_is_upgradable(weapon.second_part)
-                && crate::data_handling::inventory::weapon_variant_exists(weapon.second_part / 100_000 * 100_000 + 20_000))
+            .position(|weapon| {
+                crate::data_handling::inventory::weapon_is_upgradable(weapon.second_part)
+                    && crate::data_handling::inventory::weapon_variant_exists(
+                        weapon.second_part / 100_000 * 100_000 + 20_000,
+                    )
+            })
             .expect("testsave0 has a trick weapon with a Lost version");
-        let article = &mut save.inventory.articles.get_mut(&ArticleType::RightHand).unwrap()[index];
+        let article = &mut save
+            .inventory
+            .articles
+            .get_mut(&ArticleType::RightHand)
+            .unwrap()[index];
         let family = article.second_part / 100_000 * 100_000;
-        article.set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Lost)), Some(8)).unwrap();
+        article
+            .set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Lost)), Some(8))
+            .unwrap();
         assert_eq!(article.second_part, family + 20_000 + 800);
-        assert_eq!(article.info.extra_info.clone().unwrap()["imprint"], json!(Some(Imprint::Lost)));
-        article.set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Uncanny)), Some(10)).unwrap();
+        assert_eq!(
+            article.info.extra_info.clone().unwrap()["imprint"],
+            json!(Some(Imprint::Lost))
+        );
+        article
+            .set_imprint_and_upgrade(&mut save.file, Some(Some(Imprint::Uncanny)), Some(10))
+            .unwrap();
         assert_eq!(article.second_part, family + 10_000 + 1000);
         // Removing the imprint keeps the level.
-        article.set_imprint_and_upgrade(&mut save.file, Some(None), None).unwrap();
+        article
+            .set_imprint_and_upgrade(&mut save.file, Some(None), None)
+            .unwrap();
         assert_eq!(article.second_part, family + 1000);
         save.validate_game_load_safety().unwrap();
     }

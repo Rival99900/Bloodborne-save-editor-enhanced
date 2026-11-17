@@ -10,10 +10,12 @@ import { useLocalization } from "../../i18n/localization";
 
 function isSameEquippedArticle(candidate, reference) {
   if (!candidate || !reference) return false;
-  return candidate.article_type === reference.article_type
-    && candidate.id === reference.id
-    && candidate.source === reference.source
-    && candidate.index === reference.index;
+  return (
+    candidate.article_type === reference.article_type &&
+    candidate.id === reference.id &&
+    candidate.source === reference.source &&
+    candidate.index === reference.index
+  );
 }
 
 function EquippedGems() {
@@ -120,7 +122,9 @@ function EquippedGems() {
           ))}
         </div>
         <div className="gem-screen-actions" style={{ marginTop: "5rem" }}>
-          <button className="control-button control-button--quiet" onClick={() => nav("/")}>{t("actions.back")}</button>
+          <button className="control-button control-button--quiet" onClick={() => nav("/")}>
+            {t("actions.back")}
+          </button>
           <button
             className="control-button control-button--quiet"
             onClick={() => setChangeScreen(true)}

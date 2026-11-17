@@ -4,7 +4,12 @@ import { invoke } from "@tauri-apps/api/core";
 import { ImagesContext } from "../../context/imagesContext";
 import Boss from "./Boss";
 import { useLocalization } from "../../i18n/localization";
-import { BOSS_NAME_KEYS, BOSS_PROGRESSION, isBossDefeated, isMultiplayerFlag } from "./bossProgression";
+import {
+  BOSS_NAME_KEYS,
+  BOSS_PROGRESSION,
+  isBossDefeated,
+  isMultiplayerFlag,
+} from "./bossProgression";
 
 function Bosses() {
   const { save, setSave } = useContext(SaveContext);
@@ -17,9 +22,12 @@ function Bosses() {
   const defeatedCount = bosses.filter(isBossDefeated).length;
 
   function sharesMultiplayerFlag(boss, mpFlag) {
-    return boss.flags.some((flag) => isMultiplayerFlag(flag)
-      && flag.rel_offset === mpFlag.rel_offset
-      && flag.dead_value === mpFlag.dead_value);
+    return boss.flags.some(
+      (flag) =>
+        isMultiplayerFlag(flag) &&
+        flag.rel_offset === mpFlag.rel_offset &&
+        flag.dead_value === mpFlag.dead_value,
+    );
   }
 
   async function handleChange(flags, alive, bossName) {
@@ -75,7 +83,9 @@ function Bosses() {
       <div className="boss-timeline">
         {BOSS_PROGRESSION.map((phase, phaseIndex) => (
           <section className="boss-phase" key={phase.phase}>
-            <div className="boss-phase__marker" aria-hidden="true">{phaseIndex + 1}</div>
+            <div className="boss-phase__marker" aria-hidden="true">
+              {phaseIndex + 1}
+            </div>
             <div className="boss-phase__content">
               <h2>{t(`bosses.phases.${phase.phase}`)}</h2>
               <div className="boss-phase__grid">

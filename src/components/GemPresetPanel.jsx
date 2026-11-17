@@ -1,7 +1,7 @@
 import useDialogFocus from "../utils/useDialogFocus";
 import { useMemo, useState } from "react";
 import * as dialog from "@tauri-apps/plugin-dialog";
-import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { readTextDocument, writeTextDocument } from "../utils/textDocuments";
 import SelectSearch from "./SelectSearch";
 import ConfirmDialog from "./ConfirmDialog";
 import { useLocalization } from "../i18n/localization";
@@ -98,14 +98,16 @@ const GEM_PRESETS = [
     id: "abyssal-vitality",
     category: "Recovery",
     name: "Abyssal Vitality +75",
-    description: "Uses the embedded +75 continuous HP recovery effect with durability and damage support.",
+    description:
+      "Uses the embedded +75 continuous HP recovery effect with durability and damage support.",
     effectIds: [156620, 146620, 127620],
   },
   {
     id: "forged-endurance",
     category: "Recovery",
     name: "Forged Endurance",
-    description: "The strongest known bundled durability bonus paired with high recovery and physical damage.",
+    description:
+      "The strongest known bundled durability bonus paired with high recovery and physical damage.",
     effectIds: [146620, 156620, 165620],
   },
   {
@@ -155,19 +157,20 @@ function GemPresetPanel({
   const [pendingDelete, setPendingDelete] = useState(null);
   const [libraryStatus, setLibraryStatus] = useState("");
   const [isLibraryBusy, setIsLibraryBusy] = useState(false);
-  const [customEffects, setCustomEffects] = useState(() =>
-    Array(EFFECT_SLOTS).fill(NO_EFFECT_ID),
-  );
+  const [customEffects, setCustomEffects] = useState(() => Array(EFFECT_SLOTS).fill(NO_EFFECT_ID));
 
   const effectById = useMemo(
     () => new Map(gemEffects.map((effect) => [Number(effect.value), effect])),
     [gemEffects],
   );
   const effectByLabel = useMemo(
-    () => new Map(gemEffects.flatMap((effect) => [
-      [normalizeEffectLabel(effect.label), effect],
-      [normalizeEffectLabel(effect.sourceLabel), effect],
-    ])),
+    () =>
+      new Map(
+        gemEffects.flatMap((effect) => [
+          [normalizeEffectLabel(effect.label), effect],
+          [normalizeEffectLabel(effect.sourceLabel), effect],
+        ]),
+      ),
     [gemEffects],
   );
   const categories = [
@@ -197,7 +200,9 @@ function GemPresetPanel({
 
   function personalDescription(preset) {
     const stored = String(preset.info?.note ?? "").trim();
-    return /^(Personal Forge preset|Preset de forge personnel|__personal_forge_preset__)/i.test(stored)
+    return /^(Personal Forge preset|Preset de forge personnel|__personal_forge_preset__)/i.test(
+      stored,
+    )
       ? t("forge.personalPresetDescription")
       : stored || t("forge.personalPresetDescription");
   }
@@ -288,7 +293,7 @@ function GemPresetPanel({
         filters: [{ name: "JSON", extensions: ["json"] }],
       });
       if (!path) return;
-      await writeTextFile(path, `${JSON.stringify(onExportPresets(), null, 2)}\n`);
+      await writeTextDocument(path, `${JSON.stringify(onExportPresets(), null, 2)}\n`);
       setLibraryStatus(t("forge.exportedStatus"));
     } catch (error) {
       console.error("Unable to export Forge presets.", error);
@@ -309,7 +314,7 @@ function GemPresetPanel({
         filters: [{ name: "JSON", extensions: ["json"] }],
       });
       if (!path) return;
-      const payload = JSON.parse(await readTextFile(path));
+      const payload = JSON.parse(await readTextDocument(path));
       const imported = onImportPresets(payload);
       setLibraryStatus(t("forge.importedStatus", { count: imported }));
     } catch (error) {
@@ -332,136 +337,175 @@ function GemPresetPanel({
           onCancel={() => setPendingDelete(null)}
         />
       ) : null}
-      <div className="gem-forge" ref={panelRef} role="dialog" aria-modal="true" aria-label={t("forge.modeLabel", { subject })}>
-      <div className="gem-forge__header">
-        <div>
-          <p className="gem-forge__eyebrow">{isRuneForge ? t("forge.runeForge") : t("forge.gemForge")}</p>
-          <h2>{t("forge.title")}</h2>
-        </div>
-        <button className="gem-forge__close" onClick={onClose} aria-label={t("forge.closeLabel", { subject })}>
-          {t("forge.close")}
-        </button>
-      </div>
-
-      <p className="gem-forge__notice">{t("forge.notice")}</p>
-
-      <div className="gem-forge__modes" aria-label={t("forge.modeLabel", { subject })}>
-        <button className={mode === "presets" ? "is-active" : ""} onClick={() => setMode("presets")}>
-          {t("forge.presets")}
-        </button>
-        <button className={mode === "custom" ? "is-active" : ""} onClick={() => setMode("custom")}>
-          {t("forge.customSet")}
-        </button>
-        <button className={mode === "personal" ? "is-active" : ""} onClick={() => setMode("personal")}>
-          {t("forge.myPresets")} {userGemPresets.length ? `(${userGemPresets.length})` : ""}
-        </button>
-      </div>
-
-      {mode === "presets" ? (
-        <>
-          <div className="gem-forge__filters" aria-label={t("forge.presetCategories")}>
-            {categories.map((entry) => (
-              <button
-                key={entry}
-                className={entry === category ? "is-active" : ""}
-                onClick={() => setCategory(entry)}
-              >
-                {categoryLabel(entry)}
-              </button>
-            ))}
-          </div>
-
-          <div className="gem-forge__grid">
-            {visiblePresets.map((preset) => {
-              const copy = localizedPresetText(preset);
-              return (
-              <article className="gem-forge__card" key={preset.id}>
-                <span>{categoryLabel(preset.category)}</span>
-                <h3>{copy.name}</h3>
-                <p>{copy.description}</p>
-                <small>{formatEffects(preset.effectIds)}</small>
-                <button onClick={() => applyPreset(preset)}>{t("forge.loadIntoDraft")}</button>
-              </article>
-              );
-            })}
-          </div>
-        </>
-      ) : null}
-
-      {mode === "custom" ? (
-          <section className="gem-forge__custom" aria-label={t("forge.customSetLabel", { subject: subject.toLowerCase() })}>
+      <div
+        className="gem-forge"
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t("forge.modeLabel", { subject })}
+      >
+        <div className="gem-forge__header">
           <div>
-            <span className="gem-forge__eyebrow">{t("forge.customSet")}</span>
-            <h3>{t("forge.buildSixEffect", { subject: subject.toLowerCase() })}</h3>
-            <p>{t("forge.customSetDescription")}</p>
+            <p className="gem-forge__eyebrow">
+              {isRuneForge ? t("forge.runeForge") : t("forge.gemForge")}
+            </p>
+            <h2>{t("forge.title")}</h2>
           </div>
-
-          <div className="gem-forge__custom-grid">
-            {customEffects.map((effectId, index) => (
-              <label key={index}>
-                <span>{t("forge.effect", { index: index + 1 })}</span>
-                <SelectSearch
-                  selected={effectById.get(effectId)?.label ?? t("forge.noEffect")}
-                  defaultValue={t("forge.noEffect")}
-                  options={gemEffects}
-                  onChange={(option) => changeCustomEffect(index, option)}
-                />
-              </label>
-            ))}
-          </div>
-
-          <div className="gem-forge__custom-preview">
-            <span>{t("forge.draftPreview")}</span>
-            <p>{formatEffects(customEffects) || t("forge.draftEmpty")}</p>
-          </div>
-
-          <button className="gem-forge__apply-custom" onClick={applyCustom}>
-            {t("forge.loadCustomDraft")}
+          <button
+            className="gem-forge__close"
+            onClick={onClose}
+            aria-label={t("forge.closeLabel", { subject })}
+          >
+            {t("forge.close")}
           </button>
-        </section>
-      ) : null}
+        </div>
 
-      {mode === "personal" ? (
-        <section className="gem-forge__personal" aria-label={t("forge.personalPresetsLabel", { subject: subject.toLowerCase() })}>
-          <div className="gem-forge__personal-header">
-            <div>
-              <span className="gem-forge__eyebrow">{t("forge.myPresets")}</span>
-              <h3>{t("forge.sharedPresetsTitle")}</h3>
-              <p>{t("forge.sharedPresetsDescription")}</p>
-            </div>
-            <div className="gem-forge__library-actions">
-              <button onClick={importPresets} disabled={isLibraryBusy}>{t("forge.importPresets")}</button>
-              <button onClick={exportPresets} disabled={isLibraryBusy || !userGemPresets.length}>{t("forge.exportPresets")}</button>
-            </div>
-          </div>
-          {libraryStatus ? <p className="gem-forge__library-status" role="status">{libraryStatus}</p> : null}
+        <p className="gem-forge__notice">{t("forge.notice")}</p>
 
-          {userGemPresets.length ? (
-            <div className="gem-forge__grid">
-              {userGemPresets.map((preset) => (
-                <article className="gem-forge__card gem-forge__card--personal" key={preset.id}>
-                  <span>{t("forge.personal")}</span>
-                  <h3>{preset.name}</h3>
-                  <p>{personalDescription(preset)}</p>
-                  <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
-                  <div className="gem-forge__card-actions">
-                    <button onClick={() => applySavedPreset(preset)}>{t("forge.loadIntoDraft")}</button>
-                    <button onClick={() => duplicatePreset(preset)}>{t("forge.duplicate")}</button>
-                    <button className="gem-forge__delete" onClick={() => deletePreset(preset)}>
-                      {t("forge.delete")}
-                    </button>
-                  </div>
-                </article>
+        <div className="gem-forge__modes" aria-label={t("forge.modeLabel", { subject })}>
+          <button
+            className={mode === "presets" ? "is-active" : ""}
+            onClick={() => setMode("presets")}
+          >
+            {t("forge.presets")}
+          </button>
+          <button
+            className={mode === "custom" ? "is-active" : ""}
+            onClick={() => setMode("custom")}
+          >
+            {t("forge.customSet")}
+          </button>
+          <button
+            className={mode === "personal" ? "is-active" : ""}
+            onClick={() => setMode("personal")}
+          >
+            {t("forge.myPresets")} {userGemPresets.length ? `(${userGemPresets.length})` : ""}
+          </button>
+        </div>
+
+        {mode === "presets" ? (
+          <>
+            <div className="gem-forge__filters" aria-label={t("forge.presetCategories")}>
+              {categories.map((entry) => (
+                <button
+                  key={entry}
+                  className={entry === category ? "is-active" : ""}
+                  onClick={() => setCategory(entry)}
+                >
+                  {categoryLabel(entry)}
+                </button>
               ))}
             </div>
-          ) : (
-            <div className="gem-forge__empty-personal">
-              <p>{t("forge.noPersonalPreset")}</p>
-              <span>{t("forge.noPersonalPresetDescription")}</span>
+
+            <div className="gem-forge__grid">
+              {visiblePresets.map((preset) => {
+                const copy = localizedPresetText(preset);
+                return (
+                  <article className="gem-forge__card" key={preset.id}>
+                    <span>{categoryLabel(preset.category)}</span>
+                    <h3>{copy.name}</h3>
+                    <p>{copy.description}</p>
+                    <small>{formatEffects(preset.effectIds)}</small>
+                    <button onClick={() => applyPreset(preset)}>{t("forge.loadIntoDraft")}</button>
+                  </article>
+                );
+              })}
             </div>
-          )}
-        </section>
-      ) : null}
+          </>
+        ) : null}
+
+        {mode === "custom" ? (
+          <section
+            className="gem-forge__custom"
+            aria-label={t("forge.customSetLabel", { subject: subject.toLowerCase() })}
+          >
+            <div>
+              <span className="gem-forge__eyebrow">{t("forge.customSet")}</span>
+              <h3>{t("forge.buildSixEffect", { subject: subject.toLowerCase() })}</h3>
+              <p>{t("forge.customSetDescription")}</p>
+            </div>
+
+            <div className="gem-forge__custom-grid">
+              {customEffects.map((effectId, index) => (
+                <label key={index}>
+                  <span>{t("forge.effect", { index: index + 1 })}</span>
+                  <SelectSearch
+                    selected={effectById.get(effectId)?.label ?? t("forge.noEffect")}
+                    defaultValue={t("forge.noEffect")}
+                    options={gemEffects}
+                    onChange={(option) => changeCustomEffect(index, option)}
+                  />
+                </label>
+              ))}
+            </div>
+
+            <div className="gem-forge__custom-preview">
+              <span>{t("forge.draftPreview")}</span>
+              <p>{formatEffects(customEffects) || t("forge.draftEmpty")}</p>
+            </div>
+
+            <button className="gem-forge__apply-custom" onClick={applyCustom}>
+              {t("forge.loadCustomDraft")}
+            </button>
+          </section>
+        ) : null}
+
+        {mode === "personal" ? (
+          <section
+            className="gem-forge__personal"
+            aria-label={t("forge.personalPresetsLabel", { subject: subject.toLowerCase() })}
+          >
+            <div className="gem-forge__personal-header">
+              <div>
+                <span className="gem-forge__eyebrow">{t("forge.myPresets")}</span>
+                <h3>{t("forge.sharedPresetsTitle")}</h3>
+                <p>{t("forge.sharedPresetsDescription")}</p>
+              </div>
+              <div className="gem-forge__library-actions">
+                <button onClick={importPresets} disabled={isLibraryBusy}>
+                  {t("forge.importPresets")}
+                </button>
+                <button onClick={exportPresets} disabled={isLibraryBusy || !userGemPresets.length}>
+                  {t("forge.exportPresets")}
+                </button>
+              </div>
+            </div>
+            {libraryStatus ? (
+              <p className="gem-forge__library-status" role="status">
+                {libraryStatus}
+              </p>
+            ) : null}
+
+            {userGemPresets.length ? (
+              <div className="gem-forge__grid">
+                {userGemPresets.map((preset) => (
+                  <article className="gem-forge__card gem-forge__card--personal" key={preset.id}>
+                    <span>{t("forge.personal")}</span>
+                    <h3>{preset.name}</h3>
+                    <p>{personalDescription(preset)}</p>
+                    <small>{formatEffects(preset.effects.map(([id]) => id))}</small>
+                    <div className="gem-forge__card-actions">
+                      <button onClick={() => applySavedPreset(preset)}>
+                        {t("forge.loadIntoDraft")}
+                      </button>
+                      <button onClick={() => duplicatePreset(preset)}>
+                        {t("forge.duplicate")}
+                      </button>
+                      <button className="gem-forge__delete" onClick={() => deletePreset(preset)}>
+                        {t("forge.delete")}
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="gem-forge__empty-personal">
+                <p>{t("forge.noPersonalPreset")}</p>
+                <span>{t("forge.noPersonalPresetDescription")}</span>
+              </div>
+            )}
+          </section>
+        ) : null}
       </div>
     </>
   );

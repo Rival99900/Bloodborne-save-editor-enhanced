@@ -45,7 +45,8 @@ function Stats() {
 
   async function confirmStats() {
     if (busyRef.current) return;
-    busyRef.current = true; setBusy(true);
+    busyRef.current = true;
+    setBusy(true);
     try {
       const draft = cloneStats(editedStats);
       const changedStats = draft.filter((stat) => {
@@ -60,7 +61,12 @@ function Stats() {
         return;
       }
 
-      if (changedStats.some(stat => !Number.isInteger(stat.value) || stat.value < 0 || stat.value > 2_000_000_000)) throw new Error("Invalid stat value");
+      if (
+        changedStats.some(
+          (stat) => !Number.isInteger(stat.value) || stat.value < 0 || stat.value > 2_000_000_000,
+        )
+      )
+        throw new Error("Invalid stat value");
       const updatedSave = await setSave(t("revision.statsUpdated"), async (current) => {
         for (const stat of changedStats) {
           await invoke("edit_stat", {
@@ -70,8 +76,13 @@ function Stats() {
             value: Number.parseInt(stat.value, 10),
           });
         }
-        const values = new Map(changedStats.map(stat => [stat.name, stat.value]));
-        return { ...current, stats: current.stats.map(stat => values.has(stat.name) ? {...stat, value: values.get(stat.name)} : stat) };
+        const values = new Map(changedStats.map((stat) => [stat.name, stat.value]));
+        return {
+          ...current,
+          stats: current.stats.map((stat) =>
+            values.has(stat.name) ? { ...stat, value: values.get(stat.name) } : stat,
+          ),
+        };
       });
       if (updatedSave) {
         setEditedStats(cloneStats(updatedSave.stats));
@@ -79,9 +90,10 @@ function Stats() {
       }
     } catch (error) {
       console.error("Unable to update statistics.", error);
-      setNotice({tone: "error", title: t("presets.applyFailed")});
+      setNotice({ tone: "error", title: t("presets.applyFailed") });
     } finally {
-      busyRef.current = false; setBusy(false);
+      busyRef.current = false;
+      setBusy(false);
     }
   }
 
@@ -104,7 +116,7 @@ function Stats() {
         backgroundSize: "cover",
       }}
     >
-      <CharacterPresets stats={editedStats} onLoad={setEditedStats} disabled={busy}/>
+      <CharacterPresets stats={editedStats} onLoad={setEditedStats} disabled={busy} />
       <SaveCheckPanel
         save={save}
         draftStats={editedStats}
@@ -128,10 +140,20 @@ function Stats() {
             />
           ))}
         <div className="editor-action-row stats-actions">
-          <button className="control-button control-button--quiet" type="button" disabled={busy} onClick={resetStats}>
+          <button
+            className="control-button control-button--quiet"
+            type="button"
+            disabled={busy}
+            onClick={resetStats}
+          >
             {t("actions.reset")}
           </button>
-          <button className="control-button control-button--primary" type="button" disabled={busy} onClick={confirmStats}>
+          <button
+            className="control-button control-button--primary"
+            type="button"
+            disabled={busy}
+            onClick={confirmStats}
+          >
             {t("actions.confirm")}
           </button>
         </div>

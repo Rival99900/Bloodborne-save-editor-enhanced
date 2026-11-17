@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import { useLocalization } from "../../i18n/localization";
 import DarkSelect from "../../components/DarkSelect";
 
@@ -56,30 +55,14 @@ export const locations = [
   location: { x, y, z, mapId },
 }));
 
-function Teleport({ setSave, setEditedCoordinates }) {
+function Teleport({ pending, onSelect }) {
   const { t } = useLocalization();
   const [selectedLocation, setSelectedLocation] = useState("");
 
-  async function handleChange(value, option) {
-    const { x, y, z, mapId } = option.location;
-    try {
-      const updatedSave = await setSave(t("revision.characterUpdated"), async (current) => {
-        await invoke("teleport", option.location);
-        return {
-          ...current,
-          position: {
-            coordinates: { x, y, z },
-            loaded_map: mapId,
-          },
-        };
-      });
-      if (updatedSave) {
-        setSelectedLocation(value);
-        setEditedCoordinates({ x, y, z });
-      }
-    } catch (error) {
-      console.error("Unable to teleport the character.", error);
-    }
+  // Only a draft: Character → Confirm moves the character (coordinates and map).
+  function handleChange(value, option) {
+    setSelectedLocation(value);
+    onSelect(option.location);
   }
 
   return (
@@ -88,11 +71,18 @@ function Teleport({ setSave, setEditedCoordinates }) {
       <DarkSelect
         className="teleport-select"
         ariaLabel={t("characterForm.teleport")}
-        options={locations.map((option) => ({ ...option, label: t(`destinations.${option.value}`), group: t(`teleportGroups.${option.group.replaceAll(".", "")}`) }))}
+        options={locations.map((option) => ({
+          ...option,
+          label: t(`destinations.${option.value}`),
+          group: t(`teleportGroups.${option.group.replaceAll(".", "")}`),
+        }))}
         value={selectedLocation}
         placeholder={t("characterForm.selectLocation")}
         onChange={handleChange}
       />
+      {pending ? (
+        <small className="teleport-control__pending">{t("teleport.pending")}</small>
+      ) : null}
     </div>
   );
 }

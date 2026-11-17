@@ -193,18 +193,18 @@ impl FileData {
     pub fn save(&self, path: &str) -> Result<(), io::Error> {
         let target = Path::new(path);
         let file_name = target.file_name().ok_or_else(|| {
-            io::Error::new(io::ErrorKind::InvalidInput, "Save destination has no file name.")
+            io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "Save destination has no file name.",
+            )
         })?;
         let parent = target.parent().unwrap_or_else(|| Path::new("."));
         let file_name = file_name.to_string_lossy();
 
         let mut staged = None;
         for attempt in 0..100_u8 {
-            let staged_path = parent.join(format!(
-                ".{file_name}.{}.{}.tmp",
-                process::id(),
-                attempt
-            ));
+            let staged_path =
+                parent.join(format!(".{file_name}.{}.{}.tmp", process::id(), attempt));
             match OpenOptions::new()
                 .write(true)
                 .create_new(true)
@@ -246,10 +246,8 @@ impl FileData {
 
         #[cfg(target_os = "windows")]
         {
-            let rollback_path = parent.join(format!(
-                ".{file_name}.{}.replace-backup",
-                process::id()
-            ));
+            let rollback_path =
+                parent.join(format!(".{file_name}.{}.replace-backup", process::id()));
             let had_target = target.exists();
             if had_target {
                 let _ = fs::remove_file(&rollback_path);
@@ -321,14 +319,28 @@ impl FileData {
     /// reference (handle + id). Two copies of the same item can share a slot
     /// number byte (a real save has two Mensis Cages numbered 0x54), which
     /// `find_article_offset` cannot tell apart.
-    pub fn find_equipment_offset(&self, number: u8, first_part: u32, second_part: u32, is_storage: bool) -> Option<usize> {
-        let range = if is_storage { self.offsets.storage } else { self.offsets.inventory };
+    pub fn find_equipment_offset(
+        &self,
+        number: u8,
+        first_part: u32,
+        second_part: u32,
+        is_storage: bool,
+    ) -> Option<usize> {
+        let range = if is_storage {
+            self.offsets.storage
+        } else {
+            self.offsets.inventory
+        };
         let matches = |offset: usize| {
             self.bytes.get(offset..offset + 12).is_some_and(|slot| {
-                slot[0] == number && slot[4..8] == first_part.to_le_bytes() && slot[8..12] == second_part.to_le_bytes()
+                slot[0] == number
+                    && slot[4..8] == first_part.to_le_bytes()
+                    && slot[8..12] == second_part.to_le_bytes()
             })
         };
-        (range.0..=range.1.saturating_sub(16)).step_by(16).find(|&offset| matches(offset))
+        (range.0..=range.1.saturating_sub(16))
+            .step_by(16)
+            .find(|&offset| matches(offset))
     }
 
     pub fn find_upgrade_offset(&self, id: u32) -> Option<usize> {

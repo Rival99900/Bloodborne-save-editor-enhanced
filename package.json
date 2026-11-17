@@ -1,6 +1,6 @@
 {
   "name": "bloodborne-save-editor-enhanced",
-  "version": "0.7.0",
+  "version": "0.7.5",
   "private": true,
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
@@ -20,18 +20,17 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "audit:catalogs": "node .github/scripts/audit_catalogs.mjs",
-    "translations:fill-gaps": "node .github/scripts/fill_effect_translation_gaps.mjs",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "tauri": "tauri",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "validate": "node .github/scripts/validate/index.mjs",
+    "changelog": "node .github/scripts/changelog.mjs",
+    "translations:fill-gaps": "node .github/scripts/fill_effect_translation_gaps.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "browserslist": {
     "production": [
@@ -49,10 +48,18 @@
     "nanoid": "3.3.18"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@tauri-apps/api": "~2.11.0",
     "@tauri-apps/cli": "~2.11.0",
     "@vitejs/plugin-react": "^6.0.5",
     "cross-env": "^7.0.3",
-    "vite": "^8.2.0"
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "postcss": "^8.5.33",
+    "prettier": "^3.10.1",
+    "vite": "^8.2.0",
+    "vitest": "^5.1.0"
   }
 }

@@ -1,0 +1,48 @@
+/* One page-header style for Bosses, NPCs, Patch and Flags (v0.7.0). The element
+   selector raises specificity above each page's own stylesheet. */
+header:is(
+  .bosses-workspace__header,
+  .npc-workspace__header,
+  .patch-heading,
+  .flags-workspace__header
+) {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+header:is(.bosses-workspace__header, .npc-workspace__header, .flags-workspace__header) > p,
+header.patch-heading > .patch-eyebrow {
+  margin: 0;
+  color: var(--color-gold);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+header:is(
+    .bosses-workspace__header,
+    .npc-workspace__header,
+    .patch-heading,
+    .flags-workspace__header
+  )
+  > h1 {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+header:is(.bosses-workspace__header, .npc-workspace__header, .flags-workspace__header) > span,
+header.patch-heading > p {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--color-muted);
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}

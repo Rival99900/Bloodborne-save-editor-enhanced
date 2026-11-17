@@ -19,10 +19,14 @@ function Boss({ boss, localizedName, optional, dlc, onChange }) {
     const alive = value === "alive";
     const targetValue = alive ? "alive_value" : "dead_value";
     // Multiplayer masks are applied by Bosses, with the other bosses of the area in view.
-    const nextFlags = flags.map((flag) => (isMultiplayerFlag(flag) ? flag : {
-      ...flag,
-      current_value: flag[targetValue],
-    }));
+    const nextFlags = flags.map((flag) =>
+      isMultiplayerFlag(flag)
+        ? flag
+        : {
+            ...flag,
+            current_value: flag[targetValue],
+          },
+    );
     onChange?.(nextFlags, alive, boss.name);
   }
 

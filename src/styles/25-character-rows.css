@@ -1,0 +1,141 @@
+/* v0.6.0 refresh: borderless Character rows, with the original currency icons. */
+.character-workspace .character-detail-row,
+.character-workspace .teleport-control {
+  min-width: 0;
+  width: 100%;
+  min-height: 3.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin: 0;
+  border: none;
+  border-radius: 0.35rem;
+  background: rgba(7, 8, 10, 0.65);
+  color: #e9ddc3;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.character-workspace #currency {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.65rem;
+}
+
+.character-workspace #characterData {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.character-workspace .character-detail-row > span,
+.character-workspace .character-detail-row label {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.character-workspace .stat-field > img {
+  flex: 0 0 2rem;
+  object-fit: contain;
+  margin-right: 0 !important;
+}
+
+.character-workspace .stat-field > div {
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.character-workspace .character-detail-row input {
+  border: none;
+  min-width: 0;
+  font: inherit;
+  color: #f3e5c6;
+  font-variant-numeric: tabular-nums;
+}
+
+.character-workspace .stat-field input {
+  flex: 0 1 10ch;
+  width: 10ch;
+  max-width: 45%;
+}
+
+.character-workspace .character-name-row input {
+  max-width: 60%;
+}
+
+.character-workspace .character-selects {
+  margin: 0 !important;
+  gap: 0.65rem;
+}
+
+.character-select-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  background: rgba(7, 8, 10, 0.45);
+  border-radius: 0.35rem;
+
+  > span {
+    color: #bdad8d;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+  }
+
+  .character-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dark-select__trigger {
+    border: none;
+  }
+}
+
+.character-workspace .character-face-actions {
+  margin: 0;
+}
+
+.character-playtime-fields {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  max-width: 100%;
+}
+
+.character-workspace #playtime input {
+  width: 4ch;
+}
+
+.character-workspace .character-coordinates__fields {
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 0.35rem 0.75rem;
+
+  input {
+    background: transparent;
+  }
+}
+
+@media (max-width: 700px) {
+  .character-workspace {
+    grid-column: 1 / -1;
+
+    .character-detail-row {
+      padding: 0.75rem;
+    }
+  }
+}
+
+/* Action row of the equipped Gem screens (Back / Change / Edit). */
+.gem-screen-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+
+  .control-button {
+    min-width: 8rem;
+  }
+}

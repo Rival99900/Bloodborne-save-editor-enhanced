@@ -12,17 +12,27 @@ const LEGACY_USER_RUNE_PRESETS_STORAGE_KEY = "bloodborne-save-editor.user-rune-p
 const NO_EFFECT_ID = 4294967295;
 const USER_FORGE_PRESET_LIMIT = 60;
 
+const VALID_FORGE_SHAPES = {
+  Gem: ["Radial", "Triangle", "Waning", "Circle", "Droplet"],
+  Rune: ["-", "Oath"],
+};
+
 function normalizePersonalForgePreset(preset = {}) {
-  const sourceType = String(preset.sourceType ?? preset.forgeType ?? "Gem").toLowerCase() === "rune"
-    ? "Rune"
-    : "Gem";
+  const sourceType =
+    String(preset.sourceType ?? preset.forgeType ?? "Gem").toLowerCase() === "rune"
+      ? "Rune"
+      : "Gem";
   const fallbackName = `Custom Forge ${sourceType}`;
   const requestedName = String(preset.name ?? preset.info?.name ?? fallbackName).trim();
   const effects = Array.isArray(preset.effects)
-    ? preset.effects.slice(0, 6).map(([id, label]) => [
-        Number.isFinite(Number(id)) ? Number(id) : NO_EFFECT_ID,
-        typeof label === "string" && label.trim() ? label : "No Effect",
-      ])
+    ? preset.effects.slice(0, 6).map((effect) => {
+        // Imported files may hold [id, label] pairs or bare ids.
+        const [id, label] = Array.isArray(effect) ? effect : [effect, undefined];
+        return [
+          Number.isInteger(Number(id)) && Number(id) >= 0 ? Number(id) : NO_EFFECT_ID,
+          typeof label === "string" && label.trim() ? label : "No Effect",
+        ];
+      })
     : [];
 
   while (effects.length < 6) effects.push([NO_EFFECT_ID, "No Effect"]);
@@ -31,17 +41,22 @@ function normalizePersonalForgePreset(preset = {}) {
     id:
       typeof preset.id === "string" && preset.id.trim()
         ? preset.id
-        : globalThis.crypto?.randomUUID?.() ?? `forge-preset-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        : (globalThis.crypto?.randomUUID?.() ??
+          `forge-preset-${Date.now()}-${Math.random().toString(16).slice(2)}`),
     name: (requestedName || fallbackName).slice(0, 60),
     sourceType,
-    shape: String(preset.shape ?? (sourceType === "Rune" ? "-" : "Radial")).trim() || (sourceType === "Rune" ? "-" : "Radial"),
+    shape: VALID_FORGE_SHAPES[sourceType].includes(String(preset.shape ?? "").trim())
+      ? String(preset.shape).trim()
+      : VALID_FORGE_SHAPES[sourceType][0],
     effects,
     info: {
       name: String(preset.info?.name ?? requestedName ?? fallbackName).slice(0, 80),
       effect: String(preset.info?.effect ?? effects[0][1] ?? "No Effect").slice(0, 140),
       rating: Number.isFinite(Number(preset.info?.rating)) ? Number(preset.info.rating) : 0,
       level: Number.isFinite(Number(preset.info?.level)) ? Number(preset.info.level) : 0,
-      note: String(preset.info?.note ?? "Personal Forge preset shared by Gem Forge and Rune Forge.").slice(0, 240),
+      note: String(
+        preset.info?.note ?? "Personal Forge preset shared by Gem Forge and Rune Forge.",
+      ).slice(0, 240),
     },
     createdAt: typeof preset.createdAt === "string" ? preset.createdAt : new Date().toISOString(),
   };
@@ -1502,23 +1517,27 @@ export const ItemsProvider = ({ children }) => {
 
     void loadEffectTranslations(language).then((translations) => {
       if (!active) return;
-          const localize = (effect) => ({
-            ...effect,
-            // Keep immutable English source fields for non-text decisions such as
-            // gem/rune artwork. Localized labels must never influence an icon.
-            sourceName: effect.sourceName ?? effect.name,
-            sourceNote: effect.sourceNote ?? effect.note,
-            label: localizeEffectText(translations, effect.sourceLabel),
-            name: localizeEffectText(translations, effect.name),
-            note: localizeEffectText(translations, effect.note),
-        searchTerms: [...new Set([
-          effect.sourceLabel,
-          localizeEffectText(translations, effect.sourceLabel),
-          effect.name,
-          localizeEffectText(translations, effect.name),
-          effect.note,
-          localizeEffectText(translations, effect.note),
-        ].filter((term) => typeof term === "string" && term.trim()))],
+      const localize = (effect) => ({
+        ...effect,
+        // Keep immutable English source fields for non-text decisions such as
+        // gem/rune artwork. Localized labels must never influence an icon.
+        sourceName: effect.sourceName ?? effect.name,
+        sourceNote: effect.sourceNote ?? effect.note,
+        label: localizeEffectText(translations, effect.sourceLabel),
+        name: localizeEffectText(translations, effect.name),
+        note: localizeEffectText(translations, effect.note),
+        searchTerms: [
+          ...new Set(
+            [
+              effect.sourceLabel,
+              localizeEffectText(translations, effect.sourceLabel),
+              effect.name,
+              localizeEffectText(translations, effect.name),
+              effect.note,
+              localizeEffectText(translations, effect.note),
+            ].filter((term) => typeof term === "string" && term.trim()),
+          ),
+        ],
       });
       const gemEffects = effectSources.gemEffects.map(localize);
       const runeEffects = effectSources.runeEffects.map(localize);
@@ -1587,29 +1606,38 @@ export const ItemsProvider = ({ children }) => {
       throw new Error("The selected file does not contain a preset list.");
     }
 
-    const imported = rawPresets.slice(0, USER_FORGE_PRESET_LIMIT).map((preset) =>
-      normalizePersonalForgePreset({
-        ...preset,
-        id: undefined,
-        createdAt: new Date().toISOString(),
-      }),
-    );
-    let importedCount = 0;
-    setUserForgePresets((current) => {
-      const existingSignatures = new Set(
-        current.map((preset) => `${preset.sourceType}|${preset.shape}|${preset.name}|${JSON.stringify(preset.effects)}`),
-      );
-      const uniqueImported = imported.filter((preset) => {
-        const signature = `${preset.sourceType}|${preset.shape}|${preset.name}|${JSON.stringify(preset.effects)}`;
-        if (existingSignatures.has(signature)) return false;
-        existingSignatures.add(signature);
-        return true;
-      });
-      importedCount = Math.min(uniqueImported.length, Math.max(0, USER_FORGE_PRESET_LIMIT - current.length));
-      const next = [...uniqueImported.slice(0, importedCount), ...current];
-      persistPersonalForgePresets(next);
-      return next;
+    const imported = rawPresets
+      .filter((preset) => preset && typeof preset === "object")
+      .slice(0, USER_FORGE_PRESET_LIMIT)
+      .map((preset) =>
+        normalizePersonalForgePreset({
+          ...preset,
+          id: undefined,
+          createdAt: new Date().toISOString(),
+        }),
+      )
+      // A preset without any real effect cannot be applied.
+      .filter((preset) => preset.effects.some(([id]) => id !== NO_EFFECT_ID));
+    // Computed from the current list, not inside the state updater: React may
+    // run the updater later, which made the import report 0 presets.
+    const signature = (preset) =>
+      `${preset.sourceType}|${preset.shape}|${preset.name}|${JSON.stringify(preset.effects)}`;
+    const existingSignatures = new Set(userForgePresets.map(signature));
+    const uniqueImported = imported.filter((preset) => {
+      const key = signature(preset);
+      if (existingSignatures.has(key)) return false;
+      existingSignatures.add(key);
+      return true;
     });
+    const importedCount = Math.min(
+      uniqueImported.length,
+      Math.max(0, USER_FORGE_PRESET_LIMIT - userForgePresets.length),
+    );
+    if (importedCount > 0) {
+      const next = [...uniqueImported.slice(0, importedCount), ...userForgePresets];
+      persistPersonalForgePresets(next);
+      setUserForgePresets(next);
+    }
     return importedCount;
   }
 
@@ -1623,12 +1651,21 @@ export const ItemsProvider = ({ children }) => {
       const vignetteTranslations = await loadVignetteTranslations(language);
       const localizeCatalogInfo = (sourceName, sourceDescription) => {
         const itemName = localizeVignetteText(vignetteTranslations, "name", sourceName);
-        const itemDescription = localizeVignetteText(vignetteTranslations, "description", sourceDescription);
+        const itemDescription = localizeVignetteText(
+          vignetteTranslations,
+          "description",
+          sourceDescription,
+        );
         return {
           itemName,
           itemDescription,
-          searchTerms: [...new Set([sourceName, itemName, sourceDescription, itemDescription]
-            .filter((term) => typeof term === "string" && term.trim()))],
+          searchTerms: [
+            ...new Set(
+              [sourceName, itemName, sourceDescription, itemDescription].filter(
+                (term) => typeof term === "string" && term.trim(),
+              ),
+            ),
+          ],
         };
       };
 
@@ -1745,7 +1782,9 @@ export const ItemsProvider = ({ children }) => {
       // (e.g. "Add all types of RES +150"). The Gem editor must still recognise those
       // ids — otherwise the slot's search box can never match anything and any preset
       // built from it silently loses its effect summary.
-      const nativeGemEffectIds = new Set(transformedGemEffects.map((effect) => Number(effect.value)));
+      const nativeGemEffectIds = new Set(
+        transformedGemEffects.map((effect) => Number(effect.value)),
+      );
       const gemEffectCatalog = transformedGemEffects.concat(
         transformedRuneEffects.filter((effect) => !nativeGemEffectIds.has(Number(effect.value))),
       );

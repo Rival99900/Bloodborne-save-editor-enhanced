@@ -1,0 +1,8 @@
+dist
+node_modules
+src-tauri
+src/i18n/locales
+src/i18n/releaseSummaries.json
+*.md
+assets
+public

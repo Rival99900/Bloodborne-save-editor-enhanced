@@ -69,12 +69,7 @@ function CharacterInfo({ editedStats, setEditedStats }) {
         setEditedStats={setEditedStats}
         editedStats={editedStats}
       />
-      <Select
-        name="Ng"
-        options={ng}
-        setEditedStats={setEditedStats}
-        editedStats={editedStats}
-      />
+      <Select name="Ng" options={ng} setEditedStats={setEditedStats} editedStats={editedStats} />
     </div>
   );
 }

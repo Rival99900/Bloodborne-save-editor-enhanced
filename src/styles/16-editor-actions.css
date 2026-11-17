@@ -1,0 +1,62 @@
+/* Modern reset/confirm actions and completion notice. */
+.editor-action-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(100%, 24rem);
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  pointer-events: auto;
+
+  .control-button {
+    min-width: 7.5rem;
+    pointer-events: auto;
+    touch-action: manipulation;
+  }
+}
+
+.status-dialog__panel {
+  width: min(100%, 26rem);
+  text-align: center;
+}
+
+.status-dialog__eyebrow {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  margin-inline: auto;
+  border: 1px solid rgba(220, 188, 109, 0.58);
+  border-radius: 50%;
+  background: rgba(191, 153, 76, 0.16);
+  color: #eed187;
+  font-size: 1.1rem;
+  letter-spacing: 0;
+}
+
+.status-dialog__panel .confirm-dialog__actions {
+  justify-content: center;
+}
+
+@media (max-width: 460px) {
+  .editor-action-row {
+    width: 100%;
+
+    .control-button {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+.status-dialog__eyebrow--error {
+  border-color: rgba(211, 112, 97, 0.7);
+  background: rgba(157, 57, 45, 0.18);
+  color: #f0a096;
+
+  + h2 {
+    color: #f0c0b8;
+  }
+}

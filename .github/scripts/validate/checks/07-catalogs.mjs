@@ -1,0 +1,215 @@
+// Catalogue translation coverage, gem preset labels and boss timeline (former audit_catalogs).
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+export default async function catalogs({ root, server }) {
+  const { BOSS_NAME_KEYS, BOSS_PROGRESSION } = await server.ssrLoadModule(
+    "/src/pages/bosses/bossProgression.js",
+  );
+  const log = [];
+  const console = { log: (line = "") => log.push(line) };
+
+  const resource = (name) =>
+    JSON.parse(readFileSync(resolve(root, "src-tauri/resources", name), "utf8"));
+  const translation = (kind, language) =>
+    JSON.parse(readFileSync(resolve(root, "src/i18n", kind, `${language}.json`), "utf8"));
+
+  const languages = [
+    "fr",
+    "it",
+    "de",
+    "es",
+    "nl",
+    "pl",
+    "ru",
+    "da",
+    "nb",
+    "fi",
+    "sv",
+    "tr",
+    "pt-PT",
+  ];
+  const items = resource("items.json");
+  const weapons = resource("weapons.json");
+  const armors = resource("armors.json");
+  const upgrades = resource("upgrades.json");
+  const bossSchema = resource("bosses.json");
+  const catalogGroups = {
+    consumables: Object.values(items.consumable),
+    materials: Object.values(items.material),
+    keys: Object.values(items.key),
+    chalices: Object.values(items.chalice),
+    rightHandWeapons: Object.values(weapons.rightHand),
+    leftHandWeapons: Object.values(weapons.leftHand),
+    armor: Object.values(armors),
+  };
+
+  const uniqueStrings = (values) => [
+    ...new Set(values.filter((value) => typeof value === "string" && value.trim().length > 0)),
+  ];
+
+  const names = uniqueStrings(
+    Object.values(catalogGroups).flatMap((entries) => entries.map((entry) => entry.item_name)),
+  );
+  const descriptions = uniqueStrings(
+    Object.values(catalogGroups).flatMap((entries) => entries.map((entry) => entry.item_desc)),
+  );
+  const effectEntries = [
+    ...Object.values(upgrades.gemEffects),
+    ...Object.values(upgrades.runeEffects),
+  ];
+  const effectStrings = uniqueStrings(
+    effectEntries.flatMap(({ name, effect, note }) => [name, effect, note]),
+  );
+  // Include names and notes generated at runtime by gem/rune cards.
+  const dynamicNames = uniqueStrings(effectEntries.map((entry) => entry.name));
+  const dynamicDescriptions = uniqueStrings(effectEntries.map((entry) => entry.note));
+  const populated = (value) => typeof value === "string" && value.trim().length > 0;
+  const missingByLanguage = [];
+  const residualEnglish = [];
+  // Unambiguous untranslated phrases found during the v0.4.0 review.
+  // Do not reject proper names, loanwords, or isolated words shared by languages.
+  const residualPattern =
+    /\b(?:Healing Church|Powder Kegs?|Vilebloods?|Quicksilver Bullets|Blood Echoes|runesmith|graveguard)\b/iu;
+  for (const language of languages) {
+    const vignette = translation("vignetteTranslations", language);
+    const effects = translation("effectTranslations", language).effects;
+    const missingNames = names.filter((value) => !populated(vignette.names?.[value]));
+    const missingDescriptions = descriptions.filter(
+      (value) => !populated(vignette.descriptions?.[value]),
+    );
+    const missingEffects = effectStrings.filter((value) => !populated(effects?.[value]));
+    for (const value of dynamicNames) {
+      if (!populated(vignette.names?.[value]) && !populated(vignette.names?.[`[CUT] ${value}`]))
+        missingNames.push(value);
+    }
+    for (const value of dynamicDescriptions) {
+      if (!populated(vignette.descriptions?.[value])) missingDescriptions.push(value);
+    }
+    // Check every stored entry too, including cut content and special gem names.
+    for (const [bucket, failures] of [
+      [vignette.names, missingNames],
+      [vignette.descriptions, missingDescriptions],
+      [effects, missingEffects],
+    ]) {
+      for (const [key, value] of Object.entries(bucket ?? {})) {
+        if (!populated(value) && !failures.includes(key)) failures.push(key);
+      }
+    }
+    for (const [kind, entries] of Object.entries({
+      names: vignette.names,
+      descriptions: vignette.descriptions,
+      effects,
+    })) {
+      for (const [key, value] of Object.entries(entries ?? {})) {
+        if (residualPattern.test(value)) residualEnglish.push({ language, kind, key });
+      }
+    }
+    missingByLanguage.push({ language, missingNames, missingDescriptions, missingEffects });
+  }
+
+  const contextSource = readFileSync(resolve(root, "src/context/itemsContext.jsx"), "utf8");
+  const presetEffectPattern = /\[\s*(\d+)\s*,\s*(["'])(.*?)\2\s*\]/g;
+  const knownEffects = new Map(
+    [...Object.entries(upgrades.gemEffects), ...Object.entries(upgrades.runeEffects)].map(
+      ([id, entry]) => [id, entry.effect],
+    ),
+  );
+  const presetMismatches = [];
+  for (const match of contextSource.matchAll(presetEffectPattern)) {
+    const [, id, , label] = match;
+    if (id === "4294967295" || !knownEffects.has(id)) continue;
+    if (knownEffects.get(id) !== label) {
+      presetMismatches.push({ id, preset: label, catalog: knownEffects.get(id) });
+    }
+  }
+
+  const untranslatedCounts = languages.map((language) => {
+    const vignette = translation("vignetteTranslations", language);
+    const effects = translation("effectTranslations", language).effects;
+    return {
+      language,
+      names: names.filter((value) => vignette.names?.[value] === value).length,
+      descriptions: descriptions.filter((value) => vignette.descriptions?.[value] === value).length,
+      effects: effectStrings.filter((value) => effects?.[value] === value).length,
+    };
+  });
+
+  console.log("Catalog coverage (unique canonical strings)");
+  for (const [group, entries] of Object.entries(catalogGroups)) {
+    console.log(`- ${group}: ${entries.length} entries`);
+  }
+  console.log(`- names: ${names.length}`);
+  console.log(`- descriptions: ${descriptions.length}`);
+  console.log(`- gem/rune text: ${effectStrings.length}`);
+  console.log(
+    `- chalices without a canonical source description: ${catalogGroups.chalices.filter((entry) => !entry.item_desc?.trim()).length}`,
+  );
+  console.log("");
+  console.log("Missing or empty translations (including runtime gem/rune cards)");
+  for (const result of missingByLanguage) {
+    console.log(
+      `- ${result.language}: names=${result.missingNames.length}, descriptions=${result.missingDescriptions.length}, effects=${result.missingEffects.length}`,
+    );
+  }
+  console.log("");
+  console.log("Entries identical to English (proper names/cognates require linguistic review)");
+  for (const result of untranslatedCounts) {
+    console.log(
+      `- ${result.language}: names=${result.names}, descriptions=${result.descriptions}, effects=${result.effects}`,
+    );
+  }
+  console.log("");
+  console.log(`Preset effect mismatches: ${presetMismatches.length}`);
+  for (const mismatch of presetMismatches) {
+    console.log(`- ${mismatch.id}: preset="${mismatch.preset}"; catalog="${mismatch.catalog}"`);
+  }
+
+  const progressionBossNames = BOSS_PROGRESSION.flatMap((phase) =>
+    phase.bosses.map((boss) => boss.name),
+  );
+  const duplicatedProgressionBosses = progressionBossNames.filter(
+    (name, index) => progressionBossNames.indexOf(name) !== index,
+  );
+  const unmappedProgressionBosses = progressionBossNames.filter(
+    (name) => !(name in BOSS_NAME_KEYS),
+  );
+  const schemaBossNames = bossSchema.map((boss) => boss.name);
+  const missingFromProgression = schemaBossNames.filter(
+    (name) => !progressionBossNames.includes(name),
+  );
+  const unknownProgressionBosses = progressionBossNames.filter(
+    (name) => !schemaBossNames.includes(name),
+  );
+  console.log(`Boss progression entries: ${progressionBossNames.length}`);
+  console.log(`Duplicated boss entries: ${duplicatedProgressionBosses.length}`);
+  console.log(`Unmapped boss names: ${unmappedProgressionBosses.length}`);
+  console.log(`Boss schema entries missing from timeline: ${missingFromProgression.length}`);
+  console.log(`Timeline entries missing from boss schema: ${unknownProgressionBosses.length}`);
+
+  console.log(`Known English fragments remaining: ${residualEnglish.length}`);
+  for (const entry of residualEnglish)
+    console.log(`- ${entry.language}/${entry.kind}: ${entry.key}`);
+
+  const missingCount = missingByLanguage.reduce(
+    (total, result) =>
+      total +
+      result.missingNames.length +
+      result.missingDescriptions.length +
+      result.missingEffects.length,
+    0,
+  );
+  if (
+    missingCount > 0 ||
+    residualEnglish.length > 0 ||
+    presetMismatches.length > 0 ||
+    duplicatedProgressionBosses.length > 0 ||
+    unmappedProgressionBosses.length > 0 ||
+    missingFromProgression.length > 0 ||
+    unknownProgressionBosses.length > 0
+  )
+    throw new Error("Catalogue audit failed (see the report above).");
+
+  if (process.env.VERBOSE) for (const line of log) globalThis.console.log(line);
+  return `${names.length} names, ${descriptions.length} descriptions, ${effectStrings.length} gem/rune strings in 13 translations`;
+}

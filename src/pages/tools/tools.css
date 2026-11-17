@@ -10,14 +10,14 @@
   font-family: var(--font-ui);
   background-position: center;
   background-size: cover;
-}
 
-/* The shared Flags header is centred; Tools keeps it aligned with its content. */
-.tools-workspace > .flags-workspace__header {
-  max-width: none;
-  margin: 0;
-  text-align: left;
-  justify-self: stretch;
+  /* The shared Flags header is centred; Tools keeps it aligned with its content. */
+  > .flags-workspace__header {
+    max-width: none;
+    margin: 0;
+    text-align: left;
+    justify-self: stretch;
+  }
 }
 
 .tools-lead,
@@ -54,66 +54,66 @@
   padding: 1rem 1.1rem;
   border: 1px solid rgba(226, 195, 125, 0.25);
   background: rgba(14, 14, 16, 0.78);
-}
 
-.trophy-card.is-done {
-  border-color: rgba(159, 194, 154, 0.55);
-}
+  &.is-done {
+    border-color: rgba(159, 194, 154, 0.55);
+  }
 
-.trophy-card header {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  justify-content: space-between;
-}
+  header {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 
-.trophy-card h2 {
-  margin: 0;
-  color: var(--color-gold-strong);
-  font-size: 1.05rem;
-}
+  h2 {
+    margin: 0;
+    color: var(--color-gold-strong);
+    font-size: 1.05rem;
+  }
 
-.trophy-card header p {
-  margin: 0.2rem 0 0;
-  color: var(--color-muted);
-  font-size: 0.8rem;
-}
+  header p {
+    margin: 0.2rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+  }
 
-.trophy-card strong {
-  color: var(--color-text);
-  font-size: 0.95rem;
-  white-space: nowrap;
-}
+  strong {
+    color: var(--color-text);
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
 
-.trophy-card.is-done strong {
-  color: #9fc29a;
-}
+  &.is-done strong {
+    color: #9fc29a;
+  }
 
-.trophy-card ul {
-  display: grid;
-  gap: 0.2rem 1rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0.8rem 0 0;
-  padding: 0;
-  list-style: none;
-}
+  ul {
+    display: grid;
+    gap: 0.2rem 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0.8rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
 
-.trophy-card li {
-  display: flex;
-  gap: 0.45rem;
-  font-size: 0.84rem;
-}
+  li {
+    display: flex;
+    gap: 0.45rem;
+    font-size: 0.84rem;
 
-.trophy-card li.is-owned {
-  color: var(--color-text);
-}
+    &.is-owned {
+      color: var(--color-text);
+    }
 
-.trophy-card li.is-owned span {
-  color: #9fc29a;
-}
+    &.is-owned span {
+      color: #9fc29a;
+    }
 
-.trophy-card li.is-missing {
-  color: var(--color-muted);
+    &.is-missing {
+      color: var(--color-muted);
+    }
+  }
 }
 
 .tools-actions {
@@ -155,26 +155,80 @@
   border-collapse: collapse;
   background: rgba(14, 14, 16, 0.78);
   font-size: 0.82rem;
+
+  th,
+  td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    text-align: left;
+  }
+
+  th {
+    color: var(--color-gold);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  code {
+    color: var(--color-text);
+  }
+
+  small {
+    color: var(--color-muted);
+  }
 }
 
-.compare-table th,
-.compare-table td {
-  padding: 0.4rem 0.6rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  text-align: left;
+.compare-section,
+.compare-section__title {
+  margin-top: 1rem;
 }
 
-.compare-table th {
-  color: var(--color-gold);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.compare-section h2,
+.compare-section__title {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
 }
 
-.compare-table code {
+.compare-section .save-diff-scroll {
+  max-height: 22rem;
+}
+
+.gem-finder__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 0.6rem;
+
+  input[type="search"] {
+    flex: 1 1 16rem;
+    min-width: 0;
+  }
+}
+
+.gem-finder__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.gem-finder .compare-table-wrap {
+  max-height: 26rem;
+  overflow: auto;
+}
+
+.gem-finder__table td:nth-child(5) {
+  min-width: 18rem;
+}
+
+.gem-finder__table tr.is-duplicate td:last-child {
+  color: #f0c36b;
+  font-weight: 600;
+}
+
+.gem-finder__toggle {
   color: var(--color-text);
-}
-
-.compare-table small {
-  color: var(--color-muted);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
 }

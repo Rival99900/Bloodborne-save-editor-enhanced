@@ -8,7 +8,10 @@ function LanguagePicker() {
   const containerRef = useRef(null);
   const optionRefs = useRef([]);
   const listboxId = useId();
-  const selectedIndex = Math.max(0, SUPPORTED_LANGUAGES.findIndex(({ code }) => code === language));
+  const selectedIndex = Math.max(
+    0,
+    SUPPORTED_LANGUAGES.findIndex(({ code }) => code === language),
+  );
   const [activeIndex, setActiveIndex] = useState(selectedIndex);
   const selectedLanguage = SUPPORTED_LANGUAGES[selectedIndex];
   const { refs, floatingStyles } = useFloating({
@@ -109,7 +112,9 @@ function LanguagePicker() {
         >
           {SUPPORTED_LANGUAGES.map(({ code, label }, index) => (
             <button
-              ref={(element) => { optionRefs.current[index] = element; }}
+              ref={(element) => {
+                optionRefs.current[index] = element;
+              }}
               className="language-picker__option"
               key={code}
               type="button"
@@ -137,7 +142,11 @@ function LanguagePicker() {
               }}
             >
               <span>{label}</span>
-              {code === language ? <span className="language-picker__selected" aria-hidden="true">✓</span> : null}
+              {code === language ? (
+                <span className="language-picker__selected" aria-hidden="true">
+                  ✓
+                </span>
+              ) : null}
             </button>
           ))}
         </div>

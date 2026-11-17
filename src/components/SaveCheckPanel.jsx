@@ -6,7 +6,8 @@ import { checkSave, expectedHealth, expectedLevel } from "../utils/saveCheck";
 // active save that fall outside the normal game range.
 function SaveCheckPanel({ save, draftStats, onRecalculate, disabled }) {
   const { t, language } = useLocalization();
-  const format = (value) => (value === undefined ? "—" : new Intl.NumberFormat(language).format(value));
+  const format = (value) =>
+    value === undefined ? "—" : new Intl.NumberFormat(language).format(value);
   const issues = useMemo(() => checkSave(save), [save]);
   const level = expectedLevel(draftStats);
   const vitality = draftStats?.find((stat) => stat.name === "Vitality")?.value;
@@ -21,7 +22,11 @@ function SaveCheckPanel({ save, draftStats, onRecalculate, disabled }) {
         <div>
           <h2 id="save-check-title">{t("saveCheck.title")}</h2>
           <p>
-            {t("saveCheck.calculated", { level: format(level), health: format(health), vitality: format(vitality) })}
+            {t("saveCheck.calculated", {
+              level: format(level),
+              health: format(health),
+              vitality: format(vitality),
+            })}
           </p>
         </div>
         <button
@@ -41,8 +46,19 @@ function SaveCheckPanel({ save, draftStats, onRecalculate, disabled }) {
           <summary>{t("saveCheck.issueCount", { count: issues.length })}</summary>
           <ul>
             {issues.map((issue, index) => (
-              <li key={`${issue.key}-${index}`} className={`save-check__issue save-check__issue--${issue.severity}`}>
-                {t(issue.key, Object.fromEntries(Object.entries(issue.params).map(([key, value]) => [key, typeof value === "number" ? format(value) : value])))}
+              <li
+                key={`${issue.key}-${index}`}
+                className={`save-check__issue save-check__issue--${issue.severity}`}
+              >
+                {t(
+                  issue.key,
+                  Object.fromEntries(
+                    Object.entries(issue.params).map(([key, value]) => [
+                      key,
+                      typeof value === "number" ? format(value) : value,
+                    ]),
+                  ),
+                )}
               </li>
             ))}
           </ul>

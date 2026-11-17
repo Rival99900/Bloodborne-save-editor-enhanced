@@ -35,7 +35,7 @@ impl PatchSession {
         self.invalidate();
         let (bytes, preview) = patches::plan(&save.file.bytes, title_id, game_version, ids)?;
         validate_targets(save, title_id, ids, &preview)?;
-        let candidate = save.from_patched_bytes(bytes)?;
+        let candidate = save.with_patched_bytes(bytes)?;
         self.sequence = self.sequence.checked_add(1).ok_or("patchErrors.stale")?;
         let token = self.sequence.to_string();
         self.pending = Some(Pending {
@@ -161,7 +161,7 @@ mod tests {
             .id;
         let mut session = PatchSession::default();
         let review = session
-            .preview(&save, "CUSA00207", "01.09", &[id.clone()])
+            .preview(&save, "CUSA00207", "01.09", std::slice::from_ref(&id))
             .unwrap();
         assert_eq!(save.file.bytes, baseline);
         assert!(review.preview.changed_bytes > 0);
@@ -175,7 +175,7 @@ mod tests {
         let next = session.apply(&mut save, &review.token, true).unwrap();
         assert_ne!(next.file.bytes, baseline);
         assert!(session.apply(&mut save, &review.token, true).is_err());
-        let restored = next.from_patched_bytes(baseline.clone()).unwrap();
+        let restored = next.with_patched_bytes(baseline.clone()).unwrap();
         assert_eq!(restored.file.bytes, baseline);
         let after = session.preview(&save, "CUSA00207", "01.09", &[id]).unwrap();
         assert_eq!(after.preview.changed_bytes, 0);
@@ -193,9 +193,10 @@ mod tests {
             .into_iter()
             .find(|p| p.kind == "conversion")
             .unwrap();
-        let (bytes, preview) = patches::plan(&baseline, "CUSA00900", "", &[p.id.clone()]).unwrap();
+        let (bytes, preview) =
+            patches::plan(&baseline, "CUSA00900", "", std::slice::from_ref(&p.id)).unwrap();
         assert!(preview.changed_bytes > 0);
-        assert!(save.from_patched_bytes(bytes).is_err());
+        assert!(save.with_patched_bytes(bytes).is_err());
         let mut session = PatchSession::default();
         assert!(session.preview(&save, "CUSA00900", "", &[p.id]).is_err());
         assert_eq!(save.file.bytes, baseline);

@@ -28,6 +28,22 @@ class ManifestTests(unittest.TestCase):
                 self.release["assets"] = assets
                 with self.assertRaises(ValueError): self.build()
 
+    def test_msi_package_is_added_with_its_own_signature(self):
+        msi = "Bloodborne_Save_Editor_Enhanced_0.6.0_x64_en-US.msi"
+        self.release["assets"] += [{"name": msi}, {"name": msi + ".sig"}]
+        self.signatures[msi + ".sig"] = "msi-signature"
+        result = self.build()
+        self.assertEqual(result["platforms"]["windows-x86_64-msi"]["signature"], "msi-signature")
+        self.assertTrue(result["platforms"]["windows-x86_64-msi"]["url"].endswith("/v0.6.0/" + msi))
+        self.assertEqual(result["platforms"]["windows-x86_64-nsis"], result["platforms"]["windows-x86_64"])
+
+    def test_msi_without_signature_rejected(self):
+        self.release["assets"].append({"name": "Bloodborne_Save_Editor_Enhanced_0.6.0_x64_en-US.msi"})
+        with self.assertRaises(ValueError): self.build()
+
+    def test_release_without_msi_keeps_two_platforms(self):
+        self.assertEqual(set(self.build()["platforms"]), {"windows-x86_64", "linux-x86_64"})
+
     def test_wrong_tag_rejected(self):
         self.release["tag_name"] = "v0.5.0"
         with self.assertRaises(ValueError): self.build()

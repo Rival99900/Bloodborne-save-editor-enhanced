@@ -23,7 +23,9 @@ function write(entries) {
 // `remote` describes a PS4 file ({ host, port, path }) when the save came over FTP.
 export function rememberRecentFile(path, name, remote = null) {
   const entry = { path, name: name || path, openedAt: Date.now(), ...(remote ? { remote } : {}) };
-  return write([entry, ...readRecentFiles().filter((item) => item.path !== path)].slice(0, MAX_RECENT));
+  return write(
+    [entry, ...readRecentFiles().filter((item) => item.path !== path)].slice(0, MAX_RECENT),
+  );
 }
 
 export function forgetRecentFile(path) {

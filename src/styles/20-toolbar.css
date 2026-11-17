@@ -1,0 +1,28 @@
+/* v0.3.0 clean-toolbar pass: Comfortable is the only density.  The smaller
+   action set restores the uncluttered v0.2-style header without overlapping
+   a loaded save name and the language selector. */
+@media (min-width: 78.0625rem) {
+  .nav {
+    grid-template-columns: minmax(13.5rem, 0.72fr) minmax(14rem, 0.95fr) minmax(0, auto);
+    gap: clamp(0.7rem, 1vw, 1.1rem);
+  }
+
+  .save-summary {
+    min-width: 0;
+    padding-right: 0.25rem;
+  }
+
+  .nav-actions {
+    min-width: 0;
+    gap: clamp(0.42rem, 0.65vw, 0.7rem);
+  }
+
+  .language-picker {
+    flex-basis: clamp(11rem, 12vw, 12.5rem);
+    min-width: clamp(11rem, 12vw, 12.5rem);
+  }
+
+  .nav-history .control-button--history {
+    min-width: 7.25rem;
+  }
+}

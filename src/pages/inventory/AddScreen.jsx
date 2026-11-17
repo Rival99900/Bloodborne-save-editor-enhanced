@@ -4,7 +4,6 @@ import { SaveContext } from "../../context/context";
 import { ItemsContext } from "../../context/itemsContext";
 import SearchAllitems from "../../components/SearchAllitems";
 import SelectSearch from "../../components/SelectSearch";
-import ConfirmDialog from "../../components/ConfirmDialog";
 import DarkSelect from "../../components/DarkSelect";
 import { useLocalization } from "../../i18n/localization";
 
@@ -23,7 +22,6 @@ const GEM_SHAPES = ["Radial", "Triangle", "Waning", "Circle", "Droplet"];
 const RUNE_TYPES = ["-", "Oath"];
 
 function AddScreen({ type = "item", setAddScreen, isStorage }) {
-  const [experimentalConfirm, setExperimentalConfirm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [catalog, setCatalog] = useState(type);
   const [quantity, setQuantity] = useState(1);
@@ -42,10 +40,11 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
   const isUpgrade = ["gem", "rune"].includes(catalog);
   const isDirectUpgradeUnavailable = isUpgrade && hasDirectUpgradeCapacity === false;
   const upgradeShapeOptions = useMemo(
-    () => (catalog === "gem" ? GEM_SHAPES : RUNE_TYPES).map((entry) => ({
-      value: entry,
-      label: entry === "-" ? entry : t(`upgradeShape.${entry.toLowerCase()}`),
-    })),
+    () =>
+      (catalog === "gem" ? GEM_SHAPES : RUNE_TYPES).map((entry) => ({
+        value: entry,
+        label: entry === "-" ? entry : t(`upgradeShape.${entry.toLowerCase()}`),
+      })),
     [catalog, t],
   );
   const effectOptions = useMemo(
@@ -87,12 +86,12 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
 
   useEffect(() => {
     function handleKeyDown(event) {
-      if (event.key === "Escape" && !experimentalConfirm) dismiss();
+      if (event.key === "Escape") dismiss();
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [experimentalConfirm]);
+  }, []);
 
   function resetCatalog(nextCatalog) {
     setCatalog(nextCatalog);
@@ -110,12 +109,9 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
     });
   }
 
-  async function handleConfirm(experimentalConfirmed = false) {
+  // Weapon and armor additions are confirmed in game: no extra confirmation step.
+  async function handleConfirm() {
     if (isSubmitting) return;
-    if (isEquipment && !experimentalConfirmed) {
-      setExperimentalConfirm(true);
-      return;
-    }
     setError("");
     try {
       setIsSubmitting(true);
@@ -171,16 +167,16 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
       setError(
         /No safe unreferenced gem or rune record|Gem\/Rune section is full/i.test(message)
           ? t("inventory.directUpgradeUnavailable")
-          : isEquipment ? t("inventory.experimentalFailed") : message || t("inventory.directAddFailed"),
+          : isEquipment
+            ? t("inventory.experimentalFailed")
+            : message || t("inventory.directAddFailed"),
       );
     } finally {
       setIsSubmitting(false);
     }
   }
 
-  const canConfirm = isUpgrade
-    ? effects[0] != null
-    : selected != null;
+  const canConfirm = isUpgrade ? effects[0] != null : selected != null;
 
   return (
     <div
@@ -193,24 +189,29 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
         if (event.target === event.currentTarget) dismiss();
       }}
     >
-      {experimentalConfirm ? (
-        <ConfirmDialog
-          title={`${t("inventory.addEquipment")} — ${destinationLabel}`}
-          description={t("inventory.experimentalNotice")}
-          confirmLabel={t("inventory.addEquipment")}
-          onCancel={() => setExperimentalConfirm(false)}
-          onConfirm={() => { setExperimentalConfirm(false); handleConfirm(true); }}
-        />
-      ) : null}
       <section className="inventory-dialog__card inventory-dialog__card--add">
-        <button className="inventory-dialog__close" onClick={dismiss} aria-label={t("inventory.closeAddLabel")}>
+        <button
+          className="inventory-dialog__close"
+          onClick={dismiss}
+          aria-label={t("inventory.closeAddLabel")}
+        >
           ×
         </button>
 
         <header className="inventory-dialog__header">
           <span className="inventory-dialog__eyebrow">{destinationLabel}</span>
-          <h2>{isUpgrade ? t("inventory.addDirectUpgrade") : isEquipment ? t("inventory.addDirectEquipment") : t("inventory.addItem")}</h2>
-          {!isEquipment ? <p>{isUpgrade ? t("inventory.directUpgradeDescription") : t("inventory.addDescription")}</p> : null}
+          <h2>
+            {isUpgrade
+              ? t("inventory.addDirectUpgrade")
+              : isEquipment
+                ? t("inventory.addDirectEquipment")
+                : t("inventory.addItem")}
+          </h2>
+          {!isEquipment ? (
+            <p>
+              {isUpgrade ? t("inventory.directUpgradeDescription") : t("inventory.addDescription")}
+            </p>
+          ) : null}
         </header>
 
         <div className="inventory-dialog__controls">
@@ -219,7 +220,10 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
             <DarkSelect
               className="inventory-dialog__select"
               ariaLabel={t("inventory.catalog")}
-              options={availableCatalogs.map((entry) => ({ value: entry.value, label: t(entry.labelKey) }))}
+              options={availableCatalogs.map((entry) => ({
+                value: entry.value,
+                label: t(entry.labelKey),
+              }))}
               value={catalog}
               onChange={resetCatalog}
             />
@@ -234,7 +238,9 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
                 value={quantity}
                 onChange={(event) => {
                   const nextValue = Number(event.target.value);
-                  setQuantity(Number.isFinite(nextValue) ? Math.min(99, Math.max(1, nextValue)) : 1);
+                  setQuantity(
+                    Number.isFinite(nextValue) ? Math.min(99, Math.max(1, nextValue)) : 1,
+                  );
                 }}
               />
             </label>
@@ -255,7 +261,10 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
 
         <div className="inventory-dialog__body">
           {isUpgrade ? (
-            <section className="direct-upgrade-builder" aria-label={t("inventory.directUpgradeBuilder")}>
+            <section
+              className="direct-upgrade-builder"
+              aria-label={t("inventory.directUpgradeBuilder")}
+            >
               <p className="inventory-dialog__notice">{t("inventory.directUpgradeNotice")}</p>
               <div className="direct-upgrade-builder__effects">
                 {effects.map((effect, index) => (
@@ -292,9 +301,21 @@ function AddScreen({ type = "item", setAddScreen, isStorage }) {
         </div>
 
         <footer className="inventory-dialog__actions">
-          <button onClick={dismiss} id="cancelReplace">{t("inventory.cancel")}</button>
-          <button id="confirmReplace" onClick={() => handleConfirm()} disabled={!canConfirm || isSubmitting || isDirectUpgradeUnavailable}>
-            {isSubmitting ? t("forge.confirming") : isUpgrade ? t("inventory.addDirect") : isEquipment ? t("inventory.addEquipment") : t("inventory.addSelected")}
+          <button onClick={dismiss} id="cancelReplace">
+            {t("inventory.cancel")}
+          </button>
+          <button
+            id="confirmReplace"
+            onClick={() => handleConfirm()}
+            disabled={!canConfirm || isSubmitting || isDirectUpgradeUnavailable}
+          >
+            {isSubmitting
+              ? t("forge.confirming")
+              : isUpgrade
+                ? t("inventory.addDirect")
+                : isEquipment
+                  ? t("inventory.addEquipment")
+                  : t("inventory.addSelected")}
           </button>
         </footer>
       </section>

@@ -1,10 +1,7 @@
 export const BOSS_PROGRESSION = [
   {
     phase: "centralYharnam",
-    bosses: [
-      { name: "Cleric Beast", optional: true },
-      { name: "Father Gascoigne" },
-    ],
+    bosses: [{ name: "Cleric Beast", optional: true }, { name: "Father Gascoigne" }],
   },
   {
     phase: "cathedralWard",
@@ -17,10 +14,7 @@ export const BOSS_PROGRESSION = [
   },
   {
     phase: "forbiddenWoods",
-    bosses: [
-      { name: "Shadow Of Yharnam" },
-      { name: "Rom" },
-    ],
+    bosses: [{ name: "Shadow Of Yharnam" }, { name: "Rom" }],
   },
   {
     phase: "optionalBranches",
@@ -33,18 +27,11 @@ export const BOSS_PROGRESSION = [
   },
   {
     phase: "bloodMoon",
-    bosses: [
-      { name: "One Reborn" },
-      { name: "Micolash" },
-      { name: "Mergo's Wet Nurse" },
-    ],
+    bosses: [{ name: "One Reborn" }, { name: "Micolash" }, { name: "Mergo's Wet Nurse" }],
   },
   {
     phase: "finale",
-    bosses: [
-      { name: "Gehrman" },
-      { name: "Moon Presence", optional: true },
-    ],
+    bosses: [{ name: "Gehrman" }, { name: "Moon Presence", optional: true }],
   },
   {
     phase: "huntersNightmare",
@@ -95,7 +82,9 @@ export function getDefeatFlags(boss) {
 
 export function isBossDefeated(boss) {
   const [defeatedFlag] = getDefeatFlags(boss);
-  return Boolean(defeatedFlag && (defeatedFlag.dead_value & defeatedFlag.current_value & 0xff) !== 0);
+  return Boolean(
+    defeatedFlag && (defeatedFlag.dead_value & defeatedFlag.current_value & 0xff) !== 0,
+  );
 }
 
 // Unique multiplayer masks: the bit is cleared to allow multiplayer again.
@@ -103,7 +92,11 @@ export function getMultiplayerMasks(bosses) {
   const masks = new Map();
   for (const boss of bosses ?? []) {
     for (const flag of boss.flags ?? []) {
-      if (isMultiplayerFlag(flag)) masks.set(`${flag.rel_offset}:${flag.alive_value}`, { offset: flag.rel_offset, mask: flag.alive_value });
+      if (isMultiplayerFlag(flag))
+        masks.set(`${flag.rel_offset}:${flag.alive_value}`, {
+          offset: flag.rel_offset,
+          mask: flag.alive_value,
+        });
     }
   }
   return [...masks.values()];

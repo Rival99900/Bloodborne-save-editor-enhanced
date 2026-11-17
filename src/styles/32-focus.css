@@ -1,0 +1,38 @@
+/* Visible keyboard focus everywhere (v0.7.5). Mouse clicks keep the current
+   look: :focus-visible only matches keyboard navigation for buttons. */
+html
+  :where(
+    button,
+    a[href],
+    select,
+    summary,
+    textarea,
+    input,
+    [tabindex]:not([tabindex="-1"])
+  ):focus-visible {
+  outline: 2px solid var(--color-gold-strong);
+  outline-offset: 2px;
+}
+
+html input:focus-visible,
+html select:focus-visible,
+html textarea:focus-visible {
+  outline: 2px solid var(--color-gold-strong);
+  outline-offset: 2px;
+}
+
+/* Inventory and Storage list: focus it, then use the arrow keys. */
+.inventory-list {
+  height: 100%;
+  outline-offset: -2px;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-gold-strong);
+  }
+}
+
+.compare-table-wrap:focus-visible,
+.save-diff-scroll:focus-visible {
+  outline: 2px solid var(--color-gold-strong);
+  outline-offset: 2px;
+}

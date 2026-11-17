@@ -23,7 +23,13 @@ const TIMEOUT: Duration = Duration::from_secs(8);
 const MAX_DOWNLOAD: usize = 16 * 1024 * 1024;
 
 /// Bloodborne title IDs (EU, US, Asia/JP and Game of the Year editions).
-pub const BLOODBORNE_TITLE_IDS: [&str; 5] = ["CUSA00207", "CUSA00900", "CUSA01363", "CUSA03023", "CUSA03173"];
+pub const BLOODBORNE_TITLE_IDS: [&str; 5] = [
+    "CUSA00207",
+    "CUSA00900",
+    "CUSA01363",
+    "CUSA03023",
+    "CUSA03173",
+];
 
 /// Folders where Apollo Save Tool exports decrypted saves, most specific first.
 pub const SAVE_ROOTS: [&str; 5] = [
@@ -57,7 +63,11 @@ fn file_name(remote: &str) -> &str {
 }
 
 fn require_save(remote: &str) -> Result<(), String> {
-    if is_save_name(file_name(remote)) && !remote.contains("/../") { Ok(()) } else { Err("FTP_NOT_A_SAVE".into()) }
+    if is_save_name(file_name(remote)) && !remote.contains("/../") {
+        Ok(())
+    } else {
+        Err("FTP_NOT_A_SAVE".into())
+    }
 }
 
 fn address(host: &str, port: u16) -> Result<SocketAddr, String> {
@@ -77,17 +87,25 @@ fn connect(host: &str, port: u16) -> Result<FtpStream, String> {
         .map_err(|_| "FTP_CONNECT_FAILED".to_string())?;
     let _ = ftp.get_ref().set_read_timeout(Some(TIMEOUT));
     let _ = ftp.get_ref().set_write_timeout(Some(TIMEOUT));
-    ftp.login("anonymous", "anonymous").map_err(|_| "FTP_LOGIN_FAILED".to_string())?;
-    ftp.transfer_type(FileType::Binary).map_err(|error| error.to_string())?;
+    ftp.login("anonymous", "anonymous")
+        .map_err(|_| "FTP_LOGIN_FAILED".to_string())?;
+    ftp.transfer_type(FileType::Binary)
+        .map_err(|error| error.to_string())?;
     Ok(ftp)
 }
 
 fn join_remote(dir: &str, name: &str) -> String {
-    if dir.ends_with('/') { format!("{dir}{name}") } else { format!("{dir}/{name}") }
+    if dir.ends_with('/') {
+        format!("{dir}{name}")
+    } else {
+        format!("{dir}/{name}")
+    }
 }
 
 fn list_in(ftp: &mut FtpStream, dir: &str) -> Result<Vec<RemoteEntry>, String> {
-    let lines = ftp.list(Some(dir)).map_err(|_| "FTP_LIST_FAILED".to_string())?;
+    let lines = ftp
+        .list(Some(dir))
+        .map_err(|_| "FTP_LIST_FAILED".to_string())?;
     let mut entries: Vec<RemoteEntry> = lines
         .iter()
         .filter_map(|line| File::from_str(line).ok())
@@ -100,14 +118,22 @@ fn list_in(ftp: &mut FtpStream, dir: &str) -> Result<Vec<RemoteEntry>, String> {
             is_save: !file.is_directory() && is_save_name(file.name()),
         })
         .collect();
-    entries.sort_by(|a, b| b.is_dir.cmp(&a.is_dir).then_with(|| a.name.to_lowercase().cmp(&b.name.to_lowercase())));
+    entries.sort_by(|a, b| {
+        b.is_dir
+            .cmp(&a.is_dir)
+            .then_with(|| a.name.to_lowercase().cmp(&b.name.to_lowercase()))
+    });
     Ok(entries)
 }
 
 /// Lists a remote folder, folders first then by name.
 pub fn list(host: &str, port: u16, dir: &str) -> Result<Vec<RemoteEntry>, String> {
     let mut ftp = connect(host, port)?;
-    let dir = if dir.trim().is_empty() { "/" } else { dir.trim() };
+    let dir = if dir.trim().is_empty() {
+        "/"
+    } else {
+        dir.trim()
+    };
     let entries = list_in(&mut ftp, dir);
     let _ = ftp.quit();
     entries
@@ -126,12 +152,18 @@ pub fn find_save_folders(host: &str, port: u16) -> Result<Vec<String>, String> {
     let mut ftp = connect(host, port)?;
     let mut found: Vec<String> = Vec::new();
     for root in SAVE_ROOTS {
-        let Ok(entries) = list_in(&mut ftp, root) else { continue };
+        let Ok(entries) = list_in(&mut ftp, root) else {
+            continue;
+        };
         if entries.iter().any(|entry| entry.is_save) {
             found.push(root.to_string());
         }
         // Apollo: <root>/<user id>/CUSA00900/ or <root>/<user>_CUSA00900_<dir>/.
-        let mut queue: Vec<(String, u8)> = entries.iter().filter(|entry| entry.is_dir).map(|entry| (entry.path.clone(), 1)).collect();
+        let mut queue: Vec<(String, u8)> = entries
+            .iter()
+            .filter(|entry| entry.is_dir)
+            .map(|entry| (entry.path.clone(), 1))
+            .collect();
         while let Some((dir, depth)) = queue.pop() {
             if found.len() >= MAX_FOLDERS {
                 break;
@@ -140,7 +172,10 @@ pub fn find_save_folders(host: &str, port: u16) -> Result<Vec<String>, String> {
                 let children = list_in(&mut ftp, &dir).unwrap_or_default();
                 if children.iter().any(|entry| entry.is_save) {
                     found.push(dir);
-                } else if let Some(nested) = children.iter().find(|entry| entry.is_dir && entry.name.eq_ignore_ascii_case("savedata0")) {
+                } else if let Some(nested) = children
+                    .iter()
+                    .find(|entry| entry.is_dir && entry.name.eq_ignore_ascii_case("savedata0"))
+                {
                     // Some exports keep the files in a `savedata0` sub-folder.
                     found.push(nested.path.clone());
                 } else {
@@ -150,7 +185,12 @@ pub fn find_save_folders(host: &str, port: u16) -> Result<Vec<String>, String> {
             }
             if depth < 2 && !root.starts_with("/mnt/sandbox") {
                 if let Ok(children) = list_in(&mut ftp, &dir) {
-                    queue.extend(children.into_iter().filter(|entry| entry.is_dir).map(|entry| (entry.path, depth + 1)));
+                    queue.extend(
+                        children
+                            .into_iter()
+                            .filter(|entry| entry.is_dir)
+                            .map(|entry| (entry.path, depth + 1)),
+                    );
                 }
             }
         }
@@ -163,7 +203,10 @@ pub fn find_save_folders(host: &str, port: u16) -> Result<Vec<String>, String> {
 /// First folder found by [`find_save_folders`], or `/`.
 #[cfg(test)]
 pub fn find_save_root(host: &str, port: u16) -> Result<String, String> {
-    Ok(find_save_folders(host, port)?.into_iter().next().unwrap_or_else(|| "/".to_string()))
+    Ok(find_save_folders(host, port)?
+        .into_iter()
+        .next()
+        .unwrap_or_else(|| "/".to_string()))
 }
 
 pub fn download_bytes(host: &str, port: u16, remote: &str) -> Result<Vec<u8>, String> {
@@ -174,7 +217,9 @@ pub fn download_bytes(host: &str, port: u16, remote: &str) -> Result<Vec<u8>, St
             return Err("FTP_FILE_TOO_LARGE".into());
         }
     }
-    let buffer = ftp.retr_as_buffer(remote).map_err(|_| "FTP_DOWNLOAD_FAILED".to_string())?;
+    let buffer = ftp
+        .retr_as_buffer(remote)
+        .map_err(|_| "FTP_DOWNLOAD_FAILED".to_string())?;
     let _ = ftp.quit();
     let bytes = buffer.into_inner();
     if bytes.is_empty() {
@@ -188,7 +233,13 @@ pub fn local_path(cache: &Path, host: &str, remote: &str) -> PathBuf {
     let clean = |value: &str| -> String {
         value
             .chars()
-            .map(|c| if c.is_ascii_alphanumeric() || c == '.' || c == '-' { c } else { '_' })
+            .map(|c| {
+                if c.is_ascii_alphanumeric() || c == '.' || c == '-' {
+                    c
+                } else {
+                    '_'
+                }
+            })
             .collect::<String>()
             .trim_matches('_')
             .to_string()
@@ -222,14 +273,16 @@ pub fn upload(host: &str, port: u16, local: &Path, remote: &str) -> Result<(), S
 /// the file is deleted and written again. Fails if the console still differs.
 fn put_verified(host: &str, port: u16, remote: &str, bytes: &[u8]) -> Result<(), String> {
     let mut ftp = connect(host, port)?;
-    ftp.put_file(remote, &mut Cursor::new(bytes.to_vec())).map_err(|_| "FTP_UPLOAD_FAILED".to_string())?;
+    ftp.put_file(remote, &mut Cursor::new(bytes.to_vec()))
+        .map_err(|_| "FTP_UPLOAD_FAILED".to_string())?;
     let _ = ftp.quit();
     if download_bytes(host, port, remote).ok().as_deref() == Some(bytes) {
         return Ok(());
     }
     let mut ftp = connect(host, port)?;
     let _ = ftp.rm(remote);
-    ftp.put_file(remote, &mut Cursor::new(bytes.to_vec())).map_err(|_| "FTP_UPLOAD_FAILED".to_string())?;
+    ftp.put_file(remote, &mut Cursor::new(bytes.to_vec()))
+        .map_err(|_| "FTP_UPLOAD_FAILED".to_string())?;
     let _ = ftp.quit();
     if download_bytes(host, port, remote).ok().as_deref() == Some(bytes) {
         Ok(())
@@ -241,16 +294,30 @@ fn put_verified(host: &str, port: u16, remote: &str, bytes: &[u8]) -> Result<(),
 /// Copies `source` (a local save) into the console folder `dir`, keeping the
 /// file name. An existing console save with that name is backed up first
 /// into the editor cache. Returns the remote path.
-pub fn import(cache: &Path, host: &str, port: u16, source: &Path, dir: &str, name: Option<&str>) -> Result<String, String> {
+pub fn import(
+    cache: &Path,
+    host: &str,
+    port: u16,
+    source: &Path,
+    dir: &str,
+    name: Option<&str>,
+) -> Result<String, String> {
     let name = match name {
         Some(name) => name.to_string(),
-        None => source.file_name().map(|name| name.to_string_lossy().to_string()).unwrap_or_default(),
+        None => source
+            .file_name()
+            .map(|name| name.to_string_lossy().to_string())
+            .unwrap_or_default(),
     };
     if !is_save_name(&name) {
         return Err("FTP_NOT_A_SAVE".into());
     }
     let remote = join_remote(dir.trim_end_matches('/'), &name);
-    let remote = if remote.starts_with('/') { remote } else { format!("/{remote}") };
+    let remote = if remote.starts_with('/') {
+        remote
+    } else {
+        format!("/{remote}")
+    };
     let local = local_path(cache, host, &remote);
     if let Some(parent) = local.parent() {
         std::fs::create_dir_all(parent).map_err(|error| error.to_string())?;
@@ -282,7 +349,8 @@ pub fn delete(cache: &Path, host: &str, port: u16, remote: &str) -> Result<PathB
             .ok_or_else(|| "FTP_DELETE_FAILED".to_string())?,
     };
     let mut ftp = connect(host, port)?;
-    ftp.rm(remote).map_err(|_| "FTP_DELETE_FAILED".to_string())?;
+    ftp.rm(remote)
+        .map_err(|_| "FTP_DELETE_FAILED".to_string())?;
     let _ = ftp.quit();
     Ok(kept)
 }
@@ -306,17 +374,46 @@ mod tests {
         for name in ["userdata0000", "USERDATA0009", "userdata1234"] {
             assert!(is_save_name(name), "{name}");
         }
-        for name in ["userdata", "userdata0000.bak", "userdata00", "eboot.elf", "payload.js", "tool.py", "param.sfo", "userdata000a"] {
+        for name in [
+            "userdata",
+            "userdata0000.bak",
+            "userdata00",
+            "eboot.elf",
+            "payload.js",
+            "tool.py",
+            "param.sfo",
+            "userdata000a",
+        ] {
             assert!(!is_save_name(name), "{name}");
         }
-        assert_eq!(require_save("/data/apollo/1/CUSA00900/payload.elf").unwrap_err(), "FTP_NOT_A_SAVE");
-        assert_eq!(require_save("/data/../userdata0000").unwrap_err(), "FTP_NOT_A_SAVE");
+        assert_eq!(
+            require_save("/data/apollo/1/CUSA00900/payload.elf").unwrap_err(),
+            "FTP_NOT_A_SAVE"
+        );
+        assert_eq!(
+            require_save("/data/../userdata0000").unwrap_err(),
+            "FTP_NOT_A_SAVE"
+        );
         assert!(require_save("/data/apollo/1/CUSA00900/userdata0000").is_ok());
         // Refused before any network access.
-        assert_eq!(download_bytes("127.0.0.1", 1, "/data/eboot.bin").unwrap_err(), "FTP_NOT_A_SAVE");
-        assert_eq!(delete(Path::new("/tmp"), "127.0.0.1", 1, "/data/script.js").unwrap_err(), "FTP_NOT_A_SAVE");
         assert_eq!(
-            import(Path::new("/tmp"), "127.0.0.1", 1, Path::new("/tmp/notes.txt"), "/data", None).unwrap_err(),
+            download_bytes("127.0.0.1", 1, "/data/eboot.bin").unwrap_err(),
+            "FTP_NOT_A_SAVE"
+        );
+        assert_eq!(
+            delete(Path::new("/tmp"), "127.0.0.1", 1, "/data/script.js").unwrap_err(),
+            "FTP_NOT_A_SAVE"
+        );
+        assert_eq!(
+            import(
+                Path::new("/tmp"),
+                "127.0.0.1",
+                1,
+                Path::new("/tmp/notes.txt"),
+                "/data",
+                None
+            )
+            .unwrap_err(),
             "FTP_NOT_A_SAVE"
         );
     }
@@ -331,11 +428,20 @@ mod tests {
     /// with a file named `userdata0000` in `dir`).
     #[test]
     fn round_trip_against_a_local_server_when_available() {
-        let Ok(spec) = std::env::var("BBSE_FTP_TEST") else { return };
+        let Ok(spec) = std::env::var("BBSE_FTP_TEST") else {
+            return;
+        };
         let mut parts = spec.splitn(3, ':');
-        let (host, port, dir) = (parts.next().unwrap(), parts.next().unwrap().parse().unwrap(), parts.next().unwrap());
+        let (host, port, dir) = (
+            parts.next().unwrap(),
+            parts.next().unwrap().parse().unwrap(),
+            parts.next().unwrap(),
+        );
         let entries = list(host, port, dir).unwrap();
-        let file = entries.iter().find(|entry| entry.name == "userdata0000").expect("listed");
+        let file = entries
+            .iter()
+            .find(|entry| entry.name == "userdata0000")
+            .expect("listed");
         let cache = std::env::temp_dir().join(format!("bbse-ftp-{}", std::process::id()));
         let local = download_to(&cache, host, port, &file.path).unwrap();
         let mut bytes = std::fs::read(&local).unwrap();
@@ -347,7 +453,10 @@ mod tests {
         assert_eq!(super::super::backups::list(&local).unwrap().len(), 1);
 
         // Non-save files are listed read-only.
-        assert!(entries.iter().filter(|entry| !entry.is_dir).all(|entry| entry.is_save == is_save_name(&entry.name)));
+        assert!(entries
+            .iter()
+            .filter(|entry| !entry.is_dir)
+            .all(|entry| entry.is_save == is_save_name(&entry.name)));
 
         // Import a copy under another save name, then delete it.
         let source_dir = cache.join("import");
@@ -360,11 +469,20 @@ mod tests {
         assert!(renamed.ends_with("/userdata0008"));
         assert_eq!(download_bytes(host, port, &renamed).unwrap(), bytes);
         delete(&cache, host, port, &renamed).unwrap();
-        assert_eq!(import(&cache, host, port, &source, dir, Some("eboot.bin")).unwrap_err(), "FTP_NOT_A_SAVE");
-        assert!(list(host, port, dir).unwrap().iter().any(|entry| entry.path == remote && entry.is_save));
+        assert_eq!(
+            import(&cache, host, port, &source, dir, Some("eboot.bin")).unwrap_err(),
+            "FTP_NOT_A_SAVE"
+        );
+        assert!(list(host, port, dir)
+            .unwrap()
+            .iter()
+            .any(|entry| entry.path == remote && entry.is_save));
         let kept = delete(&cache, host, port, &remote).unwrap();
         assert_eq!(std::fs::read(kept).unwrap(), bytes);
-        assert!(!list(host, port, dir).unwrap().iter().any(|entry| entry.path == remote));
+        assert!(!list(host, port, dir)
+            .unwrap()
+            .iter()
+            .any(|entry| entry.path == remote));
 
         // The saves folder is found from the console root.
         if let Ok(expected) = std::env::var("BBSE_FTP_ROOT") {

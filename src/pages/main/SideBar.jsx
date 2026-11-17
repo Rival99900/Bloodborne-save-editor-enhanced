@@ -4,10 +4,19 @@ import { SaveContext } from "../../context/context";
 import { useLocalization } from "../../i18n/localization";
 
 const navigation = [
-  { to: "/", labelKey: "sidebar.inventory", descriptionKey: "sidebar.inventoryDescription", end: true },
+  {
+    to: "/",
+    labelKey: "sidebar.inventory",
+    descriptionKey: "sidebar.inventoryDescription",
+    end: true,
+  },
   { to: "/storage", labelKey: "sidebar.storage", descriptionKey: "sidebar.storageDescription" },
   { to: "/stats", labelKey: "sidebar.stats", descriptionKey: "sidebar.statsDescription" },
-  { to: "/character", labelKey: "sidebar.character", descriptionKey: "sidebar.characterDescription" },
+  {
+    to: "/character",
+    labelKey: "sidebar.character",
+    descriptionKey: "sidebar.characterDescription",
+  },
   { to: "/bosses", labelKey: "sidebar.bosses", descriptionKey: "sidebar.bossesDescription" },
   { to: "/npcs", labelKey: "sidebar.npcs", descriptionKey: "sidebar.npcsDescription" },
   { to: "/patches", labelKey: "sidebar.patches", descriptionKey: "sidebar.patchesDescription" },
@@ -46,7 +55,6 @@ function SideBar() {
           </NavLink>
         ))}
       </nav>
-
     </aside>
   );
 }

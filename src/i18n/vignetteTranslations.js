@@ -1,18 +1,18 @@
 // Generated from audited local checkpoints. Do not use this data for save serialization.
 // English strings and catalogue identifiers remain the only values used by backend operations.
 const translationLoaders = {
-  "fr": () => import("./vignetteTranslations/fr.json"),
-  "it": () => import("./vignetteTranslations/it.json"),
-  "de": () => import("./vignetteTranslations/de.json"),
-  "es": () => import("./vignetteTranslations/es.json"),
-  "nl": () => import("./vignetteTranslations/nl.json"),
-  "pl": () => import("./vignetteTranslations/pl.json"),
-  "ru": () => import("./vignetteTranslations/ru.json"),
-  "da": () => import("./vignetteTranslations/da.json"),
-  "nb": () => import("./vignetteTranslations/nb.json"),
-  "fi": () => import("./vignetteTranslations/fi.json"),
-  "sv": () => import("./vignetteTranslations/sv.json"),
-  "tr": () => import("./vignetteTranslations/tr.json"),
+  fr: () => import("./vignetteTranslations/fr.json"),
+  it: () => import("./vignetteTranslations/it.json"),
+  de: () => import("./vignetteTranslations/de.json"),
+  es: () => import("./vignetteTranslations/es.json"),
+  nl: () => import("./vignetteTranslations/nl.json"),
+  pl: () => import("./vignetteTranslations/pl.json"),
+  ru: () => import("./vignetteTranslations/ru.json"),
+  da: () => import("./vignetteTranslations/da.json"),
+  nb: () => import("./vignetteTranslations/nb.json"),
+  fi: () => import("./vignetteTranslations/fi.json"),
+  sv: () => import("./vignetteTranslations/sv.json"),
+  tr: () => import("./vignetteTranslations/tr.json"),
   "pt-PT": () => import("./vignetteTranslations/pt-PT.json"),
 };
 
@@ -22,7 +22,12 @@ export async function loadVignetteTranslations(language) {
   const loader = translationLoaders[language];
   if (!loader) return undefined;
   if (!cachedLanguages.has(language)) {
-    cachedLanguages.set(language, loader().then((module) => module.default).catch(() => undefined));
+    cachedLanguages.set(
+      language,
+      loader()
+        .then((module) => module.default)
+        .catch(() => undefined),
+    );
   }
   return cachedLanguages.get(language);
 }
@@ -55,8 +60,9 @@ export function localizeVignetteText(translations, kind, sourceText) {
   // a short source name can corrupt an already translated word (e.g. Eye in Eyelid).
   if (kind === "description" && direct) {
     return normalizeDisplayText(resolved).replace(/"([^"\n]+)"/g, (quoted, name) => {
-      const target = translations.names?.[name]
-        ?? translations.names?.[`[CUT] ${name}`]?.replace(/^\[CUT\]\s*/u, "");
+      const target =
+        translations.names?.[name] ??
+        translations.names?.[`[CUT] ${name}`]?.replace(/^\[CUT\]\s*/u, "");
       return target ? `"${normalizeDisplayText(target)}"` : quoted;
     });
   }

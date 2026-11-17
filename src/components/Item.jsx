@@ -30,9 +30,7 @@ function Item({ index, item, isSmall, className, ...props }) {
       <canvas
         data-index={index}
         data-item-id={item.id}
-        data-item-type={
-          item?.article_type?.toLowerCase() || item.upgrade_type.toLowerCase()
-        }
+        data-item-type={item?.article_type?.toLowerCase() || item.upgrade_type.toLowerCase()}
         data-item={JSON.stringify(item)}
         width={795}
         height={90}

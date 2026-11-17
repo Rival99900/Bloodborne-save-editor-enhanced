@@ -1,0 +1,50 @@
+/* The Add dialog owns a fixed internal grid: the catalogue scrolls, never the action bar. */
+.inventory-dialog__card--add {
+  height: min(46rem, calc(100vh - 1.5rem));
+  min-height: 0;
+
+  .catalog-picker {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .catalog-picker__results {
+    min-height: 0;
+    max-height: none;
+  }
+
+  .inventory-dialog__actions {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0.9rem 0 0;
+    border-top: 1px solid rgba(226, 195, 125, 0.2);
+    background: linear-gradient(180deg, rgba(8, 9, 11, 0), rgba(8, 9, 11, 0.94) 28%);
+  }
+}
+
+@media (max-height: 760px) {
+  /* Keep the first editable row below the title baked into the artwork. The
+     previous compact rule moved it upward into the title on typical Windows
+     title-bar heights. The list itself can scroll when its extra rune-preset
+     control needs more space. */
+  .upgrade-editor__effects {
+    top: 11.75rem !important;
+    bottom: 0.6rem;
+
+    .effect {
+      min-height: 3rem;
+
+      input {
+        height: 2.25rem;
+        min-height: 2.25rem;
+        padding-block: 0.28rem !important;
+      }
+    }
+  }
+
+  .inventory-dialog__card--add {
+    height: calc(100vh - 1rem);
+  }
+}

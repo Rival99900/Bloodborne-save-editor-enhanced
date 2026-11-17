@@ -4,13 +4,7 @@ import Item from "../../components/Item";
 import { invoke } from "@tauri-apps/api/core";
 import { useLocalization } from "../../i18n/localization";
 
-function ChangeGemScreen({
-  article,
-  setSelected,
-  setScreen,
-  slotIndex,
-  isStorage,
-}) {
+function ChangeGemScreen({ article, setSelected, setScreen, slotIndex, isStorage }) {
   const { save, setSave } = useContext(SaveContext);
   const { t } = useLocalization();
   const gems = isStorage
@@ -90,10 +84,7 @@ function ChangeGemScreen({
           ))}
         </div>
         <div className="gem-screen-actions" style={{ marginTop: "1rem" }}>
-          <button
-            className="control-button control-button--quiet"
-            onClick={() => setScreen(false)}
-          >
+          <button className="control-button control-button--quiet" onClick={() => setScreen(false)}>
             {t("inventory.cancel")}
           </button>
           <button
@@ -139,9 +130,7 @@ function ChangeGemScreen({
               }
             }}
             disabled={
-              !selectedGem ||
-              (selectedGem?.number === -1 &&
-                article.slots[slotIndex]?.gem === null)
+              !selectedGem || (selectedGem?.number === -1 && article.slots[slotIndex]?.gem === null)
             }
           >
             {t("forge.confirm")}

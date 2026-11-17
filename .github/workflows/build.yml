@@ -1,45 +1,74 @@
 name: Publish signed desktop release
 
+# A release is built from main when the commit message contains "[release]"
+# (or "[refresh]" to replace the packages of the same version). The version
+# and the tag come from package.json: nothing to edit here for a new version.
 on:
   push:
     branches:
       - main
-    tags:
-      - "v*"
-      # Versioned main commits launch these releases; exclude tag creation to avoid duplicate builds.
-      - "!v0.5.0"
-      - "!v0.6.0"
-      - "!v0.6.5"
-      - "!v0.7.0"
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing version tag to build and publish (for example v0.6.0)"
+        description: "Existing version tag to build and publish (for example v0.7.0)"
         required: true
         type: string
       refresh_existing:
-        description: "Replace the existing v0.6.0 packages from the selected branch (same version)"
+        description: "Replace the existing packages of this tag from the selected branch (same version)"
         required: false
         default: false
         type: boolean
 
 concurrency:
-  group: desktop-release-${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
+  group: desktop-release-${{ inputs.tag || github.sha }}
   cancel-in-progress: false
 
 jobs:
+  version:
+    name: Read release version
+    runs-on: ubuntu-22.04
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      run: ${{ steps.version.outputs.run }}
+      refresh: ${{ steps.version.outputs.refresh }}
+      ref: ${{ steps.version.outputs.ref }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag && !inputs.refresh_existing && inputs.tag || github.sha }}
+      - id: version
+        env:
+          MESSAGE: ${{ github.event.head_commit.message }}
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_REFRESH: ${{ inputs.refresh_existing }}
+        run: |
+          tag="v$(node -p 'require("./package.json").version')"
+          run=false; refresh=false; ref="$GITHUB_SHA"
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            run=true
+            if [ "$INPUT_REFRESH" = "true" ]; then refresh=true; else ref="$INPUT_TAG"; fi
+            tag="$INPUT_TAG"
+          else
+            # "[release]", or the older "[release vX.Y.Z]" form for this exact version.
+            if grep -qE "\[release( ${tag//./\\.})?\]" <<<"$MESSAGE"; then run=true; fi
+            if grep -qE "\[refresh( ${tag//./\\.})?\]" <<<"$MESSAGE"; then run=true; refresh=true; fi
+          fi
+          { echo "tag=$tag"; echo "run=$run"; echo "refresh=$refresh"; echo "ref=$ref"; } >> "$GITHUB_OUTPUT"
+          echo "Release $tag: run=$run refresh=$refresh"
+
   validate:
     name: Validate tagged source
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.7.0]') || contains(github.event.head_commit.message, '[refresh v0.7.0]')))"
+    needs: version
+    if: needs.version.outputs.run == 'true'
     runs-on: ubuntu-22.04
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
+      RELEASE_TAG: ${{ needs.version.outputs.tag }}
 
     steps:
       - name: Checkout tagged source
         uses: actions/checkout@v4
         with:
-          ref: ${{ (github.event_name == 'push' && github.ref_type == 'branch' || inputs.refresh_existing) && github.sha || env.RELEASE_TAG }}
+          ref: ${{ needs.version.outputs.ref }}
 
       - name: Validate release version
         run: |
@@ -64,6 +93,8 @@ jobs:
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
 
       - name: Restore Rust cache
         uses: swatinem/rust-cache@v2
@@ -73,22 +104,25 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
-      - name: Audit catalog and localization coverage
-        run: npm run audit:catalogs
-
       - name: Verify reviewed effect labels and numeric values
         run: python3 .github/scripts/localization/rebuild_effect_labels.py --check
 
-      - name: Verify multilingual search and update summaries
-        run: node .github/scripts/validate_v040_localization.mjs
+      - name: Lint the frontend
+        run: npm run lint
 
-      - name: Validate presets, comparison and UI strings
+      - name: Check formatting (Prettier)
+        run: npm run format:check
+
+      - name: Run frontend unit tests
+        run: npm test
+
+      - name: Validate locales, catalogues and features
+        run: npm run validate
+
+      - name: Check the native code format and lints
         run: |
-          node .github/scripts/validate_v050_features.mjs
-          node .github/scripts/validate_v060_patches.mjs
-          node .github/scripts/validate_v065_release.mjs
-          node .github/scripts/validate_v070_release.mjs
-          node .github/scripts/audit_ui_text.mjs
+          cargo fmt --manifest-path src-tauri/Cargo.toml --check
+          cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
 
       - name: Build production frontend
         run: npm run build
@@ -96,30 +130,28 @@ jobs:
       - name: Run native test suite
         run: cargo test --manifest-path src-tauri/Cargo.toml --all-targets
 
-
   prepare-release:
     name: Prepare release under repository owner
-    needs: validate
+    needs: [version, validate]
     runs-on: ubuntu-22.04
     outputs:
       release_id: ${{ steps.prepare.outputs.release_id }}
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
+      RELEASE_TAG: ${{ needs.version.outputs.tag }}
       GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       # An explicit refresh commit on main replaces the same owner release.
-      REFRESH_EXISTING_RELEASE: ${{ (inputs.refresh_existing || (github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[refresh v0.7.0]'))) && 'true' || 'false' }}
+      REFRESH_EXISTING_RELEASE: ${{ needs.version.outputs.refresh }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ (github.event_name == 'push' && github.ref_type == 'branch' || inputs.refresh_existing) && github.sha || env.RELEASE_TAG }}
+          ref: ${{ needs.version.outputs.ref }}
       - name: Validate owner and prepare draft
         id: prepare
         run: bash .github/scripts/prepare_release.sh
 
   build:
     name: Build signed ${{ matrix.name }} asset
-    if: "github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && (contains(github.event.head_commit.message, '[release v0.7.0]') || contains(github.event.head_commit.message, '[refresh v0.7.0]')))"
-    needs: prepare-release
+    needs: [version, prepare-release]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -127,20 +159,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Windows x64 NSIS installer
+          - name: Windows x64 NSIS installer and MSI package
             os: windows-latest
-            args: "--bundles nsis"
+            args: "--bundles nsis,msi"
           - name: Ubuntu Linux x64 AppImage
             os: ubuntu-22.04
             args: "--bundles appimage"
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
+      RELEASE_TAG: ${{ needs.version.outputs.tag }}
 
     steps:
       - name: Checkout tagged source
         uses: actions/checkout@v4
         with:
-          ref: ${{ (github.event_name == 'push' && github.ref_type == 'branch' || inputs.refresh_existing) && github.sha || env.RELEASE_TAG }}
+          ref: ${{ needs.version.outputs.ref }}
 
       - name: Install Linux packaging dependencies
         if: runner.os == 'Linux'
@@ -196,18 +228,18 @@ jobs:
 
   publish-updater-manifest:
     name: Publish combined updater manifest
-    needs: [prepare-release, build]
+    needs: [version, prepare-release, build]
     runs-on: ubuntu-22.04
     permissions:
       contents: write
     env:
-      RELEASE_TAG: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'v0.7.0' }}
+      RELEASE_TAG: ${{ needs.version.outputs.tag }}
 
     steps:
       - name: Checkout release source and main history
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.refresh_existing && github.sha || inputs.tag || github.sha }}
+          ref: ${{ needs.version.outputs.ref }}
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
 
@@ -234,9 +266,10 @@ jobs:
           mkdir -p release-assets
           gh release download "$RELEASE_TAG" \
             --pattern "*.exe" \
+            --pattern "*.msi" \
             --pattern "*.AppImage" \
             --dir release-assets
-          test "$(find release-assets -maxdepth 1 -type f | wc -l)" -eq 2
+          test "$(find release-assets -maxdepth 1 -type f | wc -l)" -eq 3
           (cd release-assets && sha256sum * | sort -k2) > SHA256SUMS.txt
           test -s SHA256SUMS.txt
 

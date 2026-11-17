@@ -10,9 +10,10 @@ function Select({ options, name, setEditedStats, editedStats }) {
   const fallbackValue = save.stats.find((entry) => entry.name === name)?.value;
   const [value, setValue] = useState(draftValue ?? fallbackValue ?? "");
   const normalizedOptions = useMemo(
-    () => options.map((option, index) => (
-      typeof option === "object" ? option : { label: String(option), value: index }
-    )),
+    () =>
+      options.map((option, index) =>
+        typeof option === "object" ? option : { label: String(option), value: index },
+      ),
     [options],
   );
 
@@ -22,9 +23,9 @@ function Select({ options, name, setEditedStats, editedStats }) {
 
   function handleChange(nextValue) {
     setValue(nextValue);
-    setEditedStats((previous) => previous.map((entry) => (
-      entry.name === name ? { ...entry, value: nextValue } : entry
-    )));
+    setEditedStats((previous) =>
+      previous.map((entry) => (entry.name === name ? { ...entry, value: nextValue } : entry)),
+    );
   }
 
   return (

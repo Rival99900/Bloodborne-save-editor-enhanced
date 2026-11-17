@@ -59,13 +59,10 @@ function IszGlitch() {
   return (
     <div className="character-isz-row character-detail-row">
       <span>
-        {t("characterForm.iszStatus")} {isz.map((value) => value.toString(16).toUpperCase()).join(" ")}
+        {t("characterForm.iszStatus")}{" "}
+        {isz.map((value) => value.toString(16).toUpperCase()).join(" ")}
       </span>
-      <button
-        className="control-button control-button--quiet"
-        type="button"
-        onClick={fixIsz}
-      >
+      <button className="control-button control-button--quiet" type="button" onClick={fixIsz}>
         {t("characterForm.fixIsz")}
       </button>
       {notice ? (

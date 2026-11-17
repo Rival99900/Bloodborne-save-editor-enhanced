@@ -366,10 +366,10 @@ mod tests {
         let p = find("quantity", "CUSA00207");
         let mut data = vec![0; 0x140000];
         let orig = data.clone();
-        assert!(plan(&data, "CUSA00207", "", &[p.id.clone()]).is_err());
+        assert!(plan(&data, "CUSA00207", "", std::slice::from_ref(&p.id)).is_err());
         assert_eq!(data, orig);
-        assert!(plan(&data[..10], "CUSA00207", "", &[p.id.clone()]).is_err());
-        assert!(plan(&data, "CUSA00900", "", &[p.id.clone()]).is_err());
+        assert!(plan(&data[..10], "CUSA00207", "", std::slice::from_ref(&p.id)).is_err());
+        assert!(plan(&data, "CUSA00900", "", std::slice::from_ref(&p.id)).is_err());
         for at in [100, 200, 300] {
             data[at..at + 4].copy_from_slice(&[0xb8, 11, 0, 64]);
         }

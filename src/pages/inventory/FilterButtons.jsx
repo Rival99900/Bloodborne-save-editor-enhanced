@@ -22,9 +22,7 @@ function FilterButtons({ selectedFilter }) {
         id="filterHover"
         style={{
           display: selectedFilter == 0 ? "none" : "block",
-          left: `${
-            spaceBetween + (80 + spaceBetween) * (selectedFilter - 1) - 2
-          }px`,
+          left: `${spaceBetween + (80 + spaceBetween) * (selectedFilter - 1) - 2}px`,
         }}
       ></div>
       {CATEGORIES.map(({ key, image }, index) => (

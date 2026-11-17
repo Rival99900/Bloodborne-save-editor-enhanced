@@ -44,30 +44,35 @@ export function UpdateModal() {
     let totalBytes = 0;
 
     try {
-      if (!installedRef.current) await update.downloadAndInstall((event) => {
-        switch (event.event) {
-          case "Started":
-            totalBytes = event.data.contentLength || 0;
-            setStatusText(t("update.downloadingSigned"));
-            break;
-          case "Progress":
-            downloadedBytes += event.data.chunkLength;
-            if (totalBytes > 0) {
-              const percentage = Math.min(100, Math.round((downloadedBytes / totalBytes) * 100));
-              setProgress(percentage);
-              setStatusText(t("update.downloadingProgress", { percentage }));
-            } else {
-              setStatusText(t("update.downloadedMegabytes", { megabytes: (downloadedBytes / 1024 / 1024).toFixed(1) }));
-            }
-            break;
-          case "Finished":
-            setProgress(100);
-            setStatusText(t("update.installing"));
-            break;
-          default:
-            break;
-        }
-      });
+      if (!installedRef.current)
+        await update.downloadAndInstall((event) => {
+          switch (event.event) {
+            case "Started":
+              totalBytes = event.data.contentLength || 0;
+              setStatusText(t("update.downloadingSigned"));
+              break;
+            case "Progress":
+              downloadedBytes += event.data.chunkLength;
+              if (totalBytes > 0) {
+                const percentage = Math.min(100, Math.round((downloadedBytes / totalBytes) * 100));
+                setProgress(percentage);
+                setStatusText(t("update.downloadingProgress", { percentage }));
+              } else {
+                setStatusText(
+                  t("update.downloadedMegabytes", {
+                    megabytes: (downloadedBytes / 1024 / 1024).toFixed(1),
+                  }),
+                );
+              }
+              break;
+            case "Finished":
+              setProgress(100);
+              setStatusText(t("update.installing"));
+              break;
+            default:
+              break;
+          }
+        });
 
       installedRef.current = true;
       setStatusText(t("update.installedRestarting"));
@@ -87,20 +92,44 @@ export function UpdateModal() {
   return (
     <div style={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="update-title">
       <div style={styles.card}>
-        <h3 id="update-title" style={styles.title}>{t("update.available")}</h3>
+        <h3 id="update-title" style={styles.title}>
+          {t("update.available")}
+        </h3>
         <p style={styles.version}>{t("update.version", { version: update.version })}</p>
 
-        <p style={styles.notes}>{getReleaseSummary(update.body, language, update.version, update.rawJson?.localized_notes)}</p>
+        <p style={styles.notes}>
+          {getReleaseSummary(
+            update.body,
+            language,
+            update.version,
+            update.rawJson?.localized_notes,
+          )}
+        </p>
 
-        {statusText ? <p style={styles.statusText} role={failed ? "alert" : "status"}>{statusText}</p> : null}
-        {failed ? <button type="button" style={styles.btnSecondary} onClick={() => { void open(`https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/tag/v${encodeURIComponent(update.version)}`).catch(console.error); }}>GitHub · v{update.version}</button> : null}
+        {statusText ? (
+          <p style={styles.statusText} role={failed ? "alert" : "status"}>
+            {statusText}
+          </p>
+        ) : null}
+        {failed ? (
+          <button
+            type="button"
+            style={styles.btnSecondary}
+            onClick={() => {
+              void open(
+                `https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/tag/v${encodeURIComponent(update.version)}`,
+              ).catch(console.error);
+            }}
+          >
+            GitHub · v{update.version}
+          </button>
+        ) : null}
 
         {downloading ? (
           <div style={styles.progressContainer} aria-live="polite">
             <div style={styles.progressBarTrack}>
               <div style={{ ...styles.progressBarFill, width: `${progress}%` }} />
             </div>
-
           </div>
         ) : (
           <div style={styles.actions}>

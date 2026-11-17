@@ -42,7 +42,7 @@
   },
   "productName": "Bloodborne Save Editor",
   "mainBinaryName": "Bloodborne Save Editor",
-  "version": "0.7.0",
+  "version": "0.7.5",
   "identifier": "com.bloodborne.editor",
   "plugins": {
     "updater": {
@@ -67,7 +67,9 @@
         "center": true,
         "resizable": true,
         "maximizable": true,
-        "title": "Bloodborne Save Editor Enhanced v0.7.0",
+        "title": "Bloodborne Save Editor Enhanced v0.7.5",
+        "visible": false,
+        "backgroundColor": "#0d0c0b",
         "useHttpsScheme": true
       }
     ],

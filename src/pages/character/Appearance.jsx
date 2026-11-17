@@ -46,18 +46,10 @@ function Appearance({ onNotice }) {
 
   return (
     <div className="character-face-actions">
-      <button
-        className="control-button control-button--quiet"
-        type="button"
-        onClick={exportFace}
-      >
+      <button className="control-button control-button--quiet" type="button" onClick={exportFace}>
         {t("characterForm.exportFace")}
       </button>
-      <button
-        className="control-button control-button--quiet"
-        type="button"
-        onClick={importFace}
-      >
+      <button className="control-button control-button--quiet" type="button" onClick={importFace}>
         {t("characterForm.importFace")}
       </button>
       {!onNotice && notice ? (

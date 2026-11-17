@@ -1,0 +1,59 @@
+/* Teleport destinations retain their canonical map data while presenting a readable
+   landmark → area → node hierarchy inside the shared dark selector. */
+.teleport-select .dark-select__menu {
+  width: min(28rem, calc(100vw - 1.25rem)) !important;
+}
+
+.teleport-select .dark-select__option {
+  min-height: 3.7rem;
+  padding: 0.52rem 0.62rem;
+}
+
+.teleport-option {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.08rem 0.65rem;
+  align-items: center;
+}
+
+.teleport-option__title,
+.teleport-option__area,
+.teleport-option__node {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.teleport-option__title {
+  grid-column: 1 / 2;
+  color: var(--color-text);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+}
+
+.teleport-option__area {
+  grid-column: 1 / 2;
+  color: #d6b867;
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.teleport-option__node {
+  grid-column: 1 / 2;
+  color: #d8d1c2;
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.teleport-option > .dark-select__selected {
+  grid-column: 2;
+  grid-row: 1 / -1;
+}
+
+@media (max-width: 36rem) {
+  .teleport-select .dark-select__menu {
+    width: calc(100vw - 1.25rem) !important;
+  }
+}

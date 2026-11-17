@@ -20,7 +20,9 @@ function Nav({
         <img className="brand-mark" src="/assets/icon.webp" alt="" />
         <div>
           <p className="brand-eyebrow">Bloodborne</p>
-          <p className="brand-title">Save Editor <span className="brand-version">v{packageInfo.version}</span></p>
+          <p className="brand-title">
+            Save Editor <span className="brand-version">v{packageInfo.version}</span>
+          </p>
         </div>
       </div>
 
@@ -37,7 +39,11 @@ function Nav({
         <LanguagePicker />
         {save ? (
           <div className="nav-history" aria-label={t("revision.controls")}>
-            <button className="control-button control-button--history" type="button" onClick={onShowRevisions}>
+            <button
+              className="control-button control-button--history"
+              type="button"
+              onClick={onShowRevisions}
+            >
               {t("revision.changes", { count: revisionCount })}
             </button>
           </div>

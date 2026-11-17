@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
-import { useFloating, flip, offset, shift, size, autoUpdate, FloatingPortal } from "@floating-ui/react";
+import {
+  useFloating,
+  flip,
+  offset,
+  shift,
+  size,
+  autoUpdate,
+  FloatingPortal,
+} from "@floating-ui/react";
 import { useLocalization } from "../i18n/localization";
 
 const NO_EFFECT_ID = "4294967295";
@@ -8,7 +16,12 @@ const NO_EFFECT_ID = "4294967295";
 function isNoEffectSelection(selected) {
   if (selected == null) return false;
   if (typeof selected === "object") {
-    return String(selected.value ?? "") === NO_EFFECT_ID || String(selected.label ?? "").trim().toLowerCase() === "no effect";
+    return (
+      String(selected.value ?? "") === NO_EFFECT_ID ||
+      String(selected.label ?? "")
+        .trim()
+        .toLowerCase() === "no effect"
+    );
   }
   const value = String(selected).trim().toLowerCase();
   return value === NO_EFFECT_ID || value === "no effect";
@@ -19,8 +32,12 @@ function getSelectedLabel(options, selected) {
   const normalizedValue = value.trim().toLowerCase();
   const matchingOption = options.find(
     (option) =>
-      String(option.label ?? "").trim().toLowerCase() === normalizedValue ||
-      String(option.sourceLabel ?? "").trim().toLowerCase() === normalizedValue ||
+      String(option.label ?? "")
+        .trim()
+        .toLowerCase() === normalizedValue ||
+      String(option.sourceLabel ?? "")
+        .trim()
+        .toLowerCase() === normalizedValue ||
       String(option.value ?? "").trim() === value.trim(),
   );
 
@@ -84,7 +101,11 @@ function SelectSearch({
   useEffect(() => {
     function toggle(e) {
       const floating = refs.floating.current;
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target) && !floating?.contains(e.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target) &&
+        !floating?.contains(e.target)
+      ) {
         setIsOpen(false);
       }
     }
@@ -98,19 +119,12 @@ function SelectSearch({
     // a preset. Other selectors continue to reflect prop-driven draft updates.
     userEditedRef.current = false;
     setSearch(
-      resetToPlaceholder || resolvedSelectedLabel === defaultValue
-        ? ""
-        : resolvedSelectedLabel,
+      resetToPlaceholder || resolvedSelectedLabel === defaultValue ? "" : resolvedSelectedLabel,
     );
   }, [resolvedSelectedLabel, defaultValue, resetToPlaceholder]);
 
   useEffect(() => {
-    if (
-      userEditedRef.current &&
-      !search.trim() &&
-      !isOpen &&
-      selected !== defaultValue
-    ) {
+    if (userEditedRef.current && !search.trim() && !isOpen && selected !== defaultValue) {
       if (typeof onChange === "function") {
         onChange({
           label: t("forge.noEffect"),
@@ -161,7 +175,11 @@ function SelectSearch({
 
   return (
     // Attach the outside click ref and base styles here
-    <div className={`select-search${compact ? " select-search--compact" : ""}`} ref={dropdownRef} style={{ position: "relative", ...style }}>
+    <div
+      className={`select-search${compact ? " select-search--compact" : ""}`}
+      ref={dropdownRef}
+      style={{ position: "relative", ...style }}
+    >
       {/* 2. Attach reference ref to the trigger container */}
       <div ref={refs.setReference} style={{ width: "100%" }}>
         <input
@@ -187,35 +205,37 @@ function SelectSearch({
       {/* 3. Dropdown Menu */}
       {isOpen && (
         <FloatingPortal>
-        <div
-          ref={refs.setFloating}
-          className="select-search__menu"
-          style={{
-            ...floatingStyles, // Floating UI injects left/top absolute coordinates dynamically
-            width: dropdownRef.current
-              ? dropdownRef.current.offsetWidth
-              : "100%",
-            zIndex: 9999,
-            background: "black",
-            border: "1px solid #444",
-            boxShadow: "0px 4px 12px rgba(0,0,0,0.5)",
-          }}
-        >
-          <List
-            height={Math.max(
-              compact ? 32 : 34,
-              Math.min(maxListHeight, Math.floor(availableHeight), filteredOptions.length * (compact ? 32 : 34)),
-            )}
-            itemCount={filteredOptions.length}
-            itemSize={compact ? 32 : 34}
-            width="100%"
-            overscanCount={10}
-            // The wheel scrolls the list only, never the panel behind it.
-            style={{ overscrollBehavior: "contain" }}
+          <div
+            ref={refs.setFloating}
+            className="select-search__menu"
+            style={{
+              ...floatingStyles, // Floating UI injects left/top absolute coordinates dynamically
+              width: dropdownRef.current ? dropdownRef.current.offsetWidth : "100%",
+              zIndex: 9999,
+              background: "black",
+              border: "1px solid #444",
+              boxShadow: "0px 4px 12px rgba(0,0,0,0.5)",
+            }}
           >
-            {Row}
-          </List>
-        </div>
+            <List
+              height={Math.max(
+                compact ? 32 : 34,
+                Math.min(
+                  maxListHeight,
+                  Math.floor(availableHeight),
+                  filteredOptions.length * (compact ? 32 : 34),
+                ),
+              )}
+              itemCount={filteredOptions.length}
+              itemSize={compact ? 32 : 34}
+              width="100%"
+              overscanCount={10}
+              // The wheel scrolls the list only, never the panel behind it.
+              style={{ overscrollBehavior: "contain" }}
+            >
+              {Row}
+            </List>
+          </div>
         </FloatingPortal>
       )}
     </div>

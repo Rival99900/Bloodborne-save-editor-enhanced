@@ -18,15 +18,25 @@ function ShortcutsDialog({ onClose }) {
   const panelRef = useDialogFocus(onClose);
   return (
     <div className="bulk-backdrop">
-      <div ref={panelRef} className="bulk-dialog tool-dialog tool-dialog--narrow" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+      <div
+        ref={panelRef}
+        className="bulk-dialog tool-dialog tool-dialog--narrow"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shortcuts-title"
+      >
         <header className="bulk-dialog__header">
           <h2 id="shortcuts-title">{t("shortcuts.title")}</h2>
-          <button type="button" className="control-button control-button--quiet" onClick={onClose}>{t("saveFlow.close")}</button>
+          <button type="button" className="control-button control-button--quiet" onClick={onClose}>
+            {t("saveFlow.close")}
+          </button>
         </header>
         <dl className="shortcuts-list">
           {SHORTCUTS.map(([keys, labelKey]) => (
             <div key={labelKey}>
-              <dt><kbd>{keys}</kbd></dt>
+              <dt>
+                <kbd>{keys}</kbd>
+              </dt>
               <dd>{t(labelKey)}</dd>
             </div>
           ))}

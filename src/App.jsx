@@ -18,7 +18,12 @@ import FileMenu from "./components/FileMenu";
 import BackupsDialog from "./components/BackupsDialog";
 import Ps4Dialog from "./components/Ps4Dialog";
 import ShortcutsDialog from "./components/ShortcutsDialog";
-import { clearRecentFiles, forgetRecentFile, readRecentFiles, rememberRecentFile } from "./utils/recentFiles";
+import {
+  clearRecentFiles,
+  forgetRecentFile,
+  readRecentFiles,
+  rememberRecentFile,
+} from "./utils/recentFiles";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
 
 function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
@@ -31,7 +36,9 @@ function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
         <h2 id="unsaved-title">{t("unsaved.title")}</h2>
         <p>{t("unsaved.description")}</p>
         <div className="unsaved-dialog__actions">
-          <button onClick={onCancel} disabled={saving}>{t("unsaved.cancel")}</button>
+          <button onClick={onCancel} disabled={saving}>
+            {t("unsaved.cancel")}
+          </button>
           <button className="unsaved-dialog__discard" onClick={onDiscard} disabled={saving}>
             {t("unsaved.discard")}
           </button>
@@ -44,17 +51,40 @@ function UnsavedChangesDialog({ onSave, onDiscard, onCancel, saving }) {
   );
 }
 
-function SaveFlowDialog({ tone = "warning", eyebrow, title, description, confirmLabel, cancelLabel, onConfirm, onCancel, busy = false }) {
+function SaveFlowDialog({
+  tone = "warning",
+  eyebrow,
+  title,
+  description,
+  confirmLabel,
+  cancelLabel,
+  onConfirm,
+  onCancel,
+  busy = false,
+}) {
   return (
-    <div className="save-flow-dialog" role="dialog" aria-modal="true" aria-labelledby="save-flow-title">
+    <div
+      className="save-flow-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="save-flow-title"
+    >
       <section className={`save-flow-dialog__card save-flow-dialog__card--${tone}`}>
         <span className="save-flow-dialog__eyebrow">{eyebrow}</span>
         <h2 id="save-flow-title">{title}</h2>
         <p>{description}</p>
         <div className="save-flow-dialog__actions">
-          {cancelLabel ? <button onClick={onCancel} disabled={busy}>{cancelLabel}</button> : null}
+          {cancelLabel ? (
+            <button onClick={onCancel} disabled={busy}>
+              {cancelLabel}
+            </button>
+          ) : null}
           <button
-            className={tone === "error" ? "save-flow-dialog__primary save-flow-dialog__primary--error" : "save-flow-dialog__primary"}
+            className={
+              tone === "error"
+                ? "save-flow-dialog__primary save-flow-dialog__primary--error"
+                : "save-flow-dialog__primary"
+            }
             onClick={onConfirm}
             disabled={busy}
           >
@@ -72,28 +102,44 @@ function cloneSave(value) {
 }
 
 function isEditableTarget(target) {
-  return target instanceof HTMLElement && (
-    target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)
+  return (
+    target instanceof HTMLElement &&
+    (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))
   );
 }
 
 function countInventoryRecords(inventory, field) {
-  return Object.values(inventory?.[field] ?? {}).reduce((total, records) => total + records.length, 0);
+  return Object.values(inventory?.[field] ?? {}).reduce(
+    (total, records) => total + records.length,
+    0,
+  );
 }
 
 function buildRevisionSummary(baseline, current) {
   if (!baseline || !current) return [];
   const summary = [];
-  const changedStats = (current.stats ?? []).filter((stat, index) => stat.value !== baseline.stats?.[index]?.value).length;
+  const changedStats = (current.stats ?? []).filter(
+    (stat, index) => stat.value !== baseline.stats?.[index]?.value,
+  ).length;
   if (changedStats) summary.push({ key: "revision.summaryStats", count: changedStats });
-  if (baseline.username?.string !== current.username?.string) summary.push({ key: "revision.summaryUsername" });
+  if (baseline.username?.string !== current.username?.string)
+    summary.push({ key: "revision.summaryUsername" });
   if (baseline.playtime !== current.playtime) summary.push({ key: "revision.summaryPlaytime" });
-  if (JSON.stringify(baseline.position) !== JSON.stringify(current.position)) summary.push({ key: "revision.summaryPosition" });
-  if (JSON.stringify(baseline.bosses) !== JSON.stringify(current.bosses)) summary.push({ key: "revision.summaryBosses" });
-  for (const [kind, labelKey] of [["articles", "revision.summaryItems"], ["upgrades", "revision.summaryUpgrades"]]) {
-    const inventoryDelta = countInventoryRecords(current.inventory, kind) - countInventoryRecords(baseline.inventory, kind);
-    const storageDelta = countInventoryRecords(current.storage, kind) - countInventoryRecords(baseline.storage, kind);
-    if (inventoryDelta || storageDelta) summary.push({ key: labelKey, count: Math.abs(inventoryDelta) + Math.abs(storageDelta) });
+  if (JSON.stringify(baseline.position) !== JSON.stringify(current.position))
+    summary.push({ key: "revision.summaryPosition" });
+  if (JSON.stringify(baseline.bosses) !== JSON.stringify(current.bosses))
+    summary.push({ key: "revision.summaryBosses" });
+  for (const [kind, labelKey] of [
+    ["articles", "revision.summaryItems"],
+    ["upgrades", "revision.summaryUpgrades"],
+  ]) {
+    const inventoryDelta =
+      countInventoryRecords(current.inventory, kind) -
+      countInventoryRecords(baseline.inventory, kind);
+    const storageDelta =
+      countInventoryRecords(current.storage, kind) - countInventoryRecords(baseline.storage, kind);
+    if (inventoryDelta || storageDelta)
+      summary.push({ key: labelKey, count: Math.abs(inventoryDelta) + Math.abs(storageDelta) });
   }
   return summary;
 }
@@ -143,128 +189,142 @@ function App() {
   }, []);
 
   const commitEditorMutation = useCallback(
-    (label, operation) => enqueueRevision(async () => {
-      if (!saveRef.current || typeof operation !== "function") return null;
+    (label, operation) =>
+      enqueueRevision(async () => {
+        if (!saveRef.current || typeof operation !== "function") return null;
 
-      await invoke("start_revision");
-      try {
-        const nextSave = await operation(cloneSave(saveRef.current));
-        if (!nextSave) {
-          await invoke("discard_revision");
-          return null;
+        await invoke("start_revision");
+        try {
+          const nextSave = await operation(cloneSave(saveRef.current));
+          if (!nextSave) {
+            await invoke("discard_revision");
+            return null;
+          }
+
+          const nextSnapshot = cloneSave(nextSave);
+          const entry = {
+            id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+            label: label || t("revision.genericChange"),
+            labelKey:
+              REVISION_LABEL_KEYS.find((key) => t(key) === label) ??
+              (!label ? "revision.genericChange" : null),
+            diff: buildSaveDiff(saveRef.current, nextSnapshot),
+            timestamp: Date.now(),
+          };
+          const nextHistory = {
+            past: [...revisionRef.current.past, entry].slice(-MAX_REVISIONS),
+            future: [],
+          };
+          revisionRef.current = nextHistory;
+          setRevisionState(nextHistory);
+          saveRef.current = nextSnapshot;
+          setSaveState(nextSnapshot);
+          setDirtyState(true);
+          setSaveStatusKey("saveFlow.unsavedStatus");
+          return nextSnapshot;
+        } catch (error) {
+          await invoke("discard_revision").catch(() => undefined);
+          throw error;
         }
-
-        const nextSnapshot = cloneSave(nextSave);
-        const entry = {
-          id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-          label: label || t("revision.genericChange"),
-          labelKey: REVISION_LABEL_KEYS.find(key => t(key) === label) ?? (!label ? "revision.genericChange" : null),
-          diff: buildSaveDiff(saveRef.current, nextSnapshot),
-          timestamp: Date.now(),
-        };
-        const nextHistory = {
-          past: [...revisionRef.current.past, entry].slice(-MAX_REVISIONS),
-          future: [],
-        };
-        revisionRef.current = nextHistory;
-        setRevisionState(nextHistory);
-        saveRef.current = nextSnapshot;
-        setSaveState(nextSnapshot);
-        setDirtyState(true);
-        setSaveStatusKey("saveFlow.unsavedStatus");
-        return nextSnapshot;
-      } catch (error) {
-        await invoke("discard_revision").catch(() => undefined);
-        throw error;
-      }
-    }),
+      }),
     [enqueueRevision, setDirtyState, t],
   );
 
-  const undoRevision = useCallback(() => enqueueRevision(async () => {
-    const { past, future } = revisionRef.current;
-    const latest = past.at(-1);
-    if (!latest || !saveRef.current) return;
+  const undoRevision = useCallback(
+    () =>
+      enqueueRevision(async () => {
+        const { past, future } = revisionRef.current;
+        const latest = past.at(-1);
+        if (!latest || !saveRef.current) return;
 
-    try {
-      const restored = cloneSave(await invoke("undo_revision"));
-      const nextHistory = {
-        past: past.slice(0, -1),
-        future: [latest, ...future].slice(0, MAX_REVISIONS),
-      };
-      revisionRef.current = nextHistory;
-      setRevisionState(nextHistory);
-      saveRef.current = restored;
-      setSaveState(restored);
-      // Child screens keep canvas selections and draft state locally. Remount them
-      // after a restored snapshot so the visible editor always matches Rust bytes.
-      setRevisionEpoch((current) => current + 1);
-      setDirtyState(true);
-      setSaveStatusKey("saveFlow.unsavedStatus");
-    } catch (error) {
-      console.error("Unable to undo the last revision.", error);
-    }
-  }), [enqueueRevision, setDirtyState]);
+        try {
+          const restored = cloneSave(await invoke("undo_revision"));
+          const nextHistory = {
+            past: past.slice(0, -1),
+            future: [latest, ...future].slice(0, MAX_REVISIONS),
+          };
+          revisionRef.current = nextHistory;
+          setRevisionState(nextHistory);
+          saveRef.current = restored;
+          setSaveState(restored);
+          // Child screens keep canvas selections and draft state locally. Remount them
+          // after a restored snapshot so the visible editor always matches Rust bytes.
+          setRevisionEpoch((current) => current + 1);
+          setDirtyState(true);
+          setSaveStatusKey("saveFlow.unsavedStatus");
+        } catch (error) {
+          console.error("Unable to undo the last revision.", error);
+        }
+      }),
+    [enqueueRevision, setDirtyState],
+  );
 
-  const redoRevision = useCallback(() => enqueueRevision(async () => {
-    const { past, future } = revisionRef.current;
-    const next = future.at(0);
-    if (!next || !saveRef.current) return;
+  const redoRevision = useCallback(
+    () =>
+      enqueueRevision(async () => {
+        const { past, future } = revisionRef.current;
+        const next = future.at(0);
+        if (!next || !saveRef.current) return;
 
-    try {
-      const restored = cloneSave(await invoke("redo_revision"));
-      const nextHistory = {
-        past: [...past, next].slice(-MAX_REVISIONS),
-        future: future.slice(1),
-      };
-      revisionRef.current = nextHistory;
-      setRevisionState(nextHistory);
-      saveRef.current = restored;
-      setSaveState(restored);
-      // Child screens keep canvas selections and draft state locally. Remount them
-      // after a restored snapshot so the visible editor always matches Rust bytes.
-      setRevisionEpoch((current) => current + 1);
-      setDirtyState(true);
-      setSaveStatusKey("saveFlow.unsavedStatus");
-    } catch (error) {
-      console.error("Unable to redo the revision.", error);
-    }
-  }), [enqueueRevision, setDirtyState]);
+        try {
+          const restored = cloneSave(await invoke("redo_revision"));
+          const nextHistory = {
+            past: [...past, next].slice(-MAX_REVISIONS),
+            future: future.slice(1),
+          };
+          revisionRef.current = nextHistory;
+          setRevisionState(nextHistory);
+          saveRef.current = restored;
+          setSaveState(restored);
+          // Child screens keep canvas selections and draft state locally. Remount them
+          // after a restored snapshot so the visible editor always matches Rust bytes.
+          setRevisionEpoch((current) => current + 1);
+          setDirtyState(true);
+          setSaveStatusKey("saveFlow.unsavedStatus");
+        } catch (error) {
+          console.error("Unable to redo the revision.", error);
+        }
+      }),
+    [enqueueRevision, setDirtyState],
+  );
 
-  const loadSaveFromPath = useCallback(async (selectedPath, remote = null) => {
-    await revisionQueueRef.current;
-    try {
-      setSaveStatusKey("");
-      setLoading(true);
-      const parsedSave = await invoke("make_save", { path: selectedPath });
-      const loadedSnapshot = cloneSave(parsedSave);
-      saveRef.current = loadedSnapshot;
-      baselineSaveRef.current = cloneSave(loadedSnapshot);
-      setSaveState(loadedSnapshot);
-      // A newly opened file is a new editing session. Rebuild all routed screens
-      // so no page keeps a draft or canvas from the previously opened save.
-      setRevisionEpoch((current) => current + 1);
-      resetRevisions();
-      const name = await basename(selectedPath);
-      setSaveName(name);
-      setCurrentFile({ path: selectedPath, remote });
-      setRecentFiles(rememberRecentFile(selectedPath, name, remote));
-      if (parsedSave.compatibility_repair_applied) {
-        setSaveStatusKey("saveFlow.compatibilityRepairedStatus");
-        setOpenSaveDialog("compatibility-repair");
-      } else {
-        setSaveStatusKey("saveFlow.loadedStatus");
+  const loadSaveFromPath = useCallback(
+    async (selectedPath, remote = null) => {
+      await revisionQueueRef.current;
+      try {
+        setSaveStatusKey("");
+        setLoading(true);
+        const parsedSave = await invoke("make_save", { path: selectedPath });
+        const loadedSnapshot = cloneSave(parsedSave);
+        saveRef.current = loadedSnapshot;
+        baselineSaveRef.current = cloneSave(loadedSnapshot);
+        setSaveState(loadedSnapshot);
+        // A newly opened file is a new editing session. Rebuild all routed screens
+        // so no page keeps a draft or canvas from the previously opened save.
+        setRevisionEpoch((current) => current + 1);
+        resetRevisions();
+        const name = await basename(selectedPath);
+        setSaveName(name);
+        setCurrentFile({ path: selectedPath, remote });
+        setRecentFiles(rememberRecentFile(selectedPath, name, remote));
+        if (parsedSave.compatibility_repair_applied) {
+          setSaveStatusKey("saveFlow.compatibilityRepairedStatus");
+          setOpenSaveDialog("compatibility-repair");
+        } else {
+          setSaveStatusKey("saveFlow.loadedStatus");
+        }
+        setDirtyState(false);
+        return true;
+      } catch (error) {
+        console.error(error);
+        setOpenSaveDialog("error");
+        return false;
+      } finally {
+        setLoading(false);
       }
-      setDirtyState(false);
-      return true;
-    } catch (error) {
-      console.error(error);
-      setOpenSaveDialog("error");
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  }, [resetRevisions, setDirtyState]);
+    },
+    [resetRevisions, setDirtyState],
+  );
 
   const chooseSaveFile = useCallback(async () => {
     await revisionQueueRef.current;
@@ -277,15 +337,18 @@ function App() {
   }, [loadSaveFromPath, t]);
 
   // Recent file, dropped file, restored backup or PS4 download: same unsaved-changes guard.
-  const openPath = useCallback(async (path, remote = null) => {
-    await revisionQueueRef.current;
-    if (dirtyRef.current) {
-      pendingOpenRef.current = () => loadSaveFromPath(path, remote);
-      setOpenSaveDialog("discard");
-      return false;
-    }
-    return loadSaveFromPath(path, remote);
-  }, [loadSaveFromPath]);
+  const openPath = useCallback(
+    async (path, remote = null) => {
+      await revisionQueueRef.current;
+      if (dirtyRef.current) {
+        pendingOpenRef.current = () => loadSaveFromPath(path, remote);
+        setOpenSaveDialog("discard");
+        return false;
+      }
+      return loadSaveFromPath(path, remote);
+    },
+    [loadSaveFromPath],
+  );
 
   const openSave = useCallback(async () => {
     await revisionQueueRef.current;
@@ -319,43 +382,46 @@ function App() {
     }
   }, []);
 
-  const persistSave = useCallback(async (path) => {
-    if (!path || !saveRef.current) return false;
+  const persistSave = useCallback(
+    async (path) => {
+      if (!path || !saveRef.current) return false;
 
-    try {
-      setLoading(true);
-      await invoke("save", { path });
-      baselineSaveRef.current = cloneSave(saveRef.current);
-      setSaveStatusKey("saveFlow.savedStatus");
-      const savedName = await basename(path);
-      setSaveName(savedName);
-      // Saving elsewhere detaches the session from its PS4 origin.
-      setCurrentFile((previous) => {
-        const remote = previous?.path === path ? previous.remote ?? null : null;
-        setRecentFiles(rememberRecentFile(path, savedName, remote));
-        return { path, remote };
-      });
-      setDirtyState(false);
-      setPendingSavePath("");
-      setOpenSaveDialog("save-complete");
+      try {
+        setLoading(true);
+        await invoke("save", { path });
+        baselineSaveRef.current = cloneSave(saveRef.current);
+        setSaveStatusKey("saveFlow.savedStatus");
+        const savedName = await basename(path);
+        setSaveName(savedName);
+        // Saving elsewhere detaches the session from its PS4 origin.
+        setCurrentFile((previous) => {
+          const remote = previous?.path === path ? (previous.remote ?? null) : null;
+          setRecentFiles(rememberRecentFile(path, savedName, remote));
+          return { path, remote };
+        });
+        setDirtyState(false);
+        setPendingSavePath("");
+        setOpenSaveDialog("save-complete");
 
-      if (closeAfterSaveRef.current) {
+        if (closeAfterSaveRef.current) {
+          closeAfterSaveRef.current = false;
+          setExitRequested(false);
+          await closeApplication();
+        }
+        return true;
+      } catch (error) {
+        console.error(error);
         closeAfterSaveRef.current = false;
-        setExitRequested(false);
-        await closeApplication();
+        setPendingSavePath("");
+        setSaveStatusKey("saveFlow.unsavedStatus");
+        setOpenSaveDialog("save-failed");
+        return false;
+      } finally {
+        setLoading(false);
       }
-      return true;
-    } catch (error) {
-      console.error(error);
-      closeAfterSaveRef.current = false;
-      setPendingSavePath("");
-      setSaveStatusKey("saveFlow.unsavedStatus");
-      setOpenSaveDialog("save-failed");
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  }, [closeApplication, setDirtyState]);
+    },
+    [closeApplication, setDirtyState],
+  );
 
   // F10: open a save dropped on the window.
   useEffect(() => {
@@ -378,21 +444,24 @@ function App() {
     };
   }, [openPath]);
 
-  const saveChanges = useCallback(async ({ closeAfterSave = false } = {}) => {
-    await revisionQueueRef.current;
-    if (!saveRef.current) return false;
+  const saveChanges = useCallback(
+    async ({ closeAfterSave = false } = {}) => {
+      await revisionQueueRef.current;
+      if (!saveRef.current) return false;
 
-    const path = await dialog.save({
-      title: t("saveFlow.saveTitle"),
-      defaultPath: saveName || "USER_DATA",
-    });
-    if (!path) return false;
+      const path = await dialog.save({
+        title: t("saveFlow.saveTitle"),
+        defaultPath: saveName || "USER_DATA",
+      });
+      if (!path) return false;
 
-    closeAfterSaveRef.current = closeAfterSave;
-    setPendingSavePath(path);
-    setOpenSaveDialog("confirm-save");
-    return true;
-  }, [saveName, t]);
+      closeAfterSaveRef.current = closeAfterSave;
+      setPendingSavePath(path);
+      setOpenSaveDialog("confirm-save");
+      return true;
+    },
+    [saveName, t],
+  );
 
   const discardAndClose = useCallback(async () => {
     await revisionQueueRef.current;
@@ -443,7 +512,11 @@ function App() {
         return;
       }
 
-      if (!isEditableTarget(event.target) && primaryModifier && (key === "z" || event.code === "KeyZ")) {
+      if (
+        !isEditableTarget(event.target) &&
+        primaryModifier &&
+        (key === "z" || event.code === "KeyZ")
+      ) {
         event.preventDefault();
         if (!event.repeat) {
           if (event.shiftKey) void redoRevision();
@@ -452,7 +525,11 @@ function App() {
         return;
       }
 
-      if (!isEditableTarget(event.target) && primaryModifier && (key === "y" || event.code === "KeyY")) {
+      if (
+        !isEditableTarget(event.target) &&
+        primaryModifier &&
+        (key === "y" || event.code === "KeyY")
+      ) {
         event.preventDefault();
         if (!event.repeat) void redoRevision();
         return;
@@ -662,23 +739,32 @@ function App() {
           onOpenSave={openSave}
           onSaveChanges={saveChanges}
           onShowRevisions={() => setRevisionPanelOpen(true)}
-          fileMenu={(
+          fileMenu={
             <FileMenu
               recentFiles={recentFiles}
               hasSave={Boolean(save)}
               hasPath={Boolean(currentFile?.path)}
-              onOpenRecent={(entry) => void openPath(entry.path, entry.remote ?? null).then((opened) => {
-                if (opened === false && !dirtyRef.current) setRecentFiles(forgetRecentFile(entry.path));
-              })}
+              onOpenRecent={(entry) =>
+                void openPath(entry.path, entry.remote ?? null).then((opened) => {
+                  if (opened === false && !dirtyRef.current)
+                    setRecentFiles(forgetRecentFile(entry.path));
+                })
+              }
               onClearRecent={() => setRecentFiles(clearRecentFiles())}
               onBackups={() => setToolDialog("backups")}
               onPs4={() => setToolDialog("ps4")}
               onShortcuts={() => setToolDialog("shortcuts")}
             />
-          )}
+          }
         />
         <ImagesProvider>
-          <Main key={`save-revision-${revisionEpoch}`} save={save} setSave={commitEditorMutation} loading={loading} currentPath={currentFile?.path ?? ""} />
+          <Main
+            key={`save-revision-${revisionEpoch}`}
+            save={save}
+            setSave={commitEditorMutation}
+            loading={loading}
+            currentPath={currentFile?.path ?? ""}
+          />
         </ImagesProvider>
       </Router>
     </div>

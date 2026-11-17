@@ -3,16 +3,7 @@ import useDraw from "../../utils/useDraw";
 import ShapeSelector from "../../components/ShapeSelector";
 import { ItemsContext } from "../../context/itemsContext";
 
-function EquippedGem({
-  gem,
-  shape,
-  setSelected,
-  setRef,
-  isStorage,
-  article,
-  setArticle,
-  index,
-}) {
+function EquippedGem({ gem, shape, setSelected, setRef, isStorage, article, setArticle, index }) {
   const canvasRef = useRef();
   const renderTokenRef = useRef(0);
   const { getGemPath, getUnique, loadImage } = useDraw();

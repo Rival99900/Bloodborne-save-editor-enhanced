@@ -1,0 +1,85 @@
+/* Save-protection dialog shown before closing with unsaved edits */
+.unsaved-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(5px);
+}
+
+.unsaved-dialog__card {
+  width: min(100%, 33rem);
+  border: 1px solid rgba(226, 195, 125, 0.5);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  background: linear-gradient(145deg, rgba(22, 22, 25, 0.99), rgba(7, 8, 10, 0.98));
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.78);
+}
+
+.unsaved-dialog__eyebrow {
+  color: var(--color-gold);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.unsaved-dialog__card h2 {
+  margin-top: 0.45rem;
+  color: var(--color-text);
+  font-size: clamp(1.45rem, 4vw, 2rem);
+  font-weight: 400;
+}
+
+.unsaved-dialog__card p {
+  margin-top: 0.7rem;
+  color: #c9c1b4;
+  font-family: var(--font-ui);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.unsaved-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+
+  button {
+    min-height: 2.55rem;
+    border: 1px solid rgba(229, 220, 199, 0.32);
+    padding: 0.45rem 0.85rem;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--color-text);
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .unsaved-dialog__discard {
+    border-color: rgba(211, 122, 106, 0.56);
+    color: #f0c6bc;
+  }
+
+  .unsaved-dialog__save {
+    border-color: var(--color-gold);
+    background: linear-gradient(135deg, rgba(160, 113, 43, 0.78), rgba(215, 173, 92, 0.46));
+    color: #fff5e1;
+  }
+
+  button:disabled {
+    cursor: wait;
+    opacity: 0.62;
+  }
+}
+
+@media (max-width: 580px) {
+  .unsaved-dialog__actions button {
+    width: 100%;
+  }
+}

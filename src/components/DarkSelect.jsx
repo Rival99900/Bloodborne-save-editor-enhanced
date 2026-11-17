@@ -13,16 +13,19 @@ function DarkSelect({
   renderOption,
 }) {
   const normalizedOptions = useMemo(
-    () => options.map((option, index) => (
-      typeof option === "object" ? option : { label: String(option), value: index }
-    )),
+    () =>
+      options.map((option, index) =>
+        typeof option === "object" ? option : { label: String(option), value: index },
+      ),
     [options],
   );
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
   const optionRefs = useRef([]);
   const listboxId = useId();
-  const selectedIndex = normalizedOptions.findIndex((option) => String(option.value) === String(value));
+  const selectedIndex = normalizedOptions.findIndex(
+    (option) => String(option.value) === String(value),
+  );
   const selectedOption = selectedIndex >= 0 ? normalizedOptions[selectedIndex] : null;
   const [activeIndex, setActiveIndex] = useState(Math.max(0, selectedIndex));
   const { refs, floatingStyles } = useFloating({
@@ -123,44 +126,53 @@ function DarkSelect({
           >
             {normalizedOptions.map((option, index) => (
               <Fragment key={`${option.value}-${index}`}>
-              {option.group && (index === 0 || normalizedOptions[index - 1].group !== option.group) ? (
-                <div className="dark-select__group" role="presentation">{option.group}</div>
-              ) : null}
-              <button
-                ref={(element) => { optionRefs.current[index] = element; }}
-                className="dark-select__option"
-                key={`${option.value}-${index}`}
-                type="button"
-                role="option"
-                aria-selected={String(option.value) === String(value)}
-                tabIndex={index === activeIndex ? 0 : -1}
-                onClick={() => choose(option)}
-                onKeyDown={(event) => {
-                  if (event.key === "ArrowDown") {
-                    event.preventDefault();
-                    moveActive(index + 1);
-                  } else if (event.key === "ArrowUp") {
-                    event.preventDefault();
-                    moveActive(index - 1);
-                  } else if (event.key === "Home") {
-                    event.preventDefault();
-                    moveActive(0);
-                  } else if (event.key === "End") {
-                    event.preventDefault();
-                    moveActive(normalizedOptions.length - 1);
-                  } else if (event.key === "Escape") {
-                    event.preventDefault();
-                    closePicker(true);
-                  }
-                }}
-              >
-                {renderOption?.(option, String(option.value) === String(value)) ?? (
-                  <>
-                    <span>{option.label}</span>
-                    {String(option.value) === String(value) ? <span className="dark-select__selected" aria-hidden="true">✓</span> : null}
-                  </>
-                )}
-              </button>
+                {option.group &&
+                (index === 0 || normalizedOptions[index - 1].group !== option.group) ? (
+                  <div className="dark-select__group" role="presentation">
+                    {option.group}
+                  </div>
+                ) : null}
+                <button
+                  ref={(element) => {
+                    optionRefs.current[index] = element;
+                  }}
+                  className="dark-select__option"
+                  key={`${option.value}-${index}`}
+                  type="button"
+                  role="option"
+                  aria-selected={String(option.value) === String(value)}
+                  tabIndex={index === activeIndex ? 0 : -1}
+                  onClick={() => choose(option)}
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowDown") {
+                      event.preventDefault();
+                      moveActive(index + 1);
+                    } else if (event.key === "ArrowUp") {
+                      event.preventDefault();
+                      moveActive(index - 1);
+                    } else if (event.key === "Home") {
+                      event.preventDefault();
+                      moveActive(0);
+                    } else if (event.key === "End") {
+                      event.preventDefault();
+                      moveActive(normalizedOptions.length - 1);
+                    } else if (event.key === "Escape") {
+                      event.preventDefault();
+                      closePicker(true);
+                    }
+                  }}
+                >
+                  {renderOption?.(option, String(option.value) === String(value)) ?? (
+                    <>
+                      <span>{option.label}</span>
+                      {String(option.value) === String(value) ? (
+                        <span className="dark-select__selected" aria-hidden="true">
+                          ✓
+                        </span>
+                      ) : null}
+                    </>
+                  )}
+                </button>
               </Fragment>
             ))}
           </div>

@@ -22,15 +22,19 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
   useEffect(() => {
     setHoverIndex(null);
     const normalizedSearch = search.trim().toLocaleLowerCase();
-    const includesSearch = (value) => String(value ?? "").toLocaleLowerCase().includes(normalizedSearch);
+    const includesSearch = (value) =>
+      String(value ?? "")
+        .toLocaleLowerCase()
+        .includes(normalizedSearch);
     setReplacements(
       normalizedSearch
-        ? back.filter((item) => (
-            includesSearch(item.info?.item_name)
-            || includesSearch(item.info?.item_desc)
-            || includesSearch(item.sourceLabel)
-            || (item.searchTerms ?? []).some(includesSearch)
-          ))
+        ? back.filter(
+            (item) =>
+              includesSearch(item.info?.item_name) ||
+              includesSearch(item.info?.item_desc) ||
+              includesSearch(item.sourceLabel) ||
+              (item.searchTerms ?? []).some(includesSearch),
+          )
         : back,
     );
   }, [back, search]);
@@ -80,11 +84,17 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
           onChange={(event) => setSearch(event.target.value)}
           value={search}
           type="search"
-          placeholder={t(`inventory.searchCatalogFor.${type === "weapon" || type === "armor" ? type : "item"}`)}
+          placeholder={t(
+            `inventory.searchCatalogFor.${type === "weapon" || type === "armor" ? type : "item"}`,
+          )}
         />
       </label>
 
-      <div className="catalog-picker__results" role="listbox" aria-label={t("inventory.matchingItems")}>
+      <div
+        className="catalog-picker__results"
+        role="listbox"
+        aria-label={t("inventory.matchingItems")}
+      >
         <div
           id="hoverReplacement"
           style={{
@@ -112,7 +122,9 @@ function SearchAllitems({ type, onChange, title, variant = "add" }) {
             tabIndex={0}
           />
         ))}
-        {!replacements.length ? <p className="catalog-picker__empty">{t("inventory.noMatchingItem")}</p> : null}
+        {!replacements.length ? (
+          <p className="catalog-picker__empty">{t("inventory.noMatchingItem")}</p>
+        ) : null}
       </div>
     </section>
   );

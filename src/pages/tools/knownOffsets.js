@@ -10,9 +10,13 @@ const KNOWN_OFFSETS = new Map([
 
 for (const boss of bosses) {
   for (const flag of boss.flags ?? []) {
-    const label = flag._comment === "mp" ? `Boss area multiplayer: ${boss.name}` : `Boss: ${boss.name}`;
+    const label =
+      flag._comment === "mp" ? `Boss area multiplayer: ${boss.name}` : `Boss: ${boss.name}`;
     const previous = KNOWN_OFFSETS.get(flag.rel_offset);
-    KNOWN_OFFSETS.set(flag.rel_offset, previous && !previous.includes(boss.name) ? `${previous} / ${boss.name}` : label);
+    KNOWN_OFFSETS.set(
+      flag.rel_offset,
+      previous && !previous.includes(boss.name) ? `${previous} / ${boss.name}` : label,
+    );
   }
 }
 

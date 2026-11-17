@@ -2,7 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { useLocalization } from "../i18n/localization";
 
 // "File" menu next to Open save (F9, F10, F11, F12).
-function FileMenu({ recentFiles, hasSave, hasPath, onOpenRecent, onClearRecent, onBackups, onPs4, onShortcuts }) {
+function FileMenu({
+  recentFiles,
+  hasSave,
+  hasPath,
+  onOpenRecent,
+  onClearRecent,
+  onBackups,
+  onPs4,
+  onShortcuts,
+}) {
   const { t } = useLocalization();
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
@@ -47,25 +56,48 @@ function FileMenu({ recentFiles, hasSave, hasPath, onOpenRecent, onClearRecent, 
             <p className="file-menu__empty">{t("fileMenu.noRecent")}</p>
           ) : (
             recentFiles.map((entry) => (
-              <button key={entry.path} type="button" role="menuitem" className="file-menu__item" title={entry.path} onClick={run(() => onOpenRecent(entry))}>
+              <button
+                key={entry.path}
+                type="button"
+                role="menuitem"
+                className="file-menu__item"
+                title={entry.path}
+                onClick={run(() => onOpenRecent(entry))}
+              >
                 <span>{entry.name}</span>
                 <small>{entry.remote ? `PS4 · ${entry.remote.path}` : entry.path}</small>
               </button>
             ))
           )}
           {recentFiles.length ? (
-            <button type="button" role="menuitem" className="file-menu__item file-menu__item--quiet" onClick={run(onClearRecent)}>
+            <button
+              type="button"
+              role="menuitem"
+              className="file-menu__item file-menu__item--quiet"
+              onClick={run(onClearRecent)}
+            >
               {t("fileMenu.clearRecent")}
             </button>
           ) : null}
           <hr />
-          <button type="button" role="menuitem" className="file-menu__item" disabled={!hasSave || !hasPath} onClick={run(onBackups)}>
+          <button
+            type="button"
+            role="menuitem"
+            className="file-menu__item"
+            disabled={!hasSave || !hasPath}
+            onClick={run(onBackups)}
+          >
             {t("fileMenu.backups")}
           </button>
           <button type="button" role="menuitem" className="file-menu__item" onClick={run(onPs4)}>
             {t("fileMenu.ps4")}
           </button>
-          <button type="button" role="menuitem" className="file-menu__item" onClick={run(onShortcuts)}>
+          <button
+            type="button"
+            role="menuitem"
+            className="file-menu__item"
+            onClick={run(onShortcuts)}
+          >
             {t("fileMenu.shortcuts")}
           </button>
         </div>

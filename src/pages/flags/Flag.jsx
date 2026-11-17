@@ -5,7 +5,17 @@ import { SaveContext } from "../../context/context";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import StatusDialog from "../../components/StatusDialog";
 
-function Flag({ label, offset, values = [], masks = null, info, impact, warning = "", category = "Known flag", isMask = false }) {
+function Flag({
+  label,
+  offset,
+  values = [],
+  masks = null,
+  info,
+  impact,
+  warning = "",
+  category = "Known flag",
+  isMask = false,
+}) {
   const { t } = useLocalization();
   const { setSave } = useContext(SaveContext);
   const [isApplying, setIsApplying] = useState(false);
@@ -51,9 +61,11 @@ function Flag({ label, offset, values = [], masks = null, info, impact, warning 
         <StatusDialog
           title={label}
           tone={notice.tone}
-          description={notice.tone === "error"
-            ? t("flags.card.applyFailed", { error: notice.error })
-            : t("flags.card.applied")}
+          description={
+            notice.tone === "error"
+              ? t("flags.card.applyFailed", { error: notice.error })
+              : t("flags.card.applied")
+          }
           closeLabel={t("saveFlow.close")}
           onClose={() => setNotice(null)}
         />
@@ -71,28 +83,44 @@ function Flag({ label, offset, values = [], masks = null, info, impact, warning 
         />
       ) : null}
       <article className="flag-card">
-      <div className="flag-card__content">
-        <span className="flag-card__category">{category}</span>
-        <h2>{label}</h2>
-        <p>{info}</p>
-        {expanded ? (
-          <div className="flag-card__details">
-            <p><strong>{t("flags.card.whatChanges")}</strong> {impact}</p>
-            {warning ? <p><strong>{t("flags.card.careful")}</strong> {warning}</p> : null}
-            <p className="flag-card__technical">{t("flags.card.bytePattern")} {masks
-              ? masks.map((entry) => `${entry.offset} & ${entry.mask}`).join(" · ")
-              : values.join(" · ")}</p>
-          </div>
-        ) : null}
-      </div>
+        <div className="flag-card__content">
+          <span className="flag-card__category">{category}</span>
+          <h2>{label}</h2>
+          <p>{info}</p>
+          {expanded ? (
+            <div className="flag-card__details">
+              <p>
+                <strong>{t("flags.card.whatChanges")}</strong> {impact}
+              </p>
+              {warning ? (
+                <p>
+                  <strong>{t("flags.card.careful")}</strong> {warning}
+                </p>
+              ) : null}
+              <p className="flag-card__technical">
+                {t("flags.card.bytePattern")}{" "}
+                {masks
+                  ? masks.map((entry) => `${entry.offset} & ${entry.mask}`).join(" · ")
+                  : values.join(" · ")}
+              </p>
+            </div>
+          ) : null}
+        </div>
 
-      <div className="flag-card__actions">
-        <button className="flag-card__details-button" onClick={() => setExpanded((value) => !value)}>
-          {expanded ? t("flags.card.hideDetails") : t("flags.card.showDetails")}
-        </button>
-        <button className="buttonBg flag-card__apply" onClick={() => setConfirmOpen(true)} disabled={isApplying || (masks !== null && masks.length === 0)}>
-          {isApplying ? t("flags.card.applying") : t("flags.card.apply")}
-        </button>
+        <div className="flag-card__actions">
+          <button
+            className="flag-card__details-button"
+            onClick={() => setExpanded((value) => !value)}
+          >
+            {expanded ? t("flags.card.hideDetails") : t("flags.card.showDetails")}
+          </button>
+          <button
+            className="buttonBg flag-card__apply"
+            onClick={() => setConfirmOpen(true)}
+            disabled={isApplying || (masks !== null && masks.length === 0)}
+          >
+            {isApplying ? t("flags.card.applying") : t("flags.card.apply")}
+          </button>
         </div>
       </article>
     </>

@@ -624,7 +624,7 @@ impl Inventory {
 }
 
 pub fn get_info_item(id: u32, _resources_path: &PathBuf) -> Result<(ItemInfo, ArticleType), Error> {
-    let items: Value = serde_json::from_str(include_str!("../../resources/items.json")).unwrap();
+    let items: &Value = super::catalogs::items();
     let items = items.as_object().unwrap();
 
     for (category, category_items) in items {
@@ -653,7 +653,7 @@ pub fn get_info_armor(
     id: u32,
     _resources_path: &PathBuf,
 ) -> Result<(ItemInfo, ArticleType), Error> {
-    let armors: Value = serde_json::from_str(include_str!("../../resources/armors.json")).unwrap();
+    let armors: &Value = super::catalogs::armors();
     let armors = armors.as_object().unwrap();
 
     if let Some(found) = armors.keys().find(|x| x.parse::<u32>().unwrap() == id) {
@@ -674,33 +674,47 @@ pub fn get_info_armor(
 /// Whether a weapon can be reinforced or re-imprinted (v0.7.0). NPC-only
 /// "Bloody" variants (x80000) and catalogue entries without a durability, such
 /// as Adella's End-Quest Dagger, have no +1 to +10 or Uncanny/Lost versions.
+/// Weapon family (id / 100000) of the Loch Shield.
+pub const LOCH_SHIELD_FAMILY: u32 = 191;
+
 pub fn weapon_is_upgradable(second_part: u32) -> bool {
     let variant = (second_part % 100_000) - (second_part % 10_000);
     if variant == 80_000 {
         return false;
     }
+    // Loch Shield: a reinforced Loch Shield disappears in game.
+    if second_part / 100_000 == LOCH_SHIELD_FAMILY {
+        return false;
+    }
     let base = second_part - (second_part % 10_000);
-    let weapons: Value = serde_json::from_str(include_str!("../../resources/weapons.json")).unwrap();
+    let weapons: &Value = super::catalogs::weapons();
     weapons
         .as_object()
         .unwrap()
         .values()
         .filter_map(|hand| hand.get(base.to_string()))
-        .any(|entry| entry.get("durability").is_some_and(|durability| !durability.is_null()))
+        .any(|entry| {
+            entry
+                .get("durability")
+                .is_some_and(|durability| !durability.is_null())
+        })
 }
 
 /// Catalogue id (+0) of a weapon variant, if it exists.
 pub fn weapon_variant_exists(base_id: u32) -> bool {
-    let weapons: Value = serde_json::from_str(include_str!("../../resources/weapons.json")).unwrap();
-    weapons.as_object().unwrap().values().any(|hand| hand.get(base_id.to_string()).is_some())
+    let weapons: &Value = super::catalogs::weapons();
+    weapons
+        .as_object()
+        .unwrap()
+        .values()
+        .any(|hand| hand.get(base_id.to_string()).is_some())
 }
 
 pub fn get_info_weapon(
     id: u32,
     _resources_path: &PathBuf,
 ) -> Result<(ItemInfo, ArticleType), Error> {
-    let weapons: Value =
-        serde_json::from_str(include_str!("../../resources/weapons.json")).unwrap();
+    let weapons: &Value = super::catalogs::weapons();
     let weapons = weapons.as_object().unwrap();
 
     let weapon_mods = WeaponMods::try_from(id)?;
@@ -1038,9 +1052,7 @@ mod tests {
         let bytes_before = save.file.bytes.clone();
         let offsets_before = save.file.offsets.clone();
 
-        let result = save
-            .inventory
-            .add_item(&mut save.file, 0x460, 1, false);
+        let result = save.inventory.add_item(&mut save.file, 0x460, 1, false);
 
         assert!(result.is_err());
         assert_eq!(save.file.bytes, bytes_before);

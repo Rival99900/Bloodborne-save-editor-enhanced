@@ -71,7 +71,15 @@ pub fn rune_source_for_effect(effect: u32) -> Option<u32> {
 /// True when `source` is a Caryll Rune item id rather than a Gem one.
 pub fn is_rune_source(source: u32) -> bool {
     let id = source & !SOURCE_FLAG;
-    (100_000..=104_999).contains(&id) || (200_000..=200_099).contains(&id) || (1_100_000..=1_104_999).contains(&id)
+    (100_000..=104_999).contains(&id)
+        || (200_000..=200_099).contains(&id)
+        || (1_100_000..=1_104_999).contains(&id)
+}
+
+/// Gem item ids the game names "?GemName?" (150000 to 150002 in real saves):
+/// never copied to a new Gem.
+pub fn is_unnamed_gem_source(source: u32) -> bool {
+    (150_000..=150_099).contains(&(source & !SOURCE_FLAG))
 }
 
 /// A Gem item id seen in real saves for each shape byte, used when the save
@@ -93,7 +101,9 @@ impl Upgrade {
     pub fn set_source(&mut self, file_data: &mut FileData, source: u32) -> Result<(), Error> {
         let offset = file_data
             .find_upgrade_offset(self.id)
-            .ok_or(Error::CustomError("Failed to find the upgrade in the file data."))?;
+            .ok_or(Error::CustomError(
+                "Failed to find the upgrade in the file data.",
+            ))?;
         file_data.bytes[offset + 4..offset + 8].copy_from_slice(&source.to_le_bytes());
         let id = self.id.to_le_bytes();
         for (start, end) in [file_data.offsets.inventory, file_data.offsets.storage] {
@@ -150,8 +160,7 @@ impl Upgrade {
         new_value: u32,
         value_index: usize,
     ) -> Result<(), Error> {
-        let upgrades_json: Value =
-            serde_json::from_str(include_str!("../../resources/upgrades.json")).unwrap();
+        let upgrades_json: &Value = super::catalogs::upgrades();
 
         let upgrade_offset = match file_data.find_upgrade_offset(self.id) {
             Some(offset) => offset,
@@ -286,7 +295,9 @@ impl Upgrade {
             file_data.bytes[i] = new_upgrade_bytes[i - 8 - upgrade_offset];
         }
         let source = match self.upgrade_type {
-            UpgradeType::Rune => rune_source_for_effect(self.effects[0].0).unwrap_or(SOURCE_FLAG | 100_001),
+            UpgradeType::Rune => {
+                rune_source_for_effect(self.effects[0].0).unwrap_or(SOURCE_FLAG | 100_001)
+            }
             UpgradeType::Gem => default_gem_source(0x01),
         };
         self.set_source(file_data, source)
@@ -295,8 +306,7 @@ impl Upgrade {
 
 pub fn parse_upgrades(file_data: &FileData) -> HashMap<u32, (Upgrade, UpgradeType)> {
     let mut upgrades = HashMap::new();
-    let upgrades_json: Value =
-        serde_json::from_str(include_str!("../../resources/upgrades.json")).unwrap();
+    let upgrades_json: &Value = super::catalogs::upgrades();
 
     let (start, end) = file_data.offsets.upgrades;
 
@@ -557,8 +567,7 @@ mod tests {
 
     #[test]
     fn unknown_effect_keeps_its_original_slot() {
-        let mut file_data =
-            FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
+        let mut file_data = FileData::build("saves/testsave0", PathBuf::from("resources")).unwrap();
         let upgrade_offset = file_data.offsets.upgrades.0;
         let unknown_effect = 0xDEAD_BEEF_u32;
         file_data.bytes[upgrade_offset + 20..upgrade_offset + 24]

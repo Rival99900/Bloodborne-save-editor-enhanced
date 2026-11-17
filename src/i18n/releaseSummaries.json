@@ -79,6 +79,22 @@
       "sv": "Konsekvenskontroll, massåtgärder, troféer, jämförelse av sparningar, säkerhetskopieringshistorik och PS4/PS5 via FTP. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
       "tr": "Tutarlılık denetimi, toplu işlemler, kupalar, kayıt karşılaştırma, yedek geçmişi ve FTP ile PS4/PS5. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
       "pt-PT": "Verificação de coerência, ações em lote, troféus, comparação de gravações, histórico de cópias e PS4/PS5 por FTP. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+    },
+    "0.7.5": {
+      "en": "Lamp control, infinite Blood Vials and Quicksilver Bullets, Gem slot bulk actions, Inventory/Storage export and import (with Gems), Gem finder, full save comparison and faster save loading. See the GitHub release for details.",
+      "fr": "Contrôle des lanternes, fioles et balles infinies, ouverture groupée des emplacements de gemmes, export et import de l’Inventaire et du Stockage (avec gemmes), recherche de gemmes, comparaison complète et chargement plus rapide. Détails dans la release GitHub.",
+      "it": "Controllo delle lanterne, fiale e proiettili infiniti, apertura di gruppo degli slot gemme, esportazione e importazione di Inventario e Deposito (con gemme), ricerca gemme, confronto completo e caricamento più rapido. Dettagli nella release su GitHub.",
+      "de": "Laternensteuerung, unendliche Phiolen und Kugeln, Sammelöffnung der Edelsteinplätze, Export und Import von Inventar und Lager (mit Edelsteinen), Edelsteinsuche, vollständiger Vergleich und schnelleres Laden. Details im GitHub-Release.",
+      "es": "Control de faroles, viales y balas infinitos, apertura en bloque de huecos de gemas, exportación e importación del Inventario y el Almacén (con gemas), buscador de gemas, comparación completa y carga más rápida. Detalles en la versión de GitHub.",
+      "nl": "Lantaarnbeheer, oneindige flacons en kogels, edelsteensleuven in bulk openen, export en import van Inventaris en Opslag (met edelstenen), edelsteenzoeker, volledige vergelijking en sneller laden. Details in de GitHub-release.",
+      "pl": "Sterowanie latarniami, nieskończone fiolki i kule, zbiorcze otwieranie gniazd klejnotów, eksport i import ekwipunku oraz magazynu (z klejnotami), wyszukiwarka klejnotów, pełne porównanie i szybsze wczytywanie. Szczegóły w wydaniu na GitHubie.",
+      "ru": "Управление фонарями, бесконечные флаконы и пули, групповое открытие ячеек самоцветов, экспорт и импорт инвентаря и хранилища (с самоцветами), поиск самоцветов, полное сравнение и более быстрая загрузка. Подробности в релизе на GitHub.",
+      "da": "Lanternestyring, uendelige ampuller og kugler, åbning af ædelstenspladser i bulk, eksport og import af inventar og lager (med ædelsten), ædelstenssøgning, fuld sammenligning og hurtigere indlæsning. Detaljer i GitHub-udgivelsen.",
+      "nb": "Lyktekontroll, uendelige ampuller og kuler, åpning av edelsteinsplasser samlet, eksport og import av inventar og lager (med edelsteiner), edelsteinsøk, full sammenligning og raskere lasting. Detaljer i GitHub-utgivelsen.",
+      "fi": "Lyhtyjen hallinta, loputtomat ampullit ja luodit, jalokivipaikkojen avaus kerralla, varusteiden ja varaston vienti ja tuonti (jalokivineen), jalokivihaku, täysi vertailu ja nopeampi lataus. Lisätiedot GitHub-julkaisussa.",
+      "sv": "Lyktstyrning, oändliga ampuller och kulor, öppning av ädelstensplatser i bulk, export och import av inventarium och förråd (med ädelstenar), ädelstenssök, fullständig jämförelse och snabbare inläsning. Detaljer i GitHub-utgåvan.",
+      "tr": "Fener kontrolü, sonsuz şişe ve mermi, mücevher yuvalarını toplu açma, envanter ve depo dışa/içe aktarma (mücevherlerle), mücevher arama, tam karşılaştırma ve daha hızlı yükleme. Ayrıntılar GitHub sürümünde.",
+      "pt-PT": "Controlo de lanternas, frascos e balas infinitos, abertura em massa de ranhuras de gemas, exportação e importação do Inventário e do Armazém (com gemas), pesquisa de gemas, comparação completa e carregamento mais rápido. Detalhes na versão do GitHub."
     }
   }
 }

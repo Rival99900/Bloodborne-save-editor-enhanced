@@ -18,13 +18,23 @@ function StatusDialog({ title, description, closeLabel, tone = "success", onClos
         aria-describedby={description ? descriptionId : undefined}
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <p className={`confirm-dialog__eyebrow status-dialog__eyebrow status-dialog__eyebrow--${tone}`}>
+        <p
+          className={`confirm-dialog__eyebrow status-dialog__eyebrow status-dialog__eyebrow--${tone}`}
+        >
           {tone === "error" ? "!" : "✓"}
         </p>
         <h2 id={titleId}>{title}</h2>
-        {description ? <p id={descriptionId} className="confirm-dialog__description">{description}</p> : null}
+        {description ? (
+          <p id={descriptionId} className="confirm-dialog__description">
+            {description}
+          </p>
+        ) : null}
         <div className="confirm-dialog__actions">
-          <button className="control-button control-button--primary" type="button" onClick={onClose}>
+          <button
+            className="control-button control-button--primary"
+            type="button"
+            onClick={onClose}
+          >
             {closeLabel}
           </button>
         </div>

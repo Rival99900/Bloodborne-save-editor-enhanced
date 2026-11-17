@@ -20,9 +20,9 @@ function Stat({ stat, setEditedStats, width, disabled = false, borderless = fals
       ? Math.min(maximum, Math.max(0, Math.trunc(numericValue)))
       : 0;
 
-    setEditedStats((previous) => previous.map((entry) => (
-      entry.name === stat.name ? { ...entry, value: nextValue } : entry
-    )));
+    setEditedStats((previous) =>
+      previous.map((entry) => (entry.name === stat.name ? { ...entry, value: nextValue } : entry)),
+    );
   }
 
   return (

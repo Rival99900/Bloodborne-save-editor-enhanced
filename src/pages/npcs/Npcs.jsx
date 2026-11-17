@@ -66,7 +66,9 @@ function Npcs() {
       </p>
 
       <section className="npc-list" aria-label={t("npcs.title")}>
-        {NPCS.map((npc) => <NpcRow key={npc.key} npc={npc} />)}
+        {NPCS.map((npc) => (
+          <NpcRow key={npc.key} npc={npc} />
+        ))}
       </section>
     </div>
   );

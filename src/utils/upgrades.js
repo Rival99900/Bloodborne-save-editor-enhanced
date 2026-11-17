@@ -30,7 +30,14 @@ const RUNE_TIER_LIMITS = {
   moon: 2,
   oedon_writhe: 2,
 };
-const OATH_RUNES = new Set(["beast's_embrace", "corruption", "hunter", "impurity", "milkweed", "radiance"]);
+const OATH_RUNES = new Set([
+  "beast's_embrace",
+  "corruption",
+  "hunter",
+  "impurity",
+  "milkweed",
+  "radiance",
+]);
 const RUNE_ASSET_DIRECTORY = {
   anti_clockwise_metamorphosis: "anti-clockwise_metamorphosis",
 };
@@ -84,9 +91,7 @@ function getRuneFallbackPath(shape) {
 }
 
 function removeRunePrefix(name) {
-  return name
-    .replaceAll(/great_|arcane_|dissipating_|stunning_|clear_|fading_/g, "")
-    .trim();
+  return name.replaceAll(/great_|arcane_|dissipating_|stunning_|clear_|fading_/g, "").trim();
 }
 
 function isCursed(effects = []) {

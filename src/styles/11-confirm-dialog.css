@@ -1,0 +1,60 @@
+/* Shared in-app confirmation for Forge and Flags. */
+.confirm-dialog {
+  position: fixed;
+  z-index: var(--z-confirm);
+  inset: 0;
+  display: grid;
+  padding: clamp(1rem, 3vw, 3rem);
+  place-items: center;
+  background: rgb(0 0 0 / 72%);
+  backdrop-filter: blur(5px);
+}
+
+.confirm-dialog__panel {
+  width: min(100%, 35rem);
+  border: 1px solid #8e7948;
+  background: linear-gradient(145deg, var(--color-surface) 0%, #0b0b0c 100%);
+  box-shadow: 0 1.3rem 4rem rgb(0 0 0 / 65%);
+  padding: clamp(1rem, 3vw, 1.75rem);
+}
+
+.confirm-dialog__eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.confirm-dialog__panel h2 {
+  margin: 0;
+  color: #f1eee6;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.2;
+}
+
+.confirm-dialog__description {
+  margin: 0.85rem 0 1.2rem;
+  color: #d3cec2;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+
+  .control-button {
+    min-width: min(100%, 9rem);
+    white-space: normal;
+  }
+
+  .control-button--danger {
+    border-color: #92575d;
+    background: linear-gradient(135deg, #57252a, #2b1517);
+  }
+}

@@ -1,0 +1,55 @@
+/* F1/F2 consistency check on the Stats page. */
+.save-check {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(226, 195, 125, 0.28);
+  background: rgba(14, 14, 16, 0.72);
+  font-family: var(--font-ui);
+}
+
+.save-check__calc {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.save-check h2 {
+  margin: 0 0 0.2rem;
+  color: var(--color-gold);
+  font-size: 1rem;
+}
+
+.save-check p,
+.save-check li,
+.save-check summary {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.save-check summary {
+  color: var(--color-gold-strong);
+  cursor: pointer;
+}
+
+.save-check ul {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+  padding-left: 1.1rem;
+}
+
+.save-check__issue--warning {
+  color: #e5b38a !important;
+}
+
+.save-check__ok {
+  color: #9fc29a !important;
+}
+
+.save-check__note {
+  font-size: 0.78rem !important;
+}

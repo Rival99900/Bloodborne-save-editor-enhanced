@@ -34,7 +34,9 @@ function ConfirmDialog({
       >
         <p className="confirm-dialog__eyebrow">{t("actions.confirm")}</p>
         <h2 id={titleId}>{title}</h2>
-        <p id={descriptionId} className="confirm-dialog__description">{description}</p>
+        <p id={descriptionId} className="confirm-dialog__description">
+          {description}
+        </p>
         <div className="confirm-dialog__actions">
           <button className="control-button control-button--quiet" onClick={onCancel} autoFocus>
             {cancelLabel ?? t("forge.cancel")}

@@ -1,0 +1,145 @@
+/* F12 console dialog: the file list takes the remaining height and scrolls,
+   so the status and the safety note always stay visible. */
+.ps4-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: min(90vh, 52rem);
+
+  /* Very small windows scroll the whole dialog rather than hiding the note. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  > * {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+
+  > .ps4-dialog__list {
+    flex: 1 1 auto;
+    min-height: 6rem;
+    max-height: none;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.ps4-dialog__path {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1 1 12rem;
+  }
+}
+
+.ps4-dialog__path .tool-row__actions,
+.ps4-dialog .tool-row .tool-row__actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.ps4-dialog__folders {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+
+  .control-button {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.is-active {
+      border-color: rgba(226, 195, 125, 0.75);
+      color: #f1dfb4;
+    }
+  }
+}
+
+.ps4-dialog__send {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ps4-dialog .tool-row.is-readonly {
+  opacity: 0.6;
+}
+
+.ps4-dialog__readonly {
+  justify-self: end;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.ps4-dialog .control-button--danger {
+  border-color: rgba(214, 112, 96, 0.7);
+  color: #f0b4a6;
+}
+
+.ps4-dialog .tool-dialog__note {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(226, 195, 125, 0.18);
+}
+
+@media (max-width: 640px) {
+  .ps4-dialog .tool-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    > :last-child {
+      grid-column: 1 / -1;
+      justify-self: end;
+    }
+  }
+}
+
+.shortcuts-list {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+
+  div {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    align-items: center;
+    font-size: 0.88rem;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
+  kbd {
+    padding: 0.15rem 0.4rem;
+    border: 1px solid rgba(226, 195, 125, 0.35);
+    border-radius: 0.2rem;
+    color: var(--color-gold-strong);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+  }
+}
+
+.npc-research-link {
+  margin: -0.5rem 0 1rem;
+  color: var(--color-muted);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+
+  a {
+    color: var(--color-gold-strong);
+    text-decoration: underline;
+  }
+}

@@ -6,17 +6,15 @@ import SearchAllitems from "./SearchAllitems";
 import { getType } from "../utils/upgrades";
 import { useLocalization } from "../i18n/localization";
 
-function ReplaceScreen({
-  setSelected,
-  selected,
-  setReplaceScreen,
-  isStorage,
-}) {
+function ReplaceScreen({ setSelected, selected, setReplaceScreen, isStorage }) {
   const [replacement, setReplacement] = useState(null);
   const { t } = useLocalization();
   const { setSave } = useContext(SaveContext);
   const itemType = useMemo(() => getType(selected.article_type), [selected.article_type]);
-  const replacementLabel = itemType === "key" || itemType === "chalice" ? t("inventory.item") : t(`inventory.type.${itemType}`);
+  const replacementLabel =
+    itemType === "key" || itemType === "chalice"
+      ? t("inventory.item")
+      : t(`inventory.type.${itemType}`);
 
   function dismiss() {
     setReplaceScreen(false);
@@ -64,16 +62,18 @@ function ReplaceScreen({
       }}
     >
       <section className="replace-dialog__card">
-        <button className="replace-dialog__close" onClick={dismiss} aria-label={t("inventory.closeReplaceLabel")}>
+        <button
+          className="replace-dialog__close"
+          onClick={dismiss}
+          aria-label={t("inventory.closeReplaceLabel")}
+        >
           ×
         </button>
 
         <aside className="replace-dialog__current">
           <span className="replace-dialog__eyebrow">{t("inventory.replacing")}</span>
           <Item item={selected} isSmall={true} />
-          <p>
-            {t("inventory.replaceDescription", { type: replacementLabel })}
-          </p>
+          <p>{t("inventory.replaceDescription", { type: replacementLabel })}</p>
           <footer className="replace-dialog__actions">
             <button onClick={dismiss} id="cancelReplace">
               {t("inventory.cancel")}

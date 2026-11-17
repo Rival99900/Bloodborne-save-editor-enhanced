@@ -1,0 +1,334 @@
+/* Upgrade editor: one native, reference-aligned layout (371 × 495 effects artwork). */
+.upgrade-editor {
+  position: fixed !important;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: clamp(0.75rem, 2vw, 2rem);
+  background: rgba(0, 0, 0, 0.82) !important;
+}
+
+.upgrade-editor__layout {
+  display: grid !important;
+  width: min(100%, 70rem);
+  min-width: 0;
+  grid-template-columns: minmax(23.5rem, 1fr) 23.1875rem;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  padding: clamp(1rem, 3vw, 2.5rem) !important;
+  border: 1px solid rgba(226, 195, 125, 0.38);
+  background: linear-gradient(145deg, rgba(14, 15, 18, 0.98), rgba(4, 5, 7, 0.97));
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.75);
+}
+
+.upgrade-editor__preview {
+  display: flex;
+  min-width: 0;
+  min-height: 31rem;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  > div:first-child > span {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 750;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+.upgrade-editor__art-frame {
+  position: relative;
+  display: grid;
+  width: min(23.4375rem, 100%);
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(229, 203, 145, 0.2);
+  border-radius: 0.35rem;
+  background: url("/assets/gems/gem_bg.webp") center / contain no-repeat;
+  box-shadow: inset 0 0 2rem rgba(0, 0, 0, 0.3);
+}
+
+.upgrade-editor__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.3rem;
+  object-fit: contain;
+}
+
+.upgrade-editor__actions {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  margin-top: 1.25rem;
+
+  button {
+    min-height: 2.5rem;
+    margin-right: 0 !important;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(226, 195, 125, 0.4);
+    background: rgba(14, 14, 16, 0.7);
+    border-radius: 0.22rem;
+    color: var(--color-text);
+
+    /* Same type scale as .control-button (v0.7.0 harmonisation). */
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+
+    &:last-child {
+      border-color: var(--color-gold);
+      background: linear-gradient(135deg, rgba(156, 109, 42, 0.75), rgba(215, 172, 89, 0.42));
+    }
+  }
+}
+
+.upgrade-editor__effects-panel {
+  position: relative;
+  width: 23.1875rem !important;
+  height: 30.9375rem !important;
+  min-width: 23.1875rem;
+  min-height: 30.9375rem;
+  margin: 0 !important;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 23.1875rem 30.9375rem !important;
+  box-shadow: none;
+}
+
+.upgrade-editor__effects-panel--gem {
+  background-image: url("/assets/gems/gem_effects_bg.webp");
+}
+
+.upgrade-editor__effects-panel--rune {
+  background-image: url("/assets/runes/rune_effects_bg.webp");
+}
+
+.upgrade-editor__localized-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: var(--color-muted);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.upgrade-editor__localized-label {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: 1.6rem;
+  padding: 0.05rem 0.15rem;
+  background: rgba(20, 20, 21, 0.92);
+  box-shadow: 0 0 0.28rem 0.16rem rgba(20, 20, 21, 0.92);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upgrade-editor__localized-label--primary {
+  top: 1.45rem;
+  left: 3.3rem;
+  width: 9.75rem;
+}
+
+.upgrade-editor__localized-label--secondary {
+  top: 3.95rem;
+  left: 3.3rem;
+  width: 9.75rem;
+}
+
+.upgrade-editor__localized-label--effects {
+  top: 9.35rem;
+  left: 1.05rem;
+  width: 21.25rem;
+}
+
+.upgrade-editor__localized-labels--rune .upgrade-editor__localized-label--effects {
+  top: 9.35rem;
+}
+
+/* Same box as the Rating label so the value sits on the label's baseline. */
+.upgrade-editor__rating-value {
+  position: absolute;
+  top: 1.45rem;
+  right: 0.9375rem;
+  height: 1.6rem;
+  padding: 0.05rem 0.25rem;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  line-height: 1.5rem;
+}
+
+/* Shape icon inside the empty frame painted in gem_effects_bg.webp. */
+.upgrade-editor__shape-icon {
+  position: absolute;
+  top: 3.95rem;
+  left: 1.05rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  pointer-events: none;
+}
+
+.upgrade-editor__info {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  color: var(--color-muted);
+  font-size: 1.125rem;
+  user-select: none;
+}
+
+/* Left offset is pixel-matched to gem_effects_bg.webp / rune_effects_bg.webp at their
+   native 371x495 size (23.1875rem x 30.9375rem): the "Blood Gem Effects" / "Caryll Rune
+   Effects" title text painted into the artwork starts at x=20px there. This container is
+   at left: 1rem (16px) + the effect input's own 0.25rem left padding = 20px, so the
+   effect list text lines up with that title, not with the "Rating"/"Shape" text (which
+   sits to the right of an icon and is not the right reference). If this ever needs
+   re-measuring, scan the background PNG for the title's leftmost non-background pixel. */
+.upgrade-editor__effects {
+  position: absolute;
+  top: 11.75rem !important;
+  right: 0;
+  bottom: 0.75rem;
+  left: 1rem !important;
+  display: block;
+  width: auto !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  color: var(--color-muted);
+  font-size: 1.125rem;
+  scrollbar-color: var(--color-gold-dim) rgba(0, 0, 0, 0.35);
+  scrollbar-width: thin;
+  user-select: none;
+
+  .effect {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    min-height: 3.125rem;
+    align-items: center;
+
+    > div:first-child,
+    input {
+      min-width: 0;
+      max-width: 100%;
+    }
+  }
+}
+
+.upgrade-editor__effects .effect input,
+.upgrade-editor__info input {
+  display: block;
+  width: 100% !important;
+  height: 2.35rem;
+  overflow: hidden;
+  padding: 0.3rem 0.25rem !important;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  color: var(--color-text) !important;
+  font-family: var(--font-display) !important;
+  font-size: 1.125rem !important;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.2 !important;
+  text-align: left !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upgrade-editor__info input {
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0;
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text);
+  opacity: 1;
+  text-align: right !important;
+  text-indent: 0;
+  cursor: pointer;
+  user-select: text;
+}
+
+.upgrade-editor__effects .effect .line {
+  /* Re-anchored so the divider still spans x=12..360 in the background art (same span as
+     the "Rating"/"Shape"/title dividers) now that the container's own left changed. */
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: -0.25rem !important;
+  width: 21.75rem !important;
+  height: 1px;
+  max-width: none;
+  background: url("/assets/line.webp") center / 100% 1px no-repeat;
+  pointer-events: none;
+}
+
+.upgrade-editor__effects .effect input:focus-visible,
+.upgrade-editor__info input:focus-visible,
+.upgrade-editor__actions input:focus-visible,
+.upgrade-editor__actions button:focus-visible {
+  outline: 2px solid var(--color-gold-strong);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .upgrade-editor {
+    align-items: start;
+  }
+
+  .upgrade-editor__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .upgrade-editor__preview {
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  .upgrade-editor__art-frame {
+    margin-inline: auto;
+  }
+
+  .upgrade-editor__effects-panel {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 440px) {
+  .upgrade-editor {
+    padding: 0.35rem;
+  }
+
+  .upgrade-editor__layout {
+    padding: 0.85rem !important;
+  }
+
+  .upgrade-editor__effects-panel {
+    transform: scale(0.82);
+    transform-origin: top center;
+    margin-bottom: -5.55rem !important;
+  }
+}

@@ -16,7 +16,9 @@ const SHAPE_ICONS = new Set(["radial", "triangle", "waning", "circle", "droplet"
 
 // Icon of a Gem shape from public/assets, or undefined for unknown shapes.
 export function getShapeIconPath(shape) {
-  const normalized = String(shape ?? "").trim().toLowerCase();
+  const normalized = String(shape ?? "")
+    .trim()
+    .toLowerCase();
   return SHAPE_ICONS.has(normalized) ? `/assets/${normalized}.webp` : undefined;
 }
 
@@ -81,7 +83,14 @@ function useDraw() {
     }
   }
 
-  async function drawArticle(ctx, article, img, imgContext, translations, isCurrentRender = () => true) {
+  async function drawArticle(
+    ctx,
+    article,
+    img,
+    imgContext,
+    translations,
+    isCurrentRender = () => true,
+  ) {
     const { x, y } = {
       x: 9,
       y: 6,
@@ -134,9 +143,7 @@ function useDraw() {
       handleChalice(ctx, article);
     }
     if (article.slots) {
-      const openSlots = article.slots.filter(
-        (x) => x.shape !== "Closed"
-      ).length;
+      const openSlots = article.slots.filter((x) => x.shape !== "Closed").length;
       const fullSlots = article.slots.filter((x) => x.gem !== null).length;
       ctx.fillStyle = "#a5a49c";
 
@@ -192,9 +199,7 @@ function useDraw() {
       extra_info: { damage, upgrade_level: upgrade, imprint },
     } = weapon;
     const { physical, blood, arcane, fire, bolt } = damage;
-    const localizedImprint = imprint
-      ? localizeVignetteText(translations, "name", imprint)
-      : "";
+    const localizedImprint = imprint ? localizeVignetteText(translations, "name", imprint) : "";
     const finalName = `${localizedImprint ? localizedImprint + " " : ""}${name}${
       upgrade > 0 ? " +" + upgrade : ""
     }`;
@@ -231,7 +236,13 @@ function useDraw() {
     ctx.fillText(bolt, margin * 7 + 37, 77);
   }
 
-  async function handleUpgrades(ctx, upgrade, { x, y, size }, translations, isCurrentRender = () => true) {
+  async function handleUpgrades(
+    ctx,
+    upgrade,
+    { x, y, size },
+    translations,
+    isCurrentRender = () => true,
+  ) {
     if (upgrade.upgrade_type === "Gem") {
       const {
         effects,
@@ -249,9 +260,10 @@ function useDraw() {
       const runeOriginPrimaryEffect =
         primaryEffect && !nativeGemEffectIds.has(primaryEffectId) ? primaryEffect : undefined;
       const sourceGemName = makeGemName(name, uniqueGem, cursed, source);
-      const finalName = cursed && !uniqueGem
-        ? `${t("vignette.cursedPrefix")} ${localizeVignetteText(translations, "name", name)}`
-        : localizeVignetteText(translations, "name", sourceGemName);
+      const finalName =
+        cursed && !uniqueGem
+          ? `${t("vignette.cursedPrefix")} ${localizeVignetteText(translations, "name", name)}`
+          : localizeVignetteText(translations, "name", sourceGemName);
       const path = getGemPath(
         effects,
         shape,
@@ -261,13 +273,14 @@ function useDraw() {
         primaryEffect?.sourceLabel,
       );
       const thumbnail = await loadImage(path).catch(() =>
-        runeOriginPrimaryEffect ? loadImage(getRuneFallbackPath()).catch(() => undefined) : undefined,
+        runeOriginPrimaryEffect
+          ? loadImage(getRuneFallbackPath()).catch(() => undefined)
+          : undefined,
       );
 
       if (!isCurrentRender()) return;
       ctx.font = "20px Reim";
-      if (thumbnail !== undefined)
-        ctx.drawImage(thumbnail, x, y, x + size, y + size);
+      if (thumbnail !== undefined) ctx.drawImage(thumbnail, x, y, x + size, y + size);
 
       // Set up text
       ctx.shadowBlur = 3;
@@ -331,13 +344,14 @@ function useDraw() {
       );
 
       if (!isCurrentRender()) return;
-      if (thumbnail !== undefined)
-        ctx.drawImage(thumbnail, x, 4.8, x + size, 4.8 + size + 2);
+      if (thumbnail !== undefined) ctx.drawImage(thumbnail, x, 4.8, x + size, 4.8 + size + 2);
     }
   }
 
   function localizeGemShape(shape) {
-    const normalized = String(shape ?? "").trim().toLowerCase();
+    const normalized = String(shape ?? "")
+      .trim()
+      .toLowerCase();
     const keyByShape = {
       radial: "upgradeShape.radial",
       triangle: "upgradeShape.triangle",
@@ -362,7 +376,15 @@ function useDraw() {
     }
   }
 
-  async function drawItem(ctx, item, amount, img, context, translations, isCurrentRender = () => true) {
+  async function drawItem(
+    ctx,
+    item,
+    amount,
+    img,
+    context,
+    translations,
+    isCurrentRender = () => true,
+  ) {
     const { x, y } = {
       x: 9,
       y: 6,
@@ -372,7 +394,10 @@ function useDraw() {
     ctx.font = "18px Reim";
     const { item_name: sourceName, item_img: image, item_desc: sourceNote } = item;
     const name = fitVignetteText(ctx, localizeVignetteText(translations, "name", sourceName));
-    const note = fitVignetteText(ctx, localizeVignetteText(translations, "description", sourceNote));
+    const note = fitVignetteText(
+      ctx,
+      localizeVignetteText(translations, "description", sourceNote),
+    );
 
     // const thumbnail = await loadImage(
     //   "/assets/itemImages/" + image || "empty.webp"
@@ -406,7 +431,9 @@ function useDraw() {
 
   function fitVignetteText(ctx, value, maxWidth = VIGNETTE_TEXT_MAX_WIDTH) {
     maxWidth = Math.min(maxWidth, Math.max(0, ctx.canvas.width - 115));
-    const singleLine = String(value ?? "").replace(/\s+/g, " ").trim();
+    const singleLine = String(value ?? "")
+      .replace(/\s+/g, " ")
+      .trim();
     if (!singleLine || ctx.measureText(singleLine).width <= maxWidth) return singleLine;
 
     const ellipsis = "…";
@@ -414,7 +441,9 @@ function useDraw() {
     let upper = singleLine.length;
     while (lower < upper) {
       const middle = Math.ceil((lower + upper) / 2);
-      if (ctx.measureText(`${singleLine.slice(0, middle).trimEnd()}${ellipsis}`).width <= maxWidth) {
+      if (
+        ctx.measureText(`${singleLine.slice(0, middle).trimEnd()}${ellipsis}`).width <= maxWidth
+      ) {
         lower = middle;
       } else {
         upper = middle - 1;

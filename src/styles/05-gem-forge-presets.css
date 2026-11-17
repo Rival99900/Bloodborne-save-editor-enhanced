@@ -1,0 +1,132 @@
+/* Personal Gem Forge presets */
+.upgrade-editor__preset-save {
+  display: grid;
+  min-width: min(100%, 17rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.35rem 0.55rem;
+  align-items: end;
+  padding: 0.55rem;
+  border: 1px solid rgba(226, 195, 125, 0.24);
+  background: rgba(0, 0, 0, 0.24);
+
+  label {
+    display: grid;
+    min-width: 0;
+    gap: 0.25rem;
+  }
+}
+
+.upgrade-editor__preset-save label > span,
+.upgrade-editor__preset-status {
+  color: #d6b56c;
+  font-family: var(--font-ui);
+  font-size: 0.64rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.upgrade-editor__preset-save input {
+  width: 100%;
+  min-width: 0;
+  height: 2.35rem;
+  border: 1px solid rgba(232, 220, 193, 0.25);
+  border-radius: 0.2rem;
+  padding: 0.4rem 0.55rem;
+  background: rgba(0, 0, 0, 0.42);
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: 0.77rem;
+}
+
+.upgrade-editor__preset-save button {
+  font-size: 0.85rem !important;
+  white-space: nowrap;
+}
+
+.upgrade-editor__preset-status {
+  grid-column: 1 / -1;
+  color: #d9cfb7;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.upgrade-editor__confirm-error {
+  display: block;
+  width: 100%;
+  margin-top: 0.15rem;
+  color: #e08a80;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+.gem-forge__personal {
+  display: grid;
+  gap: 1rem;
+}
+
+.gem-forge__personal-header h3 {
+  margin-top: 0.35rem;
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+.gem-forge__personal-header p {
+  margin-top: 0.4rem;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.gem-forge__card--personal {
+  min-height: 14rem;
+}
+
+.gem-forge__card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+
+  button {
+    flex: 1 1 7.5rem;
+    margin-top: 0;
+  }
+
+  .gem-forge__delete {
+    border-color: rgba(208, 116, 100, 0.48);
+    background: rgba(159, 68, 54, 0.15);
+    color: #efc6bc;
+  }
+}
+
+.gem-forge__empty-personal {
+  padding: 1rem;
+  border: 1px dashed rgba(225, 190, 109, 0.32);
+  background: rgba(0, 0, 0, 0.18);
+  color: #ddd4c3;
+
+  p {
+    color: #f0e4ca;
+  }
+
+  span {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 760px) {
+  .upgrade-editor__preset-save {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+
+    button {
+      width: 100%;
+    }
+  }
+}

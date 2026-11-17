@@ -21,7 +21,12 @@ export async function loadEffectTranslations(language) {
   const loader = translationLoaders[language];
   if (!loader) return undefined;
   if (!cache.has(language)) {
-    cache.set(language, loader().then((module) => module.default?.effects ?? {}).catch(() => undefined));
+    cache.set(
+      language,
+      loader()
+        .then((module) => module.default?.effects ?? {})
+        .catch(() => undefined),
+    );
   }
   return cache.get(language);
 }

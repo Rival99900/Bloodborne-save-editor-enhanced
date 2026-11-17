@@ -58,10 +58,11 @@ function EditUpgrade({
     [t],
   );
   const runeTypeOptions = useMemo(
-    () => RUNE_TYPE_OPTIONS.map((option) => ({
-      ...option,
-      label: option.translationKey ? t(option.translationKey) : option.sourceLabel,
-    })),
+    () =>
+      RUNE_TYPE_OPTIONS.map((option) => ({
+        ...option,
+        label: option.translationKey ? t(option.translationKey) : option.sourceLabel,
+      })),
     [t],
   );
   const {
@@ -204,9 +205,12 @@ function EditUpgrade({
 
       info.isStorage = isStorage;
       info.isGem = upgrade_type === "Gem";
-      const hasChanges = shape !== selected.shape || effects.some(
-        (currentEffect, index) => Number(currentEffect[0]) !== Number(selected.effects[index]?.[0]),
-      );
+      const hasChanges =
+        shape !== selected.shape ||
+        effects.some(
+          (currentEffect, index) =>
+            Number(currentEffect[0]) !== Number(selected.effects[index]?.[0]),
+        );
       let updatedSave = null;
 
       if (hasChanges) {
@@ -255,9 +259,7 @@ function EditUpgrade({
       // Confirm looking like it did nothing at all, with no clue in the UI why.
       console.error("Unable to confirm the gem or rune edit.", error);
       const message = typeof error === "string" ? error : error?.message;
-      setConfirmError(
-        message || t("forge.unableToApply"),
-      );
+      setConfirmError(message || t("forge.unableToApply"));
     } finally {
       confirmInFlightRef.current = false;
       setIsConfirming(false);
@@ -270,8 +272,9 @@ function EditUpgrade({
     const normalizedEffects = Array.from({ length: EFFECT_SLOT_COUNT }, (_, index) => {
       const requestedId = Number(presetEffects[index]?.[0]);
       const entry = gemEffectCatalogById.get(requestedId);
-              return entry ? [Number(entry.value), entry.sourceLabel ?? entry.label] : [NO_EFFECT_ID, "No Effect"];
-
+      return entry
+        ? [Number(entry.value), entry.sourceLabel ?? entry.label]
+        : [NO_EFFECT_ID, "No Effect"];
     });
     const primary = normalizedEffects[0];
     const primaryEffect = gemEffectCatalogById.get(Number(primary[0]));
@@ -350,71 +353,78 @@ function EditUpgrade({
           onCancel={() => setConversionConfirmOpen(false)}
         />
       ) : null}
-      <div id="replaceScreen" ref={editorRef} className="upgrade-editor" role="dialog" aria-modal="true" aria-label={t("forge.dialogLabel", { subject: upgrade_type })}>
-      {forgeOpen ? (
-        <GemPresetPanel
-          gemEffects={gemEffectCatalog}
-          userGemPresets={userForgePresets}
-          onApply={applyForgePreset}
-          onDeletePreset={deleteUserForgePreset}
-          onDuplicatePreset={duplicateUserForgePreset}
-          onExportPresets={exportUserForgePresets}
-          onImportPresets={importUserForgePresets}
-          onClose={() => setForgeOpen(false)}
-          forgeType={upgrade_type.toLowerCase()}
-          builtInPresets={upgrade_type === "Gem" ? undefined : runeForgePresets}
-        />
-      ) : null}
-      <div className="upgrade-editor__layout">
-        <div className="upgrade-editor__preview">
-          <div>
-            <span>{t("forge.editing")}</span>
-            <div className="upgrade-editor__art-frame">
-              <img
-                key={`upgrade-preview-${upgrade_type}-${shape}-${name ?? ""}-${rating ?? ""}-${effects
-                  .map(([effectId]) => Number(effectId))
-                  .join("-")}`}
-                className="upgrade-editor__art"
-                src={
-                  upgrade_type === "Gem"
-                    ? getGemPath(
-                        effects,
-                        shape,
-                        level,
-                        getUnique(effects[0][0], shape, source),
-                        primaryIsRuneOrigin ? primaryEffectEntry : undefined,
-                        primaryEffectEntry?.sourceLabel,
-                      )
-                    : primaryIsGemOrigin
+      <div
+        id="replaceScreen"
+        ref={editorRef}
+        className="upgrade-editor"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t("forge.dialogLabel", { subject: upgrade_type })}
+      >
+        {forgeOpen ? (
+          <GemPresetPanel
+            gemEffects={gemEffectCatalog}
+            userGemPresets={userForgePresets}
+            onApply={applyForgePreset}
+            onDeletePreset={deleteUserForgePreset}
+            onDuplicatePreset={duplicateUserForgePreset}
+            onExportPresets={exportUserForgePresets}
+            onImportPresets={importUserForgePresets}
+            onClose={() => setForgeOpen(false)}
+            forgeType={upgrade_type.toLowerCase()}
+            builtInPresets={upgrade_type === "Gem" ? undefined : runeForgePresets}
+          />
+        ) : null}
+        <div className="upgrade-editor__layout">
+          <div className="upgrade-editor__preview">
+            <div>
+              <span>{t("forge.editing")}</span>
+              <div className="upgrade-editor__art-frame">
+                <img
+                  key={`upgrade-preview-${upgrade_type}-${shape}-${name ?? ""}-${rating ?? ""}-${effects
+                    .map(([effectId]) => Number(effectId))
+                    .join("-")}`}
+                  className="upgrade-editor__art"
+                  src={
+                    upgrade_type === "Gem"
                       ? getGemPath(
                           effects,
-                          "Radial",
-                          rating,
-                          undefined,
-                          undefined,
+                          shape,
+                          level,
+                          getUnique(effects[0][0], shape, source),
+                          primaryIsRuneOrigin ? primaryEffectEntry : undefined,
                           primaryEffectEntry?.sourceLabel,
                         )
-                      : getRunePath(name, shape, rating)
-                }
-                alt=""
-                onError={(event) => {
-                  const fallback =
-                    upgrade_type === "Gem"
-                      ? primaryIsRuneOrigin
-                        ? getRuneFallbackPath()
-                        : getGemFallbackPath()
                       : primaryIsGemOrigin
-                        ? getGemFallbackPath()
-                        : getRuneFallbackPath(shape);
-                  if (!event.currentTarget.src.endsWith(fallback)) {
-                    event.currentTarget.src = fallback;
+                        ? getGemPath(
+                            effects,
+                            "Radial",
+                            rating,
+                            undefined,
+                            undefined,
+                            primaryEffectEntry?.sourceLabel,
+                          )
+                        : getRunePath(name, shape, rating)
                   }
-                }}
-              />
+                  alt=""
+                  onError={(event) => {
+                    const fallback =
+                      upgrade_type === "Gem"
+                        ? primaryIsRuneOrigin
+                          ? getRuneFallbackPath()
+                          : getGemFallbackPath()
+                        : primaryIsGemOrigin
+                          ? getGemFallbackPath()
+                          : getRuneFallbackPath(shape);
+                    if (!event.currentTarget.src.endsWith(fallback)) {
+                      event.currentTarget.src = fallback;
+                    }
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          <div className="upgrade-editor__actions">
-            <>
+            <div className="upgrade-editor__actions">
+              <>
                 <button onClick={() => setForgeOpen(true)}>
                   {upgrade_type === "Gem" ? t("forge.gemForge") : t("forge.runeForge")}
                 </button>
@@ -428,151 +438,182 @@ function EditUpgrade({
                         setPresetName(event.target.value);
                         setPresetStatus("");
                       }}
-                      aria-label={t("forge.personalPresetName", { subject: upgrade_type.toLowerCase() })}
+                      aria-label={t("forge.personalPresetName", {
+                        subject: upgrade_type.toLowerCase(),
+                      })}
                     />
                   </label>
                   <button onClick={saveCurrentForgePreset}>{t("forge.saveAsPreset")}</button>
-                  {presetStatus ? <span className="upgrade-editor__preset-status">{presetStatus}</span> : null}
+                  {presetStatus ? (
+                    <span className="upgrade-editor__preset-status">{presetStatus}</span>
+                  ) : null}
                 </div>
               </>
-            {!equipped ? (
-              <button onClick={() => setConversionConfirmOpen(true)} disabled={isConfirming}>
-                {t("forge.convertTo", { subject: upgrade_type === "Gem" ? "Rune" : "Gem" })}
+              {!equipped ? (
+                <button onClick={() => setConversionConfirmOpen(true)} disabled={isConfirming}>
+                  {t("forge.convertTo", { subject: upgrade_type === "Gem" ? "Rune" : "Gem" })}
+                </button>
+              ) : null}
+              <button onClick={() => setEditScreen(false)} disabled={isConfirming}>
+                {t("forge.cancel")}
               </button>
-            ) : null}
-            <button onClick={() => setEditScreen(false)} disabled={isConfirming}>
-              {t("forge.cancel")}
-            </button>
-            <button onClick={handleConfirm} disabled={isConfirming}>
-              {isConfirming ? t("forge.confirming") : t("forge.confirm")}
-            </button>
-            {confirmError ? (
-              <span className="upgrade-editor__confirm-error" role="alert">
-                {confirmError}
-              </span>
-            ) : null}
+              <button onClick={handleConfirm} disabled={isConfirming}>
+                {isConfirming ? t("forge.confirming") : t("forge.confirm")}
+              </button>
+              {confirmError ? (
+                <span className="upgrade-editor__confirm-error" role="alert">
+                  {confirmError}
+                </span>
+              ) : null}
+            </div>
           </div>
-        </div>
-        <div
-          className={`upgrade-editor__effects-panel upgrade-editor__effects-panel--${upgrade_type.toLowerCase()}`}
-        >
-          <div className={`upgrade-editor__localized-labels upgrade-editor__localized-labels--${upgrade_type.toLowerCase()}`} aria-hidden="true">
-            {upgrade_type === "Gem" ? (
-              <>
-                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--primary">{t("vignette.rating")}</span>
-                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--secondary">{t("vignette.shape")}</span>
-                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--effects">{t("vignette.gemEffects")}</span>
-              </>
-            ) : (
-              <>
-                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--primary">{t("vignette.type")}</span>
-                <span className="upgrade-editor__localized-label upgrade-editor__localized-label--effects">{t("vignette.runeEffects")}</span>
-              </>
-            )}
-          </div>
-          <div className="upgrade-editor__info">
-            {upgrade_type === "Gem" ? (
-              <>
-                <span className="upgrade-editor__rating-value">{rating}</span>
-                {getShapeIconPath(shape) ? (
-                  <img className="upgrade-editor__shape-icon" src={getShapeIconPath(shape)} alt="" aria-hidden="true" />
-                ) : null}
+          <div
+            className={`upgrade-editor__effects-panel upgrade-editor__effects-panel--${upgrade_type.toLowerCase()}`}
+          >
+            <div
+              className={`upgrade-editor__localized-labels upgrade-editor__localized-labels--${upgrade_type.toLowerCase()}`}
+              aria-hidden="true"
+            >
+              {upgrade_type === "Gem" ? (
+                <>
+                  <span className="upgrade-editor__localized-label upgrade-editor__localized-label--primary">
+                    {t("vignette.rating")}
+                  </span>
+                  <span className="upgrade-editor__localized-label upgrade-editor__localized-label--secondary">
+                    {t("vignette.shape")}
+                  </span>
+                  <span className="upgrade-editor__localized-label upgrade-editor__localized-label--effects">
+                    {t("vignette.gemEffects")}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="upgrade-editor__localized-label upgrade-editor__localized-label--primary">
+                    {t("vignette.type")}
+                  </span>
+                  <span className="upgrade-editor__localized-label upgrade-editor__localized-label--effects">
+                    {t("vignette.runeEffects")}
+                  </span>
+                </>
+              )}
+            </div>
+            <div className="upgrade-editor__info">
+              {upgrade_type === "Gem" ? (
+                <>
+                  <span className="upgrade-editor__rating-value">{rating}</span>
+                  {getShapeIconPath(shape) ? (
+                    <img
+                      className="upgrade-editor__shape-icon"
+                      src={getShapeIconPath(shape)}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  ) : null}
+                  <SelectSearch
+                    style={{
+                      position: "absolute",
+                      right: "0.9375rem",
+                      // Centred on the Shape label row (top 3.95rem, height 1.6rem).
+                      top: "3.575rem",
+                      width: "8.25rem",
+                      textAlign: "right",
+                    }}
+                    selected={shape}
+                    readOnly={true}
+                    options={gemShapeOptions}
+                    onChange={(event) => {
+                      setEdited((previous) => ({ ...previous, shape: event.sourceLabel }));
+                    }}
+                  />
+                </>
+              ) : (
                 <SelectSearch
                   style={{
                     position: "absolute",
                     right: "0.9375rem",
-                    // Centred on the Shape label row (top 3.95rem, height 1.6rem).
-                    top: "3.575rem",
+                    top: "1.25rem",
                     width: "8.25rem",
                     textAlign: "right",
                   }}
                   selected={shape}
                   readOnly={true}
-                  options={gemShapeOptions}
+                  options={runeTypeOptions}
                   onChange={(event) => {
                     setEdited((previous) => ({ ...previous, shape: event.sourceLabel }));
                   }}
                 />
-              </>
-            ) : (
-              <SelectSearch
-                style={{
-                  position: "absolute",
-                  right: "0.9375rem",
-                  top: "1.25rem",
-                  width: "8.25rem",
-                  textAlign: "right",
-                }}
-                selected={shape}
-                readOnly={true}
-                options={runeTypeOptions}
-                onChange={(event) => {
-                  setEdited((previous) => ({ ...previous, shape: event.sourceLabel }));
-                }}
-              />
-            )}
-          </div>
-          <div className="effects upgrade-editor__effects">
-            {effects.map(([, effectName], index) => (
-              <div className="effect" key={index}>
+              )}
+            </div>
+            <div className="effects upgrade-editor__effects">
+              {effects.map(([, effectName], index) => (
+                <div className="effect" key={index}>
+                  <SelectSearch
+                    defaultValue={t("forge.noEffect")}
+                    onChange={(event) => {
+                      const {
+                        name: effectOwnerName,
+                        level: effectLevel,
+                        rating: effectRating,
+                        value,
+                        label,
+                        sourceLabel,
+                        note,
+                      } = event;
+                      const canonicalLabel = sourceLabel ?? label;
+                      setEdited((previous) => ({
+                        ...previous,
+                        effects: previous.effects.map((currentEffect, effectIndex) =>
+                          effectIndex === index ? [Number(value), canonicalLabel] : currentEffect,
+                        ),
+                        info:
+                          index === 0
+                            ? {
+                                ...previous.info,
+                                effect: canonicalLabel,
+                                note,
+                                name: effectOwnerName,
+                                level: effectLevel,
+                                rating: effectRating,
+                              }
+                            : previous.info,
+                      }));
+                    }}
+                    selected={effectName}
+                    options={gemEffectCatalog}
+                  />
+                  <div className="line" aria-hidden="true" />
+                </div>
+              ))}
+              {upgrade_type === "Rune" ? (
                 <SelectSearch
-                  defaultValue={t("forge.noEffect")}
+                  key={`rune-preset-${selected.id}-${selected.index}-${selected.number}-${selected.source}-${runePresetResetKey}`}
+                  defaultValue={t("forge.runePresetPlaceholder")}
                   onChange={(event) => {
-                    const { name: effectOwnerName, level: effectLevel, rating: effectRating, value, label, sourceLabel, note } = event;
-                    const canonicalLabel = sourceLabel ?? label;
+                    const { info, effects: presetEffects, shape: presetShape } = event;
+                    if (upgrade_type !== "Rune" || !info?.name || !Array.isArray(presetEffects))
+                      return;
                     setEdited((previous) => ({
                       ...previous,
-                      effects: previous.effects.map((currentEffect, effectIndex) =>
-                        effectIndex === index ? [Number(value), canonicalLabel] : currentEffect,
-                      ),
-                      info:
-                        index === 0
-                          ? {
-                              ...previous.info,
-                              effect: canonicalLabel,
-                              note,
-                              name: effectOwnerName,
-                              level: effectLevel,
-                              rating: effectRating,
-                            }
-                          : previous.info,
+                      info: {
+                        ...previous.info,
+                        ...info,
+                      },
+                      shape: normalizeUpgradeShape(presetShape, "Rune"),
+                      effects: [...presetEffects],
                     }));
+                    // Presets are immediate one-time actions, not a persistent field value.
+                    // Remount the searchable control so its internal search text cannot make
+                    // the last chosen preset look preselected on the next opened Rune.
+                    setRunePresetResetKey((current) => current + 1);
                   }}
-                  selected={effectName}
-                  options={gemEffectCatalog}
+                  selected=""
+                  resetToPlaceholder
+                  options={runeEditorPresetOptions}
                 />
-                <div className="line" aria-hidden="true" />
-              </div>
-            ))}
-            {upgrade_type === "Rune" ? (
-              <SelectSearch
-                key={`rune-preset-${selected.id}-${selected.index}-${selected.number}-${selected.source}-${runePresetResetKey}`}
-                defaultValue={t("forge.runePresetPlaceholder")}
-                onChange={(event) => {
-                  const { info, effects: presetEffects, shape: presetShape } = event;
-                  if (upgrade_type !== "Rune" || !info?.name || !Array.isArray(presetEffects)) return;
-                  setEdited((previous) => ({
-                    ...previous,
-                    info: {
-                      ...previous.info,
-                      ...info,
-                    },
-                    shape: normalizeUpgradeShape(presetShape, "Rune"),
-                    effects: [...presetEffects],
-                  }));
-                  // Presets are immediate one-time actions, not a persistent field value.
-                  // Remount the searchable control so its internal search text cannot make
-                  // the last chosen preset look preselected on the next opened Rune.
-                  setRunePresetResetKey((current) => current + 1);
-                }}
-                selected=""
-                resetToPlaceholder
-                options={runeEditorPresetOptions}
-              />
-            ) : null}
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </>
   );

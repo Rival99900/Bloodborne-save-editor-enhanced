@@ -17,7 +17,9 @@ const INVENTORY_FAVORITES_STORAGE_KEY = "bloodborne-save-editor.inventory-favori
 
 function readFavoriteKeys() {
   try {
-    const saved = JSON.parse(globalThis.localStorage?.getItem(INVENTORY_FAVORITES_STORAGE_KEY) ?? "[]");
+    const saved = JSON.parse(
+      globalThis.localStorage?.getItem(INVENTORY_FAVORITES_STORAGE_KEY) ?? "[]",
+    );
     return Array.isArray(saved) ? saved.filter((value) => typeof value === "string") : [];
   } catch {
     return [];
@@ -47,10 +49,16 @@ function Inventory({ inv, isStorage }) {
   useEffect(() => {
     let active = true;
     setCapacity(null);
-    invoke("get_capacity_summary").then((value) => {
-      if (active) setCapacity(value);
-    }).catch(() => { if (active) setCapacity(null); });
-    return () => { active = false; };
+    invoke("get_capacity_summary")
+      .then((value) => {
+        if (active) setCapacity(value);
+      })
+      .catch(() => {
+        if (active) setCapacity(null);
+      });
+    return () => {
+      active = false;
+    };
   }, [save, isStorage]);
 
   useEffect(() => {
@@ -98,14 +106,19 @@ function Inventory({ inv, isStorage }) {
 
   useEffect(() => {
     try {
-      globalThis.localStorage?.setItem(INVENTORY_FAVORITES_STORAGE_KEY, JSON.stringify(favoriteKeys));
+      globalThis.localStorage?.setItem(
+        INVENTORY_FAVORITES_STORAGE_KEY,
+        JSON.stringify(favoriteKeys),
+      );
     } catch {
       // Favorites are optional local-only metadata; the editor remains functional if storage is unavailable.
     }
   }, [favoriteKeys]);
 
   const selectedFavoriteKey = selected ? getItemKey(selected) : null;
-  const isSelectedFavorite = selectedFavoriteKey ? favoriteKeys.includes(selectedFavoriteKey) : false;
+  const isSelectedFavorite = selectedFavoriteKey
+    ? favoriteKeys.includes(selectedFavoriteKey)
+    : false;
   const selectedType = getType(selected?.article_type);
   // Without a selection the fields stay empty instead of showing a misleading 0.
   const displayedQuantity = selected && Number.isFinite(Number(quantity)) ? Number(quantity) : "";
@@ -126,11 +139,7 @@ function Inventory({ inv, isStorage }) {
     <>
       {/* Optional modal like screens */}
       {addScreen ? (
-        <AddScreen
-          type="item"
-          setAddScreen={setAddScreen}
-          isStorage={isStorage}
-        />
+        <AddScreen type="item" setAddScreen={setAddScreen} isStorage={isStorage} />
       ) : null}
       {replaceScreen ? (
         <ReplaceScreen
@@ -166,7 +175,14 @@ function Inventory({ inv, isStorage }) {
               {t(isStorage ? "inventory.searchStorage" : "inventory.searchInventory")}
             </label>
             <span className="inventory-capacity" aria-live="polite">
-              {t("capacity.title")}: <strong>{capacity == null ? "—" : new Intl.NumberFormat(language).format(isStorage ? capacity.storage_free : capacity.inventory_free)}</strong>
+              {t("capacity.title")}:{" "}
+              <strong>
+                {capacity == null
+                  ? "—"
+                  : new Intl.NumberFormat(language).format(
+                      isStorage ? capacity.storage_free : capacity.inventory_free,
+                    )}
+              </strong>
             </span>
           </div>
           <input
@@ -177,7 +193,9 @@ function Inventory({ inv, isStorage }) {
             onChange={(event) => setSearchQuery(event.target.value)}
           />
           {searchQuery ? (
-            <button type="button" onClick={() => setSearchQuery("")}>{t("inventory.clearSearch")}</button>
+            <button type="button" onClick={() => setSearchQuery("")}>
+              {t("inventory.clearSearch")}
+            </button>
           ) : null}
           <button
             className={favoritesOnly ? "is-active" : ""}
@@ -198,7 +216,9 @@ function Inventory({ inv, isStorage }) {
       </div>
       {/* Right side buttons */}
       <div className="editButtons">
-        <label className="inventory-side-control__label" htmlFor="item-quantity">{t("inventory.itemQuantity")}</label>
+        <label className="inventory-side-control__label" htmlFor="item-quantity">
+          {t("inventory.itemQuantity")}
+        </label>
         <div className="editQuantity">
           <div className="inventory-side-control__field">
             <input
@@ -209,30 +229,32 @@ function Inventory({ inv, isStorage }) {
               min={0}
               className="inventory-side-control__input"
               disabled={!canEditQuantity}
-            onChange={(e) => {
-              const { value } = e.target;
-              if (value.length > 1 && value[0] === "0") {
-                e.target.value = value.slice(1);
-              }
-              // Check if the item should be capped at 600 or not
-              if (
-                (!isStorage ||
-                  (isStorage &&
-                    selected.article_type !== "Material" &&
-                    !["Quicksilver Bullets", "Blood Vial"].includes(
-                      selected.info.item_name,
-                    ))) &&
-                value > 99
-              ) {
-                setQuantity(99);
-              } else if (isStorage && value > 600) {
-                setQuantity(600);
-              } else {
-                setQuantity(parseInt(value));
-              }
-            }}
+              onChange={(e) => {
+                const { value } = e.target;
+                if (value.length > 1 && value[0] === "0") {
+                  e.target.value = value.slice(1);
+                }
+                // Check if the item should be capped at 600 or not
+                if (
+                  (!isStorage ||
+                    (isStorage &&
+                      selected.article_type !== "Material" &&
+                      !["Quicksilver Bullets", "Blood Vial"].includes(selected.info.item_name))) &&
+                  value > 99
+                ) {
+                  setQuantity(99);
+                } else if (isStorage && value > 600) {
+                  setQuantity(600);
+                } else {
+                  setQuantity(parseInt(value));
+                }
+              }}
             />
-            {!canEditQuantity ? <span className="inventory-side-control__display" aria-hidden="true">{displayedQuantity === "" ? "—" : displayedQuantity}</span> : null}
+            {!canEditQuantity ? (
+              <span className="inventory-side-control__display" aria-hidden="true">
+                {displayedQuantity === "" ? "—" : displayedQuantity}
+              </span>
+            ) : null}
           </div>
           <button
             className="control-button control-button--quiet inventory-side-control__apply"
@@ -246,16 +268,14 @@ function Inventory({ inv, isStorage }) {
                 }),
               );
             }}
-            disabled={
-              canEditQuantity && quantity > 0
-                ? false
-                : true
-            }
+            disabled={canEditQuantity && quantity > 0 ? false : true}
           >
             {t("inventory.setValue")}
           </button>
         </div>
-        <label className="inventory-side-control__label" htmlFor="weapon-level">{t("inventory.weaponLevel")}</label>
+        <label className="inventory-side-control__label" htmlFor="weapon-level">
+          {t("inventory.weaponLevel")}
+        </label>
         <div className="editQuantity">
           <div className="inventory-side-control__field">
             <input
@@ -266,20 +286,24 @@ function Inventory({ inv, isStorage }) {
               min={0}
               className="inventory-side-control__input"
               disabled={!canEditWeaponLevel}
-            onChange={(e) => {
-              const { value } = e.target;
-              if (value.length > 1 && value[0] === "0") {
-                e.target.value = value.slice(1);
-              }
+              onChange={(e) => {
+                const { value } = e.target;
+                if (value.length > 1 && value[0] === "0") {
+                  e.target.value = value.slice(1);
+                }
 
-              if (value > 10) {
-                setLevel(10);
-              } else {
-                setLevel(parseInt(value));
-              }
-            }}
+                if (value > 10) {
+                  setLevel(10);
+                } else {
+                  setLevel(parseInt(value));
+                }
+              }}
             />
-            {!canEditWeaponLevel ? <span className="inventory-side-control__display" aria-hidden="true">{displayedLevel === "" ? "—" : displayedLevel}</span> : null}
+            {!canEditWeaponLevel ? (
+              <span className="inventory-side-control__display" aria-hidden="true">
+                {displayedLevel === "" ? "—" : displayedLevel}
+              </span>
+            ) : null}
           </div>
           <button
             className="control-button control-button--quiet inventory-side-control__apply"
@@ -299,11 +323,7 @@ function Inventory({ inv, isStorage }) {
               if (!editedSave) return;
               setSelected(updatedWeapon);
             }}
-            disabled={
-              canEditWeaponLevel && quantity > 0
-                ? false
-                : true
-            }
+            disabled={canEditWeaponLevel && quantity > 0 ? false : true}
           >
             {t("inventory.setValue")}
           </button>
@@ -363,7 +383,9 @@ function Inventory({ inv, isStorage }) {
           {t("bulk.open")}
         </button>
       </div>
-      {bulkScreen ? <BulkActions isStorage={isStorage} onClose={() => setBulkScreen(false)} /> : null}
+      {bulkScreen ? (
+        <BulkActions isStorage={isStorage} onClose={() => setBulkScreen(false)} />
+      ) : null}
     </>
   );
 }

@@ -33,13 +33,17 @@ fn scan_with(bytes: &[u8], username: usize, strict: bool) -> Result<Layout, &'st
     let mut max_handle = 0;
     let mut vacancies = 0;
     for _ in 0..GA_SECTION_SLOTS {
-        let header = bytes.get(cursor..cursor + 8).ok_or("Truncated GA record.")?;
+        let header = bytes
+            .get(cursor..cursor + 8)
+            .ok_or("Truncated GA record.")?;
         let kind = header[3];
         let size = match kind {
             0x80 | 0x90 => 60,
             0xC0 => {
                 // The current upgrade parser supports a contiguous prefix.
-                if strict && empty.is_some() { return Err("Unsupported interleaved upgrade records."); }
+                if strict && empty.is_some() {
+                    return Err("Unsupported interleaved upgrade records.");
+                }
                 40
             }
             0x00 => {
@@ -52,12 +56,22 @@ fn scan_with(bytes: &[u8], username: usize, strict: bool) -> Result<Layout, &'st
             }
             _ => return Err("Invalid GA record type."),
         };
-        if kind != 0 { max_handle = max_handle.max(u16::from_le_bytes([header[0], header[1]])); }
+        if kind != 0 {
+            max_handle = max_handle.max(u16::from_le_bytes([header[0], header[1]]));
+        }
         cursor = cursor.checked_add(size).ok_or("GA offset overflow.")?;
-        if cursor > boundary || cursor > bytes.len() { return Err("GA record exceeds section boundary."); }
+        if cursor > boundary || cursor > bytes.len() {
+            return Err("GA record exceeds section boundary.");
+        }
     }
-    if cursor != boundary { return Err("GA slot count does not match section boundary."); }
-    Ok(Layout { empty, max_handle, vacancies })
+    if cursor != boundary {
+        return Err("GA slot count does not match section boundary.");
+    }
+    Ok(Layout {
+        empty,
+        max_handle,
+        vacancies,
+    })
 }
 
 #[cfg(test)]
@@ -65,17 +79,23 @@ mod tests {
     use super::*;
     fn empty_section() -> Vec<u8> {
         let mut bytes = vec![0; START_TO_UPGRADE];
-        for _ in 0..GA_SECTION_SLOTS { bytes.extend([0, 0, 0, 0, 255, 255, 255, 255]); }
+        for _ in 0..GA_SECTION_SLOTS {
+            bytes.extend([0, 0, 0, 0, 255, 255, 255, 255]);
+        }
         bytes
     }
     #[test]
     fn rejects_truncation_unknown_types_and_wrong_slot_count() {
         let original = empty_section();
         let username = original.len() + 151;
-        assert_eq!(scan(&original, username).unwrap().empty, Some(START_TO_UPGRADE));
+        assert_eq!(
+            scan(&original, username).unwrap().empty,
+            Some(START_TO_UPGRADE)
+        );
         assert!(scan(&original[..original.len() - 1], username).is_err());
         assert!(scan(&original, username + 8).is_err());
-        let mut bad = original.clone(); bad[START_TO_UPGRADE + 3] = 0x42;
+        let mut bad = original.clone();
+        bad[START_TO_UPGRADE + 3] = 0x42;
         assert!(scan(&bad, username).is_err());
         assert!(scan_for_insertion(&bad, username).is_err());
         assert!(scan_for_insertion(&original, username + 8).is_err());
@@ -87,9 +107,12 @@ mod tests {
         let mut bytes = vec![0; START_TO_UPGRADE];
         bytes.extend([0, 0, 0, 0, 255, 255, 255, 255]);
         let mut gem = [0u8; 40];
-        gem[0] = 7; gem[3] = 0xC0;
+        gem[0] = 7;
+        gem[3] = 0xC0;
         bytes.extend(gem);
-        for _ in 0..GA_SECTION_SLOTS - 2 { bytes.extend([0, 0, 0, 0, 255, 255, 255, 255]); }
+        for _ in 0..GA_SECTION_SLOTS - 2 {
+            bytes.extend([0, 0, 0, 0, 255, 255, 255, 255]);
+        }
         let username = bytes.len() + 151;
         assert!(scan(&bytes, username).is_err());
         let layout = scan_for_insertion(&bytes, username).unwrap();

@@ -18,18 +18,30 @@ def build_manifest(release, tag, repository, signatures, notes, date):
     assets = release["assets"]
     names = [asset["name"] for asset in assets]
     platforms = {}
-    for platform, suffix in [("windows-x86_64", "x64-setup.exe"), ("linux-x86_64", "amd64.AppImage")]:
-        name = f"Bloodborne_Save_Editor_Enhanced_{version}_{suffix}"
+
+    def entry(name):
         for required in [name, name + ".sig"]:
             if names.count(required) != 1:
                 raise ValueError(f"Missing or duplicate release asset: {required}")
-        signature = signatures[name + ".sig"].strip()
+        signature = signatures.get(name + ".sig", "").strip()
         if not signature:
             raise ValueError("Empty updater signature")
-        platforms[platform] = {
+        return {
             "url": f"https://github.com/{repository}/releases/download/{quote(tag, safe='')}/{quote(name, safe='')}",
             "signature": signature,
         }
+
+    prefix = f"Bloodborne_Save_Editor_Enhanced_{version}_"
+    for platform, suffix in [("windows-x86_64", "x64-setup.exe"), ("linux-x86_64", "amd64.AppImage")]:
+        platforms[platform] = entry(prefix + suffix)
+    # The Windows MSI package is optional (added in 0.7.1). The updater picks the
+    # entry of the installer type the user installed with: `<os>-<arch>-<installer>`.
+    msi = [name for name in names if name.startswith(prefix + "x64") and name.endswith(".msi")]
+    if len(msi) > 1:
+        raise ValueError("Several MSI packages in the release")
+    if msi:
+        platforms["windows-x86_64-nsis"] = platforms["windows-x86_64"]
+        platforms["windows-x86_64-msi"] = entry(msi[0])
     localized = notes["versions"].get(version, notes["default"])
     return {"version": version, "notes": localized["en"], "localized_notes": localized,
             "pub_date": date, "platforms": platforms}

@@ -24,13 +24,18 @@ pub struct BackupEntry {
 }
 
 pub fn backup_dir(save_path: &Path) -> PathBuf {
-    let mut name = save_path.file_name().map(|name| name.to_os_string()).unwrap_or_default();
+    let mut name = save_path
+        .file_name()
+        .map(|name| name.to_os_string())
+        .unwrap_or_default();
     name.push(".backups");
     save_path.with_file_name(name)
 }
 
 fn now_secs() -> u64 {
-    SystemTime::now().duration_since(UNIX_EPOCH).map_or(0, |duration| duration.as_secs())
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_or(0, |duration| duration.as_secs())
 }
 
 /// (seconds, counter) from `backup-<secs>.bak` or `backup-<secs>-<counter>.bak`.
@@ -51,17 +56,22 @@ pub fn list(save_path: &Path) -> std::io::Result<Vec<BackupEntry>> {
     for entry in fs::read_dir(&dir)? {
         let entry = entry?;
         let file_name = entry.file_name().to_string_lossy().to_string();
-        let Some((created, counter)) = parse_name(&file_name) else { continue };
+        let Some((created, counter)) = parse_name(&file_name) else {
+            continue;
+        };
         let metadata = entry.metadata()?;
         if !metadata.is_file() {
             continue;
         }
-        entries.push((counter, BackupEntry {
-            path: entry.path().to_string_lossy().to_string(),
-            file_name,
-            created,
-            size: metadata.len(),
-        }));
+        entries.push((
+            counter,
+            BackupEntry {
+                path: entry.path().to_string_lossy().to_string(),
+                file_name,
+                created,
+                size: metadata.len(),
+            },
+        ));
     }
     // Newest first; the counter orders copies taken within the same second.
     entries.sort_by(|(ca, a), (cb, b)| b.created.cmp(&a.created).then_with(|| cb.cmp(ca)));
@@ -75,7 +85,10 @@ pub fn record(save_path: &Path, bytes: &[u8]) -> std::io::Result<Option<PathBuf>
     fs::create_dir_all(&dir)?;
     let existing = list(save_path)?;
     if let Some(newest) = existing.first() {
-        if fs::read(&newest.path).map(|content| content == bytes).unwrap_or(false) {
+        if fs::read(&newest.path)
+            .map(|content| content == bytes)
+            .unwrap_or(false)
+        {
             return Ok(None);
         }
     }
@@ -104,7 +117,10 @@ pub fn restore(save_path: &Path, backup_path: &Path) -> std::io::Result<()> {
     let dir = backup_dir(save_path).canonicalize()?;
     let backup = backup_path.canonicalize()?;
     if backup.parent() != Some(dir.as_path()) {
-        return Err(std::io::Error::new(std::io::ErrorKind::PermissionDenied, "Not a backup of this save."));
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::PermissionDenied,
+            "Not a backup of this save.",
+        ));
     }
     let restored = fs::read(&backup)?;
     if let Ok(current) = fs::read(save_path) {
