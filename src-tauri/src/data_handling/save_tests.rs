@@ -3,6 +3,14 @@
 
 use super::*;
 
+/// Writes the 8-byte reservation pattern (4 x 0x00, 4 x 0xFF) on a range.
+fn fill_reservation(bytes: &mut [u8], range: std::ops::Range<usize>) {
+    let start = range.start;
+    for (offset, byte) in bytes[range].iter_mut().enumerate() {
+        *byte = if (start + offset) % 8 < 4 { 0x00 } else { 0xFF };
+    }
+}
+
 mod tests {
     use std::{path::PathBuf, time::Instant};
 
@@ -17,9 +25,7 @@ mod tests {
         let start = save.file.offsets.equipped_gems.1 + 1;
         let end = start + count * RESERVATION_SIZE;
         assert!(end <= save.file.offsets.username - 147);
-        for offset in start..end {
-            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
-        }
+        fill_reservation(&mut save.file.bytes, start..end);
         start
     }
 
@@ -1063,9 +1069,7 @@ mod direct_equipment_safety_regression_tests {
         let start = save.file.offsets.equipped_gems.1 + 1;
         let end = start + count * RESERVATION_SIZE;
         assert!(end <= save.file.offsets.username - 147);
-        for offset in start..end {
-            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
-        }
+        fill_reservation(&mut save.file.bytes, start..end);
         start
     }
 
@@ -1653,9 +1657,7 @@ mod complete_equipment_catalogue_tests {
             end <= save.file.offsets.username - 147,
             "the fixture must have enough explicit safe reservation space"
         );
-        for offset in start..end {
-            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
-        }
+        fill_reservation(&mut save.file.bytes, start..end);
         start
     }
 
@@ -1880,9 +1882,7 @@ mod direct_armor_header_regression_tests {
             .expect("test save must contain an armor block with header value one");
 
         let reserved_offset = save.file.offsets.equipped_gems.1 + 1;
-        for offset in reserved_offset..reserved_offset + 60 {
-            save.file.bytes[offset] = if offset % 8 < 4 { 0x00 } else { 0xFF };
-        }
+        fill_reservation(&mut save.file.bytes, reserved_offset..reserved_offset + 60);
         save.add_direct_equipment(native_armor.id, true).unwrap();
         assert_eq!(
             u32::from_le_bytes(
@@ -2329,7 +2329,11 @@ mod bulk_action_tests {
     use crate::data_handling::utils::test_utils::build_save_data;
 
     fn reload(save: &SaveData, name: &str) -> SaveData {
-        let path = std::env::temp_dir().join(format!("bbse_bulk_{name}_{}", std::process::id()));
+        // Unique per call: tests run in parallel and reuse the same save names.
+        static NEXT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+        let call = NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        let path =
+            std::env::temp_dir().join(format!("bbse_bulk_{name}_{}_{call}", std::process::id()));
         save.file.save(path.to_str().unwrap()).unwrap();
         let reloaded =
             SaveData::inspect(path.to_str().unwrap(), PathBuf::from("resources")).unwrap();

@@ -431,9 +431,7 @@ impl Inventory {
                                     found = true;
                                     //24 is the index for the first gem id
                                     let slot_index = i + 24 + 8 * slot_index;
-                                    for j in slot_index..slot_index + 4 {
-                                        file_data.bytes[j] = 0;
-                                    }
+                                    file_data.bytes[slot_index..slot_index + 4].fill(0);
                                     break;
                                 }
                             }

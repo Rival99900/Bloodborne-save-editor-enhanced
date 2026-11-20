@@ -439,7 +439,10 @@ mod tests {
     }
 
     fn reload(save: &SaveData) -> SaveData {
-        let path = std::env::temp_dir().join(format!("bbse_import_{}", std::process::id()));
+        // Unique per call: the tests of this module run in parallel.
+        static NEXT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+        let call = NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        let path = std::env::temp_dir().join(format!("bbse_import_{}_{call}", std::process::id()));
         save.file.save(path.to_str().unwrap()).unwrap();
         let reloaded =
             SaveData::inspect(path.to_str().unwrap(), PathBuf::from("resources")).unwrap();
