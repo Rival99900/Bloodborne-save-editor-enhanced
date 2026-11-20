@@ -1,31 +1,39 @@
 {
-  "version": "0.7.0",
-  "notes": "Consistency check, bulk actions, trophies, save comparison, backup history and PS4/PS5 over FTP. See the GitHub release for improvements and safe-save guidance.",
+  "version": "0.7.5",
+  "notes": "Lamp control, infinite Blood Vials and Quicksilver Bullets, Gem slot bulk actions, Inventory/Storage export and import (with Gems), Gem finder, full save comparison and faster save loading. See the GitHub release for details.",
   "localized_notes": {
-    "en": "Consistency check, bulk actions, trophies, save comparison, backup history and PS4/PS5 over FTP. See the GitHub release for improvements and safe-save guidance.",
-    "fr": "Vérification de cohérence, actions groupées, trophées, comparaison de sauvegardes, historique des sauvegardes et PS4/PS5 via FTP. Consultez les notes de version sur GitHub pour découvrir les améliorations et les conseils de sauvegarde sécurisée.",
-    "it": "Controllo di coerenza, azioni multiple, trofei, confronto dei salvataggi, cronologia dei backup e PS4/PS5 via FTP. Consulta le note di rilascio su GitHub per le migliorie e le indicazioni per salvare in sicurezza.",
-    "de": "Konsistenzprüfung, Sammelaktionen, Trophäen, Speicherstandvergleich, Sicherungsverlauf und PS4/PS5 über FTP. Die Versionshinweise auf GitHub enthalten Verbesserungen und Hinweise zum sicheren Speichern.",
-    "es": "Comprobación de coherencia, acciones en lote, trofeos, comparación de guardados, historial de copias y PS4/PS5 por FTP. Consulta las notas de la versión en GitHub para conocer las mejoras y los consejos para guardar de forma segura.",
-    "nl": "Consistentiecontrole, bulkacties, trofeeën, opslagvergelijking, back-upgeschiedenis en PS4/PS5 via FTP. Bekijk de versienotities op GitHub voor verbeteringen en advies over veilig opslaan.",
-    "pl": "Kontrola spójności, działania zbiorcze, trofea, porównanie zapisów, historia kopii i PS4/PS5 przez FTP. Informacje o ulepszeniach i bezpiecznym zapisywaniu znajdziesz w opisie wydania na GitHubie.",
-    "ru": "Проверка согласованности, массовые действия, трофеи, сравнение сохранений, история копий и PS4/PS5 по FTP. Список улучшений и рекомендации по безопасному сохранению доступны в описании выпуска на GitHub.",
-    "da": "Konsistenstjek, massehandlinger, trofæer, sammenligning af gemninger, sikkerhedskopihistorik og PS4/PS5 via FTP. Se udgivelsesnoterne på GitHub for forbedringer og vejledning til sikker lagring.",
-    "nb": "Konsistenssjekk, massehandlinger, troféer, sammenligning av lagringer, sikkerhetskopihistorikk og PS4/PS5 via FTP. Se utgivelsesnotatene på GitHub for forbedringer og råd om trygg lagring.",
-    "fi": "Johdonmukaisuustarkistus, joukkotoiminnot, pokaalit, tallenteiden vertailu, varmuuskopiohistoria ja PS4/PS5 FTP:n kautta. Katso parannukset ja turvallisen tallentamisen ohjeet GitHubin julkaisutiedoista.",
-    "sv": "Konsekvenskontroll, massåtgärder, troféer, jämförelse av sparningar, säkerhetskopieringshistorik och PS4/PS5 via FTP. Se versionsinformationen på GitHub för förbättringar och råd om säker lagring.",
-    "tr": "Tutarlılık denetimi, toplu işlemler, kupalar, kayıt karşılaştırma, yedek geçmişi ve FTP ile PS4/PS5. İyileştirmeler ve güvenli kayıt önerileri için GitHub sürüm notlarına bakın.",
-    "pt-PT": "Verificação de coerência, ações em lote, troféus, comparação de gravações, histórico de cópias e PS4/PS5 por FTP. Consulta as notas da versão no GitHub para conhecer as melhorias e as recomendações para guardar em segurança."
+    "en": "Lamp control, infinite Blood Vials and Quicksilver Bullets, Gem slot bulk actions, Inventory/Storage export and import (with Gems), Gem finder, full save comparison and faster save loading. See the GitHub release for details.",
+    "fr": "Contrôle des lanternes, fioles et balles infinies, ouverture groupée des emplacements de gemmes, export et import de l’Inventaire et du Stockage (avec gemmes), recherche de gemmes, comparaison complète et chargement plus rapide. Détails dans la release GitHub.",
+    "it": "Controllo delle lanterne, fiale e proiettili infiniti, apertura di gruppo degli slot gemme, esportazione e importazione di Inventario e Deposito (con gemme), ricerca gemme, confronto completo e caricamento più rapido. Dettagli nella release su GitHub.",
+    "de": "Laternensteuerung, unendliche Phiolen und Kugeln, Sammelöffnung der Edelsteinplätze, Export und Import von Inventar und Lager (mit Edelsteinen), Edelsteinsuche, vollständiger Vergleich und schnelleres Laden. Details im GitHub-Release.",
+    "es": "Control de faroles, viales y balas infinitos, apertura en bloque de huecos de gemas, exportación e importación del Inventario y el Almacén (con gemas), buscador de gemas, comparación completa y carga más rápida. Detalles en la versión de GitHub.",
+    "nl": "Lantaarnbeheer, oneindige flacons en kogels, edelsteensleuven in bulk openen, export en import van Inventaris en Opslag (met edelstenen), edelsteenzoeker, volledige vergelijking en sneller laden. Details in de GitHub-release.",
+    "pl": "Sterowanie latarniami, nieskończone fiolki i kule, zbiorcze otwieranie gniazd klejnotów, eksport i import ekwipunku oraz magazynu (z klejnotami), wyszukiwarka klejnotów, pełne porównanie i szybsze wczytywanie. Szczegóły w wydaniu na GitHubie.",
+    "ru": "Управление фонарями, бесконечные флаконы и пули, групповое открытие ячеек самоцветов, экспорт и импорт инвентаря и хранилища (с самоцветами), поиск самоцветов, полное сравнение и более быстрая загрузка. Подробности в релизе на GitHub.",
+    "da": "Lanternestyring, uendelige ampuller og kugler, åbning af ædelstenspladser i bulk, eksport og import af inventar og lager (med ædelsten), ædelstenssøgning, fuld sammenligning og hurtigere indlæsning. Detaljer i GitHub-udgivelsen.",
+    "nb": "Lyktekontroll, uendelige ampuller og kuler, åpning av edelsteinsplasser samlet, eksport og import av inventar og lager (med edelsteiner), edelsteinsøk, full sammenligning og raskere lasting. Detaljer i GitHub-utgivelsen.",
+    "fi": "Lyhtyjen hallinta, loputtomat ampullit ja luodit, jalokivipaikkojen avaus kerralla, varusteiden ja varaston vienti ja tuonti (jalokivineen), jalokivihaku, täysi vertailu ja nopeampi lataus. Lisätiedot GitHub-julkaisussa.",
+    "sv": "Lyktstyrning, oändliga ampuller och kulor, öppning av ädelstensplatser i bulk, export och import av inventarium och förråd (med ädelstenar), ädelstenssök, fullständig jämförelse och snabbare inläsning. Detaljer i GitHub-utgåvan.",
+    "tr": "Fener kontrolü, sonsuz şişe ve mermi, mücevher yuvalarını toplu açma, envanter ve depo dışa/içe aktarma (mücevherlerle), mücevher arama, tam karşılaştırma ve daha hızlı yükleme. Ayrıntılar GitHub sürümünde.",
+    "pt-PT": "Controlo de lanternas, frascos e balas infinitos, abertura em massa de ranhuras de gemas, exportação e importação do Inventário e do Armazém (com gemas), pesquisa de gemas, comparação completa e carregamento mais rápido. Detalhes na versão do GitHub."
   },
-  "pub_date": "2026-11-13T20:33:36Z",
+  "pub_date": "2026-11-20T22:02:26Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.0/Bloodborne_Save_Editor_Enhanced_0.7.0_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelVpS2pXdklBaWo3VHFVTExEU1h0SjdmZVVSS3RERnc3dTZCUzRIenhIZElYMWxpSkJSc1NWMkNnZWZnQjh3b3RtaG05bTk4bUliWGpEMTZRdU5KNGdnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NjAxOTUyCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuMF94NjQtc2V0dXAuZXhlCllEWHVtdjhCaU11cVc4UWRwamkrZk5DVDVJMGFYTWovbEQyVlE3MFU2Wm5GclRTMkRDY3E3VmNWZlBicGNRYWdvNDlrNDNwVzVvVno5Sk1US3ZXbUN3PT0K"
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.5/Bloodborne_Save_Editor_Enhanced_0.7.5_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemJrTnhnWUJRYjMwYTBsQTIvZW1MaWIrU0tWTFl2bVBjandhSm94bnJtemxrZlBBN2N0NGZIK0xYc3IvZHdqQk1lK2JTNDdkSEtHRHpqVklQalhxM2dBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1MjEyMDg4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuNV94NjQtc2V0dXAuZXhlClVWc085M1BaazBkTkJNd3ZRRFVxOEMzQkRWaTRvVXVXQ01kcTZEOWZ0S0J0NWNkeVdCQWJPRUdEZXFXWk85TVNMTWVLL2VKcGJDQ2E3VXZmL1RrL0RRPT0K"
     },
     "linux-x86_64": {
-      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.0/Bloodborne_Save_Editor_Enhanced_0.7.0_amd64.AppImage",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemE4bndob3VCOElZcG4rTjFUZzVmcGpJTHdUQzRGbmQ3UGwyNVh3eC9qN01DQk1uTnFPU2pOT1lpcGpTZmljeno5RDJzUDlVQmFqMGNmdDBvU0pCWUFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NjAxOTg1CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuMF9hbWQ2NC5BcHBJbWFnZQp5L3JOajc0RE1SendXbHpZTUlGZ3Yxc3VQTEdvM3JzZ2I4T0N4Q0l4R3J3eWZyL1hhL29uUXlJWlV2T01VTGhPV1Q4a0MvL1dZR213eXJROVpHM0pCUT09Cg=="
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.5/Bloodborne_Save_Editor_Enhanced_0.7.5_amd64.AppImage",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvelNZeDNrb0Y2am5OaXN0WGlmUHVEbDdLcjd6YjVhNWVOdzlPRTJYVzl3OGRtM21KZ2NwTUZIZ3pqY05ka1FRYk8xdUpUalZ1T29lKzk5L2NHV1NqV2cwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1MjExOTMxCWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuNV9hbWQ2NC5BcHBJbWFnZQp3SGhUSkI1NDBHUWV3L1pjZDFpVHBjazcwa0RXR1ZZM2ZUaDhJTTRCdDlrNWl6blROTGJreTNnTUpPZzE2T2pEblFpSjFOT0dPZ002YXMxc053VTJBQT09Cg=="
+    },
+    "windows-x86_64-nsis": {
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.5/Bloodborne_Save_Editor_Enhanced_0.7.5_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemJrTnhnWUJRYjMwYTBsQTIvZW1MaWIrU0tWTFl2bVBjandhSm94bnJtemxrZlBBN2N0NGZIK0xYc3IvZHdqQk1lK2JTNDdkSEtHRHpqVklQalhxM2dBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1MjEyMDg4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuNV94NjQtc2V0dXAuZXhlClVWc085M1BaazBkTkJNd3ZRRFVxOEMzQkRWaTRvVXVXQ01kcTZEOWZ0S0J0NWNkeVdCQWJPRUdEZXFXWk85TVNMTWVLL2VKcGJDQ2E3VXZmL1RrL0RRPT0K"
+    },
+    "windows-x86_64-msi": {
+      "url": "https://github.com/Rival99900/Bloodborne-save-editor-enhanced/releases/download/v0.7.5/Bloodborne_Save_Editor_Enhanced_0.7.5_x64.msi",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTbEY1UXFjNXBvemZyc1dBTVNBZXhVVWd0SnJLaFhMdUdHV0RpVnppekxTZ3ZpMXhLSlZmenhteXpkTXBlcnZVV1RsdEczYjJFQVdUaDRoby9kSDNCUmMvV1p0VTVmbWdNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1MjEyMDg4CWZpbGU6Qmxvb2Rib3JuZSBTYXZlIEVkaXRvcl8wLjcuNV94NjRfZW4tVVMubXNpClRVR09EWjAxQSs1YzNDKzVyelA2R1pNS2RGbFZ3YkhiYytDY1g3cDh5MHZiREorM2N2STEzTm03VHZDUXkwLzRkNS9wSVhkZ2NwcUNiMXROWkZKbkRBPT0K"
     }
   }
 }
